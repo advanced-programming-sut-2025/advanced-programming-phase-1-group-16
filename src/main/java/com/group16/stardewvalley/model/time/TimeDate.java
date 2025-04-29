@@ -1,4 +1,4 @@
-package com.group16.stardewvalley.controller.time;
+package com.group16.stardewvalley.model.time;
 
 public class TimeDate {
 }
