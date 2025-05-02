@@ -6,6 +6,18 @@ public class Player {
     private User user;
     private Farm farm;
 
+    public Player(User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public void setFarm(Farm farm) {
         this.farm = farm;
     }
