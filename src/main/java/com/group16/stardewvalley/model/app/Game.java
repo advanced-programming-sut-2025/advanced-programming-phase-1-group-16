@@ -1,68 +1,60 @@
 package com.group16.stardewvalley.model.app;
 
-import com.group16.stardewvalley.model.map.FarmType;
-import com.group16.stardewvalley.model.user.User;
-
+import com.group16.stardewvalley.model.user.Player;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Game {
-    private ArrayList<User> players = new ArrayList<User>();
-    private Map<User, FarmType> UsersFarm = new HashMap<User, FarmType>();
-    private User currentPlayer;
-    private User creator;
-    private User loader = null;
+    private ArrayList<Player> players = new ArrayList<>();
+    private Player currentPlayer;
+    private Player creator;
+    private Player loader = null;
+    private GameState gameState = GameState.WAITING_FOR_NEW_GAME;
 
 
 
-    public Game(User creator, ArrayList<User> players) {
+
+    public Game(Player creator, ArrayList<Player> players) {
         this.creator = creator;
         this.players = players;
-        this.UsersFarm = new HashMap<>();
     }
 
-    public ArrayList<User> getPlayers() {
+    public ArrayList<Player> getPlayers() {
         return players;
     }
 
-    public User getCurrentPlayer() {
+    public Player getCurrentPlayer() {
         return currentPlayer;
     }
 
-    public void setCurrentPlayer(User currentPlayer) {  //next turn
+    public void setCurrentPlayer(Player currentPlayer) {  //next turn
         this.currentPlayer = currentPlayer;
     }
 
-    public void setPlayers(ArrayList<User> players) {
+    public void setPlayers(ArrayList<Player> players) {
         this.players = players;
     }
 
-    public User getCreator() {
+    public Player getCreator() {
         return creator;
     }
 
-    public void setCreator(User creator) {
+    public void setCreator(Player creator) {
         this.creator = creator;
     }
 
-    public User getLoader() {
+    public Player getLoader() {
         return loader;
     }
 
-    public void setLoader(User loader) {
+    public void setLoader(Player loader) {
         this.loader = loader;
     }
 
-    public Map<User, FarmType> getUsersFarm() {
-        return UsersFarm;
+    public GameState getGameState() {
+        return gameState;
     }
 
-    public void setUsersFarm(Map<User, FarmType> usersFarm) {
-        UsersFarm = usersFarm;
-    }
-
-    public void addUserFarm (User user, FarmType type){
-        UsersFarm.put(user, type);
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
     }
 }
