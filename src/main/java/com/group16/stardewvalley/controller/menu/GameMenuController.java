@@ -2,8 +2,10 @@ package com.group16.stardewvalley.controller.menu;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
+import com.group16.stardewvalley.model.app.GameState;
 import com.group16.stardewvalley.model.command.GameMenuCommands;
 import com.group16.stardewvalley.model.map.FarmType;
+import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.model.user.User;
 
 import java.util.ArrayList;
@@ -23,23 +25,28 @@ public class GameMenuController {
             return new Result(false, "too many usernames!");
         }
 
-        for (String user : users) {
-            if (GameMenuCommands.Username.getMatcher(user) == null) {
+        for (String username : users) {
+            if (GameMenuCommands.Username.getMatcher(username) == null) {
                 return new Result(false, "invalid username format!");
             }
-            if(Objects.requireNonNull(getUserByUsername(user)).isActiveGame()){
-                return new Result(false, "user already in an active game!");
+            User user = getUserByUsername(username);
+            if(user == null){
+                return new Result(false, "user not found!");
+            }
+            if(user.isActiveGame()){
+                return new Result(false, "username already in an active game!");
             }
         }
 
-        ArrayList<User> gamePlayers = new ArrayList<>();
-        gamePlayers.add(App.getLoggedInUser());
-        gamePlayers.add(getUserByUsername(users[0]));
-        gamePlayers.add(getUserByUsername(users[1]));
-        gamePlayers.add(getUserByUsername(users[2]));
-        Game newGame = new Game(App.getLoggedInUser(), gamePlayers);
+        ArrayList<Player> gamePlayers = new ArrayList<>();
+        gamePlayers.add(new Player(App.getLoggedInUser()));
+        gamePlayers.add(new Player(getUserByUsername(users[0])));
+        gamePlayers.add(new Player(getUserByUsername(users[1])));
+        gamePlayers.add(new Player(getUserByUsername(users[2])));
+        Game newGame = new Game(new Player(App.getLoggedInUser()), gamePlayers);
         App.setActiveGame(newGame);
         App.games.add(newGame);
+        App.getActiveGame().setGameState(GameState.WAITING_FOR_MAP_SELECTION);
         return new Result(true, "new game created!\nnow choose your farm in turn.");
     }
 
