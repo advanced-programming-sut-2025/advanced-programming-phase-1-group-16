@@ -1,13 +1,23 @@
 package com.group16.stardewvalley.model.user;
 
 import com.group16.stardewvalley.model.map.Farm;
+import com.group16.stardewvalley.model.map.Pos;
 
 public class Player {
     private User user;
     private Farm farm;
+    private Pos position;
 
     public Player(User user) {
         this.user = user;
+    }
+
+    public Pos getPosition() {
+        return position;
+    }
+
+    public void setPosition(Pos position) {
+        this.position = position;
     }
 
     public User getUser() {
