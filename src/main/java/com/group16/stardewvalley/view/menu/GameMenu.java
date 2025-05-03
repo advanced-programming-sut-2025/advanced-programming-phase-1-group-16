@@ -1,8 +1,8 @@
 package com.group16.stardewvalley.view.menu;
 
+import com.group16.stardewvalley.controller.map.MapController;
 import com.group16.stardewvalley.controller.menu.GameMenuController;
 import com.group16.stardewvalley.model.app.App;
-import com.group16.stardewvalley.model.app.GameState;
 import com.group16.stardewvalley.model.command.GameMenuCommands;
 import com.group16.stardewvalley.model.user.Player;
 
@@ -11,6 +11,7 @@ import java.util.regex.Matcher;
 
 public class GameMenu implements MenuInterface {
     private final GameMenuController controller = new GameMenuController();
+    private final MapController mapController = new MapController();
 
     @Override
     public void check(Scanner scanner) {
@@ -28,6 +29,8 @@ public class GameMenu implements MenuInterface {
                     else System.out.println("now you must choose a map");
                 }
             }
+            mapController.createMap();
+
 
 
         } else {
