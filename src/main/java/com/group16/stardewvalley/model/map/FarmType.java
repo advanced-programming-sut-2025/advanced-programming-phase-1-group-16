@@ -30,6 +30,14 @@ public enum FarmType {
         this.height = height;
     }
 
+    public TileType[][] getTiles() {
+        return tiles;
+    }
+
+    public void setTiles(TileType[][] tiles) {
+        this.tiles = tiles;
+    }
+
     private TileType[][] makeFarm(FarmType farmType) {
         tiles = new TileType[height][width];
         for (int i = 0; i < height; i++) {
