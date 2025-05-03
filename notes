@@ -1,0 +1,14 @@
+1- comment as much as possible
+2- make smaller packages inside mvc
+
+
+TODO
+- random password handling
+- can user enter the game after registration or should login after register?
+
+- implementing foraging and plants stage for TimeDate s=cheat codes!!
+- every full turn advances time for 1 hour
+
+
+//TODO
+implement choose map turn based.

@@ -1,18 +1,19 @@
 package com.group16.stardewvalley.model.user;
 
-import com.group16.stardewvalley.model.app.App;
+
 import com.group16.stardewvalley.model.app.Game;
 import com.group16.stardewvalley.model.map.Farm;
+import com.group16.stardewvalley.model.app.App;
 
-import java.util.ArrayList;
+import static com.group16.stardewvalley.model.app.App.users;
 
 public class User {
+    //register data
     private String username;
     private String password;
     private String nickName;
     private String email;
     private final String gender;
-    private ArrayList<Game> playedGames;
 
     private int money;
     private int gamePlayed;
@@ -23,6 +24,7 @@ public class User {
 
     boolean activeGame;
     private Game currentGame;
+    private Farm farm;
 
     public User(String username, String password, String nickName, String email, String gender) {
         this.username = username;
@@ -32,19 +34,6 @@ public class User {
         this.gender = gender;
         this.logged_in_flag = false;
         this.activeGame = false;
-        this.playedGames = new ArrayList<>();
-    }
-
-    public ArrayList<Game> getPlayedGames() {
-        return playedGames;
-    }
-
-    public void setPlayedGames(ArrayList<Game> playedGames) {
-        this.playedGames = playedGames;
-    }
-
-    public void addPlayedGame(Game game) {
-        playedGames.add(game);
     }
 
     public String getUsername() {
@@ -79,6 +68,10 @@ public class User {
         return currentGame;
     }
 
+    public Farm getFarm() {
+        return farm;
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }
@@ -107,6 +100,9 @@ public class User {
         this.currentGame = currentGame;
     }
 
+    public void setFarm(Farm farm) {
+        this.farm = farm;
+    }
 
     public boolean isLogged_in_flag() {
         return logged_in_flag;
@@ -141,12 +137,13 @@ public class User {
     }
 
     public static User  getUserByUsername(String username) {
-        for (User user : App.getUsers()) {
+        for (User user : users) {
             if (user.getUsername().equals(username)) {
                 return user;
             }
         }
         return null; // Username not found
     }
+
 
 }

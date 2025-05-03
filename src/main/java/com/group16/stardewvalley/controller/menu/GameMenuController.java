@@ -1,17 +1,21 @@
 package com.group16.stardewvalley.controller.menu;
-import com.group16.stardewvalley.model.Result;
+
+
+
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
 import com.group16.stardewvalley.model.command.GameMenuCommands;
-import com.group16.stardewvalley.model.map.FarmType;
+import com.group16.stardewvalley.model.user.Result;
 import com.group16.stardewvalley.model.user.User;
+import com.group16.stardewvalley.model.map.FarmType;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import static com.group16.stardewvalley.model.user.User.getUserByUsername;
 
+
 public class GameMenuController {
+
     public Result newGame(String input){
         if(input == null || input.isEmpty()){
             return new Result(false, "empty usernames!");
@@ -27,7 +31,7 @@ public class GameMenuController {
             if (GameMenuCommands.Username.getMatcher(user) == null) {
                 return new Result(false, "invalid username format!");
             }
-            if(Objects.requireNonNull(getUserByUsername(user)).isActiveGame()){
+            if(getUserByUsername(user).isActiveGame()){
                 return new Result(false, "user already in an active game!");
             }
         }
@@ -43,7 +47,7 @@ public class GameMenuController {
         return new Result(true, "new game created!\nnow choose your farm in turn.");
     }
 
-    //بازیکن ها بصورت نوبتی و همه از یک سیستم مزرعه ی خود را انتخاب میکنند
+//بازیکن ها بصورت نوبتی و همه از یک سیستم مزرعه ی خود را انتخاب میکنند
     public Result chooseMap(String username, String farmNumber){
         User user = getUserByUsername(username);
         Game game = App.getActiveGame();
@@ -52,8 +56,8 @@ public class GameMenuController {
             int farmNum = Integer.parseInt(farmNumber);
 
             switch (farmNum){
-                case 1: game.addUserFarm(user, FarmType.small);break;
-                case 2: game.addUserFarm(user, FarmType.big);break;
+                case 1: game.addUserFarm(user, FarmType.big);break;
+                case 2: game.addUserFarm(user, FarmType.small);break;
             }
         }else{
             return new Result(false, "invalid farm number!");
@@ -70,5 +74,11 @@ public class GameMenuController {
     public Result terminateGame(boolean user1vote, boolean user2vote, boolean user3vote){}
 
     public Result nextTurn(){}
+
+
+
+
+
+
 
 }
