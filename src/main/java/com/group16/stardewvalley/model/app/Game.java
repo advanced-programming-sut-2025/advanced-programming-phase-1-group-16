@@ -8,19 +8,25 @@ import java.util.ArrayList;
 public class Game {
     private ArrayList<Player> players = new ArrayList<>();
     private TileType[][] map;
-    private int height;
-    private int width;
+    private final int mapHeight = 200;
+    private final int mapWidth = 300;
     private Player currentPlayer;
     private Player creator;
     private Player loader = null;
     private GameState gameState = GameState.WAITING_FOR_NEW_GAME;
 
 
-
-
     public Game(Player creator, ArrayList<Player> players) {
         this.creator = creator;
         this.players = players;
+    }
+
+    public int getMapHeight() {
+        return mapHeight;
+    }
+
+    public int getMapWidth() {
+        return mapWidth;
     }
 
     public TileType[][] getMap() {
