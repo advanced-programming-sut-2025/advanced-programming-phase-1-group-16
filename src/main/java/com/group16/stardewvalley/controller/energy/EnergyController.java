@@ -1,4 +1,4 @@
-    package com.group16.stardewvalley.controller.energy;
+package com.stardewvalley.Energy;
 
 import com.stardewvalley.*;
 import com.stardewvalley.Tools.Gadget;
@@ -28,22 +28,22 @@ public class EnergyController {
     }
 
     public Result inventoryShow() {
-            Map<Gadget, Integer> tools = Game.getCurrentPlayer().getPlayerInventory().getTools();
+        Map<Gadget, Integer> tools = Game.getCurrentPlayer().getPlayerInventory().getTools();
 
-            if (tools.isEmpty()) {
-                return new Result(false, "Your inventory is empty! (•_•)");
-            }
+        if (tools.isEmpty()) {
+            return new Result(false, "Your inventory is empty! (•_•)");
+        }
 
-            StringBuilder sb = new StringBuilder();
-            sb.append("Available tools:\n");
+        StringBuilder sb = new StringBuilder();
+        sb.append("Available tools:\n");
 
-            for (Map.Entry<Gadget, Integer> entry : tools.entrySet()) {
-                Gadget tool = entry.getKey();
-                int count = entry.getValue();
-                sb.append("- ").append(tool.getName()).append(")\n");
-            }
+        for (Map.Entry<Gadget, Integer> entry : tools.entrySet()) {
+            Gadget tool = entry.getKey();
+            int count = entry.getValue();
+            sb.append("- ").append(tool.getName()).append(")\n");
+        }
 
-            return new Result(true, sb.toString());
-            // همین ولی thing رو هم در نظر بگیره
+        return new Result(true, sb.toString());
+        // همین ولی thing رو هم در نظر بگیره
     }
 }
