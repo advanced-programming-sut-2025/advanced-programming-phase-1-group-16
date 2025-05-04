@@ -3,9 +3,11 @@ package com.group16.stardewvalley.view.menu;
 
 import com.group16.stardewvalley.controller.menu.GameMenuController;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.app.Game;
 import com.group16.stardewvalley.model.command.GameMenuCommands;
 import com.group16.stardewvalley.model.command.LoginMenuCommands;
 import com.group16.stardewvalley.model.command.Menu;
+import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.model.user.User;
 
 import java.util.HashMap;
@@ -21,25 +23,20 @@ public class GameMenu implements GameMenuInterface {
         String input = scanner.nextLine();
 
         Matcher matcher = null;
-        if((matcher = GameMenuCommands.NewGame.getMatcher(input)) != null){
-            System.out.println(controller.newGame(matcher.group("password")));
-            //new game
-        }else if ((matcher = GameMenuCommands.ChooseMap.getMatcher(input)) != null){
-            System.out.println(controller.chooseFarm(App.getLoggedInUser().getUsername() ,matcher.group("map_number")));
 
-            if(controller.chooseFarm(App.getLoggedInUser().getUsername(), matcher.group("map_number")).isSuccessful()){
-                //players can  choose their farm turn based.
-                for (int i = 0; i < 3; i++) {
-                    System.out.println("player " + (i + 2) + " please choose your farm.");
+        //new game
+        if((matcher = GameMenuCommands.NewGame.getMatcher(input)) != null){ //after new game, player must choose farm and cant do anything else
+            System.out.println(controller.newGame(matcher.group("usernames")));
+            for (Player player : App.getActiveGame().getPlayers()) {
+                while (player.getFarm() != null) {
                     String input2 = scanner.nextLine();
-                    Matcher matcher2 = GameMenuCommands.ChooseMap.getMatcher(input2);
-                    if (matcher2 != null) {
-                        System.out.println(controller.chooseFarm(App.getActiveGame().getPlayers().get(i+1).getUsername(), matcher2.group("map_number")));
+                    if ((matcher = GameMenuCommands.ChooseMap.getMatcher(input2)) != null) {
+                        System.out.println(controller.chooseFarm(player, matcher.group("map_number")));
                     }
+                    else System.out.println("now you must choose a map");
                 }
-
             }
-            //choose map
+
         } else if( (matcher = GameMenuCommands.LoadGame.getMatcher(input)) != null){
             System.out.println(controller.loadGame());
             //load game
@@ -48,7 +45,7 @@ public class GameMenu implements GameMenuInterface {
             System.out.println(controller.exit());
 
         }else if( (matcher = GameMenuCommands.ForceTerminateVote.getMatcher(input)) != null){
-            Map<User, Boolean> votes = new HashMap<User, Boolean>();
+            Map<Player, Boolean> votes = new HashMap<Player, Boolean>();
             votes.put(App.getActiveGame().getCurrentPlayer(), true);
             System.out.println("vote in turn! (true/false)");
             for (int i = 0; i < 3; i++) {
@@ -62,6 +59,9 @@ public class GameMenu implements GameMenuInterface {
                 }
             }
             System.out.println(controller.forceTerminateGame(votes));
+
+        }else if((matcher = GameMenuCommands.NextTurn.getMatcher(input)) != null){
+            App.getActiveGame().nextTurn();
 
         }else{
             System.out.println("invalid command!");

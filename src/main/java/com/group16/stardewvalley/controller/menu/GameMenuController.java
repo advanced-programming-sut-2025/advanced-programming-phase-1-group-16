@@ -6,6 +6,8 @@ import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
 import com.group16.stardewvalley.model.command.GameMenuCommands;
 import com.group16.stardewvalley.model.command.Menu;
+import com.group16.stardewvalley.model.map.Farm;
+import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.model.user.Result;
 import com.group16.stardewvalley.model.user.User;
 import com.group16.stardewvalley.model.map.FarmType;
@@ -30,42 +32,52 @@ public class GameMenuController {
             return new Result(false, "too many usernames!");
         }
 
-        for (String user : users) {
-            if (GameMenuCommands.Username.getMatcher(user) == null) {
+        for (String username : users) {
+            if (GameMenuCommands.Username.getMatcher(username) == null) {
                 return new Result(false, "invalid username format!");
             }
-            if(getUserByUsername(user).isActiveGame()){
-                return new Result(false, "user already in an active game!");
+            User user = getUserByUsername(username);
+            if(user == null){
+                return new Result(false, "user not found!");
+            }
+            if(user.isActiveGame()){
+                return new Result(false, "username already in an active game!");
             }
         }
 
-        ArrayList<User> gamePlayers = new ArrayList<>();
-        gamePlayers.add(App.getLoggedInUser());
-        gamePlayers.add(getUserByUsername(users[0]));
-        gamePlayers.add(getUserByUsername(users[1]));
-        gamePlayers.add(getUserByUsername(users[2]));
-        Game newGame = new Game(App.getLoggedInUser(), gamePlayers);
+        ArrayList<Player> gamePlayers = new ArrayList<>();
+        gamePlayers.add(new Player(App.getLoggedInUser()));
+        gamePlayers.add(new Player(getUserByUsername(users[0])));
+        gamePlayers.add(new Player(getUserByUsername(users[1])));
+        gamePlayers.add(new Player(getUserByUsername(users[2])));
+        Game newGame = new Game(new Player(App.getLoggedInUser()), gamePlayers);
         App.setActiveGame(newGame);
         App.games.add(newGame);
         return new Result(true, "new game created!\nnow choose your farm in turn.");
     }
 
 //بازیکن ها بصورت نوبتی و همه از یک سیستم مزرعه ی خود را انتخاب میکنند
-    public Result chooseFarm(String username, String farmNumber){
-        User user = getUserByUsername(username);
+    public Result chooseFarm(Player player, String farmNumber){
         Game game = App.getActiveGame();
 
         if(farmNumber.matches("\\d+")){
             int farmNum = Integer.parseInt(farmNumber);
 
-            switch (farmNum){
-                case 1: game.addUserFarm(user, FarmType.big);break;
-                case 2: game.addUserFarm(user, FarmType.small);break;
-            }
+            return switch (farmNum) {
+                case 1 -> {
+                    player.setFarm(new Farm(FarmType.small));
+                    yield new Result(true, "small farm has been chosen!");
+                }
+                case 2 -> {
+                    player.setFarm(new Farm(FarmType.big));
+                    yield new Result(true, "big farm has been chosen!");
+                }
+                default -> new Result(false, "farm number must be between 1 and 2");
+            };
+
         }else{
             return new Result(false, "invalid farm number!");
         }
-        return new Result(true, "your choice have been saved!");
     }
 
     public Result loadGame(){
@@ -74,7 +86,7 @@ public class GameMenuController {
         }
         Game game = App.getActiveGame();
         game.setLoader(game.getCurrentPlayer());
-        return new Result(true, game.getCurrentPlayer().getUsername() + " loaded the game successfully!");
+        return new Result(true, game.getCurrentPlayer().getUser().getUsername() + " loaded the game successfully!");
 
     }
 
@@ -84,7 +96,7 @@ public class GameMenuController {
             //TODO save game
             App.setCurrentMenu(Menu.ExitMenu);
             return new Result(true, "bye bye");
-;
+
         }
         if(game.getCurrentPlayer() == game.getCreator()){
             //TODO save game
@@ -94,7 +106,7 @@ public class GameMenuController {
         return new Result(false, "wrong user entered exit command. try again!");
     }
 
-    public Result forceTerminateGame(Map<User, Boolean>votes){
+    public Result forceTerminateGame(Map<Player, Boolean>votes){
         Game game = App.getActiveGame();
 
         boolean result = true;
@@ -104,8 +116,10 @@ public class GameMenuController {
 
         if(result){
             //terminating won the election
+
             App.setActiveGame(null);
             App.setCurrentMenu(Menu.GameMenu);
+            return new Result(true, "terminated game!");
             //TODO; how to delete the game
 
         }else{
@@ -116,9 +130,7 @@ public class GameMenuController {
 
     }
 
-    public Result nextTurn(){
-
-    }
+//next turn have been handled in Game class
 
 
 
