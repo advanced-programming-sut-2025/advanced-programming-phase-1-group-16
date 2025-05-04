@@ -70,8 +70,8 @@ public class LoginMenu implements GameMenuInterface {
         }else if((matcher = LoginMenuCommands.ShowCurrentMenu.getMatcher(input)) != null ){
             System.out.println(controller.showCurrentMenu());
 
-        }else if((matcher = LoginMenuCommands.Exit.getMatcher(input)) != null){
-            App.setCurrentMenu(Menu.ExitMenu);
+//        }else if((matcher = LoginMenuCommands.Exit.getMatcher(input)) != null){
+//            App.setCurrentMenu(Menu.ExitMenu);
         }
 
         else{

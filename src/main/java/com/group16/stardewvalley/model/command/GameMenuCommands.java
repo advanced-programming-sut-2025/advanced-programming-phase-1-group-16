@@ -4,9 +4,10 @@ public enum GameMenuCommands implements CommandsInterface{
     NewGame("\\s*game\\s+new\\s+-u\\s*(?<password>.+?)"),
     Username( "\\s*[a-zA-Z0-9-]+\\s*"),
     ChooseMap("\\s*game\\s+map\\s+(?<map_number>\\S+)\\s*"),
-    LoadGame(""),
-    Exit(""),
+    LoadGame("\\s*load\\s+game\\s*" ),
+    Exit("\\s*exit\\s+game\\s*" ),
     NextTurn(""),
+    ForceTerminateVote("\\s*force-terminate\\s+vote\\s*"),
 
     Walk(""),
     PrintMap(""),

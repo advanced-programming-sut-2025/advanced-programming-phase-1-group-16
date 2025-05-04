@@ -10,5 +10,9 @@ TODO
 - every full turn advances time for 1 hour
 
 
-//TODO
-implement choose map turn based.
+- load game ??!
+
+- whats the point of exit command which can be entered anytime in the game? (now i just have in the game menu)
+
+- do singleton pattern for time date, add this in main or somewhere global:
+TimeDate globalTime = new TimeDate();
