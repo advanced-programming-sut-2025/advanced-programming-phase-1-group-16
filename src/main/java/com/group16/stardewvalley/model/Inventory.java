@@ -1,6 +1,9 @@
-package com.stardewvalley;
+package com.group16.stardewvalley.model;
 
+import com.group16.stardewvalley.model.Tools.*;
 
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class Inventory {

@@ -1,7 +1,9 @@
-package com.stardewvalley;
+package com.group16.stardewvalley.model.user;
 
-import com.stardewvalley.Inventory;
-import com.stardewvalley.Tools.Gadget;
+import com.group16.stardewvalley.model.Inventory;
+import com.group16.stardewvalley.model.Tools.Gadget;
+import com.group16.stardewvalley.model.Tools.*;
+import com.group16.stardewvalley.model.map.*;
 
 import javax.tools.Tool;
 
@@ -9,7 +11,7 @@ public class Player {
     private Inventory playerInventory;
     private Gadget currentEquipment;
     private Thing currentThing;
-    private int energy;
+    private int ceiEnergy;
     private int level;
     private TileType position;
     int x, y; // ذخیره ی موقعیت یارو روی نقشه

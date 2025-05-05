@@ -1,7 +1,9 @@
-package com.stardewvalley.Energy;
+package com.group16.stardewvalley.controller.energy;
 
-import com.stardewvalley.*;
-import com.stardewvalley.Tools.Gadget;
+import com.group16.stardewvalley.*;
+import com.group16.stardewvalley.model.*;
+import com.group16.stardewvalley.model.Tools.Gadget;
+import com.group16.stardewvalley.model.app.Game;
 
 import java.util.Map;
 import java.util.regex.Matcher;

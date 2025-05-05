@@ -1,4 +1,4 @@
-package com.stardewvalley;
+package com.group16.stardewvalley.model;
 
 public class Result {
 

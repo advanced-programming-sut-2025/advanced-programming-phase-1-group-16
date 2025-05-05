@@ -1,7 +1,7 @@
-package com.stardewvalley.Tools;
+package com.group16.stardewvalley.model.map;
 
-import com.group16.stardewvalley.Game;
-import com.group16.stardewvalley.TileType;
+import com.group16.stardewvalley.model.*;
+import com.group16.stardewvalley.model.app.Game;
 
 public enum Direction {
     N("n", 0, -1),
@@ -33,8 +33,8 @@ public enum Direction {
         throw new IllegalArgumentException("invalid direction");
     }
 
-    public TileType applyPosition() {
-        if (!Game.getMap().)
-            return Game.getMap()[Game.getCurrentPlayer().getX() + xDelta][Game.getCurrentPlayer().getY() + yDelta];
+    public com.group16.stardewvalley.TileType applyPosition() {
+        if (!com.group16.stardewvalley.Game.getMap().)
+            return com.group16.stardewvalley.Game.getMap()[Game.getCurrentPlayer().getX() + xDelta][Game.getCurrentPlayer().getY() + yDelta];
     }
 }

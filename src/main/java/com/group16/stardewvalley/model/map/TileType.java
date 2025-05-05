@@ -1,4 +1,4 @@
-package com.stardewvalley;
+package com.group16.stardewvalley.model.map;
 
 public enum TileType {
     BLACKSMITH_SHOP(true, "blacksmith"),
