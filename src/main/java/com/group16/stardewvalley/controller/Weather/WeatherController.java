@@ -26,4 +26,8 @@ public class WeatherController {
         game.setTomorrowWeatherCondition(weatherCondition);
         return new Result(true, "Tomorrow's weather : " + weatherCondition.getWeatherName());
     }
+
+    public Result buildGreenhouse() {
+
+    }
 }

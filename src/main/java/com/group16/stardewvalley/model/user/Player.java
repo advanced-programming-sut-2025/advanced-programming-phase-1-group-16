@@ -9,16 +9,21 @@ public class Player {
     private Inventory playerInventory;
     private Gadget currentEquipment;
     private Thing currentThing;
-    private int ceiEnergy;
+    private int energyCeiling;
     private int level;
     private TileType position;
     int x, y; // ذخیره ی موقعیت یارو روی نقشه
     private int energy;
+    private int coin;
 
     // thing برای ابزارالاتی است که در زیر مجموعه ی tools قرار نمی گیرد که هنوز نمیدونم چیه
     public Player() {
         playerInventory = new Inventory();
         energy = 200; // مقداردهی انرژی اولیه در ابتدای ساخت
+    }
+
+    public int getCoin() {
+        return coin;
     }
 
     public int getLevel() {

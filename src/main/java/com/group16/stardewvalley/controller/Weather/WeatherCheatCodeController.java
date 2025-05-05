@@ -15,6 +15,7 @@ public class WeatherCheatCodeController {
 
     public Result applyFirelight() {
         // انتخاب رندوم یک لوکیشن و زدن رعد و برق بهش
+        // فقط و فقط اگر جزئی از لوکیشن گلخانه بود نباید اثر کند
 
     }
 
