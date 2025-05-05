@@ -9,9 +9,9 @@ public enum GameMenuCommands implements CommandsInterface{
     NextTurn("\\s*next\\s+turn\\s*" ),
     ForceTerminateVote("\\s*force-terminate\\s+vote\\s*"),
 
-    Walk("\\s*walk\\s+-l\\s+<(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*>\\s*"),
-    PrintMap(""),
-    HelpReadingMap("");
+    Walk("\\s*walk\\s+-l\\s+(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*"),
+    PrintMap("\\s*print\\s+map\\s+-l\\s+(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s+(?<size>\\d+)\\s*"),
+    HelpReadingMap("\\s+help\\s+reading\\s+map\\s*");
 
     private final String pattern;
 

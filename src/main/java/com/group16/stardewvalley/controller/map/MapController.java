@@ -165,5 +165,35 @@ public class MapController {
         return false;
     }
 
+    public Result printMap(int x, int y, int size) {
+        TileType[][] map = App.getActiveGame().getMap();
+        int height = map.length;
+        int width = map[0].length;
+
+        StringBuilder builder = new StringBuilder();
+
+        for (int i = y; i < y + size; i++) {
+            for (int j = x; j < x + size; j++) {
+                if (i < 0 || j < 0 || i >= height || j >= width) {
+                    builder.append(" "); // خارج از محدوده
+                } else {
+                    builder.append(map[i][j].getColorCode()).append(map[i][j].getSymbol()).append("\u001B[0m");
+                }
+            }
+            builder.append("\n");
+        }
+
+        return new Result(true, builder.toString());
+    }
+
+    public Result helpReadingMap() {
+        StringBuilder builder = new StringBuilder();
+        for (TileType tileType : TileType.values()) {
+            builder.append(tileType.name()).append("  :  ").append(tileType.getSymbol()).append("\n");
+        }
+        return new Result(true, builder.toString());
+    }
+
+
 
 }
