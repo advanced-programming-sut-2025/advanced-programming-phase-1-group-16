@@ -5,6 +5,7 @@ import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
 import com.group16.stardewvalley.model.map.PathInfo;
 import com.group16.stardewvalley.model.map.Pos;
+import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.map.TileType;
 import com.group16.stardewvalley.model.user.Player;
 
@@ -15,10 +16,10 @@ public class MapController {
 
     public void createMap() {
         Game game = App.getActiveGame();
-        TileType[][] map = new TileType[game.getMapHeight()][game.getMapWidth()];
+        Tile[][] map = new Tile[game.getMapHeight()][game.getMapWidth()];
         for (int i = 0; i < game.getMapHeight(); i++) {
             for (int j = 0; j < game.getMapWidth(); j++) {
-                map[i][j] = TileType.Ground;
+                map[i][j] = new Tile(TileType.Ground);
             }
         }
         //مشخص کردن نقطه شروع مزرعه
@@ -35,8 +36,9 @@ public class MapController {
         }
         for (Player player : game.getPlayers()) {
             for (int i = 0; i < player.getFarm().getType().getHeight(); i++) {
-                if (player.getFarm().getType().getWidth() >= 0)
-                    System.arraycopy(player.getFarm().getType().getTiles()[i], 0, map[i + player.getFarm().getStartPosition().getY()], player.getFarm().getStartPosition().getX(), player.getFarm().getType().getWidth());
+                for (int j = 0; j < player.getFarm().getType().getWidth(); j++) {
+                    map[j + player.getFarm().getStartPosition().getY()][i + player.getFarm().getStartPosition().getX()] = new Tile(player.getFarm().getType().getTiles()[j][i]);
+                }
             }
         }
         game.setMap(map);
@@ -77,12 +79,17 @@ public class MapController {
         return new Result(true, "Moved to <" + dest.getX() + "," + dest.getY() + ">");
     }
 
+    private boolean isValidPos(Pos pos, int width, int height) {
+        int x = pos.getX(), y = pos.getY();
+        return x >= 0 && y >= 0 && x < height && y < width;
+    }
+
     private PathInfo calculatePathInfo(Pos start, Pos dest) {
-        TileType[][] map = game.getMap();
+        Tile[][] map = game.getMap(); // فرض بر این است که map حالا از نوع Tile[][] است
         int height = map.length;
         int width = map[0].length;
 
-        if (!isValidPos(dest, width, height) || map[dest.getX()][dest.getY()] != TileType.Ground) {
+        if (!isValidPos(dest, width, height) || map[dest.getX()][dest.getY()].getType() != TileType.Ground) {
             return PathInfo.invalid("Invalid destination.");
         }
 
@@ -97,12 +104,7 @@ public class MapController {
         return PathInfo.valid(path, energyCost);
     }
 
-    private boolean isValidPos(Pos pos, int width, int height) {
-        int x = pos.getX(), y = pos.getY();
-        return x >= 0 && y >= 0 && x < height && y < width;
-    }
-
-    private List<Pos> findShortestPath(TileType[][] map, Pos start, Pos dest) {
+    private List<Pos> findShortestPath(Tile[][] map, Pos start, Pos dest) {
         int height = map.length;
         int width = map[0].length;
 
@@ -126,7 +128,9 @@ public class MapController {
                 int ny = curr.getY() + dy[i];
                 Pos next = new Pos(nx, ny);
 
-                if (isValidPos(next, width, height) && !visited[nx][ny] && map[nx][ny] == TileType.Ground) {
+                if (isValidPos(next, width, height)
+                        && !visited[nx][ny]
+                        && map[nx][ny].getType() == TileType.Ground) {
                     visited[nx][ny] = true;
                     parent[nx][ny] = curr;
                     queue.add(next);
@@ -136,6 +140,7 @@ public class MapController {
 
         return null;
     }
+
 
     private List<Pos> reconstructPath(Pos[][] parent, Pos end, Pos start) {
         List<Pos> path = new ArrayList<>();
@@ -166,7 +171,7 @@ public class MapController {
     }
 
     public Result printMap(int x, int y, int size) {
-        TileType[][] map = App.getActiveGame().getMap();
+        Tile[][] map = App.getActiveGame().getMap();
         int height = map.length;
         int width = map[0].length;
 
@@ -177,7 +182,7 @@ public class MapController {
                 if (i < 0 || j < 0 || i >= height || j >= width) {
                     builder.append(" "); // خارج از محدوده
                 } else {
-                    builder.append(map[i][j].getColorCode()).append(map[i][j].getSymbol()).append("\u001B[0m");
+                    builder.append(map[i][j].getType().getColorCode()).append(map[i][j].getType().getSymbol()).append("\u001B[0m");
                 }
             }
             builder.append("\n");

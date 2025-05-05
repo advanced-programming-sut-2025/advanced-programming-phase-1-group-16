@@ -1,13 +1,14 @@
 package com.group16.stardewvalley.model.app;
 
 import com.group16.stardewvalley.model.map.Map;
+import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.map.TileType;
 import com.group16.stardewvalley.model.user.Player;
 import java.util.ArrayList;
 
 public class Game {
     private ArrayList<Player> players = new ArrayList<>();
-    private TileType[][] map;
+    private Tile[][] map;
     private final int mapHeight = 200;
     private final int mapWidth = 300;
     private Player currentPlayer;
@@ -29,11 +30,11 @@ public class Game {
         return mapWidth;
     }
 
-    public TileType[][] getMap() {
+    public Tile[][] getMap() {
         return map;
     }
 
-    public void setMap(TileType[][] map) {
+    public void setMap(Tile[][] map) {
         this.map = map;
     }
 
