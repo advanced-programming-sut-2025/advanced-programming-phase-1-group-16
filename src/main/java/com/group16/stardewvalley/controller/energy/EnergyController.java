@@ -10,9 +10,14 @@ import java.util.Map;
 import java.util.regex.Matcher;
 
 public class EnergyController {
+    private final Game game;
+
+    public EnergyController(Game game) {
+        this.game = game;
+    }
 
     public Result show(){
-        return new Result(true, Integer.toString(Game.getCurrentPlayer().getEnergy()));
+        return new Result(true, Integer.toString(game.getCurrentPlayer().getEnergy()));
     }
 
     public Result setEnergy(Matcher matcher) {
@@ -26,12 +31,12 @@ public class EnergyController {
         if (value < 0) {
             return new Result(false, "Seriously? You call this energy? :/");
         }
-        Game.getCurrentPlayer().setEnergy(value);
+        game.getCurrentPlayer().setEnergy(value);
         return new Result(true, "");
     }
 
     public Result inventoryShow() {
-        Map<Gadget, Integer> tools = Game.getCurrentPlayer().getPlayerInventory().getTools();
+        Map<Gadget, Integer> tools = game.getCurrentPlayer().getPlayerInventory().getTools();
 
         if (tools.isEmpty()) {
             return new Result(false, "Your inventory is empty! (•_•)");

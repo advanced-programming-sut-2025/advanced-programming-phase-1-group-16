@@ -1,18 +1,22 @@
 package com.group16.stardewvalley.model.Tools;
 
-import com.stardewvalley.Game;
-import com.stardewvalley.Player;
-import com.stardewvalley.Result;
-import com.stardewvalley.TileType;
+import com.group16.stardewvalley.model.app.*;
+import com.group16.stardewvalley.model.user.*;
+import com.group16.stardewvalley.model.Result;
+import com.group16.stardewvalley.model.map.*;
 
 import java.util.Map;
 import java.util.regex.Matcher;
 
 public class GadgetController {
+    private final Game game;
+    public GadgetController(Game game) {
+        this.game = game;
+    }
 
     public Result equip(Matcher matcher) {
         String toolName = matcher.group("toolName");
-        Player currentPlayer = Game.getCurrentPlayer();
+        Player currentPlayer = game.getCurrentPlayer();
 
         // بررسی وجود ابزار در inventory
         if (currentPlayer.getPlayerInventory().findToolByName(toolName) == null) {
@@ -26,7 +30,7 @@ public class GadgetController {
     }
 
     public Result showCurrentTool() {
-        Gadget targetTool = Game.getCurrentPlayer().getCurrentEquipment();
+        Gadget targetTool = game.getCurrentPlayer().getCurrentEquipment();
         if (targetTool == null) {
             return new Result(false, "you don't have any gadget in your hand (~_^)");
         }
@@ -34,7 +38,7 @@ public class GadgetController {
     }
 
     public Result showAvailableTools() {
-        Map<Gadget, Integer> tools = Game.getCurrentPlayer().getPlayerInventory().getTools();
+        Map<Gadget, Integer> tools = game.getCurrentPlayer().getPlayerInventory().getTools();
 
         if (tools.isEmpty()) {
             return new Result(false, "Your inventory is empty! (•_•)");
@@ -54,19 +58,19 @@ public class GadgetController {
 
     public Result upgradeTool(Matcher matcher) {
         String toolName = matcher.group("toolName");
-        if (Game.getCurrentPlayer().getPosition() != TileType.BLACKSMITH_SHOP) {
+        if (game.getCurrentPlayer().getPosition() != TileType.BLACKSMITH_SHOP) {
             return new Result(false,"You should be at Blacksmith Shop to upgrade ^ ^")
         }
-        Gadget targetGadget = Game.getCurrentPlayer().getPlayerInventory().findToolByName(toolName);
+        Gadget targetGadget = game.getCurrentPlayer().getPlayerInventory().findToolByName(toolName);
         targetGadget.upgrade();
     }
 
     public Result useTool(Matcher matcher) {
         String direction = matcher.group("direction");
-        Gadget gadget = Game.getCurrentPlayer().getCurrentEquipment();
-        Player currentPlayer = Game.getCurrentPlayer();
+        Gadget gadget = game.getCurrentPlayer().getCurrentEquipment();
+        Player currentPlayer = game.getCurrentPlayer();
         gadget.use(currentPlayer.getX(), currentPlayer.getY(), Game.);
-        TileType targetPosition = Game.getCurrentPlayer().getPosition();
+        TileType targetPosition = game.getCurrentPlayer().getPosition();
 
 
 

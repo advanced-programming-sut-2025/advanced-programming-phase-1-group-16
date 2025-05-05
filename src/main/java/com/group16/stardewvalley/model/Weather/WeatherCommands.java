@@ -1,4 +1,4 @@
-package Weather;
+package com.group16.stardewvalley.model.Weather;
 import java.util.regex.*;
 
 public enum WeatherCommands {

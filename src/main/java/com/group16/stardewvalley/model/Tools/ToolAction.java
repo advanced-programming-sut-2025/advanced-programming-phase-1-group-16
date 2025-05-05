@@ -1,4 +1,4 @@
-package com.stardewvalley.Tools;
+package com.group16.stardewvalley.model.Tools;
 
 public enum ToolAction {
     Plow("Plow"),

@@ -1,5 +1,6 @@
 package com.group16.stardewvalley.model.app;
 
+import com.group16.stardewvalley.model.Weather.WeatherCondition;
 import com.group16.stardewvalley.model.map.Map;
 import com.group16.stardewvalley.model.map.Position;
 import com.group16.stardewvalley.model.map.TileType;
@@ -15,11 +16,29 @@ public class Game {
     private Player creator;
     private Player loader = null;
     private GameState gameState = GameState.WAITING_FOR_NEW_GAME;
+    private WeatherCondition weatherCondition;
+    private WeatherCondition tomorrowWeatherCondition;
+
+    public WeatherCondition getWeatherCondition() {
+        return weatherCondition;
+    }
 
 
     public Game(Player creator, ArrayList<Player> players) {
         this.creator = creator;
         this.players = players;
+    }
+
+    public void setWeatherCondition(WeatherCondition weatherCondition) {
+        this.weatherCondition = weatherCondition;
+    }
+
+    public void setTomorrowWeatherCondition(WeatherCondition weatherCondition) {
+        this.tomorrowWeatherCondition = weatherCondition;
+    }
+
+    public WeatherCondition getTomorrowWeatherCondition() {
+        return tomorrowWeatherCondition;
     }
 
     public int getMapHeight() {

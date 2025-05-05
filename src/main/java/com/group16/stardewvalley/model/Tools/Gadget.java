@@ -1,7 +1,7 @@
 package com.group16.stardewvalley.model.Tools;
 
 
-import com.stardewvalley.TileType;
+import com.group16.stardewvalley.model.map.*;
 
 public abstract class Gadget {
    String name;
