@@ -1,14 +1,15 @@
-package com.group16.stardewvalley.model.command;
+package com.group16.stardewvalley.model.menu;
 
 public enum GameMenuCommands implements CommandsInterface{
     NewGame("\\s*game\\s+new\\s+-u\\s*(?<usernames>.+?)"),
     Username( "\\s*[a-zA-Z0-9-]+\\s*"),
     ChooseMap("\\s*game\\s+map\\s+(?<map_number>\\S+)\\s*"),
-    LoadGame(""),
-    Exit(""),
-    NextTurn(""),
+    LoadGame("\\s*load\\s+game\\s*" ),
+    Exit("\\s*exit\\s+game\\s*" ),
+    NextTurn("\\s*next\\s+turn\\s*" ),
+    ForceTerminateVote("\\s*force-terminate\\s+vote\\s*"),
 
-    Walk(""),
+    Walk("\\s*walk\\s+-l\\s+<(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*>\\s*"),
     PrintMap(""),
     HelpReadingMap("");
 

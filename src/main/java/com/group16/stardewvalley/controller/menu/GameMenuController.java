@@ -3,7 +3,8 @@ import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
 import com.group16.stardewvalley.model.app.GameState;
-import com.group16.stardewvalley.model.command.GameMenuCommands;
+import com.group16.stardewvalley.model.app.Menu;
+import com.group16.stardewvalley.model.menu.GameMenuCommands;
 import com.group16.stardewvalley.model.map.Farm;
 import com.group16.stardewvalley.model.map.FarmType;
 import com.group16.stardewvalley.model.map.TileType;
@@ -13,7 +14,6 @@ import java.util.Random;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Objects;
 
 import static com.group16.stardewvalley.model.user.User.getUserByUsername;
 
@@ -124,7 +124,6 @@ public class GameMenuController {
             //TODO save game
             App.setCurrentMenu(Menu.ExitMenu);
             return new Result(true, "bye bye");
-            ;
         }
         if(game.getCurrentPlayer() == game.getCreator()){
             //TODO save game
@@ -134,7 +133,7 @@ public class GameMenuController {
         return new Result(false, "wrong user entered exit command. try again!");
     }
 
-    public Result forceTerminateGame(Map<User, Boolean> votes){
+    public Result forceTerminateGame(Map<Player, Boolean>votes){
         Game game = App.getActiveGame();
 
         boolean result = true;
@@ -144,8 +143,10 @@ public class GameMenuController {
 
         if(result){
             //terminating won the election
+
             App.setActiveGame(null);
             App.setCurrentMenu(Menu.GameMenu);
+            return new Result(true, "terminated game!");
             //TODO; how to delete the game
 
         }else{
