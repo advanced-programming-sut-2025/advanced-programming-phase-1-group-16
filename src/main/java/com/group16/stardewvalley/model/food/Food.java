@@ -1,8 +1,8 @@
 package com.group16.stardewvalley.model.food;
 
-import java.util.List;
+import java.util.Map;
 
-public record Food(String name, List<String> ingredients, int energy, String buff, String source, int sellPrice) {
+public record Food(String name, Map<Ingredient, Integer> ingredients, int energy, String buff, String source, int sellPrice) {
 
     @Override
     public String toString() {
