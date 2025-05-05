@@ -3,7 +3,7 @@ package com.group16.stardewvalley.view.menu;
 
 
 import com.group16.stardewvalley.controller.menu.MainMenuController;
-import com.group16.stardewvalley.model.command.MainMenuCommands;
+import com.group16.stardewvalley.model.menu.MainMenuCommands;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
