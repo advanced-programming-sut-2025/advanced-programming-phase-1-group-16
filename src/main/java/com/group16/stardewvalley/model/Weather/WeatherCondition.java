@@ -8,5 +8,4 @@ public class WeatherCondition {
     STORM("Storm", new Season[]{Season.SPRING, Season.SUMMER, Season.FALL}),
     SNOWY("Snowy", new Season[]{Season.WINTER});
 
-
 }

@@ -5,8 +5,6 @@ import com.group16.stardewvalley.model.Tools.Gadget;
 import com.group16.stardewvalley.model.Tools.*;
 import com.group16.stardewvalley.model.map.*;
 
-import javax.tools.Tool;
-
 public class Player {
     private Inventory playerInventory;
     private Gadget currentEquipment;
@@ -15,12 +13,12 @@ public class Player {
     private int level;
     private TileType position;
     int x, y; // ذخیره ی موقعیت یارو روی نقشه
-    private int currentEnergy;
+    private int energy;
 
     // thing برای ابزارالاتی است که در زیر مجموعه ی tools قرار نمی گیرد که هنوز نمیدونم چیه
     public Player() {
         playerInventory = new Inventory();
-        currentEnergy = 200; // مقداردهی انرژی اولیه در ابتدای ساخت
+        energy = 200; // مقداردهی انرژی اولیه در ابتدای ساخت
     }
 
     public int getLevel() {
