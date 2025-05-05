@@ -15,12 +15,36 @@ public class Player {
     int x, y; // ذخیره ی موقعیت یارو روی نقشه
     private int energy;
     private int coin;
+    private int farmingAbilityLevel;
+    private int miningAbilityLevel;
+    private int natureTourismAbilityLevel;
+    private int fishingAbilityLevel;
 
-    // thing برای ابزارالاتی است که در زیر مجموعه ی tools قرار نمی گیرد که هنوز نمیدونم چیه
     public Player() {
+        farmingAbilityLevel = 0;
+        miningAbilityLevel = 0;
+        fishingAbilityLevel = 0;
+        natureTourismAbilityLevel = 0;
         playerInventory = new Inventory();
         energy = 200; // مقداردهی انرژی اولیه در ابتدای ساخت
     }
+
+    public int getFarmingAbilityLevel() {
+        return farmingAbilityLevel;
+    }
+
+    private int getMiningAbilityLevel() {
+        return miningAbilityLevel;
+    }
+
+    public int getNatureTourismAbilityLevel() {
+        return natureTourismAbilityLevel;
+    }
+
+    public int getFishingAbilityLevel() {
+        return fishingAbilityLevel;
+    }
+    // thing برای ابزارالاتی است که در زیر مجموعه ی tools قرار نمی گیرد که هنوز نمیدونم چیه
 
     public int getCoin() {
         return coin;
