@@ -1,8 +1,6 @@
 package com.group16.stardewvalley.model.app;
 
-import com.group16.stardewvalley.model.map.Map;
 import com.group16.stardewvalley.model.map.Tile;
-import com.group16.stardewvalley.model.map.TileType;
 import com.group16.stardewvalley.model.user.Player;
 import java.util.ArrayList;
 
