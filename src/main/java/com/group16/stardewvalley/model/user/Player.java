@@ -6,10 +6,19 @@ import com.group16.stardewvalley.model.map.Pos;
 public class Player {
     private User user;
     private Farm farm;
+    private int energy;
     private Pos position;
 
     public Player(User user) {
         this.user = user;
+    }
+
+    public int getEnergy() {
+        return energy;
+    }
+
+    public void setEnergy(int energy) {
+        this.energy = energy;
     }
 
     public Pos getPosition() {
@@ -34,6 +43,10 @@ public class Player {
 
     public Farm getFarm() {
         return farm;
+    }
+
+    public void faint(){
+
     }
 
 }
