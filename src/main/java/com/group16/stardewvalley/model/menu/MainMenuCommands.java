@@ -1,4 +1,4 @@
-package com.group16.stardewvalley.model.command;
+package com.group16.stardewvalley.model.menu;
 
 
 public enum MainMenuCommands implements CommandsInterface {

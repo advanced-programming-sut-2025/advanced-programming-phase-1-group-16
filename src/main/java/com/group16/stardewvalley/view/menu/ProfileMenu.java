@@ -3,7 +3,7 @@ package com.group16.stardewvalley.view.menu;
 
 
 import com.group16.stardewvalley.controller.menu.ProfileMenuController;
-import com.group16.stardewvalley.model.command.ProfileMenuCommands;
+import com.group16.stardewvalley.model.menu.ProfileMenuCommands;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -29,7 +29,7 @@ public class ProfileMenu implements GameMenuInterface {
 
         }else if((matcher = ProfileMenuCommands.ShowInfo.getMatcher(input)) != null ) {
             System.out.println(controller.showUserInfo());
-        }{
+        }else {
             System.out.println("invalid command!");
         }
     }

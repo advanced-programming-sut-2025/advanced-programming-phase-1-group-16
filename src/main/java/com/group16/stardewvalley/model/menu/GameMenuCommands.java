@@ -1,4 +1,4 @@
-package com.group16.stardewvalley.model.command;
+package com.group16.stardewvalley.model.menu;
 
 public enum GameMenuCommands implements CommandsInterface{
     NewGame("\\s*game\\s+new\\s+-u\\s*(?<usernames>.+?)"),

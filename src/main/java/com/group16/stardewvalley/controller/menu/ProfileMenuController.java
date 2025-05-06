@@ -2,7 +2,7 @@ package com.group16.stardewvalley.controller.menu;
 
 
 import com.group16.stardewvalley.model.app.App;
-import com.group16.stardewvalley.model.command.ProfileMenuCommands;
+import com.group16.stardewvalley.model.menu.ProfileMenuCommands;
 import com.group16.stardewvalley.model.user.Result;
 import com.group16.stardewvalley.model.user.User;
 
@@ -77,14 +77,6 @@ public class ProfileMenuController {
 
 
     //private methods
-
-    private boolean isValidUsername(String username){}
-
-    private boolean isValidPassword(String password){}
-
-    private boolean isStrongPassword(String password){}
-
-    private boolean isValidEmail(String email){}
 
 
     private boolean doesUsernameExists(String username) {

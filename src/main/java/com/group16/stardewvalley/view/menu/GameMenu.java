@@ -3,12 +3,8 @@ package com.group16.stardewvalley.view.menu;
 
 import com.group16.stardewvalley.controller.menu.GameMenuController;
 import com.group16.stardewvalley.model.app.App;
-import com.group16.stardewvalley.model.app.Game;
-import com.group16.stardewvalley.model.command.GameMenuCommands;
-import com.group16.stardewvalley.model.command.LoginMenuCommands;
-import com.group16.stardewvalley.model.command.Menu;
+import com.group16.stardewvalley.model.menu.GameMenuCommands;
 import com.group16.stardewvalley.model.user.Player;
-import com.group16.stardewvalley.model.user.User;
 
 import java.util.HashMap;
 import java.util.Map;

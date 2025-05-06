@@ -1,4 +1,4 @@
-package com.group16.stardewvalley.model.command;
+package com.group16.stardewvalley.model.menu;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

@@ -4,8 +4,8 @@ package com.group16.stardewvalley.controller.menu;
 
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
-import com.group16.stardewvalley.model.command.GameMenuCommands;
-import com.group16.stardewvalley.model.command.Menu;
+import com.group16.stardewvalley.model.menu.GameMenuCommands;
+import com.group16.stardewvalley.model.menu.Menu;
 import com.group16.stardewvalley.model.map.Farm;
 import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.model.user.Result;
@@ -13,7 +13,6 @@ import com.group16.stardewvalley.model.user.User;
 import com.group16.stardewvalley.model.map.FarmType;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 import static com.group16.stardewvalley.model.user.User.getUserByUsername;

@@ -1,0 +1,33 @@
+package com.group16.stardewvalley.model.map;
+
+public class Pos {
+    private int x;
+    private int y;
+
+    public Pos(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public static boolean isInsideFarm(Pos pos, Farm farm) {
+        return ((pos.getX() > farm.getStartPosition().getX()) && pos.getX() < (farm.getStartPosition().getX() + farm.getType().getWidth()))
+                && ((pos.getY() > farm.getStartPosition().getY()) && pos.getY() < (farm.getStartPosition().getY() + farm.getType().getHeight()));
+
+    }
+}

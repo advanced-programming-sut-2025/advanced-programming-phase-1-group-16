@@ -2,8 +2,8 @@ package com.group16.stardewvalley.controller.menu;
 
 
 import com.group16.stardewvalley.model.app.App;
-import com.group16.stardewvalley.model.command.LoginMenuCommands;
-import com.group16.stardewvalley.model.command.Menu;
+import com.group16.stardewvalley.model.menu.LoginMenuCommands;
+import com.group16.stardewvalley.model.menu.Menu;
 import com.group16.stardewvalley.model.user.Result;
 import com.group16.stardewvalley.model.user.SecurityQuestions;
 import com.group16.stardewvalley.model.user.User;
@@ -59,10 +59,13 @@ public class LoginMenuController  {
         }
 
         //successful
-        App.users.add(new User(username,password,nickName,email,gender));
+        User newUser = new User(username,password,nickName,email,gender);
+        App.users.add(newUser);
+        App.setLoggedInUser(newUser);
+
 
         //make a list of security questions and show to user
-        String securityQuestionList = "choose a security question and enter its number: \n" +
+        String securityQuestionList = "choose a security question: \n" +
                 "1- " + SecurityQuestions.q1.getQuestion() + "\n" +
                 "2- " + SecurityQuestions.q2.getQuestion() + "\n" + "3- " + SecurityQuestions.q3.getQuestion() + "\n"+
                 "4- " + SecurityQuestions.q4.getQuestion() + "\n" + "5- " + SecurityQuestions.q5.getQuestion() + "\n";
@@ -116,11 +119,11 @@ public class LoginMenuController  {
 
         //correct inputs
         switch (securityQuestion){
-            case "1": App.getLoggedInUser().setUserSecurityQuestion(SecurityQuestions.q1);
-            case "2": App.getLoggedInUser().setUserSecurityQuestion(SecurityQuestions.q2);
-            case "3": App.getLoggedInUser().setUserSecurityQuestion(SecurityQuestions.q3);
-            case "4": App.getLoggedInUser().setUserSecurityQuestion(SecurityQuestions.q4);
-            case "5": App.getLoggedInUser().setUserSecurityQuestion(SecurityQuestions.q5);
+            case "1": App.getLoggedInUser().setUserSecurityQuestion(SecurityQuestions.q1); break;
+            case "2": App.getLoggedInUser().setUserSecurityQuestion(SecurityQuestions.q2);break;
+            case "3": App.getLoggedInUser().setUserSecurityQuestion(SecurityQuestions.q3);break;
+            case "4": App.getLoggedInUser().setUserSecurityQuestion(SecurityQuestions.q4);break;
+            case "5": App.getLoggedInUser().setUserSecurityQuestion(SecurityQuestions.q5);break;
         }
         App.getLoggedInUser().setSecurityAnswer(answer);
 
@@ -156,6 +159,7 @@ public class LoginMenuController  {
 
     public Result checkSecurityAnswer(String username, String answer){
         User user = getUserByUsername(username);
+
         if(!user.getSecurityAnswer().equals(answer)) {
             return new Result(false, "your answer is incorrect!");
         }

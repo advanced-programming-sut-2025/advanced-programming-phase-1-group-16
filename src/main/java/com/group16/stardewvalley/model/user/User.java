@@ -57,7 +57,7 @@ public class User {
     }
 
     public SecurityQuestions getUserSecurityQuestion() {
-        return userSecurityQuestion;
+        return userSecurityQuestion.;
     }
 
     public String getSecurityAnswer() {

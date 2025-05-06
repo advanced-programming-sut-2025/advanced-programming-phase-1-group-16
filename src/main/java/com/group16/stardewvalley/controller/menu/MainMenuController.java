@@ -2,7 +2,7 @@ package com.group16.stardewvalley.controller.menu;
 
 
 import com.group16.stardewvalley.model.app.App;
-import com.group16.stardewvalley.model.command.Menu;
+import com.group16.stardewvalley.model.menu.Menu;
 import com.group16.stardewvalley.model.user.Result;
 
 public class MainMenuController {
