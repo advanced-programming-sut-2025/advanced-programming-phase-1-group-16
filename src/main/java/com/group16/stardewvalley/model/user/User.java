@@ -24,7 +24,6 @@ public class User {
 
     boolean activeGame;
     private Game currentGame;
-    private Farm farm;
 
     public User(String username, String password, String nickName, String email, String gender) {
         this.username = username;
@@ -57,7 +56,7 @@ public class User {
     }
 
     public SecurityQuestions getUserSecurityQuestion() {
-        return userSecurityQuestion.;
+        return userSecurityQuestion;
     }
 
     public String getSecurityAnswer() {

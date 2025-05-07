@@ -11,8 +11,9 @@ public enum ProfileMenuCommands implements CommandsInterface {
         Email("\\s*[a-zA-Z0-9](?:[a-zA-Z0-9_-]*\\.?[a-zA-Z0-9_-]+)*" +
             "@[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z]{2,}\\s*"),
     ChangePassword("\\s*change\\s+password\\s+-p\\s+(?<newPassword>\\S+)\\s+-o(?<oldPassword>\\S+)\\s*"),
-    Password( "\\s*[a-zA-Z0-9!#$%^&*()=+{}\\[\\]|\\\\/:;'\",<>?]+\\s*");   // doesnt include @
+    Password( "\\s*[a-zA-Z0-9!#$%^&*()=+{}\\[\\]|\\\\/:;'\",<>?]+\\s*"),   // doesnt include @
 
+    ExitMenu("\\s*menu\\s+exit\\s*");
 
     private final String pattern;
     ProfileMenuCommands(String pattern) {

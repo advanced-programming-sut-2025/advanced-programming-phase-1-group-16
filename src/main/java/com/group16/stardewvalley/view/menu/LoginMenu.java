@@ -35,11 +35,12 @@ public class LoginMenu implements GameMenuInterface {
                 String input2 = scanner.nextLine();
                 Matcher matcher2 = LoginMenuCommands.PickSecurityQuestion.getMatcher(input2);
                 if (matcher2 != null) {
-                    System.out.println(controller.setSecurityQuestion(matcher2.group("questionNumber"),
+                    System.out.println(controller.setSecurityQuestion(matcher.group("username"), matcher2.group("questionNumber"),
                             matcher2.group("answer"), matcher2.group("answerConfirm")));
                 }
 
             }
+
         }else if((matcher = LoginMenuCommands.Login.getMatcher(input)) != null) {
             boolean logged_in_flag = false;
             if(input.contains("-stay-logged-in")) {
@@ -50,19 +51,24 @@ public class LoginMenu implements GameMenuInterface {
 
         }else if((matcher = LoginMenuCommands.ForgetPassword.getMatcher(input)) != null){
 
-            System.out.println(controller.forgetPassword(matcher.group("username")));
-            if(controller.forgetPassword(matcher.group("username")).isSuccessful()) {
+            Result result = controller.forgetPassword(matcher.group("username"));
+            System.out.println(result);
+            if(result.isSuccessful()) {
 
                 String input2 = scanner.nextLine();
                 Matcher matcher2 = LoginMenuCommands.ForgetPasswordAnswer.getMatcher(input2);
                 if(matcher2 != null) {
-                    System.out.println(controller.checkSecurityAnswer(matcher.group("username"), matcher2.group("answer")));
-                    if (controller.checkSecurityAnswer(matcher.group("username"), matcher2.group("answer")).isSuccessful()) {
+                    Result result1 = controller.checkSecurityAnswer(matcher.group("username"), matcher2.group("answer"));
+                    System.out.println(result1);
+                    if (result1.isSuccessful()) {
 
                         String input3 = scanner.nextLine();
-                        Matcher matcher3 = LoginMenuCommands.ForgetPasswordAnswer.getMatcher(input3);
+                        Matcher matcher3 = LoginMenuCommands.GetNewPassword.getMatcher(input3);
                         if(matcher3 != null) {
                             System.out.println(controller.getNewPassword( matcher.group("username") ,matcher3.group("password")));
+                        }else {
+                            System.out.println("invalid password!");
+
                         }
                     }
                 }

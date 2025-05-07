@@ -61,7 +61,7 @@ public class LoginMenuController  {
         //successful
         User newUser = new User(username,password,nickName,email,gender);
         App.users.add(newUser);
-        App.setLoggedInUser(newUser);
+//        App.setLoggedInUser(newUser);
 
 
         //make a list of security questions and show to user
@@ -108,7 +108,7 @@ public class LoginMenuController  {
         return sb.toString();
     }
 
-    public Result setSecurityQuestion(String securityQuestion, String answer, String answerConfirm) {
+    public Result setSecurityQuestion(String username, String securityQuestion, String answer, String answerConfirm) {
         if (!(securityQuestion.equals("1") || securityQuestion.equals("2") || securityQuestion.equals("3")
             || securityQuestion.equals("4") || securityQuestion.equals("5"))) {
             return new Result(false, "question number is invalid!");
@@ -117,15 +117,23 @@ public class LoginMenuController  {
             return new Result(false, "your answer confirm does not match with answer!");
         }
 
+        User user = getUserByUsername(username);
         //correct inputs
-        switch (securityQuestion){
-            case "1": App.getLoggedInUser().setUserSecurityQuestion(SecurityQuestions.q1); break;
-            case "2": App.getLoggedInUser().setUserSecurityQuestion(SecurityQuestions.q2);break;
-            case "3": App.getLoggedInUser().setUserSecurityQuestion(SecurityQuestions.q3);break;
-            case "4": App.getLoggedInUser().setUserSecurityQuestion(SecurityQuestions.q4);break;
-            case "5": App.getLoggedInUser().setUserSecurityQuestion(SecurityQuestions.q5);break;
+        if(user != null){
+            switch (securityQuestion) {
+                case "1": user.setUserSecurityQuestion(SecurityQuestions.q1); break;
+                case "2": user.setUserSecurityQuestion(SecurityQuestions.q2); break;
+                case "3": user.setUserSecurityQuestion(SecurityQuestions.q3); break;
+                case "4": user.setUserSecurityQuestion(SecurityQuestions.q4); break;
+                case "5": user.setUserSecurityQuestion(SecurityQuestions.q5); break;
+            }
+            user.setSecurityAnswer(answer);
+
+        }else {
+            return new Result(false, "username not found!");
         }
-        App.getLoggedInUser().setSecurityAnswer(answer);
+
+
 
         return new Result(true, "security question set successfully!");
 

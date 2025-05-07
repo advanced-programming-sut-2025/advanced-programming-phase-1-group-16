@@ -29,6 +29,8 @@ public class ProfileMenu implements GameMenuInterface {
 
         }else if((matcher = ProfileMenuCommands.ShowInfo.getMatcher(input)) != null ) {
             System.out.println(controller.showUserInfo());
+        }else if(( matcher = ProfileMenuCommands.ExitMenu.getMatcher(input)) != null ) {
+            System.out.println(controller.exitMenu());
         }else {
             System.out.println("invalid command!");
         }

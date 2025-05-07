@@ -8,10 +8,7 @@ public enum GameMenuCommands implements CommandsInterface{
     Exit("\\s*exit\\s+game\\s*" ),
     NextTurn("\\s*next\\s+turn\\s*" ),
     ForceTerminateVote("\\s*force-terminate\\s+vote\\s*"),
-
-    Walk(""),
-    PrintMap(""),
-    HelpReadingMap("");
+    ExitMenu("\\s*menu\\s+exit\\s*");
 
     private final String pattern;
 

@@ -2,6 +2,7 @@ package com.group16.stardewvalley.controller.menu;
 
 
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.menu.Menu;
 import com.group16.stardewvalley.model.menu.ProfileMenuCommands;
 import com.group16.stardewvalley.model.user.Result;
 import com.group16.stardewvalley.model.user.User;
@@ -71,6 +72,11 @@ public class ProfileMenuController {
                 "\nmost money reached: " + user.getMoney() + "\ngame played: " + user.getGamePlayed();
 
         return new Result(true, output);
+    }
+
+    public Result exitMenu(){
+        App.setCurrentMenu(Menu.MainMenu);
+        return new Result(true, "you are in the main menu!");
     }
 
 

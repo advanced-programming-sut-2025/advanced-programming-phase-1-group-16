@@ -132,6 +132,11 @@ public class GameMenuController {
 //next turn have been handled in Game class
 
 
+    public Result exitMenu(){
+        App.setCurrentMenu(Menu.MainMenu);
+        return new Result(true, "you are in the main menu!");
+    }
+
 
 
 

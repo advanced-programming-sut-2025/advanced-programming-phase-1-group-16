@@ -4,6 +4,7 @@ package com.group16.stardewvalley.view.menu;
 import com.group16.stardewvalley.controller.menu.GameMenuController;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.menu.GameMenuCommands;
+import com.group16.stardewvalley.model.menu.ProfileMenuCommands;
 import com.group16.stardewvalley.model.user.Player;
 
 import java.util.HashMap;
@@ -59,6 +60,9 @@ public class GameMenu implements GameMenuInterface {
         }else if((matcher = GameMenuCommands.NextTurn.getMatcher(input)) != null){
             App.getActiveGame().nextTurn();
 
+        }else if(( matcher = ProfileMenuCommands.ExitMenu.getMatcher(input)) != null ) {
+            //back to main menu
+            System.out.println(controller.exitMenu());
         }else{
             System.out.println("invalid command!");
 
