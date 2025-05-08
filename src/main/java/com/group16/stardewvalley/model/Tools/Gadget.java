@@ -3,7 +3,7 @@ package com.group16.stardewvalley.model.Tools;
 
 import com.group16.stardewvalley.model.map.*;
 
-public abstract class Gadget {
+public abstract class Gadget extends Thing {
    String name;
    String material;
    public String getName() {
