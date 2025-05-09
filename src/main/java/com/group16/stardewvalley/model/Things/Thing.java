@@ -1,4 +1,4 @@
-package com.group16.stardewvalley.model.Tools;
+package com.group16.stardewvalley.model.Things;
 
 public abstract class Thing {
     // این ها همان سنگ و چوبی هستند که در قسمت معامله هستند

@@ -1,7 +1,5 @@
 package com.group16.stardewvalley.model.Shops;
 
-import com.group16.stardewvalley.model.Tools.Thing;
-
 import java.util.ArrayList;
 import java.util.List;
 
