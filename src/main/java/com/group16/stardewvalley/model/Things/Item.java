@@ -1,6 +1,20 @@
 package com.group16.stardewvalley.model.Things;
 
-public abstract class Thing {
+public abstract class Item {
+    private final String name;
+    private int price;
+
+    public Item(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getPrice() {
+        return price;
+    }
     // این ها همان سنگ و چوبی هستند که در قسمت معامله هستند
     // هر پارت باید یا سنگ و چوب باشد یا اینکه مثلا چیزی از تایل تایپ باشد
     // ساخت تویله سنگ و چوب شک به تایل تایپ

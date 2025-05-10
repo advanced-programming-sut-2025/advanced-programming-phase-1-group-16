@@ -6,7 +6,6 @@ import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.map.*;
 import com.group16.stardewvalley.model.Tools.*;
 
-import javax.swing.text.Position;
 import  java.util.Map;
 import java.util.regex.Matcher;
 

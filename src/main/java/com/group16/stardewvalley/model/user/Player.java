@@ -1,14 +1,15 @@
 package com.group16.stardewvalley.model.user;
 
 import com.group16.stardewvalley.model.Inventory;
+import com.group16.stardewvalley.model.Shops.Shop;
+import com.group16.stardewvalley.model.Things.Item;
 import com.group16.stardewvalley.model.Tools.Gadget;
-import com.group16.stardewvalley.model.Tools.*;
 import com.group16.stardewvalley.model.map.*;
 
 public class Player {
     private Inventory playerInventory;
     private Gadget currentEquipment;
-    private Thing currentThing;
+    private Item currentThing;
     private int energyCeiling;
     private int level;
     private TileType position;
@@ -114,5 +115,9 @@ public class Player {
     public void setEnergy(int energy) {
         this.energy = energy;    // این باید بخش زمان و در شروع روز جدید کامل بشه و عوامل دیگه ای که روی سقف این تاثیر داشتن لحاظ بشن
         // یا اگه غش کرده بشه ۷۵ درصد
+    }
+
+    public Shop whereAmI() {
+        // بر اساس مپ باید بده که الان در کدوم فروشگاه وایستادم
     }
 }

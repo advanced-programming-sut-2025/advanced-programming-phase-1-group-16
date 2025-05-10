@@ -1,5 +1,6 @@
 package com.group16.stardewvalley.model;
 
+import com.group16.stardewvalley.model.Things.Item;
 import com.group16.stardewvalley.model.Tools.*;
 
 import java.util.HashMap;
@@ -8,6 +9,7 @@ import java.util.Map;
 
 public class Inventory {
     private Map<Gadget, Integer> tools;
+    private Map<Item, Integer> things;
     private int capacity;
 
     public Inventory() {
