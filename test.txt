@@ -1,0 +1,14 @@
+register -u Fa-nilli -p Salam1234! Salam1234! -n fatemeh -e salam@sd.com -g female
+pick question -q 3 -a apple -c apple
+login -u Fa-nilli -p Salam1234! -stay-logged-in
+user logout
+forget password -u Fa-nilli
+answer -a apple
+Byebye1234!
+login -u Fa-nilli -p Byebye1234! -stay-logged-in
+menu enter Profile Menu
+change username -u Fa-nilli
+user info
+menu exit
+menu enter Game Menu
+game new -u gholi hassan sanaz
