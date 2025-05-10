@@ -3,7 +3,6 @@ package com.group16.stardewvalley.model.user;
 
 import com.group16.stardewvalley.model.app.Game;
 import com.group16.stardewvalley.model.map.Farm;
-import com.group16.stardewvalley.model.app.App;
 
 import static com.group16.stardewvalley.model.app.App.users;
 
@@ -63,13 +62,11 @@ public class User {
         return securityAnswer;
     }
 
-    public Game getCurrentGroup() {
+    public Game getCurrentGame() {
         return currentGame;
     }
 
-    public Farm getFarm() {
-        return farm;
-    }
+
 
     public void setUsername(String username) {
         this.username = username;
@@ -99,9 +96,6 @@ public class User {
         this.currentGame = currentGame;
     }
 
-    public void setFarm(Farm farm) {
-        this.farm = farm;
-    }
 
     public boolean isLogged_in_flag() {
         return logged_in_flag;

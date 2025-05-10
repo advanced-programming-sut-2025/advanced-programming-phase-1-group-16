@@ -61,25 +61,28 @@ public class GameMenuController {
     public Result chooseFarm(Player player, String farmNumber){
         Game game = App.getActiveGame();
 
-        if(farmNumber.matches("\\d+")){
+        if (farmNumber.matches("\\d+")) {
             int farmNum = Integer.parseInt(farmNumber);
 
             return switch (farmNum) {
                 case 1 -> {
                     player.setFarm(new Farm(FarmType.small));
+                    randomItems(player.getFarm());
                     yield new Result(true, "small farm has been chosen!");
                 }
                 case 2 -> {
                     player.setFarm(new Farm(FarmType.big));
+                    randomItems(player.getFarm());
                     yield new Result(true, "big farm has been chosen!");
                 }
                 default -> new Result(false, "farm number must be between 1 and 2");
             };
-
-        }else{
+        } else {
             return new Result(false, "invalid farm number!");
         }
     }
+
+
 
     public void randomItems(Farm farm){
         Random random = new Random();
@@ -169,6 +172,9 @@ public class GameMenuController {
         App.setCurrentMenu(Menu.MainMenu);
         return new Result(true, "you are in the main menu!");
     }
+
+
+
 
 
 

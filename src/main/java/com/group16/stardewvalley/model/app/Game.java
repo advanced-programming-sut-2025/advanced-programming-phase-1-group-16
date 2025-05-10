@@ -1,14 +1,13 @@
 package com.group16.stardewvalley.model.app;
 
-import com.group16.stardewvalley.model.map.FarmType;
+import com.group16.stardewvalley.model.Weather.WeatherCondition;
 import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.map.TileType;
 import com.group16.stardewvalley.model.user.Player;
-import com.group16.stardewvalley.model.user.User;
+
 import com.group16.stardewvalley.model.time.TimeDate;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+
 
 public class Game {
     private ArrayList<Player> players = new ArrayList<>();
@@ -26,6 +25,12 @@ public class Game {
     private final int mapHeight = 200;
     private final int mapWidth = 300;
 
+    private WeatherCondition weatherCondition;
+    private WeatherCondition tomorrowWeatherCondition;
+
+    public WeatherCondition getWeatherCondition() {
+        return weatherCondition;
+    }
 
 
     public Game(Player creator, ArrayList<Player> players) {
@@ -90,4 +95,18 @@ public class Game {
 
         System.out.println("its " + getCurrentPlayer().getUser().getUsername() + "  turn now.");
     }
+
+
+    public void setWeatherCondition(WeatherCondition weatherCondition) {
+        this.weatherCondition = weatherCondition;
+    }
+
+    public void setTomorrowWeatherCondition(WeatherCondition weatherCondition) {
+        this.tomorrowWeatherCondition = weatherCondition;
+    }
+
+    public WeatherCondition getTomorrowWeatherCondition() {
+        return tomorrowWeatherCondition;
+    }
+
 }

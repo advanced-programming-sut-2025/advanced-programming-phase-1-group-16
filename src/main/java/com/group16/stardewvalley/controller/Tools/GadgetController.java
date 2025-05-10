@@ -1,20 +1,18 @@
 package com.group16.stardewvalley.controller.Tools;
 
+import com.group16.stardewvalley.model.Source;
 import com.group16.stardewvalley.model.app.*;
 import com.group16.stardewvalley.model.user.*;
 import com.group16.stardewvalley.model.Result;
-import com.group16.stardewvalley.model.map.*;
 import com.group16.stardewvalley.model.Tools.*;
 
 import  java.util.Map;
 import java.util.regex.Matcher;
 
 public class GadgetController {
-    private final Game game;
+    private final Game game = App.getActiveGame();
 
-    public GadgetController(Game game) {
-        this.game = game;
-    }
+
 
     public Result equip(Matcher matcher) {
         String toolName = matcher.group("toolName");
@@ -60,9 +58,9 @@ public class GadgetController {
     //TODO
     public Result upgradeTool(Matcher matcher) {
         String toolName = matcher.group("toolName");
-        if (game.getCurrentPlayer().getPosition() != TileType.BLACKSMITH_SHOP) {
-            return new Result(false,"You should be at Blacksmith Shop to upgrade ^ ^");
-        }
+//        if (game.getCurrentPlayer().getPosition() != Source.Blacksmith) {
+//            return new Result(false,"You should be at Blacksmith Shop to upgrade ^ ^");
+//        }
         Gadget targetGadget = game.getCurrentPlayer().getPlayerInventory().findToolByName(toolName);
         targetGadget.upgrade();
         return new Result(true, "");
@@ -70,37 +68,37 @@ public class GadgetController {
 
 
     //TODO
-    public Result useTool(Matcher matcher) {
-        String direction = matcher.group("direction");
-        Gadget gadget = game.getCurrentPlayer().getCurrentEquipment();
-        Player currentPlayer = game.getCurrentPlayer();
-        ToolAction toolAction;
-        gadget.use(currentPlayer.getPosition().getX(), currentPlayer.getPosition().getY(), game.getMap());
-        Tile targetPosition = game.getCurrentPlayer().getPosition();
-        // خطا ها:
-        // برای اینکه این بزار مناسب این پوزیشن نیست
-        // انرژی کافی ندارد
+//    public Result useTool(Matcher matcher) {
+//        String direction = matcher.group("direction");
+//        Gadget gadget = game.getCurrentPlayer().getCurrentEquipment();
+//        Player currentPlayer = game.getCurrentPlayer();
+//        ToolAction toolAction;
+//        gadget.use(currentPlayer.getPosition().getX(), currentPlayer.getPosition().getY(), game.getMap());
+//        Tile targetPosition = game.getCurrentPlayer().getPosition();
+//        // خطا ها:
+//        // برای اینکه این بزار مناسب این پوزیشن نیست
+//        // انرژی کافی ندارد
+//
+//    }
+//
+//    private TileType findFinalPosition(String direction) {
+//        Tile[][] map = game.getMap();
+//        Player player = game.getCurrentPlayer();
+//
+//
+//
+//    }
+//    // یا هیچی روی اون موقعیت سازگار نیست یا یکی از این کارهای ابزاره هست
+//    private ToolAction whichOneIsSuitable() {
+//
+//    }
 
-    }
-
-    private TileType findFinalPosition(String direction) {
-        Tile[][] map = game.getMap();
-        Player player = game.getCurrentPlayer();
-        case;
-
-
-    }
-    // یا هیچی روی اون موقعیت سازگار نیست یا یکی از این کارهای ابزاره هست
-    private ToolAction whichOneIsSuitable() {
-
-    }
-
-    private boolean hasEnoughEnergy(Gadget gadget, ToolAction action) {
-        Player currentPlayer = game.getCurrentPlayer();
-        int requiredEnergy = ToolDataManager.getEnergyConsumption(gadget.getClass().getSimpleName()
-                .toLowerCase(), gadget.getMaterial());
-        return requiredEnergy > currentPlayer.getEnergy();
-
-    }
+//    private boolean hasEnoughEnergy(Gadget gadget, ToolAction action) {
+//        Player currentPlayer = game.getCurrentPlayer();
+//        int requiredEnergy = ToolDataManager.getEnergyConsumption(gadget.getClass().getSimpleName()
+//                .toLowerCase(), gadget.getMaterial());
+//        return requiredEnergy > currentPlayer.getEnergy();
+//
+//    }
 
 }

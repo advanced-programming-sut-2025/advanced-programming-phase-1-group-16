@@ -1,7 +1,7 @@
 package com.group16.stardewvalley.model.user;
 
 import com.group16.stardewvalley.model.Inventory;
-import com.group16.stardewvalley.model.Shops.Shop;
+//import com.group16.stardewvalley.model.Shops.Shop;
 import com.group16.stardewvalley.model.Things.Item;
 import com.group16.stardewvalley.model.Tools.Gadget;
 import com.group16.stardewvalley.model.map.Farm;
@@ -116,22 +116,22 @@ public class Player {
 
 
 //TODO
-    public boolean move(int dx, int dy, Tile[][] map) {
-        int newX = this.position.getX() + dx;
-        int newY = this.position.getY() + dy;
-
-        if (isValidPosition(newX, newY, map)) {
-            Tile targetTile = map[newX][newY];
-            if (targetTile.isWalkable()) {
-                x = newX;
-                y = newY;
-                position = targetTile;
-                return true;
-                // بعد از این باید تکون بخوره کاراکترش اگه درسته
-            }
-        }
-        return false;
-    }
+//    public boolean move(int dx, int dy, Tile[][] map) {
+//        int newX = this.position.getX() + dx;
+//        int newY = this.position.getY() + dy;
+//
+//        if (isValidPosition(newX, newY, map)) {
+//            Tile targetTile = map[newX][newY];
+//            if (targetTile.isWalkable()) {
+//                x = newX;
+//                y = newY;
+//                position = targetTile;
+//                return true;
+//                // بعد از این باید تکون بخوره کاراکترش اگه درسته
+//            }
+//        }
+//        return false;
+//    }
 
     private boolean isValidPosition(int x, int y, TileType[][] map) {
         return x >= 0 && x < map.length && y >= 0 && y < map[0].length;
@@ -139,7 +139,7 @@ public class Player {
 
 
 
-    public Shop whereAmI() {
-        // بر اساس مپ باید بده که الان در کدوم فروشگاه وایستادم
-    }
+//    public Shop whereAmI() {
+//        // بر اساس مپ باید بده که الان در کدوم فروشگاه وایستادم
+//    }
 }

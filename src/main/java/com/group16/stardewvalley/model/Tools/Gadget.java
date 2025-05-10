@@ -10,7 +10,7 @@ public abstract class Gadget {
       return name;
    }
 
-   public void use(int x, int y, TileType[][] map){
+   public void use(Pos pod, Tile[][] map){
 
    };
 

@@ -13,11 +13,11 @@ public class WeatherCheatCodeController {
         this.game = game1;
     }
 
-    public Result applyFirelight() {
-        // انتخاب رندوم یک لوکیشن و زدن رعد و برق بهش
-        // فقط و فقط اگر جزئی از لوکیشن گلخانه بود نباید اثر کند
-
-    }
+//    public Result applyFirelight() {
+//        // انتخاب رندوم یک لوکیشن و زدن رعد و برق بهش
+//        // فقط و فقط اگر جزئی از لوکیشن گلخانه بود نباید اثر کند
+//
+//    }
 
     public Result changeWeather(Matcher matcher) {
         String weatherName = matcher.group("Type");

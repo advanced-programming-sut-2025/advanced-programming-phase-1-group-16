@@ -43,11 +43,11 @@ public abstract class Shop {
         return dailyLimit.keySet();
     }
 
-    public void sellItem(Item item) {
-        // ایا باید به موجودی فروشگاه ها اضافه شود یا اصلا لازم نداریم چنین چیزی
-        if (canSell(item)) {
-            soldToday.get(item)--;
-        }
-    }
+//    public void sellItem(Item item) {
+//        // ایا باید به موجودی فروشگاه ها اضافه شود یا اصلا لازم نداریم چنین چیزی
+//        if (canSell(item)) {
+//            soldToday.get(item)--;
+//        }
+//    }
 
 }

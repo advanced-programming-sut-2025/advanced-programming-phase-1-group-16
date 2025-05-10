@@ -1,4 +1,7 @@
-package com.group16.stardewvalley.model.Tools;
+package com.group16.stardewvalley.view;
+
+import com.group16.stardewvalley.controller.Tools.GadgetController;
+import com.group16.stardewvalley.model.Tools.GadgetsCommands;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -18,7 +21,7 @@ public class GadgetsView {
         } else if ((matcher = GadgetsCommands.UPGRADE_TOOLS.getMatcher(input)).matches()) {
             System.out.println(controller.upgradeTool(matcher));
         } else if ((matcher = GadgetsCommands.USE_TOOL.getMatcher(input)).matches()) {
-            System.out.println(controller.useTool(matcher));
+//            System.out.println(controller.useTool(matcher));
         } else {
             System.out.println("chert nanvis");
         }

@@ -1,24 +1,21 @@
 package com.group16.stardewvalley.model.map;
 
-import com.group16.stardewvalley.model.Item;
-
-import java.util.ArrayList;
+import com.group16.stardewvalley.model.Things.Item;
 
 public class Tile {
     private TileType type;
-    private ArrayList<Item> items;
+    private Item item;
 
-    public Tile(TileType tileType) {
-        this.type = tileType;
-        this.items = new ArrayList<>();
+    public Tile(TileType type) {
+        this.type = type;
     }
 
-    public ArrayList<Item> getItems() {
-        return items;
+    public Item getItem() {
+        return item;
     }
 
-    public void setItems(ArrayList<Item> items) {
-        this.items = items;
+    public void setItem(Item item) {
+        this.item = item;
     }
 
     public TileType getType() {

@@ -6,16 +6,6 @@ public class Axe extends Gadget{
         this.material = material;
     }
 
-    public int getPrice() {
 
-    }
-
-    public int getEnoughLevel() {
-
-    }
-
-    public void getConsumptionEnergy() {
-
-    }
 
 }

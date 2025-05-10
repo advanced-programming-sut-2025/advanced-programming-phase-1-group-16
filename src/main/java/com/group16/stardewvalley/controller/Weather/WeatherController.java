@@ -27,7 +27,7 @@ public class WeatherController {
         return new Result(true, "Tomorrow's weather : " + weatherCondition.getWeatherName());
     }
 
-    public Result buildGreenhouse() {
-
-    }
+//    public Result buildGreenhouse() {
+//
+//    }
 }
