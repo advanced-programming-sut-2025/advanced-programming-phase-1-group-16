@@ -1,24 +1,35 @@
 package com.group16.stardewvalley.model.map;
 
 import com.group16.stardewvalley.model.Item;
-
-import java.util.ArrayList;
+import com.group16.stardewvalley.model.agriculture.Crop;
 
 public class Tile {
     private TileType type;
-    private ArrayList<Item> items;
+    private Item item;
+    Crop crop;
 
     public Tile(TileType tileType) {
         this.type = tileType;
-        this.items = new ArrayList<>();
     }
 
-    public ArrayList<Item> getItems() {
-        return items;
+    public void setItem(Item item) {
+        this.item = item;
     }
 
-    public void setItems(ArrayList<Item> items) {
-        this.items = items;
+    public Crop getPlantedSeed() {
+        return crop;
+    }
+
+    public void setPlantedSeed(Crop crop) {
+        this.crop = crop;
+    }
+
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItems(Item item) {
+        this.item = item;
     }
 
     public TileType getType() {
