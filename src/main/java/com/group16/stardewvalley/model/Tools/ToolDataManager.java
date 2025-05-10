@@ -1,28 +1,34 @@
 package com.group16.stardewvalley.model.Tools;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 public class ToolDataManager {
-    private static final String TOOLS_JSON_PATH = "src/main/resources/tools/Tools.json";
+    private static final String TOOLS_JSON_PATH = "src/main/resources/Tools/Tools.json";
     private static Map<String, Object> toolsData;
 
     static {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            toolsData = mapper.readValue(new File(TOOLS_JSON_PATH), Map.class);
+            InputStream inputStream = ToolDataManager.class.getResourceAsStream(TOOLS_JSON_PATH);
+            if (inputStream == null) {
+                throw new RuntimeException("File not found in classpath: " + TOOLS_JSON_PATH);
+            }
+            toolsData = mapper.readValue(inputStream, new TypeReference<Map<String, Object>>() {});
         } catch (IOException e) {
             throw new RuntimeException("Failed to load tools data from JSON", e);
         }
     }
 
+    @SuppressWarnings("unchecked")
     public static int getEnergyConsumption(String toolName, String material) {
         try {
-            Map<String, Object> toolMap = (Map<String, Object>) ((Map<String, Object>) toolsData.get("tools"))
-                    .get(toolName.toLowerCase());
+            Map<String, Object> tools = (Map<String, Object>) toolsData.get("tools");
+            Map<String, Object> toolMap = (Map<String, Object>) tools.get(toolName.toLowerCase());
 
             if (toolMap == null) {
                 throw new IllegalArgumentException("Tool not found: " + toolName);

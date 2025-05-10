@@ -1,33 +1,28 @@
 package com.group16.stardewvalley.model.map;
 
 public enum TileType {
-    BLACKSMITH_SHOP(true, "blacksmith"),
-    FARM(true, "Farm"),
-    HOUSE(true, "Home"),
-    RIVER(false, "River"),
-    MOUNTAIN(false, "barroom"),
-    WALL(false, "wall");
+    Tree('T', "\u001B[32m"),
+    Stone('o', "\u001B[37m"),
+    Forage('f', "\u001B[36m"),
+    Ground('.', "\u001B[33m"),
+    Lake('~', "\u001B[33m"),
+    GreenHouse('G', "\u001B[35m"),
+    Cottage('C', "\u001B[31m"),
+    Quarry('Q', "\u001B[30m");
 
-    // سوال پیش میاد بخش هایی که داخل این ها هستند اما باز هم نمیشه روش راه رفت رو چطور بایدهندل کرد؟
+    private final char symbol;
+    private final String colorCode;
 
-    private final boolean walkable;
-    private final String locationName;
-
-    TileType(boolean walkable, String locationName) {
-        this.walkable = walkable;
-        this.locationName = locationName;
+    TileType(char symbol, String colorCode) {
+        this.symbol = symbol;
+        this.colorCode = colorCode;
     }
 
-    public boolean isWalkable() {
-        return walkable;
+    public String getColorCode() {
+        return colorCode;
     }
 
-    public String getLocationName() {
-        return locationName;
-    }
-
-    // ارگومانش از جیسونه میاد
-    public boolean canDoOnThis() {
-
+    public char getSymbol() {
+        return symbol;
     }
 }
