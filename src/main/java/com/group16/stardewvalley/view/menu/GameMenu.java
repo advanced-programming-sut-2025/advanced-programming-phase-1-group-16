@@ -1,6 +1,7 @@
 package com.group16.stardewvalley.view.menu;
 
 
+import com.group16.stardewvalley.controller.agriculture.AgricultureController;
 import com.group16.stardewvalley.controller.map.MapController;
 import com.group16.stardewvalley.controller.menu.GameMenuController;
 import com.group16.stardewvalley.model.Result;
@@ -16,6 +17,7 @@ import java.util.regex.Matcher;
 public class GameMenu implements MenuInterface {
     private final GameMenuController controller = new GameMenuController();
     private final MapController mapController = new MapController();
+    private final AgricultureController agricultureController = new AgricultureController();
 
     @Override
     public void check(Scanner scanner) {
@@ -72,6 +74,8 @@ public class GameMenu implements MenuInterface {
             System.out.println(mapController.printMap(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")), Integer.parseInt(matcher.group("size"))));
         } else if ((matcher = GameMenuCommands.HelpReadingMap.getMatcher(input)) != null){
             System.out.println(mapController.helpReadingMap());
+        } else if ((matcher = GameMenuCommands.Craftinfo.getMatcher(input)) != null){
+            System.out.println(agricultureController.craftInfo(matcher.group("name")));
         }
         else{
             System.out.println("invalid command!");

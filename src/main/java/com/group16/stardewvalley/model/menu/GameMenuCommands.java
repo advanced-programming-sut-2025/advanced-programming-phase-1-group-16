@@ -11,7 +11,9 @@ public enum GameMenuCommands implements CommandsInterface{
 
     Walk("\\s*walk\\s+-l\\s+(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*"),
     PrintMap("\\s*print\\s+map\\s+-l\\s+(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s+(?<size>\\d+)\\s*"),
-    HelpReadingMap("\\s+help\\s+reading\\s+map\\s*");
+    HelpReadingMap("\\s+help\\s+reading\\s+map\\s*"),
+    Craftinfo("\\s*craftinfo -n (?<name>\\S+)\\s*"),
+
 
     private final String pattern;
 
