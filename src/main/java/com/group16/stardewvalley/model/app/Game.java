@@ -1,6 +1,7 @@
 package com.group16.stardewvalley.model.app;
 
 import com.group16.stardewvalley.model.map.FarmType;
+import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.map.TileType;
 import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.model.user.User;
@@ -21,10 +22,9 @@ public class Game {
     private TimeDate timeDate;
 
 
-    private TileType[][] map;
-    private int height;
-    private int width;
-
+    private Tile[][] map;
+    private final int mapHeight = 200;
+    private final int mapWidth = 300;
 
 
 
@@ -46,16 +46,21 @@ public class Game {
         this.players = players;
     }
 
+    public int getMapHeight() {
+        return mapHeight;
+    }
 
+    public int getMapWidth() {
+        return mapWidth;
+    }
 
-    public TileType[][] getMap() {
+    public Tile[][] getMap() {
         return map;
     }
 
-    public void setMap(TileType[][] map) {
+    public void setMap(Tile[][] map) {
         this.map = map;
     }
-
 
     public Player getCreator() {
         return creator;

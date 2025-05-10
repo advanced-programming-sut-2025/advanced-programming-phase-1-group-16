@@ -1,0 +1,96 @@
+{
+  "tools": {
+    "hoes": {
+      "name": "hoe",
+      "actions": ["Plow"],
+      "material": {
+        "base": {"consumption energy": 5},
+        "copper": {"consumption energy": 4},
+        "iron": {"consumption energy": 3},
+        "gold": {"consumption energy": 2},
+        "iridium": {"consumption energy": 1}
+      }
+    },
+
+    "pickaxe": {
+      "name": "pickaxe",
+      "actions": ["BreakStone", "RemoveHoeMarks", "ClearDroppedItems"],
+      "material": {
+        "base": {"consumption energy": 5},
+        "copper": {"consumption energy": 4},
+        "iron": {"consumption energy": 3},
+        "gold": {"consumption energy": 2},
+        "iridium": {"consumption energy": 1}
+      }
+    },
+    "axe": {
+      "name": "axe",
+      "actions": ["ChopTrees", "ClearBranches"],
+      "material":{
+        "base": {"consumption energy": 5},
+        "copper": {"consumption energy": 4},
+        "iron": {"consumption energy": 3},
+        "gold": {"consumption energy": 2},
+        "iridium": {"consumption energy": 1}
+      }
+    },
+
+    "watering can": {
+      "name": "watering can",
+      "actions": ["WaterCrops", "FillWaterContainer"],
+      "material": {
+        "base": {"num of tiles": 40},
+        "copper": {"num of tiles": 55},
+        "iron": {"num of tiles": 70},
+        "gold": {"num of tiles": 85},
+        "iridium": {"num of tiles": 100}
+      }
+
+    },
+
+    "fishing pole": {
+      "name": "fishing pole",
+      "actions": ["Fishing"],
+      "type": {
+        "training": {"price": 25, "consumption energy": 8, "enough level": 0},
+        "bamboo": {"price": 500, "consumption energy": 8, "enough level": 0},
+        "fiberglass": {"price": 1800, "consumption energy": 6, "enough level": 2},
+        "iridium": {"price": 7500, "consumption energy": 4, "enough level": 4}
+      }
+    },
+
+    "scythe": {
+      "name": "scythe",
+      "actions": ["CutGrass", "HarvestCrops"],
+      "consumption energy": 2
+    },
+
+    "milk pail": {
+      "name": "milk pail",
+      "actions": ["MildAnimals"],
+      "consumption energy": 4,
+      "price": 1000
+    },
+
+
+    "shear": {
+      "name": "shear",
+      "actions": ["ShearSheep"],
+      "price": 1000,
+      "consumption energy": 4
+    },
+
+
+    "trash can": {
+      "name": "trash can",
+      "actions": ["RemoveFromInventory"],
+      "type": {
+        "basic":{"Recovery percentage": 0},
+        "copper": {"Recovery percentage": 15},
+        "iron": {"Recovery percentage": 39},
+        "gold": {"Recovery percentage": 45},
+        "iridium": {"Recovery percentage": 60}
+      }
+    }
+  }
+}

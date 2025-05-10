@@ -4,16 +4,18 @@ package com.group16.stardewvalley.controller.menu;
 
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
+import com.group16.stardewvalley.model.map.TileType;
 import com.group16.stardewvalley.model.menu.GameMenuCommands;
 import com.group16.stardewvalley.model.menu.Menu;
 import com.group16.stardewvalley.model.map.Farm;
 import com.group16.stardewvalley.model.user.Player;
-import com.group16.stardewvalley.model.user.Result;
+import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.user.User;
 import com.group16.stardewvalley.model.map.FarmType;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Random;
 
 import static com.group16.stardewvalley.model.user.User.getUserByUsername;
 
@@ -78,6 +80,37 @@ public class GameMenuController {
             return new Result(false, "invalid farm number!");
         }
     }
+
+    public void randomItems(Farm farm){
+        Random random = new Random();
+        int totalTiles = farm.getType().getHeight() * farm.getType().getWidth();
+
+        // تعداد رندم آیتم‌ها (مثلاً بین 5 تا 20 درصد کل تایل‌ها)
+        int itemCount = random.nextInt(totalTiles / 5) + totalTiles / 20;
+
+        for (int k = 0; k < itemCount; k++) {
+            int i = random.nextInt(farm.getType().getHeight());           // ردیف رندم
+            int j = random.nextInt(farm.getType().getWidth());        // ستون رندم
+            if (farm.getType().getTiles()[j][i] == TileType.Ground) {
+                farm.getType().getTiles()[j][i] = TileType.Tree;
+            }
+        }
+        for (int k = 0; k < itemCount; k++) {
+            int i = random.nextInt(farm.getType().getHeight());           // ردیف رندم
+            int j = random.nextInt(farm.getType().getWidth());        // ستون رندم
+            if (farm.getType().getTiles()[j][i] == TileType.Ground) {
+                farm.getType().getTiles()[j][i] = TileType.Stone;
+            }
+        }
+        for (int k = 0; k < itemCount; k++) {
+            int i = random.nextInt(farm.getType().getHeight());           // ردیف رندم
+            int j = random.nextInt(farm.getType().getWidth());        // ستون رندم
+            if (farm.getType().getTiles()[j][i] == TileType.Ground) {
+                farm.getType().getTiles()[j][i] = TileType.Forage;
+            }
+        }
+    }
+
 
     public Result loadGame(){
         if(App.getActiveGame() == null){

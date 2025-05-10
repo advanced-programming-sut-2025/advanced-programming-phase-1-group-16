@@ -4,7 +4,7 @@ package com.group16.stardewvalley.view.menu;
 
 import com.group16.stardewvalley.controller.menu.LoginMenuController;
 import com.group16.stardewvalley.model.menu.LoginMenuCommands;
-import com.group16.stardewvalley.model.user.Result;
+import com.group16.stardewvalley.model.Result;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;

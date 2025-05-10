@@ -4,7 +4,7 @@ package com.group16.stardewvalley.model.time;
 
 //عملا ماه نداریم. هر فصل 28 روز است و 4 فصل داریم
 
-import com.group16.stardewvalley.model.user.Result;
+import com.group16.stardewvalley.model.Result;
 
 public class TimeDate {
     private int hour;

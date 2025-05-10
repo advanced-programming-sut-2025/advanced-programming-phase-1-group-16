@@ -1,4 +1,4 @@
-package com.group16.stardewvalley.model.user;
+package com.group16.stardewvalley.model;
 
 
 public record Result(boolean isSuccessful, String message) {

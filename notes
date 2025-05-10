@@ -16,3 +16,9 @@ TODO
 
 - do singleton pattern for time date, add this in main or somewhere global:
 TimeDate globalTime = new TimeDate();
+
+
+to fatemeh:
+pls updatte these classes regarding to the new Player class:
+GadgetController -> upgradeTool
+GadgetController -> useTool
