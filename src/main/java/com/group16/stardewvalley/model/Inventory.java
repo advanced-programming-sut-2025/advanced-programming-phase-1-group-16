@@ -1,6 +1,6 @@
 package com.group16.stardewvalley.model;
 
-import com.group16.stardewvalley.model.Things.Item;
+import com.group16.stardewvalley.model.Items.Item;
 import com.group16.stardewvalley.model.Tools.*;
 
 import java.util.HashMap;

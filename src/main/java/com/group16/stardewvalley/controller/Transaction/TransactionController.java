@@ -1,7 +1,7 @@
 package com.group16.stardewvalley.controller.Transaction;
 
 import com.group16.stardewvalley.model.Shops.Shop;
-import com.group16.stardewvalley.model.Things.Item;
+import com.group16.stardewvalley.model.Items.Item;
 import com.group16.stardewvalley.model.app.*;
 import com.group16.stardewvalley.model.user.*;
 import com.group16.stardewvalley.model.Result;

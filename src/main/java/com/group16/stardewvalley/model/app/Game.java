@@ -4,7 +4,7 @@ import com.group16.stardewvalley.model.Weather.WeatherCondition;
 import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.map.TileType;
-import com.group16.stardewvalley.model.user.;
+import com.group16.stardewvalley.model.user.*;
 import java.util.ArrayList;
 
 public class Game {
@@ -53,7 +53,7 @@ public class Game {
         return map;
     }
 
-    public void setMap(TileType[][] map) {
+    public void setMap(Tile[][] map) {
         this.map = map;
     }
 

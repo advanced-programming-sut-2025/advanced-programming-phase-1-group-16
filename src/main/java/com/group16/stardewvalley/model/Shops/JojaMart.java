@@ -4,4 +4,8 @@ public class JojaMart extends Shop{
     public JojaMart() {
         super("JojaMart", "Morris", 9, 23);
     }
+
+    public void initializeItems() {
+
+    }
 }

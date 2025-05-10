@@ -1,6 +1,6 @@
 package com.group16.stardewvalley.model.Shops;
 
-import com.group16.stardewvalley.model.Things.Item;
+import com.group16.stardewvalley.model.Items.Item;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +13,7 @@ public abstract class Shop {
     private final Map<Item, Integer> soldToday = new HashMap<>();
     private final int START_TIME;
     private final int END_TIME;
+    private int balance;
 
     public Shop(String shopName,
                 String shopkeeperName,
@@ -22,6 +23,7 @@ public abstract class Shop {
         this.shopkeeperName = shopkeeperName;
         this.START_TIME = START_TIME;
         this.END_TIME = END_TIME;
+        this.balance = 0;
     }
 
     public String getShopName() {
@@ -46,8 +48,23 @@ public abstract class Shop {
     public void sellItem(Item item) {
         // ایا باید به موجودی فروشگاه ها اضافه شود یا اصلا لازم نداریم چنین چیزی
         if (canSell(item)) {
-            soldToday.get(item)--;
+            int sold = soldToday.get(item);
+            soldToday.put(item, sold + 1);
+            balance += item.getPrice();    //**
         }
+    }
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public void increaseBalance(int amount) {
+        balance += amount;
+    }
+
+    public void addItem(Item item, int dailyLimit) {
+        this.dailyLimit.put(item, dailyLimit);
+        this.soldToday.put(item, 0);
     }
 
 }
