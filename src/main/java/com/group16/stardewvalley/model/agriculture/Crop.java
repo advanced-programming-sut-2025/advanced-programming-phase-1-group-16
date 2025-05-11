@@ -6,76 +6,36 @@ import netscape.javascript.JSObject;
 import java.util.HashMap;
 
 public class Crop extends PlantedSeed {
-    JSObject productType;
-    private String name;
-    private SeedType source;
-    private HashMap<Integer, Integer> stageTime;
-    private final int totalHarvestTime;
-    private boolean isOneTime;
-    private final int regrowthTime;
+    CropType cropType;
     private int sellPrice;
-    private final boolean isEdible;
     private int energy;
-    private final Season season;
-    private final boolean canBecomeGiant;
     private int stage;
-    private final int lastStage;
+    private final int finalStage;
     private int dayPastFromLastStage;
     private int daysSinceLastHarvest;
     private boolean isWatered;
-    private boolean isMature = false;
+    private boolean isMature;
 
-    public Crop(JSObject productType) {
-        this.productType = productType;
-
-        this.name = (String) productType.getMember("name");
-        this.source = SeedType.valueOf(((String) productType.getMember("source")).toUpperCase().replace(" ", "_"));
-
-        // مرحله‌ها
-        this.stageTime = new HashMap<>();
-        Object[] stages = (Object[]) productType.getMember("stages");
-        for (int i = 0; i < stages.length; i++) {
-            stageTime.put(i, ((Number) stages[i]).intValue());
-        }
-
-        this.totalHarvestTime = ((Number) productType.getMember("totalHarvestTime")).intValue();
-        this.isOneTime = (Boolean) productType.getMember("oneTime");
-
-        Object regrowthObj = productType.getMember("regrowthTime");
-        this.regrowthTime = regrowthObj == null ? 0 : ((Number) regrowthObj).intValue();
-
-        this.sellPrice = ((Number) productType.getMember("baseSellPrice")).intValue();
-        this.isEdible = (Boolean) productType.getMember("isEdible");
-        this.energy = ((Number) productType.getMember("energy")).intValue();
-
-        // فصل – فقط اولین فصل را استفاده می‌کنیم
-        Object[] seasons = (Object[]) productType.getMember("season");
-        this.season = Season.valueOf(((String) seasons[0]).toUpperCase());
-
-        this.canBecomeGiant = (Boolean) productType.getMember("canBecomeGiant");
+    public Crop(CropType cropType) {
+        this.cropType = cropType;
+        this.sellPrice = cropType.getBaseSellPrice();
+        this.energy = cropType.getEnergy();
+        this.finalStage = cropType.getStages().length;
 
         // متغیرهای زمان بازی
         this.stage = 0;
         this.dayPastFromLastStage = 0;
         this.daysSinceLastHarvest = 0;
         this.isWatered = false;
-        this.lastStage = stageTime.size();
+        this.isMature = false;
     }
 
-    public int getLastStage() {
-        return lastStage;
+    public CropType getCropType() {
+        return cropType;
     }
 
-    public boolean isMature() {
-        return isMature;
-    }
-
-    public void setMature(boolean mature) {
-        isMature = mature;
-    }
-
-    public boolean isCanBecomeGiant() {
-        return canBecomeGiant;
+    public void setCropType(CropType cropType) {
+        this.cropType = cropType;
     }
 
     public int getDaysSinceLastHarvest() {
@@ -86,16 +46,20 @@ public class Crop extends PlantedSeed {
         this.daysSinceLastHarvest = daysSinceLastHarvest;
     }
 
+    public boolean isMature() {
+        return isMature;
+    }
+
+    public void setMature(boolean mature) {
+        isMature = mature;
+    }
+
     public boolean isWatered() {
         return isWatered;
     }
 
     public void setWatered(boolean watered) {
         isWatered = watered;
-    }
-
-    public Season getSeason() {
-        return season;
     }
 
     public int getDayPastFromLastStage() {
@@ -106,20 +70,16 @@ public class Crop extends PlantedSeed {
         this.dayPastFromLastStage = dayPastFromLastStage;
     }
 
+    public int getFinalStage() {
+        return finalStage;
+    }
+
     public int getStage() {
         return stage;
     }
 
     public void setStage(int stage) {
         this.stage = stage;
-    }
-
-    public int getEnergy() {
-        return energy;
-    }
-
-    public void setEnergy(int energy) {
-        this.energy = energy;
     }
 
     public int getSellPrice() {
@@ -130,64 +90,20 @@ public class Crop extends PlantedSeed {
         this.sellPrice = sellPrice;
     }
 
-    public int getRegrowthTime() {
-        return regrowthTime;
+    public int getEnergy() {
+        return energy;
     }
 
-    public boolean isEdible() {
-        return isEdible;
-    }
-
-    public boolean isOneTime() {
-        return isOneTime;
-    }
-
-    public void setOneTime(boolean oneTime) {
-        isOneTime = oneTime;
-    }
-
-    public int getTotalHarvestTime() {
-        return totalHarvestTime;
-    }
-
-    public HashMap<Integer, Integer> getStageTime() {
-        return stageTime;
-    }
-
-    public void setStageTime(HashMap<Integer, Integer> stageTime) {
-        this.stageTime = stageTime;
-    }
-
-    public SeedType getSource() {
-        return source;
-    }
-
-    public void setSource(SeedType source) {
-        this.source = source;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public JSObject getProductType() {
-        return productType;
-    }
-
-    public void setProductType(JSObject productType) {
-        this.productType = productType;
+    public void setEnergy(int energy) {
+        this.energy = energy;
     }
 
     public void advanceStage() {
         if (!isMature) {
             dayPastFromLastStage++;
-            if (dayPastFromLastStage >= stageTime.get(stage)) {
+            if (dayPastFromLastStage >= cropType.getStages()[stage]) {
                 stage++;
-                if (stage == lastStage) {
+                if (stage == finalStage) {
                     isMature = true;
                 }
                 dayPastFromLastStage = 0;
