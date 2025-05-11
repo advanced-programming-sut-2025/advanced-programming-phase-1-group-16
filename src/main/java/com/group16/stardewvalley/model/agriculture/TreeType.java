@@ -46,7 +46,7 @@ public enum TreeType {
             "Mystic Syrup", 7, 1000, true, 500, 225, Season.Special);
 
     private final String name;
-    private final SeedType sapling;
+    private final SeedType seed;
     private final int[] growthStages;
     private final int totalGrowthTime;
     private final String fruitName;
@@ -57,11 +57,11 @@ public enum TreeType {
     private final int health;
     private final Season season;
 
-    TreeType(String name, SeedType sapling, int[] growthStages, int totalGrowthTime,
+    TreeType(String name, SeedType seed, int[] growthStages, int totalGrowthTime,
              String fruitName, int fruitCycleDays, int fruitSellPrice,
              boolean isEdible, int energy, int health, Season season) {
         this.name = name;
-        this.sapling = sapling;
+        this.seed = seed;
         this.growthStages = growthStages;
         this.totalGrowthTime = totalGrowthTime;
         this.fruitName = fruitName;
@@ -109,8 +109,8 @@ public enum TreeType {
         return totalGrowthTime;
     }
 
-    public SeedType getSapling() {
-        return sapling;
+    public SeedType getSeed() {
+        return seed;
     }
 
     public int[] getGrowthStages() {
