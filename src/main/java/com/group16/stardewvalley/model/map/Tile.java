@@ -2,11 +2,14 @@ package com.group16.stardewvalley.model.map;
 
 import com.group16.stardewvalley.model.Item;
 import com.group16.stardewvalley.model.agriculture.Crop;
+import com.group16.stardewvalley.model.agriculture.Tree;
 
 public class Tile {
     private TileType type;
     private Item item;
     private Crop crop;
+    private Tree tree;
+    //برای شخم زدن:
     private boolean isPloughed;
 
     public Tile(TileType tileType) {
@@ -24,6 +27,14 @@ public class Tile {
 
     public void setCrop(Crop crop) {
         this.crop = crop;
+    }
+
+    public Tree getTree() {
+        return tree;
+    }
+
+    public void setTree(Tree tree) {
+        this.tree = tree;
     }
 
     public void setPloughed(boolean ploughed) {
