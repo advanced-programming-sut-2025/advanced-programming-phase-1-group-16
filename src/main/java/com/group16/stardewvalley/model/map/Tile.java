@@ -6,10 +6,28 @@ import com.group16.stardewvalley.model.agriculture.Crop;
 public class Tile {
     private TileType type;
     private Item item;
-    Crop crop;
+    private Crop crop;
+    private boolean isPloughed;
 
     public Tile(TileType tileType) {
         this.type = tileType;
+        this.isPloughed = false;
+    }
+
+    public boolean isPloughed() {
+        return isPloughed;
+    }
+
+    public Crop getCrop() {
+        return crop;
+    }
+
+    public void setCrop(Crop crop) {
+        this.crop = crop;
+    }
+
+    public void setPloughed(boolean ploughed) {
+        isPloughed = ploughed;
     }
 
     public void setItem(Item item) {
