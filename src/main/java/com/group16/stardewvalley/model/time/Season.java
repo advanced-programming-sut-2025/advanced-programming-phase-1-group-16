@@ -4,10 +4,11 @@ public enum Season {
     Spring(0, "Spring"),
     Summer(1, "Summer"),
     Fall(2, "Fall"),
-    Winter(3, "Winter"),;
+    Winter(3, "Winter"),
+    Special(4, "Special");
 
 
-    private int index;
+    private final int index;
     private final String name;
 
     Season(int index, String name) {
