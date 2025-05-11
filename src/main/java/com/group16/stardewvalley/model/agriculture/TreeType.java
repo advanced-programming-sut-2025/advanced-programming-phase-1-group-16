@@ -45,17 +45,17 @@ public enum TreeType {
     MYSTIC("Mystic Tree", SeedType.MYSTIC_TREE_SEEDS, new int[]{7, 7, 7, 7}, 28,
             "Mystic Syrup", 7, 1000, true, 500, 225, Season.Special);
 
-    public final String name;
-    public final SeedType sapling;
-    public final int[] growthStages;
-    public final int totalGrowthTime;
-    public final String fruitName;
-    public final int fruitCycleDays;
-    public final int fruitSellPrice;
-    public final boolean isEdible;
-    public final int energy;
-    public final int health;
-    public final Season season;
+    private final String name;
+    private final SeedType sapling;
+    private final int[] growthStages;
+    private final int totalGrowthTime;
+    private final String fruitName;
+    private final int fruitCycleDays;
+    private final int fruitSellPrice;
+    private final boolean isEdible;
+    private final int energy;
+    private final int health;
+    private final Season season;
 
     TreeType(String name, SeedType sapling, int[] growthStages, int totalGrowthTime,
              String fruitName, int fruitCycleDays, int fruitSellPrice,
@@ -71,6 +71,50 @@ public enum TreeType {
         this.energy = energy;
         this.health = health;
         this.season = season;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getEnergy() {
+        return energy;
+    }
+
+    public Season getSeason() {
+        return season;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public boolean isEdible() {
+        return isEdible;
+    }
+
+    public int getFruitSellPrice() {
+        return fruitSellPrice;
+    }
+
+    public int getFruitCycleDays() {
+        return fruitCycleDays;
+    }
+
+    public String getFruitName() {
+        return fruitName;
+    }
+
+    public int getTotalGrowthTime() {
+        return totalGrowthTime;
+    }
+
+    public SeedType getSapling() {
+        return sapling;
+    }
+
+    public int[] getGrowthStages() {
+        return growthStages;
     }
 }
 
