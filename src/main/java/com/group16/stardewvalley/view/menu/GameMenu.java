@@ -41,6 +41,7 @@ public class GameMenu implements GameMenuInterface {
                         else System.out.println("now you must choose a map");
                     }
                 }
+                mapController.createMap();
             }
 
         } else if( (matcher = GameMenuCommands.LoadGame.getMatcher(input)) != null){
@@ -85,7 +86,9 @@ public class GameMenu implements GameMenuInterface {
             }
         }
     } else if ((matcher = GameMenuCommands.PrintMap.getMatcher(input)) != null){
-        System.out.println(mapController.printMap(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")), Integer.parseInt(matcher.group("size"))));
+            System.out.println(mapController.printMap(Integer.parseInt(matcher.group("x")),
+                    Integer.parseInt(matcher.group("y")), Integer.parseInt(matcher.group("size"))));
+
     } else if ((matcher = GameMenuCommands.HelpReadingMap.getMatcher(input)) != null){
         System.out.println(mapController.helpReadingMap());
     }

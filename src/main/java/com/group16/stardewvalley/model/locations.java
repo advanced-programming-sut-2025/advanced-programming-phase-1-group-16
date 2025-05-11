@@ -1,6 +1,6 @@
 package com.group16.stardewvalley.model;
 
-public enum Source {
+public enum locations {
     MiningLevel,
     FarmingLevel,
     Foraging,

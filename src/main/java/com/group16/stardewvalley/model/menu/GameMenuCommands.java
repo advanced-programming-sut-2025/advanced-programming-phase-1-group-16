@@ -12,7 +12,7 @@ public enum GameMenuCommands implements CommandsInterface{
     ExitMenu("\\s*menu\\s+exit\\s*"),
 
     Walk("\\s*walk\\s+-l\\s+(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*"),
-    PrintMap("\\s*print\\s+map\\s+-l\\s+(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s+(?<size>\\d+)\\s*"),
+    PrintMap("\\s*print\\s+map\\s+-l\\s+(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s+-s\\s+(?<size>\\d+)\\s*"),
     HelpReadingMap("\\s+help\\s+reading\\s+map\\s*");
 
     private final String pattern;

@@ -1,6 +1,5 @@
 package com.group16.stardewvalley.controller.Tools;
 
-import com.group16.stardewvalley.model.Source;
 import com.group16.stardewvalley.model.app.*;
 import com.group16.stardewvalley.model.user.*;
 import com.group16.stardewvalley.model.Result;
@@ -58,7 +57,7 @@ public class GadgetController {
     //TODO
     public Result upgradeTool(Matcher matcher) {
         String toolName = matcher.group("toolName");
-//        if (game.getCurrentPlayer().getPosition() != Source.Blacksmith) {
+//        if (game.getCurrentPlayer().getPosition() != locations.Blacksmith) {
 //            return new Result(false,"You should be at Blacksmith Shop to upgrade ^ ^");
 //        }
         Gadget targetGadget = game.getCurrentPlayer().getPlayerInventory().findToolByName(toolName);

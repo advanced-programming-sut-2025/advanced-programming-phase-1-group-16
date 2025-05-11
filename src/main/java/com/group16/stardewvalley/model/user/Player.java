@@ -9,11 +9,15 @@ import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.map.TileType;
 
+import java.util.ArrayList;
+
 public class Player {
     private User user;
     private Farm farm;
     private int energy;
     private Pos position;
+
+
     private Inventory playerInventory;
     private Gadget currentEquipment;
     private Item currentThing;
@@ -24,6 +28,7 @@ public class Player {
     private int miningAbilityLevel;
     private int natureTourismAbilityLevel;
     private int fishingAbilityLevel;
+
 
     public Player(User user) {
         this.user = user;

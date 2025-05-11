@@ -35,9 +35,10 @@ public class MapController {
             index++;
         }
         for (Player player : game.getPlayers()) {
-            for (int i = 0; i < player.getFarm().getType().getHeight(); i++) {
-                for (int j = 0; j < player.getFarm().getType().getWidth(); j++) {
-                    map[j + player.getFarm().getStartPosition().getY()][i + player.getFarm().getStartPosition().getX()] = new Tile(player.getFarm().getType().getTiles()[j][i]);
+            for (int i = 0; i < player.getFarm().getType().getHeight()-1; i++) {
+                for (int j = 0; j < player.getFarm().getType().getWidth()-1; j++) {
+                    map[i + player.getFarm().getStartPosition().getY()][j + player.getFarm().getStartPosition().getX()] =
+                            new Tile(player.getFarm().getType().getTiles()[i][j]);
                 }
             }
         }
