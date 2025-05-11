@@ -2,7 +2,6 @@ package com.group16.stardewvalley.model.user;
 
 
 import com.group16.stardewvalley.model.app.Game;
-import com.group16.stardewvalley.model.map.Farm;
 
 import static com.group16.stardewvalley.model.app.App.users;
 
@@ -21,7 +20,7 @@ public class User {
     private SecurityQuestions userSecurityQuestion;
     private String securityAnswer;
 
-    boolean activeGame;
+    boolean hasActiveGame;
     private Game currentGame;
 
     public User(String username, String password, String nickName, String email, String gender) {
@@ -31,7 +30,7 @@ public class User {
         this.email = email;
         this.gender = gender;
         this.logged_in_flag = false;
-        this.activeGame = false;
+        this.hasActiveGame = false;
     }
 
     public String getUsername() {
@@ -117,12 +116,12 @@ public class User {
         return gamePlayed;
     }
 
-    public boolean isActiveGame() {
-        return activeGame;
+    public boolean getHasActiveGame() {
+        return hasActiveGame;
     }
 
-    public void setActiveGame(boolean activeGame) {
-        this.activeGame = activeGame;
+    public void setHasActiveGame(boolean hasActiveGame) {
+        this.hasActiveGame = hasActiveGame;
     }
 
     public void setGamePlayed(int gamePlayed) {

@@ -15,7 +15,7 @@ public enum LoginMenuCommands implements CommandsInterface {
         ForgetPasswordAnswer("\\s*answer\\s+-a\\s+(?<answer>\\S+)\\s*"),
         GetNewPassword("\\s*(?<password>\\S+)\\s*"),
     ChangeMenu("\\s*menu enter (?<MenuName>)\\s*"),
-    ShowCurrentMenu("\\s*show current menu\\s*");
+    ShowCurrentMenu("\\s*show\\s+current\\s+menu\\s*");
 
 
     private final String pattern;

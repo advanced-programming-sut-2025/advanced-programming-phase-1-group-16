@@ -3,6 +3,7 @@ package com.group16.stardewvalley.view.menu;
 
 
 import com.group16.stardewvalley.controller.menu.MainMenuController;
+import com.group16.stardewvalley.model.menu.LoginMenuCommands;
 import com.group16.stardewvalley.model.menu.MainMenuCommands;
 
 import java.util.Scanner;
@@ -20,6 +21,10 @@ public class MainMenu implements GameMenuInterface {
             System.out.println(controller.logout());
         }else if ((matcher = MainMenuCommands.ChangeMenu.getMatcher(input)) != null) {
             System.out.println(controller.changeMenu(matcher.group("MenuName")));
+        }else if((matcher = LoginMenuCommands.ShowCurrentMenu.getMatcher(input)) != null ){
+            System.out.println(controller.showCurrentMenu());
+
+
         }else{
             System.out.println("invalid command!");
         }

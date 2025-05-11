@@ -31,4 +31,9 @@ public class MainMenuController {
         App.setCurrentMenu(Menu.LoginMenu);
         return new Result(true, "you are in login menu now!");
     }
+
+    public Result showCurrentMenu(){
+        return new Result(true, App.getCurrentMenu().getName());
+    }
+
 }

@@ -1,9 +1,12 @@
 package com.group16.stardewvalley.view.menu;
 
 
+import com.group16.stardewvalley.controller.map.MapController;
 import com.group16.stardewvalley.controller.menu.GameMenuController;
+import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.menu.GameMenuCommands;
+import com.group16.stardewvalley.model.menu.LoginMenuCommands;
 import com.group16.stardewvalley.model.menu.ProfileMenuCommands;
 import com.group16.stardewvalley.model.user.Player;
 
@@ -14,6 +17,7 @@ import java.util.regex.Matcher;
 
 public class GameMenu implements GameMenuInterface {
     private final GameMenuController controller = new GameMenuController();
+    private final MapController mapController = new MapController();
 
     @Override
     public void check(Scanner scanner) {
@@ -23,14 +27,19 @@ public class GameMenu implements GameMenuInterface {
 
         //new game
         if((matcher = GameMenuCommands.NewGame.getMatcher(input)) != null){ //after new game, player must choose farm and cant do anything else
-            System.out.println(controller.newGame(matcher.group("usernames")));
-            for (Player player : App.getActiveGame().getPlayers()) {
-                while (player.getFarm() != null) {
-                    String input2 = scanner.nextLine();
-                    if ((matcher = GameMenuCommands.ChooseMap.getMatcher(input2)) != null) {
-                        System.out.println(controller.chooseFarm(player, matcher.group("map_number")));
+            Result result = controller.newGame(matcher.group("usernames"));
+            System.out.println(result);
+
+            if(result.isSuccessful()){
+                Matcher matcher2 = null;
+                for (Player player : App.getActiveGame().getPlayers()) {
+                    while (player.getFarm() == null) {
+                        String input2 = scanner.nextLine();
+                        if ((matcher2 = GameMenuCommands.ChooseMap.getMatcher(input2)) != null) {
+                            System.out.println(controller.chooseFarm(player, matcher2.group("mapNumber")));
+                        }
+                        else System.out.println("now you must choose a map");
                     }
-                    else System.out.println("now you must choose a map");
                 }
             }
 
@@ -63,7 +72,25 @@ public class GameMenu implements GameMenuInterface {
         }else if(( matcher = ProfileMenuCommands.ExitMenu.getMatcher(input)) != null ) {
             //back to main menu
             System.out.println(controller.exitMenu());
-        }else{
+        }else if((matcher = LoginMenuCommands.ShowCurrentMenu.getMatcher(input)) != null ) {
+            System.out.println(controller.showCurrentMenu());
+
+        }else if ((matcher = GameMenuCommands.Walk.getMatcher(input)) != null){
+        Result result = mapController.askWalking(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
+        System.out.println(result);
+        if (result.isSuccessful()){
+            String answer = scanner.nextLine();
+            if (answer.equals("yes")) {
+                System.out.println(mapController.walk(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
+            }
+        }
+    } else if ((matcher = GameMenuCommands.PrintMap.getMatcher(input)) != null){
+        System.out.println(mapController.printMap(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")), Integer.parseInt(matcher.group("size"))));
+    } else if ((matcher = GameMenuCommands.HelpReadingMap.getMatcher(input)) != null){
+        System.out.println(mapController.helpReadingMap());
+    }
+
+        else{
             System.out.println("invalid command!");
 
         }

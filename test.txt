@@ -12,3 +12,17 @@ user info
 menu exit
 menu enter Game Menu
 game new -u gholi hassan sanaz
+menu exit
+user logout
+register -u Atena -p Salam12! Salam12! -n atena -e salam@sd.com -g female
+pick question -q 2 -a garfild -c garfild
+register -u gholi -p Salam34! Salam34! -n gholi -e salam@sd.com -g male
+pick question -q 1 -a shahnaz -c shahnaz
+login -u Fa-nilli -p Byebye1234! -stay-logged-in
+show current menu
+menu enter Game Menu
+game new -u gholi atena
+game new -u gholi Atena
+game map 1
+game map 2
+game map 2

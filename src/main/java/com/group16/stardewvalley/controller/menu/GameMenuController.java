@@ -1,7 +1,5 @@
 package com.group16.stardewvalley.controller.menu;
 
-
-
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
 import com.group16.stardewvalley.model.map.TileType;
@@ -41,20 +39,22 @@ public class GameMenuController {
             if(user == null){
                 return new Result(false, "user not found!");
             }
-            if(user.isActiveGame()){
+            if(user.getHasActiveGame()){
                 return new Result(false, "username already in an active game!");
             }
         }
 
         ArrayList<Player> gamePlayers = new ArrayList<>();
         gamePlayers.add(new Player(App.getLoggedInUser()));
-        gamePlayers.add(new Player(getUserByUsername(users[0])));
-        gamePlayers.add(new Player(getUserByUsername(users[1])));
-        gamePlayers.add(new Player(getUserByUsername(users[2])));
+        for (String user : users) {
+            gamePlayers.add(new Player(getUserByUsername(user)));
+
+        }
+
         Game newGame = new Game(new Player(App.getLoggedInUser()), gamePlayers);
         App.setActiveGame(newGame);
         App.games.add(newGame);
-        return new Result(true, "new game created!\nnow choose your farm in turn.");
+        return new Result(true, "new game created! now choose your farm in turn.");
     }
 
 //بازیکن ها بصورت نوبتی و همه از یک سیستم مزرعه ی خود را انتخاب میکنند
@@ -82,8 +82,7 @@ public class GameMenuController {
         }
     }
 
-
-
+//TODO
     public void randomItems(Farm farm){
         Random random = new Random();
         int totalTiles = farm.getType().getHeight() * farm.getType().getWidth();
@@ -92,22 +91,22 @@ public class GameMenuController {
         int itemCount = random.nextInt(totalTiles / 5) + totalTiles / 20;
 
         for (int k = 0; k < itemCount; k++) {
-            int i = random.nextInt(farm.getType().getHeight());           // ردیف رندم
-            int j = random.nextInt(farm.getType().getWidth());        // ستون رندم
-            if (farm.getType().getTiles()[j][i] == TileType.Ground) {
+            int i = random.nextInt(farm.getType().getWidth());           // ردیف رندم
+            int j = random.nextInt(farm.getType().getHeight());        // ستون رندم
+            if (farm.getType().getTiles()[j][i].equals(TileType.Ground) ) {
                 farm.getType().getTiles()[j][i] = TileType.Tree;
             }
         }
         for (int k = 0; k < itemCount; k++) {
-            int i = random.nextInt(farm.getType().getHeight());           // ردیف رندم
-            int j = random.nextInt(farm.getType().getWidth());        // ستون رندم
-            if (farm.getType().getTiles()[j][i] == TileType.Ground) {
+            int j = random.nextInt(farm.getType().getHeight());           // ردیف رندم
+            int i = random.nextInt(farm.getType().getWidth());        // ستون رندم
+            if (farm.getType().getTiles()[j][i].equals(TileType.Ground)) {
                 farm.getType().getTiles()[j][i] = TileType.Stone;
             }
         }
         for (int k = 0; k < itemCount; k++) {
-            int i = random.nextInt(farm.getType().getHeight());           // ردیف رندم
-            int j = random.nextInt(farm.getType().getWidth());        // ستون رندم
+            int j = random.nextInt(farm.getType().getHeight());           // ردیف رندم
+            int i = random.nextInt(farm.getType().getWidth());        // ستون رندم
             if (farm.getType().getTiles()[j][i] == TileType.Ground) {
                 farm.getType().getTiles()[j][i] = TileType.Forage;
             }
@@ -164,6 +163,11 @@ public class GameMenuController {
 
 
     }
+
+    public Result showCurrentMenu(){
+        return new Result(true, App.getCurrentMenu().getName());
+    }
+
 
 //next turn have been handled in Game class
 

@@ -94,5 +94,10 @@ public class ProfileMenuController {
         return true;
     }
 
+    public Result showCurrentMenu(){
+        return new Result(true, App.getCurrentMenu().getName());
+    }
+
+
 }
 

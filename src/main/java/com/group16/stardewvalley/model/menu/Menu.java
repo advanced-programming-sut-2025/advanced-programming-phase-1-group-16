@@ -10,7 +10,7 @@ import java.util.Scanner;
 public enum Menu {
     LoginMenu(new LoginMenu(), "Login Menu"),
     ProfileMenu(new ProfileMenu(), "Profile Menu"),
-    GameMenu(new GameMenu(), "App Menu"),
+    GameMenu(new GameMenu(), "Game Menu"),
     MainMenu(new MainMenu(), "Main Menu"),
     ExitMenu(new ExitMenu(), "Exit Menu"),;
 

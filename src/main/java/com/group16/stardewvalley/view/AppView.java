@@ -10,6 +10,7 @@ public class AppView {
 
 
     public void run(){
+        System.out.println("salam");
         Scanner scanner = new Scanner(System.in);
         String input = "";
         do {

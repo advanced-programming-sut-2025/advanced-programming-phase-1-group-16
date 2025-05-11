@@ -3,12 +3,17 @@ package com.group16.stardewvalley.model.menu;
 public enum GameMenuCommands implements CommandsInterface{
     NewGame("\\s*game\\s+new\\s+-u\\s*(?<usernames>.+?)"),
     Username( "\\s*[a-zA-Z0-9-]+\\s*"),
-    ChooseMap("\\s*game\\s+map\\s+(?<map_number>\\S+)\\s*"),
+    ChooseMap("\\s*game\\s+map\\s+(?<mapNumber>\\d+)\\s*"),
     LoadGame("\\s*load\\s+game\\s*" ),
     Exit("\\s*exit\\s+game\\s*" ),
     NextTurn("\\s*next\\s+turn\\s*" ),
     ForceTerminateVote("\\s*force-terminate\\s+vote\\s*"),
-    ExitMenu("\\s*menu\\s+exit\\s*");
+    ShowCurrentMenu("\\s*show\\s+current\\s+menu\\s*"),
+    ExitMenu("\\s*menu\\s+exit\\s*"),
+
+    Walk("\\s*walk\\s+-l\\s+(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*"),
+    PrintMap("\\s*print\\s+map\\s+-l\\s+(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s+(?<size>\\d+)\\s*"),
+    HelpReadingMap("\\s+help\\s+reading\\s+map\\s*");
 
     private final String pattern;
 

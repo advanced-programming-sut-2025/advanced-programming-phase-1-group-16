@@ -12,6 +12,7 @@ public enum ProfileMenuCommands implements CommandsInterface {
             "@[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z]{2,}\\s*"),
     ChangePassword("\\s*change\\s+password\\s+-p\\s+(?<newPassword>\\S+)\\s+-o(?<oldPassword>\\S+)\\s*"),
     Password( "\\s*[a-zA-Z0-9!#$%^&*()=+{}\\[\\]|\\\\/:;'\",<>?]+\\s*"),   // doesnt include @
+    ShowCurrentMenu("\\s*show\\s+current\\s+menu\\s*"),
 
     ExitMenu("\\s*menu\\s+exit\\s*");
 

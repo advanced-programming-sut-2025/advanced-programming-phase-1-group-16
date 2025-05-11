@@ -4,7 +4,7 @@ package com.group16.stardewvalley.model.menu;
 public enum MainMenuCommands implements CommandsInterface {
 
     ChangeMenu("\\s*menu\\s+enter\\s+(?<MenuName>.+)\\s*"),
-
+    ShowCurrentMenu("\\s*show\\s+current\\s+menu\\s*"),
     Logout("\\s*user\\s+logout\\s*");
 
     private final String pattern;
