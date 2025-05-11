@@ -103,9 +103,8 @@ public class AgricultureController {
                 break;
             default:
                 return new Result(false, "Invalid seed");
-                break;
         }
-
+        return new Result(true, seedName + " is planted successfully");
     }
 
     private CropType findCropTypeBySeed(SeedType seedType) {
