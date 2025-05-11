@@ -1,6 +1,6 @@
 package com.group16.stardewvalley.model.agriculture;
 
-public class Tree extends PlantedSeed {
+public class Tree {
     private final TreeType treeType;
     private final int totalHarvestTime;
     private int fruitSellPrice;

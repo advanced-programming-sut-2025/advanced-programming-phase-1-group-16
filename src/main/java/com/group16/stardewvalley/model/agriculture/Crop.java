@@ -1,7 +1,7 @@
 package com.group16.stardewvalley.model.agriculture;
 
 
-public class Crop extends PlantedSeed {
+public class Crop {
     CropType cropType;
     private int sellPrice;
     private int energy;
