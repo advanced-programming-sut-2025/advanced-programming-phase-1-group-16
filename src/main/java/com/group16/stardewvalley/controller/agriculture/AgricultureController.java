@@ -107,6 +107,57 @@ public class AgricultureController {
         return new Result(true, seedName + " is planted successfully");
     }
 
+    public Result showPlant(int x, int y) {
+        if (x < 0 || y < 0 || x >= App.getActiveGame().getMapWidth() || y >= App.getActiveGame().getMapHeight()) {
+            return new Result(false, "Invalid x or y coordinates.");
+        }
+
+        Tile tile = App.getActiveGame().getMap()[y][x];
+
+        if (tile.getTree() == null && tile.getCrop() == null) {
+            return new Result(false, "No plant is planted at this location.");
+        }
+
+        StringBuilder result = new StringBuilder();
+
+        if (tile.getTree() != null) {
+            Tree tree = tile.getTree();
+            TreeType type = tree.getTreeType();
+
+            int remainingToHarvest = Math.max(type.getTotalGrowthTime() - tree.getDayPastFromLastStage(), 0);
+
+            result.append("Plant Type: Tree\n")
+                    .append("Name: ").append(type.getName()).append("\n")
+                    .append("Current Stage: ").append(tree.getStage()).append("\n")
+                    .append("Days Remaining to Harvest: ").append(remainingToHarvest).append("\n")
+                    .append("Irrigated Today: N/A (not tracked for trees)\n")
+                    .append("Fruit Sell Price: ").append(type.getFruitSellPrice()).append("\n")
+                    .append("Is Edible: ").append(type.isEdible() ? "Yes" : "No").append("\n")
+                    .append("Energy: ").append(type.getEnergy()).append("\n")
+                    .append("Health: ").append(type.getHealth()).append("\n");
+        }
+
+        if (tile.getCrop() != null) {
+            Crop crop = tile.getCrop();
+            CropType type = crop.getCropType();
+
+            int remainingToHarvest = Math.max(type.getHarvestTime() - crop.getDayPastFromLastStage(), 0);
+
+            result.append("Plant Type: Crop\n")
+                    .append("Name: ").append(type.getName()).append("\n")
+                    .append("Current Stage: ").append(crop.getStage()).append(" out of ").append(crop.getFinalStage()).append("\n")
+                    .append("Days Remaining to Harvest: ").append(remainingToHarvest).append("\n")
+                    .append("Irrigated Today: ").append(crop.isWatered() ? "Yes" : "No").append("\n")
+                    .append("Base Sell Price: ").append(type.getBaseSellPrice()).append("\n")
+                    .append("Is Edible: ").append(type.isEdible() ? "Yes" : "No").append("\n")
+                    .append("Energy: ").append(type.getEnergy()).append("\n")
+                    .append("Health: ").append(type.getBaseHealth()).append("\n");
+        }
+
+        return new Result(true, result.toString());
+    }
+
+
     private CropType findCropTypeBySeed(SeedType seedType) {
         for (CropType crop : CropType.values()) {
             if (crop.getSource().equals(seedType)) {

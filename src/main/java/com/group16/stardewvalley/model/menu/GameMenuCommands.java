@@ -12,8 +12,9 @@ public enum GameMenuCommands implements CommandsInterface{
     Walk("\\s*walk\\s+-l\\s+(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*"),
     PrintMap("\\s*print\\s+map\\s+-l\\s+(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s+(?<size>\\d+)\\s*"),
     HelpReadingMap("\\s+help\\s+reading\\s+map\\s*"),
-    Craftinfo("\\s*craftinfo -n (?<name>.+?)\\s*"),
-    PlantSeed("plant -s (?<seed>.+?) -d (?<dir>.+?)");
+    CraftInfo("\\s*craftinfo -n (?<name>.+?)\\s*"),
+    PlantSeed("plant -s (?<seed>.+?) -d (?<dir>.+?)"),
+    ShowPlant("show plant -l (?<x>\\d+),\\s*(?<y>\\d+)");
 
 
     private final String pattern;
