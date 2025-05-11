@@ -1,9 +1,5 @@
 package com.group16.stardewvalley.model.agriculture;
 
-import com.group16.stardewvalley.model.time.Season;
-import netscape.javascript.JSObject;
-
-import java.util.HashMap;
 
 public class Crop extends PlantedSeed {
     CropType cropType;
