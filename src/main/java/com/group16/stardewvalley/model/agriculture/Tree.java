@@ -43,6 +43,14 @@ public class Tree {
         isMature = mature;
     }
 
+    public int getDayPastFromLastStage() {
+        return dayPastFromLastStage;
+    }
+
+    public void setDayPastFromLastStage(int dayPastFromLastStage) {
+        this.dayPastFromLastStage = dayPastFromLastStage;
+    }
+
     public int getDayPastFromLastHarvest() {
         return dayPastFromLastHarvest;
     }
