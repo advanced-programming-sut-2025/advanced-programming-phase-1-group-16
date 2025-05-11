@@ -84,4 +84,22 @@ public class ToolDataManager {
             throw new RuntimeException("Error getting upgrade cost for : " + toolName, e);
         }
     }
+
+    public static int getToolPrice(String toolName, String material) {
+        try {
+            Map<String, Object> tools = (Map<String, Object>) toolsData.get("tools");
+            Map<String, Object> toolMap = (Map<String, Object>) tools.get(toolName.toLowerCase());
+
+            Map<String, Object> materials = (Map<String, Object>) toolMap.get("material");
+            Map<String, Object> materialData = (Map<String, Object>) materials.get(material.toLowerCase());
+
+            if (materialData == null) {
+                materialData = (Map<String, Object>) materials.get("base");
+            }
+
+            return (int) materialData.get("Cost");
+        } catch (Exception e) {
+            throw new RuntimeException("Error getting price for " + toolName, e);
+        }
+    }
 }

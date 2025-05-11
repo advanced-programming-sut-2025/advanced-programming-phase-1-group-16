@@ -24,6 +24,14 @@ public enum Direction {
         this.yDelta = yDelta;
     }
 
+    public int getxDelta() {
+        return xDelta;
+    }
+
+    public int getyDelta() {
+        return yDelta;
+    }
+
     public static Direction fromString(String input) {
         String normalized = input.toLowerCase().trim();
         for (Direction dir : values()) {
@@ -34,8 +42,10 @@ public enum Direction {
         throw new IllegalArgumentException("invalid direction");
     }
 
-    public TileType applyPosition() {
-        if (!Game.getMap)
-            return Game.getMap()[Game.getCurrentPlayer().getX() + xDelta][Game.getCurrentPlayer().getY() + yDelta];
+    public Tile applyPosition(Game game) {
+        if (game.getMap() != null) {
+            return game.getMap()[game.getCurrentPlayer().getX() + xDelta][game.getCurrentPlayer().getY() + yDelta];
+        }
+    return null;
     }
 }

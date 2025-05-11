@@ -2,6 +2,8 @@ package com.group16.stardewvalley.model.Tools;
 
 
 import com.group16.stardewvalley.model.Items.Item;
+import com.group16.stardewvalley.model.Result;
+import com.group16.stardewvalley.model.app.Game;
 import com.group16.stardewvalley.model.map.*;
 
 public abstract class Gadget extends Item {
@@ -16,13 +18,8 @@ public abstract class Gadget extends Item {
       return name;
    }
 
-   public void use(int x, int y, TileType[][] map){
+   public abstract Result use(Tile targetTile, Game game);
 
-   };
-
-   public void upgrade() {
-// گفته توی بخش فروشگاه توضیح میده منظورش چیه ولی پیدا نکردم=)
-   }
    public String getMaterial() {
       return material;
    }

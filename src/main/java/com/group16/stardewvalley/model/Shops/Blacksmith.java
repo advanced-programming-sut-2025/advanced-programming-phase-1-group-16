@@ -2,8 +2,6 @@ package com.group16.stardewvalley.model.Shops;
 
 import com.group16.stardewvalley.model.Items.Ore;
 import com.group16.stardewvalley.model.Items.OreType;
-import com.group16.stardewvalley.model.Shops.UpgradeType;
-import com.group16.stardewvalley.model.Tools.BackPack;
 
 import java.util.EnumMap;
 

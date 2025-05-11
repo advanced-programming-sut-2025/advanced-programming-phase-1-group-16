@@ -12,13 +12,16 @@ import java.util.ArrayList;
 public class Game {
     private ArrayList<Player> players = new ArrayList<>();
     private int currentPlayerIndex; //hamoon turn
-
     private final Player creator;
     private Player loader = null;
-
     private int turnsPassedInRound;   // counts up to players size
     private int turnsPassed;              // total rounds played
     private TimeDate timeDate;
+    private final int MAX_FARMINGABILITY_LEVE = 4;
+    private final int MAX_MININGABILITY_LEVELL = 4;
+    private final int MAX_NATURETOURISMABILITY_LEVEL = 4;
+    private final int MAX_FISHINGABILITY_LEVEL = 4;
+
 
 
     private Tile[][] map;
@@ -93,7 +96,7 @@ public class Game {
             timeDate.advanceOneHour();
         }
 
-        // اینجا چرا چیزی پرینت شده ؟؟
+        // اینجا چرا چیزی پرینت شده ؟؟ اصلا توی پلیر مگه یوزر هست به چه دردی میخوره ؟
         System.out.println("its " + getCurrentPlayer().getUser().getUsername() + "  turn now.");
     }
 

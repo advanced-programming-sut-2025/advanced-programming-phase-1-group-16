@@ -8,4 +8,9 @@ public class Ore extends Item {
         this.oreType = type;
     }
 
+    public OreType getOreType() {
+        return oreType;
+    }
+
+
 }

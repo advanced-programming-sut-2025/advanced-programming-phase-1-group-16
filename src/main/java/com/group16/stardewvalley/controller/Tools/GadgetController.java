@@ -6,6 +6,7 @@ import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.map.*;
 import com.group16.stardewvalley.model.Tools.*;
 
+import javax.swing.text.Position;
 import  java.util.Map;
 import java.util.regex.Matcher;
 
@@ -58,24 +59,19 @@ public class GadgetController {
 
     public Result useTool(Matcher matcher) {
         String direction = matcher.group("direction");
-        Gadget gadget = game.getCurrentPlayer().getCurrentEquipment();
         Player currentPlayer = game.getCurrentPlayer();
-        ToolAction toolAction;
-        gadget.use(currentPlayer.getX(), currentPlayer.getY(), Game.getMap());
-        TileType targetPosition = game.getCurrentPlayer().getPosition();
-        // خطا ها:
-        // برای اینکه این بزار مناسب این پوزیشن نیست
-        // انرژی کافی ندارد
+        Gadget gadget = currentPlayer.getCurrentEquipment();
+        Direction dir = Direction.fromString(direction);
+        Tile targetTile = dir.applyPosition(game);
+
+        if (targetTile == null) {
+            return new Result(false, "Out of bound");
+        }
+
+        gadget.use(targetTile, game);
 
     }
 
-    private TileType findFinalPosition(String direction) {
-        Tile[][] map = game.getMap();
-        Player player = game.getCurrentPlayer();
-        case;
-
-
-    }
     // یا هیچی روی اون موقعیت سازگار نیست یا یکی از این کارهای ابزاره هست
     private ToolAction whichOneIsSuitable() {
 
@@ -88,5 +84,7 @@ public class GadgetController {
         return requiredEnergy > currentPlayer.getEnergy();
 
     }
+
+    //
 
 }

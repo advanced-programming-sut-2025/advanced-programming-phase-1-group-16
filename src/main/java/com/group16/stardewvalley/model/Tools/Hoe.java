@@ -1,53 +1,22 @@
 package com.group16.stardewvalley.model.Tools;
 
+import com.group16.stardewvalley.model.Result;
+import com.group16.stardewvalley.model.app.Game;
+import com.group16.stardewvalley.model.map.Tile;
+import com.group16.stardewvalley.model.map.TileType;
+import com.group16.stardewvalley.model.user.Player;
+
 import java.util.Map;
 
 public class Hoe extends Gadget {
 
     public Hoe(String name, String material) {
-        this.name = name;
+        super(name);
         this.material = material;
     }
 
     public int getPrice() {
-        try {
-            Map<String, Object> toolsMap = ToolDataManager.getToolsData();
-
-            // Get tools object
-            Map<?, ?> tools = (Map<?, ?>) toolsMap.get("tools");
-            if (tools == null) {
-                throw new RuntimeException("'tools' section not found in data");
-            }
-
-            // Get hoes object
-            Map<?, ?> hoes = (Map<?, ?>) tools.get("hoes");
-            if (hoes == null) {
-                throw new RuntimeException("'hoes' section not found in tools data");
-            }
-
-            // Get material data
-            Map<?, ?> materials = (Map<?, ?>) hoes.get("material");
-            if (materials == null) {
-                throw new RuntimeException("'material' section not found in hoes data");
-            }
-
-            // Get specific material data (case insensitive)
-            String materialKey = this.material.toLowerCase();
-            Map<?, ?> materialData = (Map<?, ?>) materials.get(materialKey);
-            if (materialData == null) {
-                // Fallback to base if specific material not found
-                materialData = (Map<?, ?>) materials.get("base");
-            }
-
-            // Get cost (note the uppercase 'C' in "Cost")
-            if (materialData != null && materialData.containsKey("Cost")) {
-                return ((Number) materialData.get("Cost")).intValue();
-            }
-
-            return 0; // Default price if not found
-        } catch (Exception e) {
-            throw new RuntimeException("Error getting price for hoe with material " + this.material, e);
-        }
+       return ToolDataManager.getToolPrice("Hoe", this.material);
     }
 
     public int getEnoughLevel() {
@@ -57,26 +26,24 @@ public class Hoe extends Gadget {
     }
 
     public int getConsumptionEnergy() {
-        try {
-            Map<String, Object> toolsMap = ToolDataManager.getToolsData();
+       return ToolDataManager.getEnergyConsumption("Hoe", this.material);
+    }
 
-            Map<?, ?> tools = (Map<?, ?>) toolsMap.get("tools");
-            Map<?, ?> hoes = (Map<?, ?>) tools.get("hoes");
-            Map<?, ?> materials = (Map<?, ?>) hoes.get("material");
-
-            String materialKey = this.material.toLowerCase();
-            Map<?, ?> materialData = (Map<?, ?>) materials.get(materialKey);
-            if (materialData == null) {
-                materialData = (Map<?, ?>) materials.get("base");
-            }
-
-            if (materialData != null && materialData.containsKey("consumption energy")) {
-                return ((Number) materialData.get("consumption energy")).intValue();
-            }
-
-            return 5; // Default energy consumption
-        } catch (Exception e) {
-            throw new RuntimeException("Error getting energy consumption for hoe with material " + this.material, e);
+    public Result use(Tile targetTile, Game game) {
+        Player player = game.getCurrentPlayer();
+        if (game.getCurrentPlayer().getEnergy() < this.getConsumptionEnergy()) {
+            player.decreaseEnergy(this.getConsumptionEnergy());
+            player.faint();
+            return new Result(false, "Have you not eaten bread today?");
         }
+
+        if (targetTile.getType() != TileType.Ground) {
+            player.decreaseEnergy(this.getConsumptionEnergy());
+            return new Result(false, "Invalid operation: Hoe can only be used on empty dirt!");
+        }
+
+        targetTile.setType(TileType.Plowed);
+        player.decreaseEnergy(this.getConsumptionEnergy());
+        return new Result(true, "Success! Dirt dug up cleanly.");
     }
 }

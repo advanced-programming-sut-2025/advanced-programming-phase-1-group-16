@@ -16,18 +16,31 @@ public class Player {
     int x, y; // ذخیره ی موقعیت یارو روی نقشه
     private int energy;
     private int coin;
+    private final int[] levelRanks = {450, 350, 250, 150};
     private int farmingAbilityLevel;
+    private int farmingAbilityScore;
     private int miningAbilityLevel;
+    private int miningAbilityScore;
     private int natureTourismAbilityLevel;
+    private int natureTourismAbilityScore;
     private int fishingAbilityLevel;
+    private int fishingAbilityScore;
+    private boolean isFainted;
 
+    // مقدار های ماکسیمم هر توانایی رو هم در گیم ذخیره کردم سر جمع شه
+    // تابعی برای بالا بردن لول شخص در این موارد نوشته نشده است
     public Player() {
         farmingAbilityLevel = 0;
         miningAbilityLevel = 0;
         fishingAbilityLevel = 0;
         natureTourismAbilityLevel = 0;
+        fishingAbilityScore = 0;
+        miningAbilityScore = 0;
+        natureTourismAbilityScore = 0;
+        fishingAbilityScore = 0;
         playerInventory = new Inventory();
-        energy = 200; // مقداردهی انرژی اولیه در ابتدای ساخت
+        energy = 200;// مقداردهی انرژی اولیه در ابتدای ساخت
+        isFainted = false;
     }
 
     public int getFarmingAbilityLevel() {
@@ -49,6 +62,82 @@ public class Player {
 
     public int getCoin() {
         return coin;
+    }
+
+    public void addFarmingAbilityScore(int amount) {
+        farmingAbilityScore += amount;
+        if (farmingAbilityScore >= levelRanks[0]) {
+            farmingAbilityLevel = 4;
+        }
+
+        if (farmingAbilityScore >= levelRanks[1]) {
+            farmingAbilityLevel = 3;
+        }
+
+        if (farmingAbilityScore >= levelRanks[2]) {
+            farmingAbilityLevel = 2;
+        }
+
+        if (farmingAbilityScore >= levelRanks[3]) {
+            farmingAbilityLevel = 1;
+        }
+    }
+
+    public void addMiningAbilityScore(int amount) {
+        miningAbilityScore += amount;
+        if (miningAbilityScore >= levelRanks[0]) {
+            miningAbilityLevel = 4;
+        }
+
+        if (miningAbilityScore >= levelRanks[1]) {
+            miningAbilityLevel = 3;
+        }
+
+        if (miningAbilityScore >= levelRanks[2]) {
+            miningAbilityLevel = 2;
+        }
+
+        if (miningAbilityScore >= levelRanks[3]) {
+            miningAbilityLevel = 1;
+        }
+    }
+
+    public void addNatureTourismAbilityScore(int amount) {
+        natureTourismAbilityScore += amount;
+        if (natureTourismAbilityScore >= levelRanks[0]) {
+            natureTourismAbilityLevel = 4;
+        }
+
+        if (natureTourismAbilityScore >= levelRanks[1]) {
+            natureTourismAbilityLevel = 3;
+        }
+
+        if (natureTourismAbilityScore >= levelRanks[2]) {
+            natureTourismAbilityLevel = 2;
+        }
+
+        if (natureTourismAbilityScore >= levelRanks[3]) {
+            natureTourismAbilityLevel = 1;
+        }
+    }
+
+    public void addFishingAbilityScore(int amount) {
+        fishingAbilityScore += amount;
+        if (fishingAbilityScore >= levelRanks[0]) {
+            fishingAbilityLevel = 4;
+        }
+
+        if (fishingAbilityScore >= levelRanks[1]) {
+            fishingAbilityLevel = 3;
+        }
+
+        if (fishingAbilityScore >= levelRanks[2]) {
+            fishingAbilityLevel = 2;
+        }
+
+        if (fishingAbilityScore >= levelRanks[3]) {
+            fishingAbilityLevel = 1;
+        }
     }
 
     public int getLevel() {
@@ -83,32 +172,25 @@ public class Player {
         return currentEquipment;
     }
 
-    public String getPositionName() {
-        return position.getLocationName();
-    }
-
-    public Tile getPosition() {
+    public Pos getPosition() {
         return position;
     }
 
-    public boolean move(int dx, int dy, Tile[][] map) {
-        int newX = x + dx;
-        int newY = y + dy;
-
-        if (isValidPosition(newX, newY, map)) {
-            Tile targetTile = map[newX][newY];
-            if (targetTile.isWalkable()) {
-                x = newX;
-                y = newY;
-                position = targetTile;
-                return true;
-                // بعد از این باید تکون بخوره کاراکترش اگه درسته
-            }
+    public void decreaseEnergy(int amount) {
+        if (energy >= amount) {
+            energy -= amount;
         }
-        return false;
+        energy = 0;
     }
 
-    private boolean isValidPosition(int x, int y, TileType[][] map) {
+    public void increaseEnergy(int amount) {
+        if (energy + amount >= energyCeiling) {
+            energy = energyCeiling;
+        }
+        energy += amount;
+    }
+
+    private boolean isInBound(int x, int y, TileType[][] map) {
         return x >= 0 && x < map.length && y >= 0 && y < map[0].length;
     }
 
@@ -119,5 +201,14 @@ public class Player {
 
     public Shop whereAmI() {
         // بر اساس مپ باید بده که الان در کدوم فروشگاه وایستادم
+    }
+
+    public void faint() {
+        this.isFainted = true;
+    }
+
+    // اول هر روز از غش کردگی با موفقیت در میاد
+    public void setFaintStatus(boolean b) {
+        this.isFainted = b;
     }
 }

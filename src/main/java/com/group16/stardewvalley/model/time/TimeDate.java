@@ -2,6 +2,7 @@ package com.group16.stardewvalley.model.time;
 
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.Game;
+import com.group16.stardewvalley.model.user.Player;
 
 
 //عملا ماه نداریم. هر فصل 28 روز است و 4 فصل داریم
@@ -68,6 +69,10 @@ public class TimeDate {
             if (nextSeasonIndex == 0) { // اگر از زمستان به بهار برگشتیم
                 year++;
             }
+        }
+
+        for (Player player : game.getPlayers()) {
+            player.setFaintStatus(false);
         }
     }
 
