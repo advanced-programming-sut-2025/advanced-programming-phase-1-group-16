@@ -84,7 +84,7 @@
     "trash can": {
       "name": "trash can",
       "actions": ["RemoveFromInventory"],
-      "type": {
+      "material": {
         "basic":{"Recovery percentage": 0},
         "copper": {"Recovery percentage": 15, "Upgrade Cost": 1000},
         "iron": {"Recovery percentage": 39, "Upgrade Cost": 2500},

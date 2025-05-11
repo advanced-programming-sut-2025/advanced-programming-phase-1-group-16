@@ -3,16 +3,25 @@ package com.group16.stardewvalley.model.Shops;
 import com.group16.stardewvalley.model.Items.Ore;
 import com.group16.stardewvalley.model.Items.OreType;
 import com.group16.stardewvalley.model.Shops.UpgradeType;
+import com.group16.stardewvalley.model.Tools.BackPack;
 
 import java.util.EnumMap;
 
 public class Blacksmith extends Shop{
+    private static Blacksmith instance;
     private final EnumMap<UpgradeType, Integer> upgrades = new EnumMap<>(UpgradeType.class);
 
     public Blacksmith() {
         super("Blacksmith", "Clint", 9, 16);
         initializeUpgrades();
         initializeItems();
+    }
+
+    public static Blacksmith getInstance() {
+        if (instance == null) {
+            instance = new Blacksmith();
+        }
+        return instance;
     }
 
     private void initializeUpgrades() {
@@ -40,6 +49,14 @@ public class Blacksmith extends Shop{
         addItem(new Ore("Copper Ore", OreType.COPPER_ORE), OreType.COPPER_ORE.getDailyLimit());
         addItem(new Ore("Iron Ore", OreType.IRON_ORE), OreType.IRON_ORE.getDailyLimit());
         addItem(new Ore("Gold Ore", OreType.GOLD_ORE), OreType.GOLD_ORE.getDailyLimit());
+    }
+
+    public EnumMap<UpgradeType, Integer> getUpgrades() {
+        return upgrades;
+    }
+
+    public boolean cabUpgradeToday(UpgradeType type) {
+        return upgrades.get(type) < type.getMaxUpgrades();
     }
 
 }

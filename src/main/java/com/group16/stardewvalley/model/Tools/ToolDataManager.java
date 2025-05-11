@@ -55,4 +55,33 @@ public class ToolDataManager {
     public static Map<String, Object> getToolsData() {
         return toolsData;
     }
+
+    public static int getUpgradeCost(String toolName, String currentMaterial, String targetMaterial) {
+        try {
+            Map<String, Object> tools = (Map<String, Object>) toolsData.get("tools");
+            Map<String, Object> toolMap = (Map<String, Object>) tools.get(toolName.toLowerCase());
+
+            if (toolMap == null) {
+                throw new IllegalArgumentException("Tool not found :|");
+            }
+
+            if (toolMap.containsKey("material")) {
+                Map<String, Object> materials = (Map<String, Object>) toolMap.get("material");
+                Map<String, Object> targetMaterialData = (Map<String, Object>) materials.get(targetMaterial
+                        .toLowerCase());
+                return (int) targetMaterialData.get("Upgrade Cost");
+            }
+
+            if (toolMap.containsKey("type")) {
+                Map<String, Object> types = (Map<String, Object>) toolMap.get("type");
+                Map<String, Object> targetTypeData = (Map<String, Object>) types.get(targetMaterial
+                        .toLowerCase());
+                return (int) targetTypeData.get("Upgrade Cost");
+            }
+
+            throw new IllegalArgumentException("Tool doesn't supports upgrades");
+        } catch (Exception e) {
+            throw new RuntimeException("Error getting upgrade cost for : " + toolName, e);
+        }
+    }
 }

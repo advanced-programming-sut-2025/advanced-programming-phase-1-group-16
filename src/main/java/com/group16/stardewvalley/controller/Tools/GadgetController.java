@@ -20,11 +20,11 @@ public class GadgetController {
         String toolName = matcher.group("toolName");
         Player currentPlayer = game.getCurrentPlayer();
 
-        if (currentPlayer.getPlayerInventory().findToolByName(toolName) == null) {
+        if (currentPlayer.getInventory().findToolByName(toolName) == null) {
             return new Result(false, "Oops! You don't have this tool (~_^) ");
         }
 
-        Gadget toolToEquip = game.getCurrentPlayer().getPlayerInventory().findToolByName(toolName);
+        Gadget toolToEquip = game.getCurrentPlayer().getInventory().findToolByName(toolName);
         currentPlayer.equip(toolToEquip);
 
         return new Result(true, "Now you have " + toolName + " equipped!");
@@ -37,9 +37,8 @@ public class GadgetController {
         }
         return new Result(true, targetTool.getName());
     }
-
     public Result showAvailableTools() {
-        Map<Gadget, Integer> tools = game.getCurrentPlayer().getPlayerInventory().getTools();
+        Map<Gadget, Integer> tools = game.getCurrentPlayer().getInventory().getTools();
 
         if (tools.isEmpty()) {
             return new Result(false, "Your inventory is empty! (•_•)");
@@ -57,16 +56,6 @@ public class GadgetController {
         return new Result(true, sb.toString());
     }
 
-    public Result upgradeTool(Matcher matcher) {
-        String toolName = matcher.group("toolName");
-        if (game.getCurrentPlayer().getPosition() != TileType.BLACKSMITH_SHOP) {
-            return new Result(false,"You should be at Blacksmith Shop to upgrade ^ ^");
-        }
-        Gadget targetGadget = game.getCurrentPlayer().getPlayerInventory().findToolByName(toolName);
-        targetGadget.upgrade();
-        return new Result(true, "");
-    }
-
     public Result useTool(Matcher matcher) {
         String direction = matcher.group("direction");
         Gadget gadget = game.getCurrentPlayer().getCurrentEquipment();
@@ -81,7 +70,7 @@ public class GadgetController {
     }
 
     private TileType findFinalPosition(String direction) {
-        TileType[][] map = game.getMap();
+        Tile[][] map = game.getMap();
         Player player = game.getCurrentPlayer();
         case;
 

@@ -12,7 +12,7 @@ public class Player {
     private Item currentThing;
     private int energyCeiling;
     private int level;
-    private TileType position;
+    private Pos position;
     int x, y; // ذخیره ی موقعیت یارو روی نقشه
     private int energy;
     private int coin;
@@ -71,7 +71,7 @@ public class Player {
         return energy > amount;
     }
 
-    public Inventory getPlayerInventory() {
+    public Inventory getInventory() {
         return playerInventory;
     }
 
@@ -87,16 +87,16 @@ public class Player {
         return position.getLocationName();
     }
 
-    public TileType getPosition() {
+    public Tile getPosition() {
         return position;
     }
 
-    public boolean move(int dx, int dy, TileType[][] map) {
+    public boolean move(int dx, int dy, Tile[][] map) {
         int newX = x + dx;
         int newY = y + dy;
 
         if (isValidPosition(newX, newY, map)) {
-            TileType targetTile = map[newX][newY];
+            Tile targetTile = map[newX][newY];
             if (targetTile.isWalkable()) {
                 x = newX;
                 y = newY;

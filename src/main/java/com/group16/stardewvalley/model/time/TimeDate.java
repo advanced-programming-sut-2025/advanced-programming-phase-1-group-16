@@ -7,6 +7,7 @@ import com.group16.stardewvalley.model.app.Game;
 //عملا ماه نداریم. هر فصل 28 روز است و 4 فصل داریم
 
 public class TimeDate {
+    private static TimeDate instance;
     private final Game game;  // اینم اضافه کردم
     private int hour;
     private int minute;
@@ -16,7 +17,7 @@ public class TimeDate {
     private Season currentSeason;
     private DaysOfWeek currentDayOfWeek;
 
-    public TimeDate(Game game) {
+    private TimeDate(Game game) {
         this.game = game;
         //initialize
         this.hour = 9;
@@ -27,6 +28,13 @@ public class TimeDate {
         this.currentDayOfWeek = DaysOfWeek.Saturday;
     }
 
+    public static TimeDate getInstance(Game game) {
+        if (instance == null) {
+            instance = new TimeDate(game);
+        }
+        return instance;
+    }
+
     // افزایش یک ساعت
     public void advanceOneHour() {
         hour++;
@@ -34,6 +42,10 @@ public class TimeDate {
             hour = 0;
             advanceOneDay();
         }
+    }
+
+    public int getHour() {
+        return hour;
     }
 
     // افزایش یک روز

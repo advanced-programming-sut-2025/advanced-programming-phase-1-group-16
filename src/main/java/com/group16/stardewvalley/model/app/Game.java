@@ -1,21 +1,30 @@
 package com.group16.stardewvalley.model.app;
 
 import com.group16.stardewvalley.model.Weather.WeatherCondition;
-import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.map.TileType;
-import com.group16.stardewvalley.model.user.*;
+import com.group16.stardewvalley.model.user.Player;
+
+import com.group16.stardewvalley.model.time.TimeDate;
 import java.util.ArrayList;
+
 
 public class Game {
     private ArrayList<Player> players = new ArrayList<>();
+    private int currentPlayerIndex; //hamoon turn
+
+    private final Player creator;
+    private Player loader = null;
+
+    private int turnsPassedInRound;   // counts up to players size
+    private int turnsPassed;              // total rounds played
+    private TimeDate timeDate;
+
+
     private Tile[][] map;
     private final int mapHeight = 200;
     private final int mapWidth = 300;
-    private Player currentPlayer;
-    private Player creator;
-    private Player loader = null;
-    private GameState gameState = GameState.WAITING_FOR_NEW_GAME;
+
     private WeatherCondition weatherCondition;
     private WeatherCondition tomorrowWeatherCondition;
 
@@ -27,18 +36,19 @@ public class Game {
     public Game(Player creator, ArrayList<Player> players) {
         this.creator = creator;
         this.players = players;
+        this.turnsPassed = 0;
     }
 
-    public void setWeatherCondition(WeatherCondition weatherCondition) {
-        this.weatherCondition = weatherCondition;
+    public ArrayList<Player> getPlayers() {
+        return players;
     }
 
-    public void setTomorrowWeatherCondition(WeatherCondition weatherCondition) {
-        this.tomorrowWeatherCondition = weatherCondition;
-    }
+    public Player getCurrentPlayer() {
+        return players.get(currentPlayerIndex);    }
 
-    public WeatherCondition getTomorrowWeatherCondition() {
-        return tomorrowWeatherCondition;
+
+    public void setPlayers(ArrayList<Player> players) {
+        this.players = players;
     }
 
     public int getMapHeight() {
@@ -57,29 +67,10 @@ public class Game {
         this.map = map;
     }
 
-    public ArrayList<Player> getPlayers() {
-        return players;
-    }
-
-    public Player getCurrentPlayer() {
-        return currentPlayer;
-    }
-
-    public void setCurrentPlayer(Player currentPlayer) {  //next turn
-        this.currentPlayer = currentPlayer;
-    }
-
-    public void setPlayers(ArrayList<Player> players) {
-        this.players = players;
-    }
-
     public Player getCreator() {
         return creator;
     }
 
-    public void setCreator(Player creator) {
-        this.creator = creator;
-    }
 
     public Player getLoader() {
         return loader;
@@ -89,19 +80,34 @@ public class Game {
         this.loader = loader;
     }
 
-    public GameState getGameState() {
-        return gameState;
-    }
-
-    public void setGameState(GameState gameState) {
-        this.gameState = gameState;
-    }
 
 
     public void nextTurn() {
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+
+        turnsPassedInRound++;
+
+        // After all players have played → pass 1 hour
+        if (turnsPassedInRound >= players.size()) {
+            turnsPassedInRound = 0;
+            timeDate.advanceOneHour();
+        }
+
+        // اینجا چرا چیزی پرینت شده ؟؟
+        System.out.println("its " + getCurrentPlayer().getUser().getUsername() + "  turn now.");
     }
 
-    public Pos choosePoorForFirelight() {
-        // رندوم باید یکی انتخاب بشه برای این کار
+
+    public void setWeatherCondition(WeatherCondition weatherCondition) {
+        this.weatherCondition = weatherCondition;
     }
+
+    public void setTomorrowWeatherCondition(WeatherCondition weatherCondition) {
+        this.tomorrowWeatherCondition = weatherCondition;
+    }
+
+    public WeatherCondition getTomorrowWeatherCondition() {
+        return tomorrowWeatherCondition;
+    }
+
 }

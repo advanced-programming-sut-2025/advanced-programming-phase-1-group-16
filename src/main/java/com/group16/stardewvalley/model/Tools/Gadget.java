@@ -1,11 +1,17 @@
 package com.group16.stardewvalley.model.Tools;
 
 
+import com.group16.stardewvalley.model.Items.Item;
 import com.group16.stardewvalley.model.map.*;
 
-public abstract class Gadget {
+public abstract class Gadget extends Item {
    String name;
    String material;
+
+   public Gadget(String name) {
+      super(name);
+   }
+
    public String getName() {
       return name;
    }
@@ -20,4 +26,9 @@ public abstract class Gadget {
    public String getMaterial() {
       return material;
    }
+
+   public void setMaterial(String newMaterial) {
+      this.material = material;
+   }
+
 }
