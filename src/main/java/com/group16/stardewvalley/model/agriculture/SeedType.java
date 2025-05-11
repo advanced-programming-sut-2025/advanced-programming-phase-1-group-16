@@ -66,7 +66,23 @@ public enum SeedType {
     PINEAPPLE_SEEDS("Pineapple Seeds", 50, 5),
     RED_CABBAGE_SEEDS("red Cabbage Seeds", 100, 5),
     WHEAT_SEEDS("wheat Seeds", 125, 5),
-    ARTICHOKE_SEEDS("Archook Seeds", 50, 5);
+    ARTICHOKE_SEEDS("Archook Seeds", 50, 5),
+    //tree
+    APRICOT_SAPLING("Apricot Sapling", 50, 5),
+    CHERRY_SAPLING("Cherry Sapling", 50, 5),
+    BANANA_SAPLING("Banana Sapling", 50, 5),
+    MANGO_SAPLING("Mango Sapling", 50, 5),
+    ORANGE_SAPLING("Orange Sapling", 50, 5),
+    PEACH_SAPLING("Peach Sapling", 50, 5),
+    APPLE_SAPLING("Apple Sapling", 50, 5),
+    POMEGRANATE_SAPLING("Pomegranate Sapling", 50, 5),
+    ACORNS("Acorns", 50, 5),
+    MAPLE_SEEDS("Maple Seeds", 50, 5),
+    PINE_CONES("Pine Cones", 50, 5),
+    MAHOGANY_SEEDS("Mahogany Seeds", 50, 5),
+    MUSHROOM_TREE_SEEDS("Mushroom Tree", 50, 5),
+    MYSTIC_TREE_SEEDS("Mystic Tree", 50, 5);
+
 
     private final String name;
     private final int price;
