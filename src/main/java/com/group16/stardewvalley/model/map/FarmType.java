@@ -1,17 +1,17 @@
 package com.group16.stardewvalley.model.map;
 
 public enum FarmType {
-    small(45, 70, makeFarm("small")),
-    big(60, 75, makeFarm("big"));
+    small(45, 70, "small"),
+    big(60, 75, "big");
 
     private int width;
     private int height;
     private TileType[][] tiles;
 
-    FarmType(int height, int width, TileType[][] tiles) {
+    FarmType(int height, int width, String name) {
         this.height = height;
         this.width = width;
-        this.tiles = tiles;
+        this.tiles = makeFarm(name);
     }
 
     public int getWidth() {
