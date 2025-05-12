@@ -49,6 +49,14 @@ public class Player {
         // یا اگه غش کرده بشه ۷۵ درصد
     }
 
+    public void increaseEnergy(int amount) {
+        this.energy += amount;
+    }
+
+    public void decreaseEnergy(int amount) {
+        this.energy -= amount;
+    }
+
     public Pos getPosition() {
         return position;
     }
