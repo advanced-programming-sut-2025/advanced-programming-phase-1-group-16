@@ -4,10 +4,12 @@ import com.group16.stardewvalley.model.Inventory;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.Things.Item;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.map.Direction;
 import com.group16.stardewvalley.model.user.Player;
 
 import java.util.Iterator;
 import java.util.Map;
+
 
 public class Crafting {
     public Result showRecipes() {
@@ -94,9 +96,50 @@ public class Crafting {
         }
         return new Result(false, "recipe name not found");
 
+    }
+
+    public Result placeItems(String itemName, String inputDirection) {
+
+        try {
+            Direction dir = Direction.fromString(inputDirection);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid direction entered.");
+        }
+
+        Inventory inventory = App.getActiveGame().getCurrentPlayer().getPlayerInventory();
+
+
+        for(Item item: inventory.getItems().keySet()){
+            if(item.getName().equalsIgnoreCase(itemName)){
+                //that crafting item exists in inventory
+
+
+                //place item on the ground
+                //delete from inventory
+
+                //do what it should do
+            }
+        }
+        return new Result(false, "item not found in inventory");
 
     }
 
+
+    public Result cheatAddItem(String itemName, int count) {
+        Player player = App.getActiveGame().getCurrentPlayer();
+        Inventory inventory = player.getPlayerInventory();
+
+        //create new crafting item
+        for (CraftingRecipes recipe : CraftingRecipes.values()) {//find which item is it
+            if (recipe.getName().equalsIgnoreCase(itemName)) {
+                CraftItem newCraftItem = new CraftItem(recipe.getName(), recipe.getNeededIngredients());
+                player.getPlayerInventory().addItem(newCraftItem, 1);
+                return new Result(true, "successfully cheated" );
+            }
+        }
+
+        return new Result(false, "item not found");
+    }
 
     private boolean isInsideHouse(Player player) {  //TODO : map structure?
         return true;

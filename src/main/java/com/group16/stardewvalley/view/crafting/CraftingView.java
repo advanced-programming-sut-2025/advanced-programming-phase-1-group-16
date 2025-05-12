@@ -21,7 +21,13 @@ public class CraftingView {
             System.out.println("your available recipes:\n" + controller.showRecipes());
             System.out.println(controller.craft(matcher.group("itemName")));
 
-        } else {
+        }else if((matcher = CraftingCommands.PlaceItem.getMatcher(input)) != null) {
+            System.out.println(controller.placeItems(matcher.group("itemName"), matcher.group("direction")));
+
+        }else if((matcher = CraftingCommands.CheatAddItem.getMatcher(input)) != null) {
+            System.out.println(controller.cheatAddItem(matcher.group("itemName"), Integer.parseInt(matcher.group("count"))));
+
+        }else {
             System.out.println("invalid command!");
         }
     }}

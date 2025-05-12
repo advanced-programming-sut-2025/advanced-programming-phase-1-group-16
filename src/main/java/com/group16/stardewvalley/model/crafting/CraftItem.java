@@ -18,8 +18,4 @@ public class CraftItem extends Item {
 
 
 
-    @Override
-    public int getPrice() {
-        return super.getPrice();
-    }
 }
