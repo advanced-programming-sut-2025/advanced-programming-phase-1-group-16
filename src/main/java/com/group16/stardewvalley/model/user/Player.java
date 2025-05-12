@@ -30,6 +30,8 @@ public class Player {
     private boolean isFainted;
     private Map<Player, Integer> interactionsLevel;
     private Map<Player, Integer> interactionScore;
+    private Map<Player, Boolean> interactionStatus;
+    private final int[] relationshipRanks = {100, 200, 300, 400};
 
     // مقدار های ماکسیمم هر توانایی رو هم در گیم ذخیره کردم سر جمع شه
     // تابعی برای بالا بردن لول شخص در این موارد نوشته نشده است
@@ -221,9 +223,16 @@ public class Player {
         this.isFainted = true;
     }
 
-    // اول هر روز از غش کردگی با موفقیت در میاد
+
     public void setFaintStatus(boolean b) {
         this.isFainted = b;
+    }
+
+    // این تابع رو برای رفتن به روز بعد جدا نوشتم توی تایم دیت هم میذارمش
+    public void resetForNewDay() {
+        this.isFainted = false;
+        interactionStatus.replaceAll((player, status) -> false);
+
     }
 
 }

@@ -28,7 +28,13 @@ public enum GameMenuCommands implements CommandsInterface{
     TalkHistory("^\\s*talk\\s*$"),
     Gift("^\\s*gift\\s*-u\\s*(?<username>\\S+)\\s*-i\\s*(?<itemName>\\S+)\\s*-a\\s*(?<amount>\\d+)\\s*$"),
     GiftList("^\\s*gift\\s*list\\s*$"),
-    GiftRate("^\\s*gift\\s*rate\\s*-i\\s*(?<giftNumber>\\d+)\\s*\\s*$")
+    GiftRate("^\\s*gift\\s*rate\\s*-i\\s*(?<giftNumber>\\d+)\\s*\\s*$"),
+    GiftHistory("^\\s*gift\\s*history\\s*-u\\s*(?<username>\\S+)\\s*$"),
+    Hug("^\\s*hug\\s*-u\\s*(?<username>\\S+)\\s*$"),
+    Flower("^\\s*flower\\s*-u\\s*(?<username>\\S+)\\s*$"),
+    AskMarriage("^\\s*ask\\s*marriage\\s*-u\\s*(?<username>\\S+)\\s*-r\\s*(?<ring>\\S+)\\s*$"),
+
+
 
 
 

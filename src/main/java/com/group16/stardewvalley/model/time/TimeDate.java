@@ -72,7 +72,7 @@ public class TimeDate {
         }
 
         for (Player player : game.getPlayers()) {
-            player.setFaintStatus(false);
+            player.resetForNewDay();
         }
     }
 
