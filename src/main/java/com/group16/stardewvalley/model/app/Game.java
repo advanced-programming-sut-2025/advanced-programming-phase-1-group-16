@@ -1,6 +1,7 @@
 package com.group16.stardewvalley.model.app;
 
 import com.group16.stardewvalley.model.map.Tile;
+import com.group16.stardewvalley.model.time.TimeDate;
 import com.group16.stardewvalley.model.user.Player;
 import java.util.ArrayList;
 
@@ -11,6 +12,7 @@ public class Game {
     private final int mapWidth = 300;
     private Player currentPlayer;
     private Player creator;
+    private TimeDate timeDate;
     private Player loader = null;
     private GameState gameState = GameState.WAITING_FOR_NEW_GAME;
 
@@ -18,6 +20,14 @@ public class Game {
     public Game(Player creator, ArrayList<Player> players) {
         this.creator = creator;
         this.players = players;
+    }
+
+    public TimeDate getTimeDate() {
+        return timeDate;
+    }
+
+    public void setTimeDate(TimeDate timeDate) {
+        this.timeDate = timeDate;
     }
 
     public int getMapHeight() {

@@ -100,7 +100,8 @@ public enum SeedType {
     PINE_CONES("Pine Cones", 50, 5, List.of(Season.Spring), "TREE"),
     MAHOGANY_SEEDS("Mahogany Seeds", 50, 5, List.of(Season.Spring), "TREE"),
     MUSHROOM_TREE_SEEDS("Mushroom Tree", 50, 5, List.of(Season.Spring), "TREE"),
-    MYSTIC_TREE_SEEDS("Mystic Tree", 50, 5, List.of(Season.Spring), "TREE");
+    MYSTIC_TREE_SEEDS("Mystic Tree", 50, 5, List.of(Season.Spring), "TREE"),
+    MIXED_SEED("Mixed seed", 50, 5, List.of(Season.Special), "TREE");
 
 
     private final String name;

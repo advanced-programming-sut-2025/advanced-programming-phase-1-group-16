@@ -9,11 +9,19 @@ public class Player {
     private Farm farm;
     private int energy;
     private Pos position;
-    private Inventory playerInventory;
+    private Inventory inventory;
     private Gadget currentEquipment;
 
     public Player(User user) {
         this.user = user;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
     }
 
     public int getEnergy() {
