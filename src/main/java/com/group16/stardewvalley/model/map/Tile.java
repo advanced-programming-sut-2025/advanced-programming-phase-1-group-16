@@ -9,12 +9,22 @@ public class Tile {
     private Item item;
     private Crop crop;
     private Tree tree;
+    private Location location;
     //برای شخم زدن:
     private boolean isPloughed;
 
     public Tile(TileType tileType) {
         this.type = tileType;
+        location = Location.Game;
         this.isPloughed = false;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public boolean isPloughed() {
