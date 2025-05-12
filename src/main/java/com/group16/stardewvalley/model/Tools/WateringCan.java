@@ -72,7 +72,7 @@ public class WateringCan extends Gadget{
 
         // هیچکار نتونسته باهاش بکنه
         player.decreaseEnergy(requiredEnergy - 1);
-        return new Result(false, "\"You cannot use the watering can in this area!×");
+        return new Result(false, "You cannot use the watering can in this area!×");
 
     }
 }

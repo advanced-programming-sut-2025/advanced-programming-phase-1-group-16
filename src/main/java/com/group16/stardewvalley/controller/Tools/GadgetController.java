@@ -11,11 +11,7 @@ import  java.util.Map;
 import java.util.regex.Matcher;
 
 public class GadgetController {
-    private final Game game;
-
-    public GadgetController(Game game) {
-        this.game = game;
-    }
+    private final Game game = App.getActiveGame();
 
     public Result equip(Matcher matcher) {
         String toolName = matcher.group("toolName");
