@@ -46,14 +46,16 @@ public abstract class Shop {
         return sold < limit;
     }
 
-
+    public void addBalance(int amount) {
+        balance += amount;
+    }
 
     public void sellItem(Item item) {
-        // ایا باید به موجودی فروشگاه ها اضافه شود یا اصلا لازم نداریم چنین چیزی
+
         if (canSell(item)) {
             int sold = soldToday.get(item);
             soldToday.put(item, sold + 1);
-            balance += item.getPrice();    //**
+            addBalance(item.getPrice());    //**
         }
     }
 
@@ -90,6 +92,19 @@ public abstract class Shop {
 
     public Set<Item> getAllProducts() {
         return new HashSet<>(dailyLimit.keySet());
+    }
+
+    public Item findItemByName(String itemName) {
+        if (itemName == null || itemName.isEmpty()) {
+            return null;
+        }
+
+        for (Item item : dailyLimit.keySet()) {
+            if (item.getName().equalsIgnoreCase(itemName)) {
+                return item;
+            }
+        }
+        return null;
     }
 
 }

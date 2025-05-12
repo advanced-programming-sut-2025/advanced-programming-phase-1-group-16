@@ -4,6 +4,7 @@ import com.group16.stardewvalley.model.Items.Item;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.Shops.Blacksmith;
 import com.group16.stardewvalley.model.Shops.JojaMart;
+import com.group16.stardewvalley.model.Shops.Shop;
 import com.group16.stardewvalley.model.Shops.UpgradeType;
 import com.group16.stardewvalley.model.Tools.Gadget;
 import com.group16.stardewvalley.model.Tools.ToolDataManager;
@@ -16,7 +17,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 
 public class ShopController {
-    Blacksmith blacksmith = Blacksmith.getInstance();
     private final Game game;
 
     public ShopController() {
@@ -28,16 +28,18 @@ public class ShopController {
 
     public Result handleCommand(String command, Matcher matcher) {
         String[] parts = command.split(" ");
+        Location l = game.getCurrentPlayer().getLocation().getLocation();
         // در اینجا باید اگر در این مغازه نبود ارور بدیم
-        if (game.getCurrentPlayer().getPosition()) {
+        if (!(l == Location.Blacksmith || l == Location.JojaMart ||
+              l == Location.CarpentersShop || l == Location.FishShop ||
+              l == Location.MarniesRanch || l == Location.TheStardropSaloon ||
+              l == Location.PierresGeneralStore  )) {
 
         }
 
         switch (parts[0]) {
             case "upgrade":
                 return upgradeTool(matcher);
-            case "buy":
-                return buyOre(matcher);
             case  "show":{
                 if (parts[2].equalsIgnoreCase("products")) {
                     switch (currentPlayer.getLocation().getLocation()) {
@@ -82,7 +84,21 @@ public class ShopController {
                                     " I think you'd better get yourself to a store first.");
                     }
                 }
+
+
             }
+            case "purchase":
+                handlePurchase(currentPlayer.getLocation().getLocation(), matcher);
+                // کامند مربوط به ارتقای ابزار الات است که فقط باید در یکی اجرا بشود
+            case "tools":
+                if (currentPlayer.getLocation().getLocation() != Location.Blacksmith) {
+                    return new Result(false, "Tool upgrades? You've come to the wrong place " +
+                            "The blacksmith's shop is in another part of town.");
+                }
+                else {
+                    upgradeTool(matcher);
+                }
+
             default:
                 return new Result(false, "Invalid command");
         }
@@ -105,6 +121,31 @@ public class ShopController {
         }
 
         return new Result(true, productsInfo.toString());
+    }
+
+    private Result handlePurchase(Location location, Matcher matcher) {
+        String productName = matcher.group("productName");
+        String countStr = matcher.group("count");
+        int count;
+        if (countStr == null) {
+            count = 1;
+        } else {
+            count = Integer.parseInt(countStr);
+        }
+        Item targetItem = null;
+        Shop targetShop = currentPlayer.getLocation().getLocation().getShopByLocation();
+        targetItem = targetShop.findItemByName(productName);
+        // فروشگاه مورد نظر این محصول را نداشته باشد
+        if (targetItem == null) {
+            return new Result(false, "Sorry, we don't stock that item. " +
+                    "Try the specialty shops around town.");
+        }
+
+        // فرد موجودی لازم برای خرید ان را نداشته باشد
+        if ()
+
+
+
     }
 
     private Result upgradeTool(Matcher matcher) {
@@ -151,14 +192,10 @@ public class ShopController {
         }
 
         // خطای اینکه امروز یکبار انجام شده
-      if (!blacksmith.cabUpgradeToday(upgradeType)) {
+      if (!game.getBlacksmith().cabUpgradeToday(upgradeType)) {
           return new Result(false, "My anvil needs a break! " +
                   "One upgrade a day keeps the warranty valid ^ ^");
       }
-    }
-
-    private Result buyOre(Matcher matcher) {
-
     }
 
     private String getNextMaterial(String currentMaterial) {

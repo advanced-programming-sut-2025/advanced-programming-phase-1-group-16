@@ -9,46 +9,52 @@ public enum SeedType {
     JOJA_COLA("Joja Cola",
             75,
             Integer.MAX_VALUE,
+            75,
             List.of(Season.Spring, Season.Summer, Season.Fall, Season.Winter),
             "CROP"),
     ANCIENT_SEED("Ancient Seed",
             500,
             1,
+            500,
             List.of(Season.Spring, Season.Summer, Season.Fall, Season.Winter),
             "CROP"),
     GRASS_STARTER("Grass Starter",
             125,
             Integer.MAX_VALUE,
+            125,
             List.of(Season.Spring, Season.Summer, Season.Fall, Season.Winter),
             "CROP"),
     SUGAR("Sugar",
             125,
             Integer.MAX_VALUE,
+            125,
             List.of(Season.Spring, Season.Summer, Season.Fall, Season.Winter),
             "CROP"),
     WHEAT_FLOUR("Wheat Flour",
             125,
             Integer.MAX_VALUE,
+            125,
             List.of(Season.Spring, Season.Summer, Season.Fall, Season.Winter),
             "CROP"),
     RICE("Rice",
             250,
             Integer.MAX_VALUE,
+            250,
             List.of(Season.Spring, Season.Summer, Season.Fall, Season.Winter),
             "CROP"),
 
     // Spring Stock
-    PARSNIP_SEEDS("Parsnip Seeds", 25, 5, List.of(Season.Spring), "CROP"),
-    BEAN_STARTER("Bean Starter", 75, 5, List.of(Season.Spring), "CROP"),
-    CAULIFLOWER_SEEDS("Cauliflower Seeds", 100, 5, List.of(Season.Spring), "CROP"),
-    POTATO_SEEDS("Potato Seeds", 62, 5, List.of(Season.Spring), "CROP"),
-    STRAWBERRY_SEEDS("Strawberry Seeds", 100, 5, List.of(Season.Spring), "CROP"),
-    TULIP_BULB("Tulip Bulb", 25, 5, List.of(Season.Spring), "CROP"),
-    KALE_SEEDS("Kale Seeds", 87, 5, List.of(Season.Spring), "CROP"),
-    COFFEE_BEANS("Coffee Beans", 200, 1, List.of(Season.Spring, Season.Summer), "CROP"),
-    CARROT_SEEDS("Carrot Seeds", 5, 10, List.of(Season.Spring), "CROP"),
-    RHUBARB_SEEDS("Rhubarb Seeds", 100, 5, List.of(Season.Spring), "CROP"),
-    JAZZ_SEEDS("Jazz Seeds", 37, 5, List.of(Season.Spring), "CROP"),
+    PARSNIP_SEEDS("Parsnip Seeds", 25, 5, 30,List.of(Season.Spring), "CROP"),
+    BEAN_STARTER("Bean Starter", 75, 5, 90, List.of(Season.Spring), "CROP"),
+    CAULIFLOWER_SEEDS("Cauliflower Seeds", 100, 5, 120, List.of(Season.Spring), "CROP"),
+    POTATO_SEEDS("Potato Seeds", 62, 5, 75, List.of(Season.Spring), "CROP"),
+    STRAWBERRY_SEEDS("Strawberry Seeds", 100, 5, 30, List.of(Season.Spring), "CROP"),
+    TULIP_BULB("Tulip Bulb", 25, 5, 105, List.of(Season.Spring), "CROP"),
+    KALE_SEEDS("Kale Seeds", 87, 5, 45, List.of(Season.Spring), "CROP"),
+    COFFEE_BEANS("Coffee Beans", 200, 1, -1, List.of(Season.Spring, Season.Summer), "CROP"),
+    CARROT_SEEDS("Carrot Seeds", 5, 10, -1, List.of(Season.Spring), "CROP"),
+    RHUBARB_SEEDS("Rhubarb Seeds", 100, -1, List.of(Season.Spring), "CROP"),
+    JAZZ_SEEDS("Jazz Seeds", 37, 5, 45, List.of(Season.Spring), "CROP"),
 
     // Summer Stock
     TOMATO_SEEDS("Tomato Seeds", 62, 5, List.of(Season.Summer), "CROP"),
@@ -107,13 +113,15 @@ public enum SeedType {
     private final String name;
     private final int price;
     private final int dailyLimit;
+    private final int outOfSeasonPrice;
     private final List<Season> availableSeasons;
     private final String type;
 
-    SeedType(String name, int price, int dailyLimit, List<Season> availableSeasons, String type) {
+    SeedType(String name, int price, int dailyLimit, int outOfSeasonPrice, List<Season> availableSeasons, String type) {
         this.name = name;
         this.price = price;
         this.dailyLimit = dailyLimit;
+        this.outOfSeasonPrice = outOfSeasonPrice;
         this.availableSeasons = availableSeasons;
         this.type = type;
     }
@@ -136,6 +144,10 @@ public enum SeedType {
 
     public List<Season> getAvailableSeasons() {
         return availableSeasons;
+    }
+
+    public int getOutOfSeasonPrice() {
+
     }
 
 }
