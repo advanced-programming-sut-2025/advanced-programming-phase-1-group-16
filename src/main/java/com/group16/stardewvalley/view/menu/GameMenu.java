@@ -80,6 +80,10 @@ public class GameMenu implements MenuInterface {
             System.out.println(agricultureController.planting(matcher.group("seed"), matcher.group("dir")));
         } else if ((matcher = GameMenuCommands.ShowPlant.getMatcher(input)) != null){
             System.out.println(agricultureController.showPlant(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
+        } else if ((matcher = GameMenuCommands.Fertilize.getMatcher(input)) != null){
+            System.out.println(agricultureController.fertilizePlant(matcher.group("fertilizer"), matcher.group("dir")));
+        } else if ((matcher = GameMenuCommands.HowMuchWater.getMatcher(input)) != null){
+            System.out.println(agricultureController.howMuchWater());
         }
         else{
             System.out.println("invalid command!");

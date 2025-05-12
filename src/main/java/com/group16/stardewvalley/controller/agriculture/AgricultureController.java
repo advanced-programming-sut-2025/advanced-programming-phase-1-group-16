@@ -39,43 +39,12 @@ public class AgricultureController {
         if (seedType == null) {
             return new Result(false, "Seed not found");
         }
-        int dirX , dirY;
-        switch (direction) {
-            case "down":
-                dirY = -1;
-                dirX = 0;
-                break;
-            case "up":
-                dirY = 1;
-                dirX = 0;
-                break;
-            case "left":
-                dirX = -1;
-                dirY = 0;
-                break;
-            case "right":
-                dirX = 1;
-                dirY = 0;
-                break;
-            case "up left":
-                dirX = -1;
-                dirY = 1;
-                break;
-            case "up right":
-                dirX = 1;
-                dirY = 1;
-                break;
-            case "down left":
-                dirX = -1;
-                dirY = -1;
-                break;
-            case "down right":
-                dirX = 1;
-                dirY = -1;
-                break;
-            default:
-                return new Result(false, "Invalid direction");
+        Pos offset = getDirectionOffset(direction);
+        if (offset == null) {
+            return new Result(false, "Invalid direction");
         }
+        int dirX = offset.getX();
+        int dirY = offset.getY();
         Pos playerPos = App.getActiveGame().getCurrentPlayer().getPosition();
         if (playerPos.getX() + dirX < 0 || playerPos.getY() + dirY < 0 || playerPos.getX() + dirX > App.getActiveGame().getMapWidth() || playerPos.getY() + dirY > App.getActiveGame().getMapHeight()) {
             return new Result(false, "Invalid direction");
@@ -157,6 +126,82 @@ public class AgricultureController {
         }
 
         return new Result(true, result.toString());
+    }
+
+    public Result fertilizePlant(String fertilizerName, String direction) {
+        FertilizerType fertilizerType = findFertilizerType(fertilizerName);
+        if (fertilizerType == null) {
+            return new Result(false, "Fertilizer type not found");
+        }
+        Pos offset = getDirectionOffset(direction);
+        if (offset == null) {
+            return new Result(false, "Invalid direction");
+        }
+        int dirX = offset.getX();
+        int dirY = offset.getY();
+        Pos playerPos = App.getActiveGame().getCurrentPlayer().getPosition();
+        if (playerPos.getX() + dirX < 0 || playerPos.getY() + dirY < 0 || playerPos.getX() + dirX > App.getActiveGame().getMapWidth() || playerPos.getY() + dirY > App.getActiveGame().getMapHeight()) {
+            return new Result(false, "there is no tile");
+        }
+        Tile targetTile = App.getActiveGame().getMap()[playerPos.getY() + dirY][playerPos.getX() + dirX];
+        if (targetTile.getTree() == null || targetTile.getCrop() == null) {
+            return new Result(false, "No plant here");
+        }
+        if (targetTile.getCrop() != null) {
+            targetTile.getCrop().setFertilized(true);
+        }
+        if (targetTile.getTree() != null) {
+            targetTile.getTree().setFertilized(true);
+        }
+        return new Result(true, "the plant is Fertilized");
+
+    }
+
+    //TODO complete this func
+    public Result howMuchWater() {
+        return new Result(true, "how much water");
+    }
+
+    public Result water(String direction) {
+        Pos offset = getDirectionOffset(direction);
+        if (offset == null) {
+            return new Result(false, "Invalid direction");
+        }
+        int dirX = offset.getX();
+        int dirY = offset.getY();
+        Pos playerPos = App.getActiveGame().getCurrentPlayer().getPosition();
+        if (playerPos.getX() + dirX < 0 || playerPos.getY() + dirY < 0 || playerPos.getX() + dirX > App.getActiveGame().getMapWidth() || playerPos.getY() + dirY > App.getActiveGame().getMapHeight()) {
+            return new Result(false, "Invalid tile");
+        }
+        Tile targetTile = App.getActiveGame().getMap()[playerPos.getY() + dirY][playerPos.getX() + dirX];
+        if (targetTile.getTree() == null || targetTile.getCrop() == null) {
+            return new Result(false, "No plant here");
+        }
+        App.getActiveGame().getCurrentPlayer().
+    }
+
+
+    private FertilizerType findFertilizerType(String fertilizerName) {
+        for (FertilizerType fertilizer : FertilizerType.values()) {
+            if (fertilizer.name().equals(fertilizerName)) {
+                return fertilizer;
+            }
+        }
+        return null;
+    }
+
+    private Pos getDirectionOffset(String direction) {
+        return switch (direction.toLowerCase()) {
+            case "up" -> new Pos(0, 1);
+            case "down" -> new Pos(0, -1);
+            case "left" -> new Pos(-1, 0);
+            case "right" -> new Pos(1, 0);
+            case "up left" -> new Pos(-1, 1);
+            case "up right" -> new Pos(1, 1);
+            case "down left" -> new Pos(-1, -1);
+            case "down right" -> new Pos(1, -1);
+            default -> null;
+        };
     }
 
 

@@ -14,7 +14,9 @@ public enum GameMenuCommands implements CommandsInterface{
     HelpReadingMap("\\s+help\\s+reading\\s+map\\s*"),
     CraftInfo("\\s*craftinfo -n (?<name>.+?)\\s*"),
     PlantSeed("plant -s (?<seed>.+?) -d (?<dir>.+?)"),
-    ShowPlant("show plant -l (?<x>\\d+),\\s*(?<y>\\d+)");
+    ShowPlant("show plant -l (?<x>\\d+),\\s*(?<y>\\d+)"),
+    Fertilize("fertilize -f (?<fertilizer>.+?) -d (?<dir>.+?))"),
+    HowMuchWater("how much water");
 
 
     private final String pattern;

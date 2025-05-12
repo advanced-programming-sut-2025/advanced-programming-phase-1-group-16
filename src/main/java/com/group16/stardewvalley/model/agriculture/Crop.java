@@ -9,6 +9,7 @@ public class Crop {
     private final int finalStage;
     private int dayPastFromLastStage;
     private int daysSinceLastHarvest;
+    private int daySinceLastWater;
     private int daysSincePlanting;
     private boolean isWatered;
     private boolean isMature;
@@ -24,10 +25,23 @@ public class Crop {
         this.stage = 0;
         this.dayPastFromLastStage = 0;
         this.daysSinceLastHarvest = 0;
+        this.daySinceLastWater = 0;
         this.daysSincePlanting = 0;
         this.isWatered = false;
         this.isMature = false;
         this.isFertilized = false;
+    }
+
+    public int getDaySinceLastWater() {
+        return daySinceLastWater;
+    }
+
+    public void setDaySinceLastWater(int daySinceLastWater) {
+        this.daySinceLastWater = daySinceLastWater;
+    }
+
+    public void setDaysSincePlanting(int daysSincePlanting) {
+        this.daysSincePlanting = daysSincePlanting;
     }
 
     public boolean isFertilized() {
