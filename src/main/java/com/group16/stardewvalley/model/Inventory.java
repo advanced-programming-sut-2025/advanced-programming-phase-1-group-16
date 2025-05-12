@@ -3,6 +3,8 @@ package com.group16.stardewvalley.model;
 import com.group16.stardewvalley.model.Items.Item;
 import com.group16.stardewvalley.model.Tools.*;
 import com.group16.stardewvalley.model.agriculture.SeedType;
+import com.group16.stardewvalley.model.food.FoodIngredient;
+import com.group16.stardewvalley.model.food.Ingredient;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -56,6 +58,17 @@ public class Inventory {
             }
         }
         return false;
+    }
+
+    public FoodIngredient getFoodIngredient(Ingredient ingredient) {
+        for (Item item : items.keySet()) {
+            if (item instanceof FoodIngredient foodIngredient) {
+                if (foodIngredient.getType().equals(ingredient)){
+                    return foodIngredient;
+                }
+            }
+        }
+        return null;
     }
 
     private int getTotalItemsCount() {

@@ -1,4 +1,4 @@
-package com.group16.stardewvalley.model.app;
+package com.group16.stardewvalley.model.menu;
 
 
 import java.util.Scanner;

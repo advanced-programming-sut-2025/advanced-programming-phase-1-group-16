@@ -4,6 +4,7 @@ package com.group16.stardewvalley.view.menu;
 import com.group16.stardewvalley.controller.agriculture.AgricultureController;
 import com.group16.stardewvalley.controller.map.MapController;
 import com.group16.stardewvalley.controller.menu.GameMenuController;
+import com.group16.stardewvalley.controller.menu.HomeMenuController;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.menu.GameMenuCommands;
@@ -18,6 +19,7 @@ public class GameMenu implements MenuInterface {
     private final GameMenuController controller = new GameMenuController();
     private final MapController mapController = new MapController();
     private final AgricultureController agricultureController = new AgricultureController();
+    private final HomeMenuController homeMenuController = new HomeMenuController();
 
     @Override
     public void check(Scanner scanner) {
@@ -84,6 +86,8 @@ public class GameMenu implements MenuInterface {
             System.out.println(agricultureController.fertilizePlant(matcher.group("fertilizer"), matcher.group("dir")));
         } else if ((matcher = GameMenuCommands.HowMuchWater.getMatcher(input)) != null){
             System.out.println(agricultureController.howMuchWater());
+        } else if ((matcher = GameMenuCommands.PutFood.getMatcher(input)) != null){
+            System.out.println(homeMenuController.putItemInRefrigerator(matcher.group("food")));
         }
         else{
             System.out.println("invalid command!");

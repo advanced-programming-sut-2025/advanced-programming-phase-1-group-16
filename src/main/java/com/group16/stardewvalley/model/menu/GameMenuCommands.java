@@ -17,7 +17,8 @@ public enum GameMenuCommands implements CommandsInterface{
     ShowPlant("show plant -l (?<x>\\d+),\\s*(?<y>\\d+)"),
     Fertilize("fertilize -f (?<fertilizer>.+?) -d (?<dir>.+?))"),
     HowMuchWater("how much water"),
-    PutFood("cooking refrigerator put (?<food>.+?))");
+    PutFood("cooking refrigerator put (?<food>.+?))"),
+    PickFood("cooking refrigerator pick (?<food>.+?))");
 
 
     private final String pattern;

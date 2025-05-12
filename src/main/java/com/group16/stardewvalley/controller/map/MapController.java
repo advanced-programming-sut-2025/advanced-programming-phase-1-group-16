@@ -22,9 +22,9 @@ public class MapController {
         //مشخص کردن نقطه شروع مزرعه
         Pos[] positions = {
                 new Pos(0,0),
-                new Pos(game.getMapWidth() - 70, 2),
+                new Pos(game.getMapWidth() - 80, 2),
                 new Pos(70, game.getMapHeight() - 70),
-                new Pos(game.getMapWidth() - 70, game.getMapHeight() - 70)
+                new Pos(game.getMapWidth() - 80, game.getMapHeight() - 70)
         };
         int index = 0;
         for (Player player : game.getPlayers()) {
@@ -32,10 +32,11 @@ public class MapController {
             index++;
         }
         for (Player player : game.getPlayers()) {
-            for (int i = 0; i < player.getFarm().getType().getHeight(); i++) {
-                for (int j = 0; j < player.getFarm().getType().getWidth(); j++) {
-                    map[j + player.getFarm().getStartPosition().getY()][i + player.getFarm().getStartPosition().getX()] = new Tile(player.getFarm().getType().getTiles()[j][i]);
-                    map[j + player.getFarm().getStartPosition().getY()][i + player.getFarm().getStartPosition().getX()].setLocation(Location.Farm);
+            for (int i = 0; i < player.getFarm().getType().getHeight()-1; i++) {
+                for (int j = 0; j < player.getFarm().getType().getWidth()-1; j++) {
+                    map[i + player.getFarm().getStartPosition().getY()][j + player.getFarm().getStartPosition().getX()] =
+                            new Tile(player.getFarm().getType().getTiles()[i][j]);
+                    map[i + player.getFarm().getStartPosition().getY()][j + player.getFarm().getStartPosition().getX()].setLocation(Location.Farm);
                 }
             }
         }
@@ -181,7 +182,15 @@ public class MapController {
                     builder.append(" "); // خارج از محدوده
                 } else {
                     if (map[i][j].getLocation().equals(Location.Farm)){
-                        builder.append(map[i][j].getType().getColorCode()).append(map[i][j].getType().getSymbol()).append("\033[0m");
+                        if (map[i][j].getTree() != null) {
+                            builder.append(TileType.Tree.getColorCode()).append(TileType.Tree.getSymbol()).append("\033[0m");
+                        } else if (map[i][j].getCrop() != null) {
+                            builder.append(TileType.Forage.getColorCode()).append(TileType.Forage.getSymbol()).append("\033[0m");
+                        } else if (map[i][j].getItem() != null) {
+                            builder.append(TileType.Stone.getColorCode()).append(TileType.Stone.getSymbol()).append("\033[0m");
+                        } else{
+                            builder.append(map[i][j].getType().getColorCode()).append(map[i][j].getType().getSymbol()).append("\033[0m");
+                        }
                     }
                     else {
                         builder.append(map[i][j].getType().getSymbol());

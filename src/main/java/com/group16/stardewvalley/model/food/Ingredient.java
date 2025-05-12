@@ -75,4 +75,8 @@ public enum Ingredient {
     SWEET_GEM_BERRY,
     POWDERMELON,
     ANCIENT_FRUIT;
+
+    public String getName() {
+        return name();
+    }
 }

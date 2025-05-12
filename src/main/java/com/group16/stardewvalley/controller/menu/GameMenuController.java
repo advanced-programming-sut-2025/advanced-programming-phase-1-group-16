@@ -3,7 +3,7 @@ import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
 import com.group16.stardewvalley.model.app.GameState;
-import com.group16.stardewvalley.model.app.Menu;
+import com.group16.stardewvalley.model.menu.Menu;
 import com.group16.stardewvalley.model.menu.GameMenuCommands;
 import com.group16.stardewvalley.model.map.Farm;
 import com.group16.stardewvalley.model.map.FarmType;

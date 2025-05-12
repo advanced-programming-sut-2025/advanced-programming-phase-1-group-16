@@ -19,14 +19,20 @@ public class Tile {
         location = Location.Game;
         if (tileType == TileType.Tree) {
             this.type = TileType.Ground;
-            this.tree = new Tree(getRandomForagingTree())
+            TreeType treeType = getRandomForagingTree();
+            if (treeType != null) {
+                this.tree = new Tree(treeType);
+            }
         }
         else if (tileType == TileType.Stone) {
             this.type = TileType.Quarry;
             this.item = new Stone("stone");
         } else if (tileType == TileType.Forage) {
             this.type = TileType.Ground;
-            this.crop = new Crop(getRandomForagingCrop());
+            CropType cropType = getRandomForagingCrop();
+            if (cropType != null) {
+                this.crop = new Crop(cropType);
+            }
         } else {
             this.type = tileType;
         }
@@ -79,7 +85,16 @@ public class Tile {
                 SeedType.MIXED_SEED
         };
         SeedType seed = seeds[rand.nextInt(seeds.length)];
-        return AgricultureController.findCropTypeBySeed(seed);
+        return findCropTypeBySeed(seed);
+    }
+
+    private CropType findCropTypeBySeed(SeedType seed) {
+        for (CropType cropType : CropType.values()) {
+            if (cropType.getSource() == seed) {
+                return cropType;
+            }
+        }
+        return null;
     }
 
     public TreeType getRandomForagingTree() {
@@ -92,6 +107,10 @@ public class Tile {
                 SeedType.MUSHROOM_TREE_SEEDS
         };
         SeedType seed = seeds[random.nextInt(seeds.length)];
+        return findTreeTypeBySeed(seed);
+    }
+
+    private TreeType findTreeTypeBySeed(SeedType seed) {
         return AgricultureController.findTreeTypeBySeed(seed);
     }
 
