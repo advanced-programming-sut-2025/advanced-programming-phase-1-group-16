@@ -1,4 +1,4 @@
-package com.group16.stardewvalley.view.crafting;
+package com.group16.stardewvalley.view;
 
 import com.group16.stardewvalley.model.crafting.Crafting;
 import com.group16.stardewvalley.model.crafting.CraftingCommands;
@@ -30,5 +30,7 @@ public class CraftingView {
         }else {
             System.out.println("invalid command!");
         }
-    }}
+    }
+
+}
 

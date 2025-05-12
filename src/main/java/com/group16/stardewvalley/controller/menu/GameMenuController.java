@@ -88,7 +88,7 @@ public class GameMenuController {
         int totalTiles = farm.getType().getHeight() * farm.getType().getWidth();
 
         // تعداد رندم آیتم‌ها (مثلاً بین 5 تا 20 درصد کل تایل‌ها)
-        int itemCount = random.nextInt(totalTiles / 5) + totalTiles / 20;
+        int itemCount = (random.nextInt(totalTiles / 5) + totalTiles / 20) / 4;
 
         for (int k = 0; k < itemCount; k++) {
             int i = random.nextInt(farm.getType().getWidth());           // ردیف رندم

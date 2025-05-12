@@ -2,7 +2,7 @@ package com.group16.stardewvalley.model.crafting;
 
 import com.group16.stardewvalley.model.Inventory;
 import com.group16.stardewvalley.model.Result;
-import com.group16.stardewvalley.model.Things.Item;
+import com.group16.stardewvalley.model.Items.Item;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.map.Direction;
 import com.group16.stardewvalley.model.user.Player;

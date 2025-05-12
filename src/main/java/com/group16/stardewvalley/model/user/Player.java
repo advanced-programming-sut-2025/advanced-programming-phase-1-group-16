@@ -2,14 +2,11 @@ package com.group16.stardewvalley.model.user;
 
 import com.group16.stardewvalley.model.Inventory;
 //import com.group16.stardewvalley.model.Shops.Shop;
-import com.group16.stardewvalley.model.Things.Item;
+import com.group16.stardewvalley.model.Items.Item;
 import com.group16.stardewvalley.model.Tools.Gadget;
 import com.group16.stardewvalley.model.map.Farm;
 import com.group16.stardewvalley.model.map.Pos;
-import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.map.TileType;
-
-import java.util.ArrayList;
 
 public class Player {
     private User user;
@@ -27,6 +24,7 @@ public class Player {
     private int farmingAbilityLevel;
     private int miningAbilityLevel;
     private int natureTourismAbilityLevel;
+    private Inventory inventory;
     private int fishingAbilityLevel;
 
 
@@ -38,6 +36,14 @@ public class Player {
         natureTourismAbilityLevel = 0;
         playerInventory = new Inventory();
         energy = 200; // مقداردهی انرژی اولیه در ابتدای ساخت
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
     }
 
     public int getEnergy() {

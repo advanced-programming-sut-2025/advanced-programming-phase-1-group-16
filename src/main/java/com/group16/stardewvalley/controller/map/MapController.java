@@ -3,10 +3,7 @@ package com.group16.stardewvalley.controller.map;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
-import com.group16.stardewvalley.model.map.PathInfo;
-import com.group16.stardewvalley.model.map.Pos;
-import com.group16.stardewvalley.model.map.Tile;
-import com.group16.stardewvalley.model.map.TileType;
+import com.group16.stardewvalley.model.map.*;
 import com.group16.stardewvalley.model.user.Player;
 
 import java.util.*;
@@ -39,6 +36,7 @@ public class MapController {
                 for (int j = 0; j < player.getFarm().getType().getWidth()-1; j++) {
                     map[i + player.getFarm().getStartPosition().getY()][j + player.getFarm().getStartPosition().getX()] =
                             new Tile(player.getFarm().getType().getTiles()[i][j]);
+                    map[i + player.getFarm().getStartPosition().getY()][j + player.getFarm().getStartPosition().getX()].setLocation(Location.Farm);
                 }
             }
         }
@@ -183,7 +181,12 @@ public class MapController {
                 if (i < 0 || j < 0 || i >= height || j >= width) {
                     builder.append(" "); // خارج از محدوده
                 } else {
-                    builder.append(map[i][j].getType().getColorCode()).append(map[i][j].getType().getSymbol()).append("\u001B[0m");
+                    if (map[i][j].getLocation().equals(Location.Farm)){
+                        builder.append(map[i][j].getType().getColorCode()).append(map[i][j].getType().getSymbol()).append("\033[0m");
+                    }
+                    else {
+                        builder.append(map[i][j].getType().getSymbol());
+                    }
                 }
             }
             builder.append("\n");

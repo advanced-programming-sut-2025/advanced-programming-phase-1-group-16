@@ -1,4 +1,4 @@
-package com.group16.stardewvalley.model.Things;
+package com.group16.stardewvalley.model.Items;
 
 public enum OreType {
     COPPER_ORE("Copper Ore",

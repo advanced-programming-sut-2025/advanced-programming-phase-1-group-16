@@ -33,6 +33,9 @@ public class TimeDate {
             advanceOneDay();
         }
     }
+    public Season getCurrentSeason() {
+        return this.currentSeason;
+    }
 
     // افزایش یک روز
     private void advanceOneDay() {

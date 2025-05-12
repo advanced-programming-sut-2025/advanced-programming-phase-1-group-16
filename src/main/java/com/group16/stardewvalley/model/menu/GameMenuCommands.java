@@ -13,7 +13,13 @@ public enum GameMenuCommands implements CommandsInterface{
 
     Walk("\\s*walk\\s+-l\\s+(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*"),
     PrintMap("\\s*print\\s+map\\s+-l\\s+(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s+-s\\s+(?<size>\\d+)\\s*"),
-    HelpReadingMap("\\s+help\\s+reading\\s+map\\s*");
+    HelpReadingMap("\\s+help\\s+reading\\s+map\\s*"),
+
+
+    //shop commands
+    ShopBuildCoopBarn("\\S*build\\s+-a\\s+(?<buildingName>\\S+)\\s+-l\\s+(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*");
+
+
 
     private final String pattern;
 
