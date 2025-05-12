@@ -71,6 +71,7 @@ public class TimeDate {
             }
         }
 
+        //  همه ی فروشگاه ها هم داشته باشند این تابع رو باید =)
         for (Player player : game.getPlayers()) {
             player.resetForNewDay();
         }

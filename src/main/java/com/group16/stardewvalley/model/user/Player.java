@@ -1,12 +1,14 @@
 package com.group16.stardewvalley.model.user;
 
 import com.group16.stardewvalley.model.Inventory;
+import com.group16.stardewvalley.model.NPC.NPC;
 import com.group16.stardewvalley.model.Shops.Shop;
 import com.group16.stardewvalley.model.Items.Item;
 import com.group16.stardewvalley.model.Tools.Gadget;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.map.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Player {
@@ -14,8 +16,9 @@ public class Player {
     private Gadget currentEquipment;
     private Item currentThing;
     private int energyCeiling;
-    private int level;
     private Pos position;
+    private Farm farm;
+    private User user;
     private int energy;
     private int coin;
     private final int[] levelRanks = {450, 350, 250, 150};
@@ -28,14 +31,18 @@ public class Player {
     private int fishingAbilityLevel;
     private int fishingAbilityScore;
     private boolean isFainted;
-    private Map<Player, Integer> interactionsLevel;
-    private Map<Player, Integer> interactionScore;
-    private Map<Player, Boolean> interactionStatus;
+    private final Map<Player, Integer> interactionsLevel;
+    private final Map<Player, Integer> interactionScore;
+    private final Map<Player, Boolean> interactionTodayStatus;
+    private final Map<NPC, Integer> friendshipNPCScore;
+    private final Map<NPC, Integer> friendshipNPCLevel;
     private final int[] relationshipRanks = {100, 200, 300, 400};
+    private final int[] NPCRelationshipRanks = {200, 400, 600, 800};
 
     // مقدار های ماکسیمم هر توانایی رو هم در گیم ذخیره کردم سر جمع شه
     // تابعی برای بالا بردن لول شخص در این موارد نوشته نشده است
-    public Player() {
+    public Player(User user) {
+        this.user = user;
         farmingAbilityLevel = 0;
         miningAbilityLevel = 0;
         fishingAbilityLevel = 0;
@@ -48,6 +55,11 @@ public class Player {
         energyCeiling = 200;// مقداردهی انرژی اولیه در ابتدای ساخت
         energy = 200;
         isFainted = false;
+        this.interactionsLevel = new HashMap<>();
+        this.interactionScore = new HashMap<>();
+        this.interactionTodayStatus = new HashMap<>();
+        this.friendshipNPCScore = new HashMap<>();
+        this.friendshipNPCLevel = new HashMap<>();
     }
 
     public int getFarmingAbilityLevel() {
