@@ -27,3 +27,9 @@ game map 1
 game map 2
 game map 2
 print map -l 0,0 -s 300
+time
+date
+datetime
+day of the week
+cheat advance time 3 h
+cheat advance date 3 d

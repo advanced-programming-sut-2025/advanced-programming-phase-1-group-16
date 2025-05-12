@@ -15,10 +15,23 @@ public enum GameMenuCommands implements CommandsInterface{
     PrintMap("\\s*print\\s+map\\s+-l\\s+(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s+-s\\s+(?<size>\\d+)\\s*"),
     HelpReadingMap("\\s*help\\s+reading\\s+map\\s*"),
 
+    //Main menu commands
+    ChangeMenu("\\s*menu\\s+enter\\s+(?<MenuName>.+)\\s*"),
+    Logout("\\s*user\\s+logout\\s*"),
+
+    //timeDate commands
+    Time("time"),
+    Date("date"),
+    DateTime("datetime"),
+    DayOfWeek("day of the week"),
+    CheatAdvanceTime("cheat advance time\\s*(?<amount>\\d+)\\s*h"),
+    CheatAdvanceDate("cheat advance date\\s*(?<amount>\\d+)\\s*d"),
 
     //shop commands
     ShopBuildCoopBarn("\\S*build\\s+-a\\s+(?<buildingName>\\S+)\\s+-l\\s+(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*");
 
+
+    //
 
 
     private final String pattern;

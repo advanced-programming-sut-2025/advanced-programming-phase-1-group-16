@@ -178,8 +178,16 @@ public class GameMenuController {
     }
 
 
+    public Result changeMenu(String menuName){
+        return switch (menuName) {
+            case "Home Menu" -> {
+                App.setCurrentMenu(Menu.HomeMenu);
+                yield new Result(true, "you are in the home menu!");
+            }
 
-
+            default -> new Result(false, "wrong menu name!");
+        };
+    }
 
 
 

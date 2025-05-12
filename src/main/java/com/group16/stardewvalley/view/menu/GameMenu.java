@@ -91,9 +91,7 @@ public class GameMenu implements GameMenuInterface {
 
     } else if ((matcher = GameMenuCommands.HelpReadingMap.getMatcher(input)) != null){
         System.out.println(mapController.helpReadingMap());
-    }
-
-        else{
+    } else{
             System.out.println("invalid command!");
 
         }
