@@ -1,8 +1,12 @@
 package com.group16.stardewvalley.model.map;
 
-import com.group16.stardewvalley.model.Item;
-import com.group16.stardewvalley.model.agriculture.Crop;
-import com.group16.stardewvalley.model.agriculture.Tree;
+import com.group16.stardewvalley.controller.agriculture.AgricultureController;
+import com.group16.stardewvalley.model.Items.Item;
+import com.group16.stardewvalley.model.Items.Stone;
+import com.group16.stardewvalley.model.agriculture.*;
+import com.group16.stardewvalley.model.time.Season;
+
+import java.util.Random;
 
 public class Tile {
     private TileType type;
@@ -10,14 +14,87 @@ public class Tile {
     private Crop crop;
     private Tree tree;
     private Location location;
-    //برای شخم زدن:
-    private boolean isPloughed;
 
     public Tile(TileType tileType) {
-        this.type = tileType;
         location = Location.Game;
-        this.isPloughed = false;
+        if (tileType == TileType.Tree) {
+            this.type = TileType.Ground;
+            this.tree = new Tree(getRandomForagingTree())
+        }
+        else if (tileType == TileType.Stone) {
+            this.type = TileType.Quarry;
+            this.item = new Stone("stone");
+        } else if (tileType == TileType.Forage) {
+            this.type = TileType.Ground;
+            this.crop = new Crop(getRandomForagingCrop());
+        } else {
+            this.type = tileType;
+        }
     }
+
+    public CropType getRandomForagingCrop() {
+        Random rand = new Random();
+        SeedType[] seeds = {
+                SeedType.JAZZ_SEEDS,
+                SeedType.CARROT_SEEDS,
+                SeedType.CAULIFLOWER_SEEDS,
+                SeedType.COFFEE_BEANS,
+                SeedType.GARLIC_SEEDS,
+                SeedType.BEAN_STARTER,
+                SeedType.KALE_SEEDS,
+                SeedType.PARSNIP_SEEDS,
+                SeedType.POTATO_SEEDS,
+                SeedType.RHUBARB_SEEDS,
+                SeedType.STRAWBERRY_SEEDS,
+                SeedType.TULIP_BULB,
+                SeedType.RICE,
+                SeedType.BLUEBERRY_SEEDS,
+                SeedType.CORN_SEEDS,
+                SeedType.HOPS_STARTER,
+                SeedType.PEPPER_SEEDS,
+                SeedType.MELON_SEEDS,
+                SeedType.POPPY_SEEDS,
+                SeedType.RADISH_SEEDS,
+                SeedType.RED_CABBAGE_SEEDS,
+                SeedType.STARFRUIT_SEEDS,
+                SeedType.SPANGLE_SEEDS,
+                SeedType.SUMMER_SQUASH_SEEDS,
+                SeedType.SUNFLOWER_SEEDS,
+                SeedType.TOMATO_SEEDS,
+                SeedType.WHEAT_SEEDS,
+                SeedType.AMARANTH_SEEDS,
+                SeedType.ARTICHOKE_SEEDS,
+                SeedType.BEET_SEEDS,
+                SeedType.BOK_CHOY_SEEDS,
+                SeedType.BROCCOLI_SEEDS,
+                SeedType.CRANBERRY_SEEDS,
+                SeedType.EGGPLANT_SEEDS,
+                SeedType.FAIRY_SEEDS,
+                SeedType.GRAPE_STARTER,
+                SeedType.PUMPKIN_SEEDS,
+                SeedType.YAM_SEEDS,
+                SeedType.RARE_SEED,
+                SeedType.POWDERMELON_SEEDS,
+                SeedType.ANCIENT_SEED,
+                SeedType.MIXED_SEED
+        };
+        SeedType seed = seeds[rand.nextInt(seeds.length)];
+        return AgricultureController.findCropTypeBySeed(seed);
+    }
+
+    public TreeType getRandomForagingTree() {
+        Random random = new Random();
+        SeedType[] seeds = {
+                SeedType.ACORNS,
+                SeedType.MAPLE_SEEDS,
+                SeedType.PINE_CONES,
+                SeedType.MAHOGANY_SEEDS,
+                SeedType.MUSHROOM_TREE_SEEDS
+        };
+        SeedType seed = seeds[random.nextInt(seeds.length)];
+        return AgricultureController.findTreeTypeBySeed(seed);
+    }
+
 
     public Location getLocation() {
         return location;
@@ -25,10 +102,6 @@ public class Tile {
 
     public void setLocation(Location location) {
         this.location = location;
-    }
-
-    public boolean isPloughed() {
-        return isPloughed;
     }
 
     public Crop getCrop() {
@@ -45,10 +118,6 @@ public class Tile {
 
     public void setTree(Tree tree) {
         this.tree = tree;
-    }
-
-    public void setPloughed(boolean ploughed) {
-        isPloughed = ploughed;
     }
 
     public void setItem(Item item) {

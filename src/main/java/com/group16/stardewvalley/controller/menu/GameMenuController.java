@@ -83,8 +83,9 @@ public class GameMenuController {
         int totalTiles = farm.getType().getHeight() * farm.getType().getWidth();
 
         // تعداد رندم آیتم‌ها (مثلاً بین 5 تا 20 درصد کل تایل‌ها)
-        int itemCount = random.nextInt(totalTiles / 5) + totalTiles / 20;
+        int itemCount = (random.nextInt(totalTiles / 5) + totalTiles / 20) / 4;
 
+        //کاشتن درخت به طور رندوم
         for (int k = 0; k < itemCount; k++) {
             int i = random.nextInt(farm.getType().getHeight());           // ردیف رندم
             int j = random.nextInt(farm.getType().getWidth());        // ستون رندم
@@ -95,7 +96,7 @@ public class GameMenuController {
         for (int k = 0; k < itemCount; k++) {
             int i = random.nextInt(farm.getType().getHeight());           // ردیف رندم
             int j = random.nextInt(farm.getType().getWidth());        // ستون رندم
-            if (farm.getType().getTiles()[j][i] == TileType.Ground) {
+            if (farm.getType().getTiles()[j][i] == TileType.Quarry) {
                 farm.getType().getTiles()[j][i] = TileType.Stone;
             }
         }

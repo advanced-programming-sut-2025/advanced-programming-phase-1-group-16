@@ -263,7 +263,7 @@ public class AgricultureController {
     }
 
 
-    private CropType findCropTypeBySeed(SeedType seedType) {
+    public static CropType findCropTypeBySeed(SeedType seedType) {
         for (CropType crop : CropType.values()) {
             if (crop.getSource().equals(seedType)) {
                 return crop;
@@ -272,7 +272,7 @@ public class AgricultureController {
         return null;
     }
 
-    private TreeType findTreeTypeBySeed(SeedType seedType) {
+    public static TreeType findTreeTypeBySeed(SeedType seedType) {
         for (TreeType tree : TreeType.values()) {
             if (tree.getSeed().equals(seedType)) {
                 return tree;
