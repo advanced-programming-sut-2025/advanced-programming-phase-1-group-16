@@ -20,13 +20,13 @@ public enum OreType {
 
     private final String name;
     private final String description;
-    private final int price;
+    private final int purchasePrice;
     private final int dailyLimit;
 
     OreType(String name, String description, int price, int dailyLimit) {
         this.name = name;
         this.description = description;
-        this.price = price;
+        this.purchasePrice = price;
         this.dailyLimit = dailyLimit;
     }
 

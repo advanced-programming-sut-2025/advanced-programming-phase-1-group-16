@@ -31,7 +31,7 @@ public class Hoe extends Gadget {
 
     public Result use(Tile targetTile, Game game) {
         Player player = game.getCurrentPlayer();
-        if (game.getCurrentPlayer().getEnergy() < this.getConsumptionEnergy()) {
+        if (player.getEnergy() < this.getConsumptionEnergy()) {
             player.decreaseEnergy(this.getConsumptionEnergy());
             player.faint();
             return new Result(false, "Have you not eaten bread today?");

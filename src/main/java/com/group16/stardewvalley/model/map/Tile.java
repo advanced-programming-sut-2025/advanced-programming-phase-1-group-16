@@ -13,12 +13,16 @@ public class Tile {
     private Crop crop;
     private boolean isPloughed;
     private boolean isWet;
+    private boolean hasWater;  // بسته به نوع باید تعیین بشه نمیدونم مدیریتشو
 
     public Tile(TileType tileType) {
         this.type = tileType;
         this.isPloughed = false;
     }
 
+    public void setHasWater(boolean b) {
+        this.hasWater = b;
+    }
     public boolean isPloughed() {
         return isPloughed;
     }
@@ -61,5 +65,17 @@ public class Tile {
 
     public void setType(TileType type) {
         this.type = type;
+    }
+
+    public Tree getTree() {
+        return tree;
+    }
+
+    public void setTree(Tree tree) {
+        this.tree = tree;
+    }
+
+    public boolean isHasWater() {
+        return hasWater;
     }
 }

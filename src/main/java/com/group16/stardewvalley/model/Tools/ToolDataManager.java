@@ -102,4 +102,41 @@ public class ToolDataManager {
             throw new RuntimeException("Error getting price for " + toolName, e);
         }
     }
+
+    public static int getWateringCanCapacity(String material) {
+        try {
+            Map<String, Object> tools = (Map<String, Object>) toolsData.get("tools");
+            Map<String, Object> wateringCan = (Map<String, Object>) tools.get("materials");
+            Map<String, Object> materials = (Map<String, Object>) wateringCan.get("material");
+
+            Map<String, Object> materialData = (Map<String, Object>) materials.get(material.toLowerCase());
+            if (materialData == null) {
+                throw new IllegalArgumentException("Material not found");
+            }
+            return (int) materialData.get("capacity");
+        } catch (Exception e) {
+            throw new RuntimeException("Error getting watering can capacity for " + material);
+        }
+    }
+
+    public static int getWateringCanUpgradeCost(String currentMaterial) {
+        try {
+            Map<String, Object> tools = (Map<String, Object>) toolsData.get("tools");
+            Map<String, Object> wateringCan = (Map<String, Object>) tools.get("watering can");
+            Map<String, Object> materials = (Map<String, Object>) wateringCan.get("material");
+
+            Map<String, Object> currentMaterialData = (Map<String, Object>) materials.get(currentMaterial.toLowerCase());
+            if (currentMaterialData == null) {
+                throw new IllegalArgumentException("Current material not found for watering can: " + currentMaterial);
+            }
+
+            if (!currentMaterialData.containsKey("Upgrade Cost")) {
+                throw new IllegalArgumentException("No upgrade available for material: " + currentMaterial);
+            }
+
+            return (int) currentMaterialData.get("Upgrade Cost");
+        } catch (Exception e) {
+            throw new RuntimeException("Error getting watering can upgrade cost from " + currentMaterial, e);
+        }
+    }
 }

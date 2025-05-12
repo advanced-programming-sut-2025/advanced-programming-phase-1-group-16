@@ -6,6 +6,8 @@ import com.group16.stardewvalley.model.Items.Item;
 import com.group16.stardewvalley.model.Tools.Gadget;
 import com.group16.stardewvalley.model.map.*;
 
+import java.util.Map;
+
 public class Player {
     private Inventory playerInventory;
     private Gadget currentEquipment;
@@ -13,7 +15,6 @@ public class Player {
     private int energyCeiling;
     private int level;
     private Pos position;
-    int x, y; // ذخیره ی موقعیت یارو روی نقشه
     private int energy;
     private int coin;
     private final int[] levelRanks = {450, 350, 250, 150};
@@ -21,11 +22,13 @@ public class Player {
     private int farmingAbilityScore;
     private int miningAbilityLevel;
     private int miningAbilityScore;
-    private int natureTourismAbilityLevel;
-    private int natureTourismAbilityScore;
+    private int foragingAbilityLevel;
+    private int foragingAbilityScore;
     private int fishingAbilityLevel;
     private int fishingAbilityScore;
     private boolean isFainted;
+    private Map<Player, Integer> interactionsLevel;
+    private Map<Player, Integer> interactionScore;
 
     // مقدار های ماکسیمم هر توانایی رو هم در گیم ذخیره کردم سر جمع شه
     // تابعی برای بالا بردن لول شخص در این موارد نوشته نشده است
@@ -33,10 +36,10 @@ public class Player {
         farmingAbilityLevel = 0;
         miningAbilityLevel = 0;
         fishingAbilityLevel = 0;
-        natureTourismAbilityLevel = 0;
-        fishingAbilityScore = 0;
+        foragingAbilityLevel = 0;
+        farmingAbilityScore = 0;
         miningAbilityScore = 0;
-        natureTourismAbilityScore = 0;
+        foragingAbilityScore = 0;
         fishingAbilityScore = 0;
         playerInventory = new Inventory();
         energy = 200;// مقداردهی انرژی اولیه در ابتدای ساخت
@@ -47,18 +50,17 @@ public class Player {
         return farmingAbilityLevel;
     }
 
-    private int getMiningAbilityLevel() {
+    public int getMiningAbilityLevel() {
         return miningAbilityLevel;
     }
 
-    public int getNatureTourismAbilityLevel() {
-        return natureTourismAbilityLevel;
+    public int getForagingAbilityLevel() {
+        return foragingAbilityLevel;
     }
 
     public int getFishingAbilityLevel() {
         return fishingAbilityLevel;
     }
-    // thing برای ابزارالاتی است که در زیر مجموعه ی tools قرار نمی گیرد که هنوز نمیدونم چیه
 
     public int getCoin() {
         return coin;
@@ -103,21 +105,21 @@ public class Player {
     }
 
     public void addNatureTourismAbilityScore(int amount) {
-        natureTourismAbilityScore += amount;
-        if (natureTourismAbilityScore >= levelRanks[0]) {
-            natureTourismAbilityLevel = 4;
+        foragingAbilityScore += amount;
+        if (foragingAbilityScore >= levelRanks[0]) {
+            foragingAbilityLevel = 4;
         }
 
-        if (natureTourismAbilityScore >= levelRanks[1]) {
-            natureTourismAbilityLevel = 3;
+        if (foragingAbilityScore >= levelRanks[1]) {
+            foragingAbilityLevel = 3;
         }
 
-        if (natureTourismAbilityScore >= levelRanks[2]) {
-            natureTourismAbilityLevel = 2;
+        if (foragingAbilityScore >= levelRanks[2]) {
+            foragingAbilityLevel = 2;
         }
 
-        if (natureTourismAbilityScore >= levelRanks[3]) {
-            natureTourismAbilityLevel = 1;
+        if (foragingAbilityScore >= levelRanks[3]) {
+            foragingAbilityLevel = 1;
         }
     }
 
@@ -149,11 +151,11 @@ public class Player {
     }
 
     public int getX() {
-        return x;
+        return position.getX();
     }
 
     public int getY() {
-        return y;
+        return position.getY();
     }
 
     public boolean hasEnoughEnergy(int amount) {
@@ -184,6 +186,9 @@ public class Player {
     }
 
     public void increaseEnergy(int amount) {
+        if (amount <= 0) {
+            amount = 0;
+        }
         if (energy + amount >= energyCeiling) {
             energy = energyCeiling;
         }
@@ -211,4 +216,5 @@ public class Player {
     public void setFaintStatus(boolean b) {
         this.isFainted = b;
     }
+
 }
