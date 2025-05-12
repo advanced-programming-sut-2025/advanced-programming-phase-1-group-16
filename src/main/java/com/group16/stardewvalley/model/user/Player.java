@@ -1,5 +1,6 @@
 package com.group16.stardewvalley.model.user;
 
+import com.group16.stardewvalley.model.Inventory;
 import com.group16.stardewvalley.model.map.Farm;
 import com.group16.stardewvalley.model.map.Pos;
 
@@ -8,6 +9,8 @@ public class Player {
     private Farm farm;
     private int energy;
     private Pos position;
+    private Inventory playerInventory;
+    private Gadget currentEquipment;
 
     public Player(User user) {
         this.user = user;
