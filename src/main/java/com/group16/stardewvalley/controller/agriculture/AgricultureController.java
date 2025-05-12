@@ -6,9 +6,14 @@ import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.map.TileType;
+import com.group16.stardewvalley.model.time.Season;
+
+import java.util.Random;
 
 
 public class AgricultureController {
+    private final Random random = new Random();
+
     public Result craftInfo(String name) {
         CropType crop = findCropTypeByName(name);
         if (crop == null) {
@@ -53,6 +58,12 @@ public class AgricultureController {
         if (!targetTile.getType().equals(TileType.Plowed)) {
             return new Result(false, "Shokhm nazadi dadash!");
         }
+        if (!App.getActiveGame().getCurrentPlayer().getInventory().isSeedInInventory(seedType)) {
+            return new Result(false, "You dont have this seed!");
+        }
+        if (seedType.equals(SeedType.MIXED_SEED)){
+            seedType = getRandomSeed(App.getActiveGame().getTimeDate().getCurrentSeason());
+        }
         switch (seedType.getType()) {
             case "TREE":
                 TreeType treeType = findTreeTypeBySeed(seedType);
@@ -75,6 +86,51 @@ public class AgricultureController {
         }
         return new Result(true, seedName + " is planted successfully");
     }
+
+    public SeedType getRandomSeed(Season season) {
+        SeedType[] seeds;
+        switch (season) {
+            case Spring:
+                 seeds = new SeedType[]{
+                         SeedType.CAULIFLOWER_SEEDS,
+                         SeedType.PARSNIP_SEEDS,
+                         SeedType.POTATO_SEEDS,
+                         SeedType.JAZZ_SEEDS,
+                         SeedType.TULIP_BULB
+                 };
+                break;
+            case Season.Summer:
+                seeds = new SeedType[]{
+                        SeedType.CORN_SEEDS,
+                        SeedType.PEPPER_SEEDS,
+                        SeedType.RADISH_SEEDS,
+                        SeedType.WHEAT_SEEDS,
+                        SeedType.POPPY_SEEDS,
+                        SeedType.SUNFLOWER_SEEDS,
+                        SeedType.SPANGLE_SEEDS
+                };
+                break;
+            case Fall:
+                seeds = new SeedType[]{
+                        SeedType.ARTICHOKE_SEEDS,
+                        SeedType.EGGPLANT_SEEDS,
+                        SeedType.PUMPKIN_SEEDS,
+                        SeedType.SUNFLOWER_SEEDS,
+                        SeedType.FAIRY_SEEDS
+                };
+                break;
+            case Winter:
+                seeds = new SeedType[]{
+                        SeedType.POWDERMELON_SEEDS
+                };
+                break;
+            default:
+                return null;
+
+        }
+        return seeds[random.nextInt(seeds.length)];
+    }
+
 
     public Result showPlant(int x, int y) {
         if (x < 0 || y < 0 || x >= App.getActiveGame().getMapWidth() || y >= App.getActiveGame().getMapHeight()) {
