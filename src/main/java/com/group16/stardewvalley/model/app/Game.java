@@ -39,6 +39,10 @@ public class Game {
         this.turnsPassed = 0;
     }
 
+    public TimeDate getTimeDate() {
+        return timeDate;
+    }
+
     public ArrayList<Player> getPlayers() {
         return players;
     }

@@ -1,17 +1,17 @@
 package com.group16.stardewvalley.model.map;
 
 public enum FarmType {
-    small(45, 70),
-    big(60, 75);
+    small(45, 70, makeFarm("small")),
+    big(60, 75, makeFarm("big"));
 
     private int width;
     private int height;
     private TileType[][] tiles;
 
-    FarmType(int height, int width) {
+    FarmType(int height, int width, TileType[][] tiles) {
         this.height = height;
         this.width = width;
-        this.tiles = makeFarm(this);
+        this.tiles = tiles;
     }
 
     public int getWidth() {
@@ -38,14 +38,14 @@ public enum FarmType {
         this.tiles = tiles;
     }
 
-    private TileType[][] makeFarm(FarmType farmType) {
+    private TileType[][] makeFarm(String type) {
         tiles = new TileType[height][width];
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 tiles[i][j] = TileType.Ground;
             }
         }
-        if (farmType == FarmType.small) {
+        if (type.equals("small")) {
             for (int i = 1; i < 6; i++) {
                 for (int j = 1; j < 7; j++) {
                     tiles[i][j] = TileType.GreenHouse;
@@ -67,7 +67,7 @@ public enum FarmType {
                 }
             }
         }
-        if (farmType == FarmType.big) {
+        if (type.equals("big")) {
             for (int i = height - 7; i < height - 2; i++) {
                 for (int j = 3; j < 9; j++) {
                     tiles[i][j] = TileType.GreenHouse;
