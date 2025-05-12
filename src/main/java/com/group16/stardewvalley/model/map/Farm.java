@@ -2,6 +2,7 @@ package com.group16.stardewvalley.model.map;
 
 
 import com.group16.stardewvalley.model.food.FoodIngredient;
+import com.group16.stardewvalley.model.food.Ingredient;
 
 import java.util.HashMap;
 
@@ -17,6 +18,15 @@ public class Farm {
 
     public HashMap<FoodIngredient, Integer> getRefrigerator() {
         return refrigerator;
+    }
+
+    public FoodIngredient getIngredientInRef(Ingredient ingredient) {
+        for (FoodIngredient food : refrigerator.keySet()) {
+            if (food.getType().equals(ingredient)) {
+                return food;
+            }
+        }
+        return null;
     }
 
     public void setRefrigerator(HashMap<FoodIngredient, Integer> refrigerator) {

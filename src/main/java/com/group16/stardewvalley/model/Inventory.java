@@ -21,6 +21,26 @@ public class Inventory {
         this.backPackType = BackPackType.Base_Pack;
     }
 
+    public void setTools(Map<Gadget, Integer> tools) {
+        this.tools = tools;
+    }
+
+    public BackPackType getBackPackType() {
+        return backPackType;
+    }
+
+    public void setBackPackType(BackPackType backPackType) {
+        this.backPackType = backPackType;
+    }
+
+    public Map<Item, Integer> getItems() {
+        return items;
+    }
+
+    public void setItems(Map<Item, Integer> items) {
+        this.items = items;
+    }
+
     public Result addTool(Gadget gadget, int count) {
         if (isFull()) {
             return new Result(false, "Oops! Your backpack is completely full ");
