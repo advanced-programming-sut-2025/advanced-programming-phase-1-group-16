@@ -12,6 +12,7 @@ public class Tree {
     private boolean isBurned;
     private boolean isWatered;
     private boolean isFertilized;
+    private int daySinceLastWater;
 
 
     public Tree(TreeType type) {
@@ -21,12 +22,25 @@ public class Tree {
         this.dayPastFromLastHarvest = 0;
         this.dayPastFromLastStage = 0;
         this.dayPastFromPlanting = 0;
+        this.daySinceLastWater = 0;
         this.stage = 0;
         this.isMature = false;
         this.isBurned = false;
         this.isWatered = false;
         this.isFertilized = false;
 
+    }
+
+    public void setDayPastFromPlanting(int dayPastFromPlanting) {
+        this.dayPastFromPlanting = dayPastFromPlanting;
+    }
+
+    public int getDaySinceLastWater() {
+        return daySinceLastWater;
+    }
+
+    public void setDaySinceLastWater(int daySinceLastWater) {
+        this.daySinceLastWater = daySinceLastWater;
     }
 
     public boolean isFertilized() {
