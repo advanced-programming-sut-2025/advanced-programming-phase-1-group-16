@@ -1,7 +1,7 @@
 package com.group16.stardewvalley.model.agriculture;
 
 
-public class Crop extends PlantedSeed {
+public class Crop {
     CropType cropType;
     private int sellPrice;
     private int energy;
@@ -11,6 +11,7 @@ public class Crop extends PlantedSeed {
     private int daysSinceLastHarvest;
     private boolean isWatered;
     private boolean isMature;
+    private boolean isColossal;
 
     public Crop(CropType cropType) {
         this.cropType = cropType;
@@ -24,6 +25,10 @@ public class Crop extends PlantedSeed {
         this.daysSinceLastHarvest = 0;
         this.isWatered = false;
         this.isMature = false;
+    }
+
+    public boolean isColossal() {
+        return isColossal;
     }
 
     public CropType getCropType() {

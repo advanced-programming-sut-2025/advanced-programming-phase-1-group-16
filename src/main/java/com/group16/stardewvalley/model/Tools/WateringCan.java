@@ -45,7 +45,7 @@ public class WateringCan extends Gadget{
             requiredEnergy--;
         }
         //خطای انرژی
-        if (player.getEnergy() < this.getConsumptionEnergy()) {
+        if (player.getEnergy() < requiredEnergy) {
             player.decreaseEnergy(requiredEnergy - 1);
             player.faint();
             return new Result(false, "Have you not eaten bread today?");

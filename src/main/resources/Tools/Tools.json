@@ -51,7 +51,7 @@
     "fishing pole": {
       "name": "fishing pole",
       "actions": ["Fishing"],
-      "type": {
+      "material": {
         "training": {"price": 25, "consumption energy": 8, "enough level": 0},
         "bamboo": {"price": 500, "consumption energy": 8, "enough level": 0},
         "fiberglass": {"price": 1800, "consumption energy": 6, "enough level": 2},
@@ -64,14 +64,6 @@
       "actions": ["CutGrass", "HarvestCrops"],
       "consumption energy": 2
     },
-
-    "milk pail": {
-      "name": "milk pail",
-      "actions": ["MildAnimals"],
-      "consumption energy": 4,
-      "price": 1000
-    },
-
 
     "shear": {
       "name": "shear",

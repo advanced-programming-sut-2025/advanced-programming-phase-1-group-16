@@ -42,7 +42,8 @@ public class Player {
         foragingAbilityScore = 0;
         fishingAbilityScore = 0;
         playerInventory = new Inventory();
-        energy = 200;// مقداردهی انرژی اولیه در ابتدای ساخت
+        energyCeiling = 200;// مقداردهی انرژی اولیه در ابتدای ساخت
+        energy = 200;
         isFainted = false;
     }
 
