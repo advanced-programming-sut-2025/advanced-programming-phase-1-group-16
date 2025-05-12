@@ -1,7 +1,9 @@
 package com.group16.stardewvalley.model;
 
-import com.group16.stardewvalley.model.Items.Item;
-import com.group16.stardewvalley.model.Tools.*;
+import com.group16.stardewvalley.model.agriculture.Seed;
+import com.group16.stardewvalley.model.agriculture.SeedType;
+import com.group16.stardewvalley.model.items.Item;
+import com.group16.stardewvalley.model.tools.*;
 import com.group16.stardewvalley.model.agriculture.Crop;
 
 import java.util.HashMap;
@@ -47,6 +49,15 @@ public class Inventory {
         return tools;
     }
 
+    public Result addItem(Item item, int count) {
+        if (isFull()) {
+            return new Result(false, "Oops! Your backpack is completely full!");
+        }
+        String name = item.getName();
+        items.put(item, items.getOrDefault(item, 0) + count);
+        return new Result(true, name + " added to inventory successfully ^^");
+    }
+
     public boolean isFull() {
         return getTotalItemsCount() >= backPackType.getCapacity();
     }
@@ -55,5 +66,17 @@ public class Inventory {
         int toolCount = tools.values().stream().mapToInt(Integer::intValue).sum();
         int itemCount = items.values().stream().mapToInt(Integer::intValue).sum();
         return toolCount+ itemCount;
+    }
+
+    public boolean isSeedInInventory(SeedType seedType) {
+        for (Item item : items.keySet()) {
+            if (item instanceof Seed) {
+                Seed seed = (Seed) items;
+                if (items.get(item) > 0) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

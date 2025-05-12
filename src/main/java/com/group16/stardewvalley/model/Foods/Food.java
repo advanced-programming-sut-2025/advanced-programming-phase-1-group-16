@@ -2,7 +2,7 @@ package com.group16.stardewvalley.model.Foods;
 
 import java.util.Map;
 
-public record Food(String name, Map<com.group16.stardewvalley.model.food.Ingredient, Integer> ingredients, int energy, String buff, String source, int sellPrice) {
+public record Food(String name, Map<com.group16.stardewvalley.model.Foods.Ingredient, Integer> ingredients, int energy, String buff, String source, int sellPrice) {
 
     @Override
     public String toString() {

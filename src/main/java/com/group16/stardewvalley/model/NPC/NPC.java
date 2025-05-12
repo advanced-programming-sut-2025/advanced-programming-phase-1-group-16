@@ -7,12 +7,14 @@ import java.util.Map;
 
 public class NPC {
     private String name;
+    private final Map<String, Integer> favoriteItems;
     private final Map<Player, Integer> friendshipNPCLevel;
     private final Map<Player, Integer> friendshipNPCScore;
     private final int[] relationshipRanks = {200, 400, 600, 800};
 
     public NPC(String name) {
         this.friendshipNPCLevel = new HashMap<>();
+        this.favoriteItems = new HashMap<>();
         this.friendshipNPCScore = new HashMap<>();
         this.name = name;
 

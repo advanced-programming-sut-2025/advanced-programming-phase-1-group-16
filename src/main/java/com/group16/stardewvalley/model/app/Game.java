@@ -1,9 +1,8 @@
 package com.group16.stardewvalley.model.app;
 
-import com.group16.stardewvalley.model.Shops.*;
-import com.group16.stardewvalley.model.Weather.WeatherCondition;
+import com.group16.stardewvalley.model.shops.*;
+import com.group16.stardewvalley.model.weather.WeatherCondition;
 import com.group16.stardewvalley.model.map.Tile;
-import com.group16.stardewvalley.model.map.TileType;
 import com.group16.stardewvalley.model.user.Player;
 
 import com.group16.stardewvalley.model.time.TimeDate;

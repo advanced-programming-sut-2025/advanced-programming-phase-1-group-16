@@ -1,4 +1,4 @@
-package com.group16.stardewvalley.model.food;
+package com.group16.stardewvalley.model.Foods;
 
 public enum Ingredient {
     EGG,

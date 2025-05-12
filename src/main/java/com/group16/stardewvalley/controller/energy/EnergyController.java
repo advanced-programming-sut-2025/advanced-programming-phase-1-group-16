@@ -1,7 +1,7 @@
 package com.group16.stardewvalley.controller.energy;
 
 import com.group16.stardewvalley.model.*;
-import com.group16.stardewvalley.model.Tools.Gadget;
+import com.group16.stardewvalley.model.tools.Gadget;
 import com.group16.stardewvalley.model.app.Game;
 
 import java.util.Map;

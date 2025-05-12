@@ -1,11 +1,8 @@
 package com.group16.stardewvalley.model.map;
 
-import com.group16.stardewvalley.model.Seeds.*;
-import com.group16.stardewvalley.model.Seeds.SeedType;
-import com.group16.stardewvalley.model.Items.Item;
-import com.group16.stardewvalley.model.Items.Stone;
+import com.group16.stardewvalley.model.items.Item;
+import com.group16.stardewvalley.model.items.Stone;
 import com.group16.stardewvalley.model.agriculture.*;
-import com.group16.stardewvalley.model.time.Season;
 
 import java.util.Random;
 

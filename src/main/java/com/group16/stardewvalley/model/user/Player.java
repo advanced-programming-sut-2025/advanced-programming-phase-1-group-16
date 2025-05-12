@@ -2,9 +2,9 @@ package com.group16.stardewvalley.model.user;
 
 import com.group16.stardewvalley.model.Inventory;
 import com.group16.stardewvalley.model.NPC.NPC;
-import com.group16.stardewvalley.model.Shops.Shop;
-import com.group16.stardewvalley.model.Items.Item;
-import com.group16.stardewvalley.model.Tools.Gadget;
+import com.group16.stardewvalley.model.shops.Shop;
+import com.group16.stardewvalley.model.items.Item;
+import com.group16.stardewvalley.model.tools.Gadget;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.map.*;
 
@@ -31,6 +31,7 @@ public class Player {
     private int fishingAbilityLevel;
     private int fishingAbilityScore;
     private boolean isFainted;
+    private int rejectionCooldown;
     private final Map<Player, Integer> interactionsLevel;
     private final Map<Player, Integer> interactionScore;
     private final Map<Player, Boolean> interactionTodayStatus;
@@ -55,11 +56,16 @@ public class Player {
         energyCeiling = 200;// مقداردهی انرژی اولیه در ابتدای ساخت
         energy = 200;
         isFainted = false;
+        this.rejectionCooldown = 0;
         this.interactionsLevel = new HashMap<>();
         this.interactionScore = new HashMap<>();
         this.interactionTodayStatus = new HashMap<>();
         this.friendshipNPCScore = new HashMap<>();
         this.friendshipNPCLevel = new HashMap<>();
+    }
+
+    public String getName() {
+        user.getNickName();
     }
 
     public int getFarmingAbilityLevel() {
@@ -80,6 +86,10 @@ public class Player {
 
     public int getCoin() {
         return coin;
+    }
+
+    public void increaseCoin(int amount) {
+        coin -= amount;
     }
 
     public void addFarmingAbilityScore(int amount) {
@@ -158,10 +168,6 @@ public class Player {
         }
     }
 
-    public int getLevel() {
-        return level;
-    }
-
     public int getEnergy() {
         return energy;
     }
@@ -223,12 +229,7 @@ public class Player {
     }
 
     public void setEnergy(int energy) {
-        this.energy = energy;    // این باید بخش زمان و در شروع روز جدید کامل بشه و عوامل دیگه ای که روی سقف این تاثیر داشتن لحاظ بشن
-        // یا اگه غش کرده بشه ۷۵ درصد
-    }
-
-    public Shop whereAmI() {
-        // بر اساس مپ باید بده که الان در کدوم فروشگاه وایستادم
+        this.energy = energy;
     }
 
     public void faint() {
@@ -240,10 +241,18 @@ public class Player {
         this.isFainted = b;
     }
 
-    // این تابع رو برای رفتن به روز بعد جدا نوشتم توی تایم دیت هم میذارمش
+    public void setRejectionCooldown(int amount) {
+        rejectionCooldown = amount;
+    }
+    //RESETFORNEWDAY
     public void resetForNewDay() {
+        if (rejectionCooldown > 0) {
+            energyCeiling = 150;
+            rejectionCooldown--;
+        }
         this.isFainted = false;
-        interactionStatus.replaceAll((player, status) -> false);
+        energy = energyCeiling;
+        interactionTodayStatus.replaceAll((player, status) -> false);
 
     }
 

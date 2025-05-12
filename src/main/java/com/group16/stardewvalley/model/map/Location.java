@@ -1,6 +1,6 @@
 package com.group16.stardewvalley.model.map;
 
-import com.group16.stardewvalley.model.Shops.Shop;
+import com.group16.stardewvalley.model.shops.Shop;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
 
