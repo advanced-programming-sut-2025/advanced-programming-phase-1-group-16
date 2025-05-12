@@ -182,7 +182,15 @@ public class MapController {
                     builder.append(" "); // خارج از محدوده
                 } else {
                     if (map[i][j].getLocation().equals(Location.Farm)){
-                        builder.append(map[i][j].getType().getColorCode()).append(map[i][j].getType().getSymbol()).append("\033[0m");
+                        if (map[i][j].getTree() != null) {
+                            builder.append(TileType.Tree.getColorCode()).append(TileType.Tree.getSymbol()).append("\033[0m");
+                        } else if (map[i][j].getCrop() != null) {
+                            builder.append(TileType.Forage.getColorCode()).append(TileType.Forage.getSymbol()).append("\033[0m");
+                        } else if (map[i][j].getItem() != null) {
+                            builder.append(TileType.Stone.getColorCode()).append(TileType.Stone.getSymbol()).append("\033[0m");
+                        } else{
+                            builder.append(map[i][j].getType().getColorCode()).append(map[i][j].getType().getSymbol()).append("\033[0m");
+                        }
                     }
                     else {
                         builder.append(map[i][j].getType().getSymbol());

@@ -2,7 +2,7 @@ package com.group16.stardewvalley.model;
 
 
 import com.group16.stardewvalley.model.Items.Item;
-import com.group16.stardewvalley.model.Items.Seed;
+import com.group16.stardewvalley.model.Things.Seed;
 import com.group16.stardewvalley.model.Tools.Gadget;
 import com.group16.stardewvalley.model.agriculture.SeedType;
 import com.group16.stardewvalley.model.crafting.CraftingRecipes;
@@ -82,17 +82,7 @@ public class Inventory {
         return getTotalItemsCount() >= backPackType.getCapacity();
     }
 
-    public boolean isSeedInInventory(SeedType seedType) {
-        for (Item item : items.keySet()) {
-            if (item instanceof Seed) {
-                Seed seed = (Seed) item;
-                if (items.get(item) > 0) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+
 
     private int getTotalItemsCount() {
         int toolCount = tools.values().stream().mapToInt(Integer::intValue).sum();

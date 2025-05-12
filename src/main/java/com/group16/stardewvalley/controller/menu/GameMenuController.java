@@ -100,7 +100,7 @@ public class GameMenuController {
         for (int k = 0; k < itemCount; k++) {
             int j = random.nextInt(farm.getType().getHeight());           // ردیف رندم
             int i = random.nextInt(farm.getType().getWidth());        // ستون رندم
-            if (farm.getType().getTiles()[j][i].equals(TileType.Ground)) {
+            if (farm.getType().getTiles()[j][i].equals(TileType.Quarry)) {
                 farm.getType().getTiles()[j][i] = TileType.Stone;
             }
         }
