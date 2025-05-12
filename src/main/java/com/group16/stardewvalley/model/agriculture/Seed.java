@@ -10,4 +10,8 @@ public class Seed extends Item {
         super(name);
         this.type = type;
     }
+
+    public String getName() {
+        return type.getName();
+    }
 }
