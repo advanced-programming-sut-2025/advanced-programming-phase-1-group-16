@@ -162,6 +162,7 @@ public class AgricultureController {
         return new Result(true, "how much water");
     }
 
+    /*
     public Result water(String direction) {
         Pos offset = getDirectionOffset(direction);
         if (offset == null) {
@@ -179,6 +180,7 @@ public class AgricultureController {
         }
         App.getActiveGame().getCurrentPlayer().
     }
+     */
 
 
     private FertilizerType findFertilizerType(String fertilizerName) {
