@@ -26,6 +26,7 @@ public enum GameMenuCommands implements CommandsInterface{
     DayOfWeek("day of the week"),
     CheatAdvanceTime("cheat advance time\\s*(?<amount>\\d+)\\s*h"),
     CheatAdvanceDate("cheat advance date\\s*(?<amount>\\d+)\\s*d"),
+    Season("season"),
 
     //shop commands
     ShopBuildCoopBarn("\\S*build\\s+-a\\s+(?<buildingName>\\S+)\\s+-l\\s+(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*");

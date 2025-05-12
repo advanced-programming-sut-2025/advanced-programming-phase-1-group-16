@@ -47,6 +47,7 @@ public class LoginMenu implements GameMenuInterface {
                 logged_in_flag = true;
             }
             System.out.println(controller.login(matcher.group("username"), matcher.group("password"), logged_in_flag));
+            System.out.println(controller.showMenus());
 
 
         }else if((matcher = LoginMenuCommands.ForgetPassword.getMatcher(input)) != null){

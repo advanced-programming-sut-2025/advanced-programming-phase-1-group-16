@@ -1,5 +1,5 @@
 package com.group16.stardewvalley.model.Shops;
-/*
+
 import com.group16.stardewvalley.model.Inventory;
 import com.group16.stardewvalley.model.Items.Stone;
 import com.group16.stardewvalley.model.Items.Wood;
@@ -20,10 +20,9 @@ public class CarpentersShop extends Shop{
     private int coop;
 
 
-    public Result buildCoopAndBarn(String buildingName, int x, int y) {
-        Player player = App.getActiveGame().getCurrentPlayer();
-
-    }
+//    public Result buildCoopAndBarn(String buildingName, int x, int y) {
+//        Player player = App.getActiveGame().getCurrentPlayer();
+//
+//    }
 }
 
- */

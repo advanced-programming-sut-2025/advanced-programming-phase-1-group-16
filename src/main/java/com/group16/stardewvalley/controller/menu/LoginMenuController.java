@@ -151,11 +151,15 @@ public class LoginMenuController  {
             return new Result(false, "password is incorrect!");
         }
 
+        // log in and set user as logged in
         App.setLoggedInUser(user);
         App.getLoggedInUser().setLogged_in_flag(stayLoggedIn);
+
+        //change menu to main menu
         App.setCurrentMenu(Menu.MainMenu);
         return new Result(true, "logged in successfully!");
     }
+
 
     public Result forgetPassword(String username){
         User user = getUserByUsername(username);
@@ -208,6 +212,11 @@ public class LoginMenuController  {
         return new Result(true, "password changed successfully!");
 
     }
+    public Result showMenus() {
+        String output = "you can go to these menus from Main menu:\n1- Profile Menu\n2- Login Menu\n3- Game Menu";
+        return new Result(true, output);
+    }
+
 
 
 

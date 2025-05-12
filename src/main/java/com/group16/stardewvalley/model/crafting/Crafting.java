@@ -64,6 +64,9 @@ public class Crafting {
                 player.getPlayerInventory().addItem(newCraftItem, 1);
 
                 //consume energy
+                if(player.getEnergy() - 2 < 0){
+                    player.faint();
+                }
                 player.decreaseEnergy(2);
                 //delete used ingredients from inventory
                 for (Map.Entry<CraftingIngredientsTypes, Integer> entry : neededIngredients.entrySet()) {

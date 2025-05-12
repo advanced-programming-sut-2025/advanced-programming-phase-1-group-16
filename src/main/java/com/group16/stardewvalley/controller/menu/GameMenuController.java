@@ -189,6 +189,11 @@ public class GameMenuController {
         };
     }
 
+    public Result showHomeMenus() {
+        String output = "you can do these from Home menu:\n1- Crafting\n2- Cooking\n3- ";
+        return new Result(true, output);
+    }
+
 
 
 

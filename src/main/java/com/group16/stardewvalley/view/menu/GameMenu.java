@@ -8,6 +8,7 @@ import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.menu.GameMenuCommands;
 import com.group16.stardewvalley.model.menu.LoginMenuCommands;
 import com.group16.stardewvalley.model.menu.ProfileMenuCommands;
+import com.group16.stardewvalley.model.time.TimeDate;
 import com.group16.stardewvalley.model.user.Player;
 
 import java.util.HashMap;
@@ -18,6 +19,8 @@ import java.util.regex.Matcher;
 public class GameMenu implements GameMenuInterface {
     private final GameMenuController controller = new GameMenuController();
     private final MapController mapController = new MapController();
+    private final TimeDate timeDate = new TimeDate();
+
 
     @Override
     public void check(Scanner scanner) {
@@ -70,6 +73,10 @@ public class GameMenu implements GameMenuInterface {
         }else if((matcher = GameMenuCommands.NextTurn.getMatcher(input)) != null){
             App.getActiveGame().nextTurn();
 
+        }else if ((matcher = GameMenuCommands.ChangeMenu.getMatcher(input)) != null) {
+            System.out.println(controller.changeMenu(matcher.group("MenuName")));
+            System.out.println(controller.showHomeMenus());
+
         }else if(( matcher = ProfileMenuCommands.ExitMenu.getMatcher(input)) != null ) {
             //back to main menu
             System.out.println(controller.exitMenu());
@@ -91,7 +98,42 @@ public class GameMenu implements GameMenuInterface {
 
     } else if ((matcher = GameMenuCommands.HelpReadingMap.getMatcher(input)) != null){
         System.out.println(mapController.helpReadingMap());
-    } else{
+    }
+
+    //Time and Date Commands
+    else if ((matcher = GameMenuCommands.Time.getMatcher(input)) != null) {
+        System.out.println(timeDate.getTime());
+
+    }else if ((matcher = GameMenuCommands.Date.getMatcher(input)) != null) {
+        System.out.println(timeDate.getDate());
+
+    }else if((matcher = GameMenuCommands.DateTime.getMatcher(input)) != null ){
+        System.out.println(timeDate.getDateTime());
+
+    }else if((matcher = GameMenuCommands.DayOfWeek.getMatcher(input)) != null ){
+        System.out.println(timeDate.getDayOfWeek());
+
+    } else if ((matcher = GameMenuCommands.CheatAdvanceTime.getMatcher(input)) != null ) {
+        System.out.println(timeDate.advanceTimeCheat(Integer.parseInt(matcher.group("amount"))));
+
+    } else if ((matcher = GameMenuCommands.CheatAdvanceDate.getMatcher(input)) != null ) {
+        System.out.println(timeDate.advanceDateCheat(Integer.parseInt(matcher.group("amount"))));
+
+    }else if((matcher = GameMenuCommands.Season.getMatcher(input)) != null ){
+            System.out.println(timeDate.getSeason());
+    }
+
+
+
+
+
+
+
+
+
+
+
+        else{
             System.out.println("invalid command!");
 
         }
