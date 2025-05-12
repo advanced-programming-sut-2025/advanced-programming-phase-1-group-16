@@ -9,8 +9,10 @@ public class Crop {
     private final int finalStage;
     private int dayPastFromLastStage;
     private int daysSinceLastHarvest;
+    private int daysSincePlanting;
     private boolean isWatered;
     private boolean isMature;
+    private boolean isFertilized;
 
     public Crop(CropType cropType) {
         this.cropType = cropType;
@@ -22,8 +24,22 @@ public class Crop {
         this.stage = 0;
         this.dayPastFromLastStage = 0;
         this.daysSinceLastHarvest = 0;
+        this.daysSincePlanting = 0;
         this.isWatered = false;
         this.isMature = false;
+        this.isFertilized = false;
+    }
+
+    public boolean isFertilized() {
+        return isFertilized;
+    }
+
+    public void setFertilized(boolean fertilized) {
+        isFertilized = fertilized;
+    }
+
+    public int getDaysSincePlanting() {
+        return daysSincePlanting;
     }
 
     public CropType getCropType() {
@@ -97,6 +113,7 @@ public class Crop {
     public void advanceStage() {
         if (!isMature) {
             dayPastFromLastStage++;
+            daysSincePlanting++;
             if (dayPastFromLastStage >= cropType.getStages()[stage]) {
                 stage++;
                 if (stage == finalStage) {

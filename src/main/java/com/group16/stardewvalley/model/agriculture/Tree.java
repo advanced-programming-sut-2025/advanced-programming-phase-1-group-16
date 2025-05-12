@@ -6,9 +6,12 @@ public class Tree {
     private int fruitSellPrice;
     private int dayPastFromLastHarvest;
     private int dayPastFromLastStage;
+    private int dayPastFromPlanting;
     private int stage;
     private boolean isMature;
     private boolean isBurned;
+    private boolean isWatered;
+    private boolean isFertilized;
 
 
     public Tree(TreeType type) {
@@ -17,10 +20,29 @@ public class Tree {
         this.fruitSellPrice = type.getFruitSellPrice();
         this.dayPastFromLastHarvest = 0;
         this.dayPastFromLastStage = 0;
+        this.dayPastFromPlanting = 0;
         this.stage = 0;
         this.isMature = false;
         this.isBurned = false;
+        this.isWatered = false;
+        this.isFertilized = false;
 
+    }
+
+    public boolean isFertilized() {
+        return isFertilized;
+    }
+
+    public void setFertilized(boolean fertilized) {
+        isFertilized = fertilized;
+    }
+
+    public boolean isWatered() {
+        return isWatered;
+    }
+
+    public void setWatered(boolean watered) {
+        isWatered = watered;
     }
 
     public TreeType getTreeType() {
@@ -59,6 +81,10 @@ public class Tree {
         this.dayPastFromLastHarvest = dayPastFromLastHarvest;
     }
 
+    public int getDayPastFromPlanting() {
+        return dayPastFromPlanting;
+    }
+
     public int getTotalHarvestTime() {
         return totalHarvestTime;
     }
@@ -82,6 +108,7 @@ public class Tree {
     public void advanceStage() {
         if (!isMature) {
             dayPastFromLastStage++;
+            dayPastFromPlanting++;
             if (dayPastFromLastStage >= 7) {
                 stage++;
                 if (stage == 4) {
