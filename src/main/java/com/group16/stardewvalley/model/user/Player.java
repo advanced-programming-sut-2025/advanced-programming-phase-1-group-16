@@ -4,6 +4,7 @@ import com.group16.stardewvalley.model.Inventory;
 import com.group16.stardewvalley.model.Shops.Shop;
 import com.group16.stardewvalley.model.Items.Item;
 import com.group16.stardewvalley.model.Tools.Gadget;
+import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.map.*;
 
 import java.util.Map;
@@ -186,6 +187,13 @@ public class Player {
         energy = 0;
     }
 
+    public Tile getLocation() {
+        // طبیعتا باید  x, y این یارو هم معتبر باشه 
+        if (this.getX() < App.getActiveGame().getMapHeight() && this.getY() < App.getActiveGame().getMapWidth()) {
+            return App.getActiveGame().getMap()[this.getX()][this.getY()];
+        }
+        return null;
+    }
     public void increaseEnergy(int amount) {
         if (amount <= 0) {
             amount = 0;

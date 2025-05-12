@@ -37,7 +37,7 @@ public class Shear extends Gadget{
 
         //هیچار در این منطقه با قیچی نتواند بکند
         player.decreaseEnergy(4);
-        eturn new Result(false, "You cannot use the Shear in this area!×");
+        return new Result(false, "You cannot use the Shear in this area!×");
 
 
     }

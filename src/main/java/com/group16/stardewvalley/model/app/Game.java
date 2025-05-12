@@ -1,5 +1,6 @@
 package com.group16.stardewvalley.model.app;
 
+import com.group16.stardewvalley.model.Shops.*;
 import com.group16.stardewvalley.model.Weather.WeatherCondition;
 import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.map.TileType;
@@ -21,6 +22,13 @@ public class Game {
     private final int MAX_MININGABILITY_LEVELL = 4;
     private final int MAX_NATURETOURISMABILITY_LEVEL = 4;
     private final int MAX_FISHINGABILITY_LEVEL = 4;
+    private final Blacksmith blacksmith;
+    private final JojaMart jojaMart;
+    private final PierresGeneralStore pierresGeneralStore;
+    private final CarpentersShop carpentersShop;
+    private final FishShop fishShop;
+    private final MarniesRanch marniesRanch;
+    private final TheStardropSaloon theStardropSaloon;
 
 
 
@@ -40,6 +48,41 @@ public class Game {
         this.creator = creator;
         this.players = players;
         this.turnsPassed = 0;
+        this.blacksmith = new Blacksmith();
+        this.jojaMart = new JojaMart();
+        this.pierresGeneralStore = new PierresGeneralStore();
+        this.carpentersShop = new CarpentersShop();
+        this.fishShop = new FishShop();
+        this.marniesRanch = new MarniesRanch();
+        this.theStardropSaloon = new TheStardropSaloon();
+    }
+
+    public Blacksmith getBlacksmith() {
+        return blacksmith;
+    }
+
+    public JojaMart getJojaMart() {
+        return jojaMart;
+    }
+
+    public PierresGeneralStore getPierresGeneralStore() {
+        return pierresGeneralStore;
+    }
+
+    public CarpentersShop getCarpentersShop() {
+        return carpentersShop;
+    }
+
+    public FishShop getFishShop() {
+        return fishShop;
+    }
+
+    public MarniesRanch getMarniesRanch() {
+        return marniesRanch;
+    }
+
+    public TheStardropSaloon getTheStardropSaloon() {
+        return theStardropSaloon;
     }
 
     public ArrayList<Player> getPlayers() {

@@ -1,40 +1,110 @@
 package com.group16.stardewvalley.controller.Shops;
 
+import com.group16.stardewvalley.model.Items.Item;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.Shops.Blacksmith;
+import com.group16.stardewvalley.model.Shops.JojaMart;
 import com.group16.stardewvalley.model.Shops.UpgradeType;
 import com.group16.stardewvalley.model.Tools.Gadget;
 import com.group16.stardewvalley.model.Tools.ToolDataManager;
+import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
-import com.group16.stardewvalley.model.time.TimeDate;
 import com.group16.stardewvalley.model.user.Player;
+import com.group16.stardewvalley.model.map.Location;
 
+import java.util.Set;
 import java.util.regex.Matcher;
 
-public class BlacksmithController {
+public class ShopController {
     Blacksmith blacksmith = Blacksmith.getInstance();
     private final Game game;
 
-    public BlacksmithController(Game game) {
-        this.game = game;
+    public ShopController() {
+        this.game = App.getActiveGame();
     }
 
-    private final TimeDate timeDate = TimeDate.getInstance(game);
+    private Player currentPlayer = App.getActiveGame().getCurrentPlayer();
+
 
     public Result handleCommand(String command, Matcher matcher) {
+        String[] parts = command.split(" ");
         // در اینجا باید اگر در این مغازه نبود ارور بدیم
         if (game.getCurrentPlayer().getPosition()) {
 
         }
 
-        switch (command) {
+        switch (parts[0]) {
             case "upgrade":
                 return upgradeTool(matcher);
             case "buy":
                 return buyOre(matcher);
+            case  "show":{
+                if (parts[2].equalsIgnoreCase("products")) {
+                    switch (currentPlayer.getLocation().getLocation()) {
+                        case Blacksmith:
+                            handleShowProducts(game.getBlacksmith().getAllProducts());
+                        case JojaMart:
+                            handleShowProducts(game.getJojaMart().getAllProducts());
+                        case PierresGeneralStore:
+                            handleShowProducts(game.getPierresGeneralStore().getAllProducts());
+                        case CarpentersShop:
+                            handleShowProducts(game.getCarpentersShop().getAllProducts());
+                        case FishShop:
+                            handleShowProducts(game.getFishShop().getAllProducts());
+                        case MarniesRanch:
+                            handleShowProducts(game.getMarniesRanch().getAllProducts());
+                        case TheStardropSaloon:
+                            handleShowProducts(game.getTheStardropSaloon().getAllProducts());
+
+                        default:
+                            return new Result(false, "Hmmmm" +
+                                    " I think you'd better get yourself to a store first.");
+                    }
+                } else if (parts[2].equalsIgnoreCase("available"))  {
+                    switch (currentPlayer.getLocation().getLocation()) {
+                        case Blacksmith:
+                            handleShowProducts(game.getBlacksmith().getAvailableItems());
+                        case JojaMart:
+                            handleShowProducts(game.getJojaMart().getAvailableItems());
+                        case PierresGeneralStore:
+                            handleShowProducts(game.getPierresGeneralStore().getAvailableItems());
+                        case CarpentersShop:
+                            handleShowProducts(game.getCarpentersShop().getAvailableItems());
+                        case FishShop:
+                            handleShowProducts(game.getFishShop().getAvailableItems());
+                        case MarniesRanch:
+                            handleShowProducts(game.getMarniesRanch().getAvailableItems());
+                        case TheStardropSaloon:
+                            handleShowProducts(game.getTheStardropSaloon().getAvailableItems());
+
+                        default:
+                            return new Result(false, "Hmmmm" +
+                                    " I think you'd better get yourself to a store first.");
+                    }
+                }
+            }
             default:
                 return new Result(false, "Invalid command");
         }
+    }
+
+
+    public Result handleShowProducts(Set<Item> items) {
+        if (items == null || items.isEmpty()) {
+            return new Result(false, "No products available");
+        }
+
+        StringBuilder productsInfo = new StringBuilder("Available Products:\n");
+
+        for (Item item : items) {
+            productsInfo.append(String.format(
+                    "- %s (Price: %d)%n",
+                    item.getName(),
+                    item.getPrice()
+            ));
+        }
+
+        return new Result(true, productsInfo.toString());
     }
 
     private Result upgradeTool(Matcher matcher) {
@@ -89,13 +159,6 @@ public class BlacksmithController {
 
     private Result buyOre(Matcher matcher) {
 
-    }
-
-    private boolean isShopTime() {
-        if (timeDate.getHour() <= 9 || timeDate.getHour() >= 16) {
-            return false;
-        }
-        return true;
     }
 
     private String getNextMaterial(String currentMaterial) {
