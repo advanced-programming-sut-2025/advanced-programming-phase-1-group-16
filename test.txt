@@ -26,4 +26,4 @@ game new -u gholi Atena
 game map 1
 game map 2
 game map 2
-print map -l 0,0 -s 20
+print map -l 0,0 -s 300

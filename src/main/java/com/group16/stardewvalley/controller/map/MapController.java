@@ -25,9 +25,9 @@ public class MapController {
         //مشخص کردن نقطه شروع مزرعه
         Pos[] positions = {
                 new Pos(0,0),
-                new Pos(game.getMapWidth() - 70, 2),
+                new Pos(game.getMapWidth() - 80, 2),
                 new Pos(70, game.getMapHeight() - 70),
-                new Pos(game.getMapWidth() - 70, game.getMapHeight() - 70)
+                new Pos(game.getMapWidth() - 80, game.getMapHeight() - 70)
         };
         int index = 0;
         for (Player player : game.getPlayers()) {
