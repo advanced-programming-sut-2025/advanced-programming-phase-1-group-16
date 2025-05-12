@@ -4,113 +4,113 @@ import java.util.Map;
 
 public enum CraftingRecipes {
     CherryBomb("Cherry Bomb", Map.of(
-            CraftingIngredients.CopperOre, 4,
-            CraftingIngredients.Coal, 1
+            CraftingIngredientsTypes.CopperOre, 4,
+            CraftingIngredientsTypes.Coal, 1
     )),
     Bomb("Bomb", Map.of(
-            CraftingIngredients.IronOre, 4,
-            CraftingIngredients.Coal, 1
+            CraftingIngredientsTypes.IronOre, 4,
+            CraftingIngredientsTypes.Coal, 1
     )),
     MegaBomb("Mega Bomb", Map.of(
-            CraftingIngredients.GoldOre, 4,
-            CraftingIngredients.Coal, 1
+            CraftingIngredientsTypes.GoldOre, 4,
+            CraftingIngredientsTypes.Coal, 1
     )),
     Sprinkler("Sprinkler", Map.of(
-            CraftingIngredients.CopperBar, 1,
-            CraftingIngredients.IronBar, 1
+            CraftingIngredientsTypes.CopperBar, 1,
+            CraftingIngredientsTypes.IronBar, 1
     )),
     QualitySprinkler("Quality Sprinkler", Map.of(
-            CraftingIngredients.IronBar, 1,
-            CraftingIngredients.GoldBar, 1
+            CraftingIngredientsTypes.IronBar, 1,
+            CraftingIngredientsTypes.GoldBar, 1
     )),
     IridiumSprinkler("Iridium Sprinkler", Map.of(
-            CraftingIngredients.GoldBar, 1,
-            CraftingIngredients.IridiumBar, 1
+            CraftingIngredientsTypes.GoldBar, 1,
+            CraftingIngredientsTypes.IridiumBar, 1
     )),
     CharcoalKlin("Charcoal Klin", Map.of(
-            CraftingIngredients.Wood, 20,
-            CraftingIngredients.CopperBar, 2
+            CraftingIngredientsTypes.Wood, 20,
+            CraftingIngredientsTypes.CopperBar, 2
     )),
     Furnace("Furnace", Map.of(
-            CraftingIngredients.CopperOre, 20,
-            CraftingIngredients.Stone, 25
+            CraftingIngredientsTypes.CopperOre, 20,
+            CraftingIngredientsTypes.Stone, 25
     )),
     Scarecrow("Scarecrow", Map.of(
-            CraftingIngredients.Wood, 50,
-            CraftingIngredients.Coal, 1,
-            CraftingIngredients.Fiber, 20
+            CraftingIngredientsTypes.Wood, 50,
+            CraftingIngredientsTypes.Coal, 1,
+            CraftingIngredientsTypes.Fiber, 20
     )),
     DeluxeScarecrow("Deluxe Scarecrow", Map.of(
-            CraftingIngredients.Wood, 50,
-            CraftingIngredients.Coal, 1,
-            CraftingIngredients.Fiber, 20,
-            CraftingIngredients.IridiumOre, 1
+            CraftingIngredientsTypes.Wood, 50,
+            CraftingIngredientsTypes.Coal, 1,
+            CraftingIngredientsTypes.Fiber, 20,
+            CraftingIngredientsTypes.IridiumOre, 1
     )),
     BeeHouse("Bee House", Map.of(
-            CraftingIngredients.Wood, 40,
-            CraftingIngredients.Coal, 8,
-            CraftingIngredients.IronBar, 1
+            CraftingIngredientsTypes.Wood, 40,
+            CraftingIngredientsTypes.Coal, 8,
+            CraftingIngredientsTypes.IronBar, 1
     )),
     CheesePress("Cheese Press", Map.of(
-            CraftingIngredients.Wood, 45,
-            CraftingIngredients.Stone, 45,
-            CraftingIngredients.CopperBar, 1
+            CraftingIngredientsTypes.Wood, 45,
+            CraftingIngredientsTypes.Stone, 45,
+            CraftingIngredientsTypes.CopperBar, 1
     )),
     Keg("Keg", Map.of(
-            CraftingIngredients.Wood, 30,
-            CraftingIngredients.CopperBar, 1,
-            CraftingIngredients.IronBar, 1
+            CraftingIngredientsTypes.Wood, 30,
+            CraftingIngredientsTypes.CopperBar, 1,
+            CraftingIngredientsTypes.IronBar, 1
     )),
     Loom("Loom", Map.of(
-            CraftingIngredients.Wood, 60,
-            CraftingIngredients.Fiber, 30
+            CraftingIngredientsTypes.Wood, 60,
+            CraftingIngredientsTypes.Fiber, 30
     )),
     MayonnaiseMachine("Mayonnaise Machine", Map.of(
-            CraftingIngredients.Wood, 15,
-            CraftingIngredients.Stone, 15,
-            CraftingIngredients.CopperBar, 1
+            CraftingIngredientsTypes.Wood, 15,
+            CraftingIngredientsTypes.Stone, 15,
+            CraftingIngredientsTypes.CopperBar, 1
     )),
     OilMaker("Oil Maker", Map.of(
-            CraftingIngredients.Wood, 100,
-            CraftingIngredients.GoldBar, 1,
-            CraftingIngredients.IronBar, 1
+            CraftingIngredientsTypes.Wood, 100,
+            CraftingIngredientsTypes.GoldBar, 1,
+            CraftingIngredientsTypes.IronBar, 1
     )),
     PreservesJar("Preserves Jar", Map.of(
-            CraftingIngredients.Wood, 50,
-            CraftingIngredients.Stone, 40,
-            CraftingIngredients.Coal, 8
+            CraftingIngredientsTypes.Wood, 50,
+            CraftingIngredientsTypes.Stone, 40,
+            CraftingIngredientsTypes.Coal, 8
     )),
     Dehydrator("Dehydrator", Map.of(
-            CraftingIngredients.Wood, 30,
-            CraftingIngredients.Stone, 20,
-            CraftingIngredients.Fiber, 30
+            CraftingIngredientsTypes.Wood, 30,
+            CraftingIngredientsTypes.Stone, 20,
+            CraftingIngredientsTypes.Fiber, 30
     )),
     GrassStarter("Grass Starter", Map.of(
-            CraftingIngredients.Wood, 1,
-            CraftingIngredients.Fiber, 1
+            CraftingIngredientsTypes.Wood, 1,
+            CraftingIngredientsTypes.Fiber, 1
     )),
     FishSmoker("Fish Smoker", Map.of(
-            CraftingIngredients.Wood, 50,
-            CraftingIngredients.IronBar, 3,
-            CraftingIngredients.Coal, 10
+            CraftingIngredientsTypes.Wood, 50,
+            CraftingIngredientsTypes.IronBar, 3,
+            CraftingIngredientsTypes.Coal, 10
     )),
     MysticTreeSeed("Mystic Tree Seed", Map.of(
-            CraftingIngredients.Acorn, 5,
-            CraftingIngredients.MapleSeed, 5,
-            CraftingIngredients.PineCone, 5,
-            CraftingIngredients.MahoganySeed, 5
+            CraftingIngredientsTypes.Acorn, 5,
+            CraftingIngredientsTypes.MapleSeed, 5,
+            CraftingIngredientsTypes.PineCone, 5,
+            CraftingIngredientsTypes.MahoganySeed, 5
     ));
 
 
     private String name;
-    private  Map<CraftingIngredients, Integer> neededIngredients;
+    private  Map<CraftingIngredientsTypes, Integer> neededIngredients;
 
-    CraftingRecipes(String name, Map<CraftingIngredients, Integer> neededIngredients) {
+    CraftingRecipes(String name, Map<CraftingIngredientsTypes, Integer> neededIngredients) {
         this.name = name;
         this.neededIngredients = neededIngredients;
     }
 
-    public Map<CraftingIngredients, Integer> getNeededIngredients() {
+    public Map<CraftingIngredientsTypes, Integer> getNeededIngredients() {
         return neededIngredients;
     }
 

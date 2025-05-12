@@ -4,7 +4,6 @@
 
 TODO
 - random password handling
-- can user enter the game after registration or should login after register?
 
 - implementing foraging and plants stage for TimeDate s=cheat codes!!
 - every full turn advances time for 1 hour
@@ -24,3 +23,5 @@ GadgetController -> upgradeTool
 GadgetController -> useTool
 (gadget controller class need to complete)
 Hoe -> getPrice
+
+- how crafting ingredients can extend item?

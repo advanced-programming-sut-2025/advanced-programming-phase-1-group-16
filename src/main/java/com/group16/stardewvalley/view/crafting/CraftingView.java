@@ -18,6 +18,7 @@ public class CraftingView {
             System.out.println(controller.showRecipes());
 
         } else if ((matcher = CraftingCommands.Craft.getMatcher(input)) != null) {
+            System.out.println("your available recipes:\n" + controller.showRecipes());
             System.out.println(controller.craft(matcher.group("itemName")));
 
         } else {

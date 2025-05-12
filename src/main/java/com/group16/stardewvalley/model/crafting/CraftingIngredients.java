@@ -1,23 +1,20 @@
 package com.group16.stardewvalley.model.crafting;
 
-public enum CraftingIngredients {
-    Coal,
-    CopperOre,
-    IronOre,
-    GoldOre,
-    IridiumOre,
-    CopperBar,
-    IronBar,
-    GoldBar,
-    IridiumBar,
-    Wood,
-    Stone,
-    Fiber,
-    Acorn,
-    MapleSeed,
-    PineCone,
-    MahoganySeed;
+import com.group16.stardewvalley.model.Things.Item;
 
+public class CraftingIngredients extends Item {
 
+    private CraftingIngredientsTypes ingredientType;
 
+    public CraftingIngredients(String name) {
+        super(name);
+    }
+
+    public CraftingIngredientsTypes getIngredientType() {
+        return ingredientType;
+    }
+
+    public void setIngredientType(CraftingIngredientsTypes ingredientType) {
+        this.ingredientType = ingredientType;
+    }
 }
