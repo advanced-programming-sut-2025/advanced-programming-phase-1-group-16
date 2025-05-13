@@ -56,7 +56,48 @@ public class HomeMenuController {
         return new Result(true, output.toString());
     }
 
-    public Result
+    public Result cooking(String foodName) {
+        Food food = getFoodByName(foodName);
+        if (food == null) {
+            return new Result(false, "You don't know this food recipe!");
+        }
+        if (!haveIngredient(food)) {
+            return new Result(false, "You don't have this food Ingredients!");
+        }
+        if (!App.getActiveGame().getCurrentPlayer().hasEnoughEnergy(3)) {
+            return new Result(false, "You don't have enough energy!");
+        }
+        reduceIngredient(food);
+
+    }
+
+    private void reduceIngredient(Food food) {
+        for (Ingredient ingredient : food.ingredients().keySet()) {
+            FoodIngredient foodIngredient = App.getActiveGame().getCurrentPlayer().getInventory().getFoodIngredient(ingredient);
+            App.getActiveGame().getCurrentPlayer().getInventory().getItems().put(foodIngredient, -1);
+        }
+
+    }
+
+
+    private boolean haveIngredient(Food food) {
+        for (Ingredient ingredient : food.ingredients().keySet()) {
+            FoodIngredient foodIngredient = App.getActiveGame().getCurrentPlayer().getInventory().getFoodIngredient(ingredient);
+            if (foodIngredient == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private Food getFoodByName(String name) {
+        for (Food food : App.getActiveGame().getCurrentPlayer().getKnownRecipes()) {
+            if (food.name().equals(name)) {
+                return food;
+            }
+        }
+        return null;
+    }
 
 
     private Ingredient findIngredient(String input){

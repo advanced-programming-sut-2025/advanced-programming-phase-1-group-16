@@ -1,12 +1,50 @@
 package com.group16.stardewvalley.model.food;
 
+import com.group16.stardewvalley.model.Items.Item;
+
 import java.util.Map;
 
-public record Food(String name, Map<Ingredient, Integer> ingredients, int energy, String buff, String source, int sellPrice) {
+public class Food extends Item {
+    private final String name;
+    private final Map<Ingredient, Integer> ingredients;
+    private final int energy;
+    private final String buff;
+    private final String source;
+    private final int sellPrice;
+
+    public Food(String name, Map<Ingredient, Integer> ingredients, int energy, String buff, String source, int sellPrice) {
+        super(name);
+        this.name = name;
+        this.ingredients = ingredients;
+        this.energy = energy;
+        this.buff = buff;
+        this.source = source;
+        this.sellPrice = sellPrice;
+    }
 
     @Override
-    public String toString() {
-        return name + " (Energy: " + energy + ", Buff: " + (buff == null || buff.isEmpty() ? "None" : buff) + ")";
+    public String getName() {
+        return name;
+    }
+
+    public Map<Ingredient, Integer> getIngredients() {
+        return ingredients;
+    }
+
+    public int getEnergy() {
+        return energy;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public int getSellPrice() {
+        return sellPrice;
+    }
+
+    public String getBuff() {
+        return buff;
     }
 
     public String getFormattedRecipe() {
@@ -29,5 +67,4 @@ public record Food(String name, Map<Ingredient, Integer> ingredients, int energy
         }
         return sb.toString().trim();
     }
-
 }
