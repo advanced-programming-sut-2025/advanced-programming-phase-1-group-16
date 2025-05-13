@@ -81,7 +81,56 @@ public class HomeMenuController {
         Player player = App.getActiveGame().getCurrentPlayer();
         player.getInventory().getItems().remove(foodName);
         player.increaseEnergy(food.getEnergy());
+        doBuffer(food.getBuff());
         return App.getActiveGame().getCurrentPlayer().getInventory().addItem(new Food(food), 1);
+    }
+
+    public void doBuffer(String name) {
+        Player player = App.getActiveGame().getCurrentPlayer();
+        switch (name) {
+            case "Max Energy + 100 (5 hours)":
+                player.setEnergyCeiling(player.getEnergyCeiling() + 100);
+                player.setBuffer("Max Energy");
+                player.setFinalHourBuff(5);
+                player.setBuffActive(true);
+                break;
+            case "Farming (5 hours)":
+                player.setBuffer("Farming");
+                player.setFinalHourBuff(5);
+                player.setBuffActive(true);
+                break;
+            case "Foraging (11 hours)":
+                player.setBuffer("Foraging");
+                player.setFinalHourBuff(11);
+                player.setBuffActive(true);
+                break;
+            case "Max Energy +50 (3 hours)":
+                player.setEnergyCeiling(player.getEnergyCeiling() + 50);
+                player.setBuffer("Max Energy");
+                player.setFinalHourBuff(3);
+                player.setBuffActive(true);
+                break;
+            case "Foraging (5 hours)":
+                player.setBuffer("Foraging");
+                player.setFinalHourBuff(5);
+                player.setBuffActive(true);
+                break;
+            case "Fishing (5 hours)":
+                player.setBuffer("Fishing");
+                player.setFinalHourBuff(5);
+                player.setBuffActive(true);
+                break;
+            case "Fishing (10 hours)":
+                player.setBuffer("Fishing");
+                player.setFinalHourBuff(10);
+                player.setBuffActive(true);
+                break;
+            case "Mining (5 hours)":
+                player.setBuffer("Mining");
+                player.setFinalHourBuff(5);
+                player.setBuffActive(true);
+                break;
+        }
     }
 
     private void reduceIngredient(Food food) {

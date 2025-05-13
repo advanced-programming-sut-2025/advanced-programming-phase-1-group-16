@@ -40,6 +40,10 @@ public class Player {
     private Map<NPC, Integer> friendshipNPCLevel;
     private final int[] relationshipRanks = {100, 200, 300, 400};
     private final int[] NPCRelationshipRanks = {200, 400, 600, 800};
+    private String buffer;
+    private boolean isBuffActive;
+    private int hourPastForBuff;
+    private int finalHourBuff;
 
 
 
@@ -66,7 +70,51 @@ public class Player {
         this.interactionTodayStatus = new HashMap<>();
         this.friendshipNPCScore = new HashMap<>();
         this.friendshipNPCLevel = new HashMap<>();
+        this.isBuffActive = false;
+        hourPastForBuff = 0;
+        finalHourBuff = 0;
     }
+
+    public int getFinalHourBuff() {
+        return finalHourBuff;
+    }
+
+    public void setFinalHourBuff(int finalHourBuff) {
+        this.finalHourBuff = finalHourBuff;
+    }
+
+    public int getEnergyCeiling() {
+        return energyCeiling;
+    }
+
+    public void setEnergyCeiling(int energyCeiling) {
+        this.energyCeiling = energyCeiling;
+    }
+
+    public int getHourPastForBuff() {
+        return hourPastForBuff;
+    }
+
+    public void setHourPastForBuff(int hourPastForBuff) {
+        this.hourPastForBuff = hourPastForBuff;
+    }
+
+    public boolean isBuffActive() {
+        return isBuffActive;
+    }
+
+    public void setBuffActive(boolean buffActive) {
+        isBuffActive = buffActive;
+    }
+
+    public String getBuffer() {
+        return buffer;
+    }
+
+    public void setBuffer(String buffer) {
+        this.buffer = buffer;
+    }
+
     public Inventory getInventory() {
         return inventory;
     }
