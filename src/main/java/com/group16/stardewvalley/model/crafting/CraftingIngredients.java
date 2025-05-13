@@ -1,6 +1,6 @@
 package com.group16.stardewvalley.model.crafting;
 
-import com.group16.stardewvalley.model.items.Item;
+import com.group16.stardewvalley.model.Items.Item;
 
 public class CraftingIngredients extends Item {
 

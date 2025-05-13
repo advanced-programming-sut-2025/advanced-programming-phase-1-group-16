@@ -1,18 +1,17 @@
 package com.group16.stardewvalley.model.user;
 
-import com.group16.stardewvalley.model.app.App;
-import com.group16.stardewvalley.model.app.Game;
-import com.group16.stardewvalley.model.map.Farm;
 
-import java.util.ArrayList;
+import com.group16.stardewvalley.model.app.Game;
+
+import static com.group16.stardewvalley.model.app.App.users;
 
 public class User {
+    //register data
     private String username;
     private String password;
     private String nickName;
     private String email;
     private final String gender;
-    private ArrayList<Game> playedGames;
 
     private int money;
     private int gamePlayed;
@@ -21,7 +20,7 @@ public class User {
     private SecurityQuestions userSecurityQuestion;
     private String securityAnswer;
 
-    boolean activeGame;
+    boolean hasActiveGame;
     private Game currentGame;
 
     public User(String username, String password, String nickName, String email, String gender) {
@@ -31,20 +30,7 @@ public class User {
         this.email = email;
         this.gender = gender;
         this.logged_in_flag = false;
-        this.activeGame = false;
-        this.playedGames = new ArrayList<>();
-    }
-
-    public ArrayList<Game> getPlayedGames() {
-        return playedGames;
-    }
-
-    public void setPlayedGames(ArrayList<Game> playedGames) {
-        this.playedGames = playedGames;
-    }
-
-    public void addPlayedGame(Game game) {
-        playedGames.add(game);
+        this.hasActiveGame = false;
     }
 
     public String getUsername() {
@@ -75,9 +61,11 @@ public class User {
         return securityAnswer;
     }
 
-    public Game getCurrentGroup() {
+    public Game getCurrentGame() {
         return currentGame;
     }
+
+
 
     public void setUsername(String username) {
         this.username = username;
@@ -128,12 +116,12 @@ public class User {
         return gamePlayed;
     }
 
-    public boolean isActiveGame() {
-        return activeGame;
+    public boolean getHasActiveGame() {
+        return hasActiveGame;
     }
 
-    public void setActiveGame(boolean activeGame) {
-        this.activeGame = activeGame;
+    public void setHasActiveGame(boolean hasActiveGame) {
+        this.hasActiveGame = hasActiveGame;
     }
 
     public void setGamePlayed(int gamePlayed) {
@@ -141,12 +129,13 @@ public class User {
     }
 
     public static User  getUserByUsername(String username) {
-        for (User user : App.getUsers()) {
+        for (User user : users) {
             if (user.getUsername().equals(username)) {
                 return user;
             }
         }
         return null; // Username not found
     }
+
 
 }

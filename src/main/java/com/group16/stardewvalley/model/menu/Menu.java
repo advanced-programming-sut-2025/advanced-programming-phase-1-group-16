@@ -1,21 +1,24 @@
 package com.group16.stardewvalley.model.menu;
 
 
-import java.util.Scanner;
+
+import com.group16.stardewvalley.view.menu.GameMenuInterface;
 import com.group16.stardewvalley.view.menu.*;
 
+import java.util.Scanner;
 
 public enum Menu {
-    LoginMenu(new LoginMenu(), "Login MenuInterface"),
-    ProfileMenu(new ProfileMenu(), "Profile MenuInterface"),
-    GameMenu(new GameMenu(), "App MenuInterface"),
-    MainMenu(new MainMenu(), "Main MenuInterface"),
-    ExitMenu(new ExitMenu(), "Exit MenuInterface"),;
+    LoginMenu(new LoginMenu(), "Login Menu"),
+    ProfileMenu(new ProfileMenu(), "Profile Menu"),
+    GameMenu(new GameMenu(), "Game Menu"),
+    MainMenu(new MainMenu(), "Main Menu"),
+    HomeMenu(new HomeMenu(), "Home Menu"),
+    ExitMenu(new ExitMenu(), "Exit Menu"),;
 
-    private final MenuInterface menu;
+    private final GameMenuInterface menu;
     private final String name;
 
-    Menu(MenuInterface menu, String name) {
+    Menu(GameMenuInterface menu, String name) {
         this.menu = menu;
         this.name = name;
     }
@@ -24,7 +27,7 @@ public enum Menu {
         this.menu.check(scanner);
     }
 
-    public Menu getMenu() {
+    public GameMenuInterface getMenu() {
         return menu;
     }
 

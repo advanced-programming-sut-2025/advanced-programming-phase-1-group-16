@@ -9,7 +9,7 @@ public enum EnergyCommands {
     ENERGY_UNLIMITED("^\\s*energy\\s*unlimited\\s*$"),
     INVENTORY_SHOW("^\\s*inventory\\s*show\\s*$"),
     INVENTORY_TRASH("^\\s*inventory\\s*trash\\s*-i\\s*(?<itemName>\\S+)" +
-            "(\\s*-n\\s*(?<number>\\d+))?\\s*$"),
+            "(\\s*-n\\s*(?<number>\\d+))?\\s*$");
 
 
 

@@ -1,0 +1,44 @@
+register -u Fa-nilli -p Salam1234! Salam1234! -n fatemeh -e salam@sd.com -g female
+pick question -q 3 -a apple -c apple
+login -u Fa-nilli -p Salam1234! -stay-logged-in
+user logout
+forget password -u Fa-nilli
+answer -a apple
+Byebye1234!
+login -u Fa-nilli -p Byebye1234! -stay-logged-in
+menu enter Profile Menu
+change username -u Fa-nilli
+user info
+menu exit
+menu enter Game Menu
+game new -u gholi hassan sanaz
+menu exit
+user logout
+register -u Atena -p Salam12! Salam12! -n atena -e salam@sd.com -g female
+pick question -q 2 -a garfild -c garfild
+register -u gholi -p Salam34! Salam34! -n gholi -e salam@sd.com -g male
+pick question -q 1 -a shahnaz -c shahnaz
+login -u Fa-nilli -p Byebye1234! -stay-logged-in
+show current menu
+menu enter Game Menu
+game new -u gholi atena
+game new -u gholi Atena
+game map 1
+game map 2
+game map 2
+print map -l 0,0 -s 300
+
+//time date test
+time
+date
+datetime
+day of the week
+cheat advance time 3 h
+cheat advance date 3 d
+time
+date
+cheat advance date 30 d
+date
+season
+
+//map test

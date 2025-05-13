@@ -3,6 +3,7 @@ package com.group16.stardewvalley.view.menu;
 
 
 import com.group16.stardewvalley.controller.menu.ProfileMenuController;
+import com.group16.stardewvalley.model.menu.LoginMenuCommands;
 import com.group16.stardewvalley.model.menu.ProfileMenuCommands;
 
 import java.util.Scanner;
@@ -29,7 +30,12 @@ public class ProfileMenu implements MenuInterface {
 
         }else if((matcher = ProfileMenuCommands.ShowInfo.getMatcher(input)) != null ) {
             System.out.println(controller.showUserInfo());
-        }{
+        }else if((matcher = LoginMenuCommands.ShowCurrentMenu.getMatcher(input)) != null ){
+            System.out.println(controller.showCurrentMenu());
+
+        }else if(( matcher = ProfileMenuCommands.ExitMenu.getMatcher(input)) != null ) {
+            System.out.println(controller.exitMenu());
+        }else {
             System.out.println("invalid command!");
         }
     }

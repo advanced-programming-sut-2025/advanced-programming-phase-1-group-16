@@ -1,23 +1,25 @@
 package com.group16.stardewvalley.controller.menu;
-import com.group16.stardewvalley.model.Result;
+
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
-import com.group16.stardewvalley.model.app.GameState;
-import com.group16.stardewvalley.model.menu.Menu;
-import com.group16.stardewvalley.model.menu.GameMenuCommands;
-import com.group16.stardewvalley.model.map.Farm;
-import com.group16.stardewvalley.model.map.FarmType;
 import com.group16.stardewvalley.model.map.TileType;
+import com.group16.stardewvalley.model.menu.GameMenuCommands;
+import com.group16.stardewvalley.model.menu.Menu;
+import com.group16.stardewvalley.model.map.Farm;
 import com.group16.stardewvalley.model.user.Player;
+import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.user.User;
-import java.util.Random;
+import com.group16.stardewvalley.model.map.FarmType;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Random;
 
 import static com.group16.stardewvalley.model.user.User.getUserByUsername;
 
+
 public class GameMenuController {
+
     public Result newGame(String input){
         if(input == null || input.isEmpty()){
             return new Result(false, "empty usernames!");
@@ -37,23 +39,25 @@ public class GameMenuController {
             if(user == null){
                 return new Result(false, "user not found!");
             }
-            if(user.isActiveGame()){
+            if(user.getHasActiveGame()){
                 return new Result(false, "username already in an active game!");
             }
         }
 
         ArrayList<Player> gamePlayers = new ArrayList<>();
         gamePlayers.add(new Player(App.getLoggedInUser()));
-        gamePlayers.add(new Player(getUserByUsername(users[0])));
-        gamePlayers.add(new Player(getUserByUsername(users[1])));
-        gamePlayers.add(new Player(getUserByUsername(users[2])));
+        for (String user : users) {
+            gamePlayers.add(new Player(getUserByUsername(user)));
+
+        }
+
         Game newGame = new Game(new Player(App.getLoggedInUser()), gamePlayers);
         App.setActiveGame(newGame);
         App.games.add(newGame);
-        App.getActiveGame().setGameState(GameState.WAITING_FOR_MAP_SELECTION);
-        return new Result(true, "new game created!\nnow choose your farm in turn.\nyou can choose a farm between 1 and 2");
+        return new Result(true, "new game created! now choose your farm in turn.");
     }
 
+//بازیکن ها بصورت نوبتی و همه از یک سیستم مزرعه ی خود را انتخاب میکنند
     public Result chooseFarm(Player player, String farmNumber){
         Game game = App.getActiveGame();
 
@@ -78,6 +82,7 @@ public class GameMenuController {
         }
     }
 
+//TODO
     public void randomItems(Farm farm){
         Random random = new Random();
         int totalTiles = farm.getType().getHeight() * farm.getType().getWidth();
@@ -85,29 +90,29 @@ public class GameMenuController {
         // تعداد رندم آیتم‌ها (مثلاً بین 5 تا 20 درصد کل تایل‌ها)
         int itemCount = (random.nextInt(totalTiles / 5) + totalTiles / 20) / 4;
 
-        //کاشتن درخت به طور رندوم
         for (int k = 0; k < itemCount; k++) {
-            int i = random.nextInt(farm.getType().getHeight());           // ردیف رندم
-            int j = random.nextInt(farm.getType().getWidth());        // ستون رندم
-            if (farm.getType().getTiles()[j][i] == TileType.Ground) {
+            int i = random.nextInt(farm.getType().getWidth());           // ردیف رندم
+            int j = random.nextInt(farm.getType().getHeight());        // ستون رندم
+            if (farm.getType().getTiles()[j][i].equals(TileType.Ground) ) {
                 farm.getType().getTiles()[j][i] = TileType.Tree;
             }
         }
         for (int k = 0; k < itemCount; k++) {
-            int i = random.nextInt(farm.getType().getHeight());           // ردیف رندم
-            int j = random.nextInt(farm.getType().getWidth());        // ستون رندم
-            if (farm.getType().getTiles()[j][i] == TileType.Quarry) {
+            int j = random.nextInt(farm.getType().getHeight());           // ردیف رندم
+            int i = random.nextInt(farm.getType().getWidth());        // ستون رندم
+            if (farm.getType().getTiles()[j][i].equals(TileType.Ground)) {
                 farm.getType().getTiles()[j][i] = TileType.Stone;
             }
         }
         for (int k = 0; k < itemCount; k++) {
-            int i = random.nextInt(farm.getType().getHeight());           // ردیف رندم
-            int j = random.nextInt(farm.getType().getWidth());        // ستون رندم
+            int j = random.nextInt(farm.getType().getHeight());           // ردیف رندم
+            int i = random.nextInt(farm.getType().getWidth());        // ستون رندم
             if (farm.getType().getTiles()[j][i] == TileType.Ground) {
                 farm.getType().getTiles()[j][i] = TileType.Forage;
             }
         }
     }
+
 
     public Result loadGame(){
         if(App.getActiveGame() == null){
@@ -125,6 +130,7 @@ public class GameMenuController {
             //TODO save game
             App.setCurrentMenu(Menu.ExitMenu);
             return new Result(true, "bye bye");
+
         }
         if(game.getCurrentPlayer() == game.getCreator()){
             //TODO save game
@@ -158,8 +164,38 @@ public class GameMenuController {
 
     }
 
-    public Result nextTurn(){
-
+    public Result showCurrentMenu(){
+        return new Result(true, App.getCurrentMenu().getName());
     }
+
+
+//next turn have been handled in Game class
+
+
+    public Result exitMenu(){
+        App.setCurrentMenu(Menu.MainMenu);
+        return new Result(true, "you are in the main menu!");
+    }
+
+
+    public Result changeMenu(String menuName){
+        return switch (menuName) {
+            case "Home Menu" -> {
+                App.setCurrentMenu(Menu.HomeMenu);
+                yield new Result(true, "you are in the home menu!");
+            }
+
+            default -> new Result(false, "wrong menu name!");
+        };
+    }
+
+    public Result showHomeMenus() {
+        String output = "you can do these from Home menu:\n1- Crafting\n2- Cooking\n3- ";
+        return new Result(true, output);
+    }
+
+
+
+
 
 }

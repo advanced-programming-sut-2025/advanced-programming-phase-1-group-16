@@ -2,6 +2,7 @@ package com.group16.stardewvalley.model.app;
 
 import com.group16.stardewvalley.model.menu.Menu;
 import com.group16.stardewvalley.model.user.User;
+import com.group16.stardewvalley.model.menu.Menu;
 
 import java.util.ArrayList;
 
