@@ -83,6 +83,10 @@ public class Player {
         finalHourBuff = 0;
     }
 
+    public void learnFood(Food food) {
+        this.knownRecipes.add(food);
+    }
+
     public int getFinalHourBuff() {
         return finalHourBuff;
     }
