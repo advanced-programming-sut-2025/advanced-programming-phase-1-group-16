@@ -4,9 +4,11 @@ package com.group16.stardewvalley.model.map;
 public class Farm {
     private FarmType type;
     private Pos startPosition;
+    private String name;
 
-    public Farm(FarmType type) {
+    public Farm(FarmType type, String name) {
         this.type = type;
+        this.name = name;
     }
 
     public FarmType getType() {

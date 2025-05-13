@@ -2,7 +2,6 @@ package com.group16.stardewvalley.model.user;
 
 import com.group16.stardewvalley.model.Inventory;
 import com.group16.stardewvalley.model.NPC.NPC;
-import com.group16.stardewvalley.model.shops.Shop;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.tools.Gadget;
 import com.group16.stardewvalley.model.app.App;
@@ -65,7 +64,7 @@ public class Player {
     }
 
     public String getName() {
-        user.getNickName();
+        return user.getNickName();
     }
 
     public int getFarmingAbilityLevel() {
@@ -89,6 +88,10 @@ public class Player {
     }
 
     public void increaseCoin(int amount) {
+        coin += amount;
+    }
+
+    public void decreaseCoin(int amount) {
         coin -= amount;
     }
 

@@ -1,5 +1,7 @@
 package com.group16.stardewvalley.model.shops;
 
+import com.group16.stardewvalley.model.agriculture.SeedType;
+
 import java.util.EnumMap;
 
 public class JojaMart extends Shop{
