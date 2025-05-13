@@ -7,7 +7,6 @@ import com.group16.stardewvalley.model.app.Game;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.items.Stone;
 import com.group16.stardewvalley.model.items.Wood;
-import com.group16.stardewvalley.model.items.Wood;
 import com.group16.stardewvalley.model.user.Player;
 
 import java.util.HashMap;
@@ -40,9 +39,7 @@ public class CarpentersShop extends com.group16.stardewvalley.model.shops.Shop {
             if(!isPlayerInFarm(player)){
             return new Result(false, "You are not inside farm");
         }
-        if(game.getMap()[y][x].getItem() != null){
-            return new Result(false, "there is something on the ground");
-        }
+
 
 
         BuildingType buildingType = null;
@@ -55,6 +52,19 @@ public class CarpentersShop extends com.group16.stardewvalley.model.shops.Shop {
         if (buildingName == null) {
             return new Result(false, "no building found with the name " + buildingName);
         }
+
+
+        for (int i = y; i < y + buildingType.getLength() ; i++) {
+            for (int j = x; j < x + buildingType.getWidth(); j++) {
+                if(game.getMap()[y][x].getItem() != null){
+                    return new Result(false, "there is something on the ground");
+                }
+
+            }
+
+        }
+
+
 
 
         if (player.getCoin() < buildingType.getCost()){
@@ -71,15 +81,22 @@ public class CarpentersShop extends com.group16.stardewvalley.model.shops.Shop {
         }
 
         //everything ok, lets build
-        Building newBuilding = new Building(buildingType.getName(), buildingType);
+        Item newBuilding = new Building(buildingType.getName(), buildingType);
 
         //remove wood/stone from inventory
         items.compute(woodItem, (k, currentAmount) -> currentAmount - 350);
         items.compute(stoneItem, (k, currentAmount) -> currentAmount - 150);
 
-        //
+        //place building
+        for (int i = y; i < y + buildingType.getLength() ; i++) {
+            for (int j = x; j < x + buildingType.getWidth(); j++) {
+                game.getMap()[y][x].setItem(newBuilding);
 
+            }
 
+        }
+
+        return new Result(true, newBuilding.getName() + "build successfully");
 
     }
 

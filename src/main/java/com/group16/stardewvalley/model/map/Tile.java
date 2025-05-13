@@ -1,9 +1,8 @@
 package com.group16.stardewvalley.model.map;
 
-import com.group16.stardewvalley.controller.agriculture.AgricultureController;
-import com.group16.stardewvalley.model.Items.Item;
-import com.group16.stardewvalley.model.Items.Stone;
+
 import com.group16.stardewvalley.model.agriculture.*;
+import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.time.Season;
 
 import java.util.Random;
@@ -26,7 +25,7 @@ public class Tile {
         }
         else if (tileType == TileType.Stone) {
             this.type = TileType.Quarry;
-            this.item = new Stone("stone");
+            this.item = new com.group16.stardewvalley.model.items.Stone("stone");
         } else if (tileType == TileType.Forage) {
             this.type = TileType.Ground;
             CropType cropType = getRandomForagingCrop();
@@ -158,10 +157,6 @@ public class Tile {
 
     public Item getItem() {
         return item;
-    }
-
-    public void setItems(Item item) {
-        this.item = item;
     }
 
     public TileType getType() {
