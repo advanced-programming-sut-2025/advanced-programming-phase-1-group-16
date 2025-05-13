@@ -11,6 +11,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import com.group16.stardewvalley.model.NPC.NPC;
+import com.group16.stardewvalley.model.shops.Shop;
+import com.group16.stardewvalley.model.items.Item;
+import com.group16.stardewvalley.model.tools.Gadget;
+import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.map.*;
+
 
 public class Player {
     private User user;
@@ -20,6 +27,7 @@ public class Player {
     private Inventory inventory;
     private int energyCeiling;
     private Gadget currentEquipment;
+    private Item currentThing;
     private Set<Food> knownRecipes = new HashSet<>();
     private int coin;
     private final int[] levelRanks = {450, 350, 250, 150};

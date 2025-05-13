@@ -71,8 +71,9 @@ public class TimeDate {
             }
         }
 
+        //  همه ی فروشگاه ها هم داشته باشند این تابع رو باید =)
         for (Player player : game.getPlayers()) {
-            player.setFaintStatus(false);
+            player.resetForNewDay();
         }
     }
 
@@ -116,10 +117,6 @@ public class TimeDate {
         return currentSeason.getName();
     }
 
-    public Season getCurrentSeason() {
-        return this.currentSeason;
-    }
-
 
 
 
@@ -148,6 +145,9 @@ public class TimeDate {
             advanceOneDay();
         }
         return new Result(true,  "cheated successfully!");
+    }
+    public Season getCurrentSeason() {
+        return this.currentSeason;
     }
 
 }

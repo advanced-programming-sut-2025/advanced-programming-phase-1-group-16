@@ -5,4 +5,3 @@ public enum GameState {
     WAITING_FOR_MAP_SELECTION,
     GAME_STARTED;
 }
-

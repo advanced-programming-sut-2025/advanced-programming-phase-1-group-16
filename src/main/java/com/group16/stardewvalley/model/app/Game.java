@@ -1,8 +1,10 @@
 package com.group16.stardewvalley.model.app;
 
+import com.group16.stardewvalley.model.shops.*;
+import com.group16.stardewvalley.model.weather.WeatherCondition;
 import com.group16.stardewvalley.model.map.Tile;
-import com.group16.stardewvalley.model.time.TimeDate;
 import com.group16.stardewvalley.model.user.Player;
+import com.group16.stardewvalley.model.time.TimeDate;
 import java.util.ArrayList;
 
 public class Game {
@@ -10,24 +12,86 @@ public class Game {
     private Tile[][] map;
     private final int mapHeight = 200;
     private final int mapWidth = 300;
-    private Player currentPlayer;
-    private Player creator;
-    private TimeDate timeDate;
+    private int currentPlayerIndex; //hamoon turn
+    private final Player creator;
     private Player loader = null;
-    private GameState gameState = GameState.WAITING_FOR_NEW_GAME;
+    private int turnsPassedInRound;   // counts up to players size
+    private int turnsPassed;              // total rounds played
+    private TimeDate timeDate;
+    private final int MAX_FARMINGABILITY_LEVE = 4;
+    private final int MAX_MININGABILITY_LEVELL = 4;
+    private final int MAX_NATURETOURISMABILITY_LEVEL = 4;
+    private final int MAX_FISHINGABILITY_LEVEL = 4;
+    private final Blacksmith blacksmith;
+    private final JojaMart jojaMart;
+    private final PierresGeneralStore pierresGeneralStore;
+    private final CarpentersShop carpentersShop;
+    private final FishShop fishShop;
+    private final MarniesRanch marniesRanch;
+    private final TheStardropSaloon theStardropSaloon;
+    private WeatherCondition weatherCondition;
+    private WeatherCondition tomorrowWeatherCondition;
+
+    public WeatherCondition getWeatherCondition() {
+        return weatherCondition;
+    }
 
 
     public Game(Player creator, ArrayList<Player> players) {
         this.creator = creator;
         this.players = players;
+        this.turnsPassed = 0;
+        this.blacksmith = new Blacksmith();
+        this.jojaMart = new JojaMart();
+        this.pierresGeneralStore = new PierresGeneralStore();
+        this.carpentersShop = new CarpentersShop();
+        this.fishShop = new FishShop();
+        this.marniesRanch = new MarniesRanch();
+        this.theStardropSaloon = new TheStardropSaloon();
+    }
+
+    public Blacksmith getBlacksmith() {
+        return blacksmith;
+    }
+
+    public JojaMart getJojaMart() {
+        return jojaMart;
+    }
+
+    public PierresGeneralStore getPierresGeneralStore() {
+        return pierresGeneralStore;
+    }
+
+    public CarpentersShop getCarpentersShop() {
+        return carpentersShop;
+    }
+
+    public FishShop getFishShop() {
+        return fishShop;
+    }
+
+    public MarniesRanch getMarniesRanch() {
+        return marniesRanch;
+    }
+
+    public TheStardropSaloon getTheStardropSaloon() {
+        return theStardropSaloon;
     }
 
     public TimeDate getTimeDate() {
         return timeDate;
     }
 
-    public void setTimeDate(TimeDate timeDate) {
-        this.timeDate = timeDate;
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    public Player getCurrentPlayer() {
+        return players.get(currentPlayerIndex);    }
+
+
+    public void setPlayers(ArrayList<Player> players) {
+        this.players = players;
     }
 
     public int getMapHeight() {
@@ -46,29 +110,10 @@ public class Game {
         this.map = map;
     }
 
-    public ArrayList<Player> getPlayers() {
-        return players;
-    }
-
-    public Player getCurrentPlayer() {
-        return currentPlayer;
-    }
-
-    public void setCurrentPlayer(Player currentPlayer) {  //next turn
-        this.currentPlayer = currentPlayer;
-    }
-
-    public void setPlayers(ArrayList<Player> players) {
-        this.players = players;
-    }
-
     public Player getCreator() {
         return creator;
     }
 
-    public void setCreator(Player creator) {
-        this.creator = creator;
-    }
 
     public Player getLoader() {
         return loader;
@@ -78,15 +123,34 @@ public class Game {
         this.loader = loader;
     }
 
-    public GameState getGameState() {
-        return gameState;
-    }
-
-    public void setGameState(GameState gameState) {
-        this.gameState = gameState;
-    }
 
 
     public void nextTurn() {
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+
+        turnsPassedInRound++;
+
+        // After all players have played → pass 1 hour
+        if (turnsPassedInRound >= players.size()) {
+            turnsPassedInRound = 0;
+            timeDate.advanceOneHour();
+        }
+
+        // اینجا چرا چیزی پرینت شده ؟؟ اصلا توی پلیر مگه یوزر هست به چه دردی میخوره ؟
+        System.out.println("its " + getCurrentPlayer().getUser().getUsername() + "  turn now.");
     }
+
+
+    public void setWeatherCondition(WeatherCondition weatherCondition) {
+        this.weatherCondition = weatherCondition;
+    }
+
+    public void setTomorrowWeatherCondition(WeatherCondition weatherCondition) {
+        this.tomorrowWeatherCondition = weatherCondition;
+    }
+
+    public WeatherCondition getTomorrowWeatherCondition() {
+        return tomorrowWeatherCondition;
+    }
+
 }

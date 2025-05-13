@@ -14,6 +14,7 @@ public class Crop {
     private boolean isWatered;
     private boolean isMature;
     private boolean isFertilized;
+    private boolean isColossal;
 
     public Crop(CropType cropType) {
         this.cropType = cropType;
@@ -44,6 +45,8 @@ public class Crop {
         this.daysSincePlanting = daysSincePlanting;
     }
 
+    public boolean isColossal() {
+        return isColossal;
     public boolean isFertilized() {
         return isFertilized;
     }

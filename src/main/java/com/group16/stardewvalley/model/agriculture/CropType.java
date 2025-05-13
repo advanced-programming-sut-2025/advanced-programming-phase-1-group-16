@@ -57,7 +57,7 @@ public enum CropType {
     private final boolean canBecomeGiant;
 
     CropType(String name, SeedType source, int[] stages, int harvestTime, boolean oneTime, int regrowthTime,
-         int baseSellPrice, boolean isEdible, int energy, int baseHealth, List<Season> season, boolean canBecomeGiant) {
+             int baseSellPrice, boolean isEdible, int energy, int baseHealth, List<Season> season, boolean canBecomeGiant) {
         this.name = name;
         this.source = source;
         this.stages = stages;

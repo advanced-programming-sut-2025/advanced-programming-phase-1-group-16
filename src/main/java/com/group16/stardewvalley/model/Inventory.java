@@ -2,10 +2,14 @@ package com.group16.stardewvalley.model;
 
 import com.group16.stardewvalley.model.Items.Item;
 import com.group16.stardewvalley.model.Tools.*;
+import com.group16.stardewvalley.model.agriculture.Seed;
 import com.group16.stardewvalley.model.agriculture.SeedType;
 import com.group16.stardewvalley.model.food.Food;
 import com.group16.stardewvalley.model.food.FoodIngredient;
 import com.group16.stardewvalley.model.food.Ingredient;
+import com.group16.stardewvalley.model.items.Item;
+import com.group16.stardewvalley.model.tools.*;
+import com.group16.stardewvalley.model.agriculture.Crop;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,11 +18,13 @@ import java.util.Map;
 public class Inventory {
     private Map<Gadget, Integer> tools;
     private Map<Item, Integer> items;
+    private Map<Crop, Integer> crops;
     private BackPackType backPackType;
 
     public Inventory() {
         this.tools = new HashMap<>();
         this.items = new HashMap<>();
+        this.crops = new HashMap<>();
         this.backPackType = BackPackType.Base_Pack;
     }
 
@@ -86,6 +92,7 @@ public class Inventory {
         int itemCount = items.values().stream().mapToInt(Integer::intValue).sum();
         return toolCount+ itemCount;
     }
+
     public boolean isSeedInInventory(SeedType seedType) {
         for (Item item : items.keySet()) {
             if (item instanceof Seed) {
