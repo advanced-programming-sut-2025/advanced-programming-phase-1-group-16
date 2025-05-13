@@ -2,9 +2,12 @@ package com.group16.stardewvalley.controller.menu;
 
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.food.Food;
 import com.group16.stardewvalley.model.food.FoodIngredient;
 import com.group16.stardewvalley.model.food.Ingredient;
 import com.group16.stardewvalley.model.menu.Menu;
+
+import java.util.Set;
 
 public class HomeMenuController {
 
@@ -41,7 +44,19 @@ public class HomeMenuController {
         return new Result(true, "You pick an item in refrigerator!");
     }
 
+    public Result showRecipeOfFood() {
+        Set<Food> foods = App.getActiveGame().getCurrentPlayer().getKnownRecipes();
+        if (foods == null || foods.isEmpty()){
+            return new Result(false, "You don't have any known recipes!");
+        }
+        StringBuilder output = new StringBuilder();
+        for (Food food : foods) {
+            output.append(food.name()).append(" Recipe: ").append(food.getFormattedRecipe());
+        }
+        return new Result(true, output.toString());
+    }
 
+    public Result
 
 
     private Ingredient findIngredient(String input){
