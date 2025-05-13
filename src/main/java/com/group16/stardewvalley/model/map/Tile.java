@@ -37,7 +37,9 @@ public class Tile {
             this.type = tileType;
         }
     }
-
+    public boolean isTileEmpty() {
+        return item == null && crop == null && tree == null;
+    }
     public CropType getRandomForagingCrop() {
         Random rand = new Random();
         SeedType[] seeds = {
@@ -64,7 +66,7 @@ public class Tile {
                 SeedType.RED_CABBAGE_SEEDS,
                 SeedType.STARFRUIT_SEEDS,
                 SeedType.SPANGLE_SEEDS,
-                SeedType.SUMMER_SQUASH_SEEDS,
+                SeedType.SQUASH_SEEDS,
                 SeedType.SUNFLOWER_SEEDS,
                 SeedType.TOMATO_SEEDS,
                 SeedType.WHEAT_SEEDS,
@@ -113,6 +115,8 @@ public class Tile {
     private TreeType findTreeTypeBySeed(SeedType seed) {
         return AgricultureController.findTreeTypeBySeed(seed);
     }
+
+
 
 
     public Location getLocation() {
