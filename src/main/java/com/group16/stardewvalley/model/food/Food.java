@@ -22,6 +22,16 @@ public class Food extends Item {
         this.sellPrice = sellPrice;
     }
 
+    public Food(Food other) {
+        super(other.name);
+        this.name = other.name;
+        this.ingredients = Map.copyOf(other.ingredients); // یا یک نسخه جدید از Map
+        this.energy = other.energy;
+        this.buff = other.buff;
+        this.source = other.source;
+        this.sellPrice = other.sellPrice;
+    }
+
     @Override
     public String getName() {
         return name;

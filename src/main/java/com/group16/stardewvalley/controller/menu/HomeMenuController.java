@@ -6,6 +6,7 @@ import com.group16.stardewvalley.model.food.Food;
 import com.group16.stardewvalley.model.food.FoodIngredient;
 import com.group16.stardewvalley.model.food.Ingredient;
 import com.group16.stardewvalley.model.menu.Menu;
+import com.group16.stardewvalley.model.user.Player;
 
 import java.util.Set;
 
@@ -51,7 +52,7 @@ public class HomeMenuController {
         }
         StringBuilder output = new StringBuilder();
         for (Food food : foods) {
-            output.append(food.name()).append(" Recipe: ").append(food.getFormattedRecipe());
+            output.append(food.getName()).append(" Recipe: ").append(food.getFormattedRecipe());
         }
         return new Result(true, output.toString());
     }
@@ -68,20 +69,31 @@ public class HomeMenuController {
             return new Result(false, "You don't have enough energy!");
         }
         reduceIngredient(food);
+        App.getActiveGame().getCurrentPlayer().decreaseEnergy(3);
+        return App.getActiveGame().getCurrentPlayer().getInventory().addItem(new Food(food), 1);
+    }
 
+    public Result eat(String foodName) {
+        Food food = App.getActiveGame().getCurrentPlayer().getInventory().getFood(foodName);
+        if (food == null) {
+            return new Result(false, "You don't have this food in your inventory!");
+        }
+        Player player = App.getActiveGame().getCurrentPlayer();
+        player.getInventory().getItems().remove(foodName);
+        player.increaseEnergy(food.getEnergy());
+        return App.getActiveGame().getCurrentPlayer().getInventory().addItem(new Food(food), 1);
     }
 
     private void reduceIngredient(Food food) {
-        for (Ingredient ingredient : food.ingredients().keySet()) {
+        for (Ingredient ingredient : food.getIngredients().keySet()) {
             FoodIngredient foodIngredient = App.getActiveGame().getCurrentPlayer().getInventory().getFoodIngredient(ingredient);
             App.getActiveGame().getCurrentPlayer().getInventory().getItems().put(foodIngredient, -1);
         }
 
     }
 
-
     private boolean haveIngredient(Food food) {
-        for (Ingredient ingredient : food.ingredients().keySet()) {
+        for (Ingredient ingredient : food.getIngredients().keySet()) {
             FoodIngredient foodIngredient = App.getActiveGame().getCurrentPlayer().getInventory().getFoodIngredient(ingredient);
             if (foodIngredient == null) {
                 return false;
@@ -92,7 +104,7 @@ public class HomeMenuController {
 
     private Food getFoodByName(String name) {
         for (Food food : App.getActiveGame().getCurrentPlayer().getKnownRecipes()) {
-            if (food.name().equals(name)) {
+            if (food.getName().equals(name)) {
                 return food;
             }
         }

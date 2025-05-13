@@ -3,6 +3,7 @@ package com.group16.stardewvalley.model;
 import com.group16.stardewvalley.model.Items.Item;
 import com.group16.stardewvalley.model.Tools.*;
 import com.group16.stardewvalley.model.agriculture.SeedType;
+import com.group16.stardewvalley.model.food.Food;
 import com.group16.stardewvalley.model.food.FoodIngredient;
 import com.group16.stardewvalley.model.food.Ingredient;
 
@@ -45,9 +46,12 @@ public class Inventory {
         if (isFull()) {
             return new Result(false, "Oops! Your backpack is completely full ");
         }
-        String name = gadget.getName();
         tools.put(gadget, tools.getOrDefault(gadget, 0) + count);
         return new Result(true, gadget.getName() + " added to inventory successfully");
+    }
+
+    public Void addCrop(Crop crop, int count) {
+        crops.put(crop, crops.getOrDefault(crop, 0));
     }
 
     public Gadget findToolByName(String name) {
@@ -64,10 +68,24 @@ public class Inventory {
         return tools;
     }
 
+    public Result addItem(Item item, int count) {
+        if (isFull()) {
+            return new Result(false, "Oops! Your backpack is completely full!");
+        }
+        String name = item.getName();
+        items.put(item, items.getOrDefault(item, 0) + count);
+        return new Result(true, name + " added to inventory successfully ^^");
+    }
+
     public boolean isFull() {
         return getTotalItemsCount() >= backPackType.getCapacity();
     }
 
+    private int getTotalItemsCount() {
+        int toolCount = tools.values().stream().mapToInt(Integer::intValue).sum();
+        int itemCount = items.values().stream().mapToInt(Integer::intValue).sum();
+        return toolCount+ itemCount;
+    }
     public boolean isSeedInInventory(SeedType seedType) {
         for (Item item : items.keySet()) {
             if (item instanceof Seed) {
@@ -80,6 +98,17 @@ public class Inventory {
         return false;
     }
 
+    public Food getFood(String foodName) {
+        for (Item item : items.keySet()) {
+            if (item instanceof Food food) {
+                if (food.getName().equalsIgnoreCase(foodName)) {
+                    return food;
+                }
+            }
+        }
+        return null;
+    }
+
     public FoodIngredient getFoodIngredient(Ingredient ingredient) {
         for (Item item : items.keySet()) {
             if (item instanceof FoodIngredient foodIngredient) {
@@ -89,11 +118,5 @@ public class Inventory {
             }
         }
         return null;
-    }
-
-    private int getTotalItemsCount() {
-        int toolCount = tools.values().stream().mapToInt(Integer::intValue).sum();
-        int itemCount = items.values().stream().mapToInt(Integer::intValue).sum();
-        return toolCount+ itemCount;
     }
 }
