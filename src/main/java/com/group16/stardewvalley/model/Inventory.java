@@ -83,7 +83,7 @@ public class Inventory {
     public FoodIngredient getFoodIngredient(Ingredient ingredient) {
         for (Item item : items.keySet()) {
             if (item instanceof FoodIngredient foodIngredient) {
-                if (foodIngredient.getType().equals(ingredient)){
+                if (foodIngredient.getType().equals(ingredient) && items.get(item) > 0) {
                     return foodIngredient;
                 }
             }
