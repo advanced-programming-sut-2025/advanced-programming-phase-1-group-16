@@ -126,7 +126,7 @@ public class GameMenu implements MenuInterface {
         } else if ((matcher = GameMenuCommands.CheatAdvanceDate.getMatcher(input)) != null ) {
             System.out.println(timeDate.advanceDateCheat(Integer.parseInt(matcher.group("amount"))));
 
-        }else if((matcher = GameMenuCommands.Season.getMatcher(input)) != null ){
+        }else if((matcher = GameMenuCommands.Season.getMatcher(input)) != null ) {
             System.out.println(timeDate.getSeason());
         } else{
             System.out.println("invalid command!");
