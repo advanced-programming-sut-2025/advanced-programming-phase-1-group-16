@@ -8,6 +8,7 @@ import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.map.TileType;
 import com.group16.stardewvalley.model.time.Season;
 
+import java.rmi.server.RemoteRef;
 import java.util.Random;
 
 
@@ -36,6 +37,56 @@ public class AgricultureController {
                 .append("\nBase Health: ").append(crop.getBaseHealth())
                 .append("\nSeason: ").append(crop.getSeason())
                 .append("\nCan Become Giant: ").append(crop.canBecomeGiant());
+        return new Result(true, result.toString());
+    }
+
+    public Result treeInfo(String name) {
+        TreeType tree = findTreeTypeByName(name);
+        if (tree == null) {
+            return new Result(false, "Tree not found");
+        }
+        StringBuilder result = new StringBuilder();
+        result.append("Name: ").append(tree.getName())
+                .append("\nSource:").append(tree.getSeed().getName())
+                .append("\nStages:");
+        for (int stage : tree.getGrowthStages()) {
+            result.append(stage).append("-");
+        }
+        result.deleteCharAt(result.length() - 1);
+        result.append("\nTotal Harvest Time: ").append(tree.getTotalGrowthTime())
+                .append("\nOne Time: ").append("no")
+                .append("\nRegrowth Time: ").append(tree.getFruitCycleDays())
+                .append("\nBase Sell Price: ").append(tree.getFruitSellPrice())
+                .append("\nIs Edible: ").append(tree.isEdible())
+                .append("\nBase Energy: ").append(tree.getEnergy())
+                .append("\nBase Health: ").append(tree.getHealth())
+                .append("\nSeason: ").append(tree.getSeason())
+                .append("\nCan Become Giant: ").append("no");
+        return new Result(true, result.toString());
+    }
+
+    public Result foragingInfo(String name) {
+        TreeType tree = findTreeTypeByName(name);
+        if (tree == null) {
+            return new Result(false, "Tree not found");
+        }
+        StringBuilder result = new StringBuilder();
+        result.append("Name: ").append(tree.getName())
+                .append("\nSource:").append(tree.getSeed().getName())
+                .append("\nStages:");
+        for (int stage : tree.getGrowthStages()) {
+            result.append(stage).append("-");
+        }
+        result.deleteCharAt(result.length() - 1);
+        result.append("\nTotal Harvest Time: ").append(tree.getTotalGrowthTime())
+                .append("\nOne Time: ").append("no")
+                .append("\nRegrowth Time: ").append(tree.getFruitCycleDays())
+                .append("\nBase Sell Price: ").append(tree.getFruitSellPrice())
+                .append("\nIs Edible: ").append(tree.isEdible())
+                .append("\nBase Energy: ").append(tree.getEnergy())
+                .append("\nBase Health: ").append(tree.getHealth())
+                .append("\nSeason: ").append(tree.getSeason())
+                .append("\nCan Become Giant: ").append("no");
         return new Result(true, result.toString());
     }
 
@@ -99,7 +150,7 @@ public class AgricultureController {
                          SeedType.TULIP_BULB
                  };
                 break;
-            case Season.Summer:
+            case Summer:
                 seeds = new SeedType[]{
                         SeedType.CORN_SEEDS,
                         SeedType.PEPPER_SEEDS,
@@ -275,6 +326,15 @@ public class AgricultureController {
     public static TreeType findTreeTypeBySeed(SeedType seedType) {
         for (TreeType tree : TreeType.values()) {
             if (tree.getSeed().equals(seedType)) {
+                return tree;
+            }
+        }
+        return null;
+    }
+
+    private TreeType findTreeTypeByName(String name) {
+        for (TreeType tree : TreeType.values()) {
+            if (tree.getName().equals(name)) {
                 return tree;
             }
         }
