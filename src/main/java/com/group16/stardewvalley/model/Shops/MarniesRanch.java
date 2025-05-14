@@ -13,6 +13,7 @@ import java.awt.geom.RectangularShape;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.group16.stardewvalley.model.Shops.MarniesRanchAnimals.sellAnimalFromName;
 import static com.group16.stardewvalley.model.animal.AnimalType.animalTypeFromName;
 
 public class MarniesRanch extends Shop {
@@ -23,19 +24,40 @@ public class MarniesRanch extends Shop {
     private MarniesRanchAnimals animals;
 
     public Result buyAnimal(String animal, String name) {
-        Player player = App.getActiveGame().getCurrentPlayer();
         Game game = App.getActiveGame();
-        Map<Item, Integer> items  = player.getInventory().getItems();
+
+        if(animalTypeFromName(animal) == null){
+            return new Result(false, "no animal with that name");
+        }
 
         //make new animal
-        Animal newAnimal = new Animal(animalTypeFromName(animal), name);
+        Animal newAnimal = new Animal( sellAnimalFromName(animal), animalTypeFromName(animal), name, game.getCurrentPlayer()    );
 
 
         for (Building building : game.getBuildings()){
-            if(building.getBuildingType().equals(newAnimal.getAnimalType().))
+            for(BuildingType requiredBuilding : newAnimal.getFromShopType().getBuildingRequired()){
+                if(building.getBuildingType().equals(requiredBuilding)){ //check if a suitable building for that animal exist.
+
+                    if(building.getCapacity() < requiredBuilding.getAnimalLimit()){ //چک کن قفس جا داره یا نه
+                        //add animal to game animal
+                        game.getGameAnimals().add(newAnimal);
+                        //add to list of this building
+                        building.addAnimal(newAnimal);
+                        //increase building capacity
+                        building.increaseCapacity();
+                        //set animal position as building start position
+                        newAnimal.setAnimalPos(building.getStartPosition());
+
+                    }
+
+                }
+            }
         }
+        return new Result(false, " no suitable building for animal found");
 
     }
+
+
 
     public Result showAllProducts() {
         StringBuilder output = new StringBuilder();
