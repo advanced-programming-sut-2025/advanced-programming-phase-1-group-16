@@ -2,7 +2,7 @@ package com.group16.stardewvalley.model.agriculture;
 
 
 public class Crop {
-    CropType cropType;
+    private CropType cropType;
     private int sellPrice;
     private int energy;
     private int stage;
@@ -11,6 +11,7 @@ public class Crop {
     private int daysSinceLastHarvest;
     private int daySinceLastWater;
     private int daysSincePlanting;
+    private boolean isHarvested;
     private boolean isWatered;
     private boolean isMature;
     private boolean isFertilized;
@@ -30,7 +31,16 @@ public class Crop {
         this.daysSincePlanting = 0;
         this.isWatered = false;
         this.isMature = false;
+        this.isHarvested = false;
         this.isFertilized = false;
+    }
+
+    public boolean isHarvested() {
+        return isHarvested;
+    }
+
+    public void setHarvested(boolean harvested) {
+        isHarvested = harvested;
     }
 
     public int getDaySinceLastWater() {
