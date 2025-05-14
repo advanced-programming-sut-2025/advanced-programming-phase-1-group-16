@@ -182,7 +182,15 @@ public class MapController {
                     builder.append(" "); // خارج از محدوده
                 } else {
                     if (map[i][j].getLocation().equals(Location.Farm)){
-                        builder.append(map[i][j].getType().getColorCode()).append(map[i][j].getType().getSymbol()).append("\033[0m");
+                        if (map[i][j].getTree() != null) {
+                            builder.append(TileType.Tree.getColorCode()).append(TileType.Tree.getSymbol()).append("\033[0m");
+                        } else if (map[i][j].getCrop() != null) {
+                            builder.append(TileType.Forage.getColorCode()).append(TileType.Forage.getSymbol()).append("\033[0m");
+                        } else if (map[i][j].getItem() != null) {
+                            builder.append(TileType.Stone.getColorCode()).append(TileType.Stone.getSymbol()).append("\033[0m");
+                        } else{
+                            builder.append(map[i][j].getType().getColorCode()).append(map[i][j].getType().getSymbol()).append("\033[0m");
+                        }
                     }
                     else {
                         builder.append(map[i][j].getType().getSymbol());
@@ -201,6 +209,20 @@ public class MapController {
             builder.append(tileType.name()).append("  :  ").append(tileType.getSymbol()).append("\n");
         }
         return new Result(true, builder.toString());
+    }
+
+    public static boolean isPlayerInFarm(Player currentPlayer) {
+        Pos start = currentPlayer.getFarm().getStartPosition();
+        Pos playerPos = currentPlayer.getPosition();
+        return playerPos.getX() > start.getX() &&
+                playerPos.getX() > start.getX() + currentPlayer.getFarm().getType().getWidth() &&
+                playerPos.getY() > start.getY() &&
+                playerPos.getY() > start.getY() + currentPlayer.getFarm().getType().getHeight();
+    }
+
+    public static boolean isPlayerInCottage(Player currentPlayer) {
+        Pos pos = currentPlayer.getPosition();
+        return App.getActiveGame().getMap()[pos.getY()][pos.getX()].getType() == TileType.Cottage;
     }
 
 
