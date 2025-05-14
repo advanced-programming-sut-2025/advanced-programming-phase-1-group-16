@@ -26,7 +26,7 @@ public class MilkPail extends  Gadget{
             return new Result(false, "Have you not eaten bread today?");
         }
         // باید چک بشه که دام درسته برای این کار
-        if () {
+        if (true) {
             //TODO نیلی
             player.decreaseEnergy(4);
             player.addFarmingAbilityScore(5);

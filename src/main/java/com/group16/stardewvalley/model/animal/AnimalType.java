@@ -32,4 +32,32 @@ public enum AnimalType {
         this.hasCoop = hasCoop;
     }
 
+    public static AnimalType animalTypeFromName(String animal) {
+        for (AnimalType type : AnimalType.values()) {
+            if (type.name.equalsIgnoreCase(animal)) {
+                return type;
+            }
+        }
+        return null;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean isHasCoop() {
+        return hasCoop;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public List<AnimalProductTypes> getProductList() {
+        return productList;
+    }
+
+    public Integer getProductPeriod() {
+        return productPeriod;
+    }
 }

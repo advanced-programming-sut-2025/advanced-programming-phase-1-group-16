@@ -1,6 +1,8 @@
 package com.group16.stardewvalley.model.app;
 
+import com.group16.stardewvalley.model.Shops.Building;
 import com.group16.stardewvalley.model.Weather.WeatherCondition;
+import com.group16.stardewvalley.model.animal.Animal;
 import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.map.TileType;
 import com.group16.stardewvalley.model.user.Player;
@@ -12,26 +14,21 @@ import java.util.ArrayList;
 public class Game {
     private ArrayList<Player> players = new ArrayList<>();
     private int currentPlayerIndex; //hamoon turn
-
     private final Player creator;
     private Player loader = null;
-
     private int turnsPassedInRound;   // counts up to players size
     private int turnsPassed;              // total rounds played
     private TimeDate timeDate;
-
-
     private Tile[][] map;
     private final int mapHeight = 200;
     private final int mapWidth = 300;
-
     private WeatherCondition weatherCondition;
     private WeatherCondition tomorrowWeatherCondition;
-
     public WeatherCondition getWeatherCondition() {
         return weatherCondition;
     }
-
+    public ArrayList<Animal> gameAnimals = new ArrayList<>();
+    public ArrayList<Building> buildings = new ArrayList<>();
 
     public Game(Player creator, ArrayList<Player> players) {
         this.creator = creator;
@@ -113,4 +110,12 @@ public class Game {
         return tomorrowWeatherCondition;
     }
 
+
+    public ArrayList<Animal> getGameAnimals() {
+        return gameAnimals;
+    }
+
+    public ArrayList<Building> getBuildings() {
+        return buildings;
+    }
 }

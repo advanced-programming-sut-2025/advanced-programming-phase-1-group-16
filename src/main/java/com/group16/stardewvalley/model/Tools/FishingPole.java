@@ -34,7 +34,7 @@ public class FishingPole extends Gadget{
         }
 
         // بتواند ماهی گیری کند ---> نیلی
-        if () {
+        if (true) {
             player.decreaseEnergy(requiredEnergy);
 
         }

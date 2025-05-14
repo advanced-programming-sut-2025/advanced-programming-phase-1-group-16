@@ -29,7 +29,7 @@ public class Shear extends Gadget{
         }
 
         // استفاده از قیچی روی دام
-        if () {
+        if (true) {
             //TODO نیلی
             player.decreaseEnergy(4);
             player.addFarmingAbilityScore(5); // پیام مناسب هم بذار یا بگو خودم بذارم

@@ -15,7 +15,7 @@ import java.util.prefs.BackingStoreException;
 
 import static com.group16.stardewvalley.controller.map.MapController.isPlayerInFarm;
 
-public class CarpentersShop extends com.group16.stardewvalley.model.shops.Shop {
+public class CarpentersShop extends Shop {
     public CarpentersShop() {
         super("Carpenter's Shop", "Robin", 9, 8);
     }
@@ -36,12 +36,12 @@ public class CarpentersShop extends com.group16.stardewvalley.model.shops.Shop {
         Game game = App.getActiveGame();
         Map<Item, Integer> items  = player.getInventory().getItems();
 
-            if(!isPlayerInFarm(player)){
+        //check if player is inside farm
+        if(!isPlayerInFarm(player)){
             return new Result(false, "You are not inside farm");
         }
 
-
-
+        //create building
         BuildingType buildingType = null;
         for (BuildingType type : BuildingType.values()) {
             if (type.getName().equalsIgnoreCase(buildingName)) {
@@ -49,24 +49,21 @@ public class CarpentersShop extends com.group16.stardewvalley.model.shops.Shop {
             }
         }
 
+        //check if name is valid
         if (buildingName == null) {
             return new Result(false, "no building found with the name " + buildingName);
         }
 
-
+        //check if ground is empty
         for (int i = y; i < y + buildingType.getLength() ; i++) {
             for (int j = x; j < x + buildingType.getWidth(); j++) {
                 if(game.getMap()[y][x].getItem() != null){
                     return new Result(false, "there is something on the ground");
                 }
-
             }
-
         }
 
-
-
-
+        //check if it has enough money
         if (player.getCoin() < buildingType.getCost()){
             return new Result(false, "you dont have enough coin");
         }
