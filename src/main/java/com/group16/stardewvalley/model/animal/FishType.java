@@ -7,7 +7,9 @@ public enum FishType {
     SALMON("Salmon", 75, Season.Fall, true),
     SARDINE("Sardine", 40, Season.Fall, true),
     SHAD("Shad", 60, Season.Fall, true),
-    BLUE_DISCUS("Blue Discus", 120, Season.Fall, true), MIDNIGHT_CARP("Midnight Carp", 150, Season.Winter, true), SQUID("Squid", 80, Season.Winter, true),
+    BLUE_DISCUS("Blue Discus", 120, Season.Fall, true),
+    MIDNIGHT_CARP("Midnight Carp", 150, Season.Winter, true),
+    SQUID("Squid", 80, Season.Winter, true),
     TUNA("Tuna", 100, Season.Winter, true),
     PERCH("Perch", 55, Season.Winter, true),
     FLOUNDER("Flounder", 100, Season.Spring, true),
@@ -26,13 +28,28 @@ public enum FishType {
     private final String name;
     private final Integer price;
     private final Season season;
-    private final Boolean inNormal;  //true: normal - true : legendary
+    private final Boolean isNormal;  //true: normal - false : legendary
 
     FishType(String name, int price, Season season, Boolean isLegendary) {
         this.name = name;
         this.price = price;
         this.season = season;
-        this.inNormal = isLegendary;
+        this.isNormal = isLegendary;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public Season getSeason() {
+        return season;
+    }
+
+    public Boolean getIsNormal() {
+        return isNormal;
+    }
 }
