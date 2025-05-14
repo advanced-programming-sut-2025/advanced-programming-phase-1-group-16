@@ -1,6 +1,6 @@
 package com.group16.stardewvalley.model.food;
 
-import com.group16.stardewvalley.model.Items.Item;
+import com.group16.stardewvalley.model.items.Item;
 
 public class FoodIngredient extends Item {
     private Ingredient type;

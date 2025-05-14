@@ -1,6 +1,6 @@
 package com.group16.stardewvalley.model.food;
 
-import com.group16.stardewvalley.model.Items.Item;
+import com.group16.stardewvalley.model.items.Item;
 
 import java.util.Map;
 

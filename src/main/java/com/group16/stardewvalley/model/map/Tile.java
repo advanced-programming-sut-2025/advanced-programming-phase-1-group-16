@@ -10,15 +10,18 @@ import java.util.List;
 import java.util.Random;
 
 public class Tile {
-    private Random random = new Random();
+    private final Random random = new Random();
     private TileType type;
     private Item item;
     private Crop crop;
     private Tree tree;
     private Location location;
+    private boolean isFertilized;
+    private FertilizerType fertilizerType;
 
     public Tile(TileType tileType) {
         location = Location.Game;
+        isFertilized = false;
         if (tileType == TileType.Tree) {
             this.type = TileType.Ground;
             TreeType treeType = getRandomForagingTree();
@@ -53,9 +56,27 @@ public class Tile {
             this.type = tileType;
         }
     }
+
+    public FertilizerType getFertilizerType() {
+        return fertilizerType;
+    }
+
+    public void setFertilizerType(FertilizerType fertilizerType) {
+        this.fertilizerType = fertilizerType;
+    }
+
+    public boolean isFertilized() {
+        return isFertilized;
+    }
+
+    public void setFertilized(boolean fertilized) {
+        isFertilized = fertilized;
+    }
+
     public boolean isTileEmpty() {
         return item == null && crop == null && tree == null;
     }
+
     public CropType getRandomForagingSeed() {
         SeedType[] seeds = {
                 SeedType.JAZZ_SEEDS,

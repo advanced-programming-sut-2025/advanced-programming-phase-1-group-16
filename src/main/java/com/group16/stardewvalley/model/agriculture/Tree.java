@@ -11,6 +11,7 @@ public class Tree {
     private boolean isMature;
     private boolean isBurned;
     private boolean isWatered;
+    private boolean isWateredYesterday;
     private boolean isFertilized;
     private int daySinceLastWater;
 
@@ -28,7 +29,24 @@ public class Tree {
         this.isBurned = false;
         this.isWatered = false;
         this.isFertilized = false;
+        this.isWateredYesterday = true;
 
+    }
+
+    public boolean isWateredYesterday() {
+        return isWateredYesterday;
+    }
+
+    public void setWateredYesterday(boolean wateredYesterday) {
+        isWateredYesterday = wateredYesterday;
+    }
+
+    public boolean isFertilized() {
+        return isFertilized;
+    }
+
+    public void setFertilized(boolean fertilized) {
+        isFertilized = fertilized;
     }
 
     public void setDayPastFromPlanting(int dayPastFromPlanting) {
@@ -41,14 +59,6 @@ public class Tree {
 
     public void setDaySinceLastWater(int daySinceLastWater) {
         this.daySinceLastWater = daySinceLastWater;
-    }
-
-    public boolean isFertilized() {
-        return isFertilized;
-    }
-
-    public void setFertilized(boolean fertilized) {
-        isFertilized = fertilized;
     }
 
     public boolean isWatered() {

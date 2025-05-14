@@ -1,5 +1,6 @@
 package com.group16.stardewvalley.view;
 
+import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.menu.GameMenuCommands;
 import com.group16.stardewvalley.model.time.TimeDate;
 import com.group16.stardewvalley.view.menu.GameMenuInterface;
@@ -8,7 +9,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 
 public class TimeDateView implements GameMenuInterface {
-    private final TimeDate timeDate = new TimeDate();
+    private final TimeDate timeDate = new TimeDate(App.getActiveGame());
 
     @Override
     public void check(Scanner scanner) {

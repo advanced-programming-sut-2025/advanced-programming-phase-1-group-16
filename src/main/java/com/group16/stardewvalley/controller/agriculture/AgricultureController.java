@@ -122,6 +122,9 @@ public class AgricultureController {
                     return new Result(false, "Tree type not found");
                 }
                 Tree tree = new Tree(treeType);
+                if (targetTile.isFertilized()) {
+                    tree.setFertilized(true);
+                }
                 targetTile.setTree(tree);
                 break;
             case "CROP":
@@ -130,6 +133,9 @@ public class AgricultureController {
                     return new Result(false, "Crop type not found");
                 }
                 Crop crop = new Crop(cropType);
+                if (targetTile.isFertilized()) {
+                    crop.setFertilized(true);
+                }
                 targetTile.setCrop(crop);
                 break;
             default:
@@ -240,6 +246,10 @@ public class AgricultureController {
         if (fertilizerType == null) {
             return new Result(false, "Fertilizer type not found");
         }
+        Fertilizer fertilizer = App.getActiveGame().getCurrentPlayer().getInventory().getFertilizer(fertilizerName);
+        if (fertilizer == null) {
+            return new Result(false, "You don't have this fertilizer");
+        }
         Pos offset = getDirectionOffset(direction);
         if (offset == null) {
             return new Result(false, "Invalid direction");
@@ -251,16 +261,22 @@ public class AgricultureController {
             return new Result(false, "there is no tile");
         }
         Tile targetTile = App.getActiveGame().getMap()[playerPos.getY() + dirY][playerPos.getX() + dirX];
-        if (targetTile.getTree() == null || targetTile.getCrop() == null) {
-            return new Result(false, "No plant here");
+        if (targetTile.getType().equals(TileType.Plowed)){
+            targetTile.setFertilized(true);
+            targetTile.setFertilizerType(fertilizerType);
+            App.getActiveGame().getCurrentPlayer().getInventory().getItems().put(fertilizer, -1);
+            if (targetTile.getCrop() != null) {
+                if (fertilizerType.equals(FertilizerType.SPEED_GRO)) {
+                    targetTile.getCrop().advanceStage();
+                }
+                targetTile.getCrop().setFertilized(true);
+            }
+            if (targetTile.getTree() != null) {
+                targetTile.getTree().setFertilized(true);
+            }
+            return new Result(true, "the tile is fertilized");
         }
-        if (targetTile.getCrop() != null) {
-            targetTile.getCrop().setFertilized(true);
-        }
-        if (targetTile.getTree() != null) {
-            targetTile.getTree().setFertilized(true);
-        }
-        return new Result(true, "the plant is Fertilized");
+        return new Result(false, "the tile is not plowed!");
 
     }
 

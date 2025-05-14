@@ -13,9 +13,10 @@ public class Crop {
     private int daysSincePlanting;
     private boolean isHarvested;
     private boolean isWatered;
+    private boolean isWateredYesterday;
     private boolean isMature;
-    private boolean isFertilized;
     private boolean isColossal;
+    private boolean isFertilized;
 
     public Crop(CropType cropType) {
         this.cropType = cropType;
@@ -32,7 +33,29 @@ public class Crop {
         this.isWatered = false;
         this.isMature = false;
         this.isHarvested = false;
+        this.isColossal = false;
         this.isFertilized = false;
+        this.isWateredYesterday = true;
+    }
+
+    public boolean isWateredYesterday() {
+        return isWateredYesterday;
+    }
+
+    public void setWateredYesterday(boolean wateredYesterday) {
+        isWateredYesterday = wateredYesterday;
+    }
+
+    public void setColossal(boolean colossal) {
+        isColossal = colossal;
+    }
+
+    public boolean isFertilized() {
+        return isFertilized;
+    }
+
+    public void setFertilized(boolean fertilized) {
+        isFertilized = fertilized;
     }
 
     public boolean isHarvested() {
@@ -57,13 +80,6 @@ public class Crop {
 
     public boolean isColossal() {
         return isColossal;
-    }
-    public boolean isFertilized() {
-        return isFertilized;
-    }
-
-    public void setFertilized(boolean fertilized) {
-        isFertilized = fertilized;
     }
 
     public int getDaysSincePlanting() {
@@ -152,6 +168,8 @@ public class Crop {
         }
 
     }
+
+
 
 
 }

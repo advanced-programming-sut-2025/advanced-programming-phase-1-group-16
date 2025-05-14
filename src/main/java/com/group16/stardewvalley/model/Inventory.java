@@ -1,20 +1,15 @@
 package com.group16.stardewvalley.model;
 
 
-import com.group16.stardewvalley.model.Items.Item;
-import com.group16.stardewvalley.model.Tools.*;
-import com.group16.stardewvalley.model.agriculture.Seed;
+import com.group16.stardewvalley.model.items.Item;
+import com.group16.stardewvalley.model.agriculture.*;
 import com.group16.stardewvalley.model.Items.Seed;
 import com.group16.stardewvalley.model.Tools.Gadget;
-import com.group16.stardewvalley.model.agriculture.Crop;
-import com.group16.stardewvalley.model.agriculture.Seed;
-import com.group16.stardewvalley.model.agriculture.SeedType;
 import com.group16.stardewvalley.model.crafting.CraftingRecipes;
 import com.group16.stardewvalley.model.user.BackPackType;
 import com.group16.stardewvalley.model.food.Food;
 import com.group16.stardewvalley.model.food.FoodIngredient;
 import com.group16.stardewvalley.model.food.Ingredient;
-import com.group16.stardewvalley.model.tools.*;
 import com.group16.stardewvalley.model.agriculture.Crop;
 
 import java.util.ArrayList;
@@ -137,6 +132,17 @@ public class Inventory {
             if (item instanceof Food food) {
                 if (food.getName().equalsIgnoreCase(foodName)) {
                     return food;
+                }
+            }
+        }
+        return null;
+    }
+
+    public Fertilizer getFertilizer(String name) {
+        for (Item item : items.keySet()) {
+            if (item instanceof Fertilizer fertilizer) {
+                if (fertilizer.getName().equalsIgnoreCase(name)) {
+                    return fertilizer;
                 }
             }
         }

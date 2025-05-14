@@ -1,7 +1,11 @@
 package com.group16.stardewvalley.model.time;
 
 import com.group16.stardewvalley.model.Result;
+import com.group16.stardewvalley.model.agriculture.Crop;
+import com.group16.stardewvalley.model.agriculture.Tree;
+import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
+import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.user.Player;
 
 
@@ -18,7 +22,7 @@ public class TimeDate {
     private Season currentSeason;
     private DaysOfWeek currentDayOfWeek;
 
-    private TimeDate(Game game) {
+    public TimeDate(Game game) {
         this.game = game;
         //initialize
         this.hour = 9;
@@ -68,6 +72,38 @@ public class TimeDate {
 
             if (nextSeasonIndex == 0) { // اگر از زمستان به بهار برگشتیم
                 year++;
+            }
+        }
+
+        //رشد دادن گیاهان کاشته شده
+        for (int i = 0; i < game.getMapHeight(); i++) {
+            for (int j = 0; j < game.getMapWidth(); j++) {
+                Tile tile = game.getMap()[i][j];
+                if (tile.getCrop() != null && !tile.getCrop().isMature()) {
+                    tile.getCrop().advanceStage();
+                    if (!tile.getCrop().isWateredYesterday() && !tile.getCrop().isWatered()) {
+                        tile.setCrop(null);
+                    }
+                    if (tile.getCrop().isWatered()) {
+                        tile.getCrop().setWateredYesterday(true);
+                        tile.getCrop().setWatered(false);
+                    } else {
+                        tile.getCrop().setWateredYesterday(false);
+                    }
+                }
+
+                if (tile.getTree() != null && !tile.getTree().isMature()) {
+                    tile.getTree().advanceStage();
+                    if (!tile.getTree().isWateredYesterday() && !tile.getTree().isWatered()) {
+                        tile.setTree(null);
+                    }
+                    if (tile.getTree().isWatered()) {
+                        tile.getTree().setWateredYesterday(true);
+                        tile.getTree().setWatered(false);
+                    } else {
+                        tile.getTree().setWateredYesterday(false);
+                    }
+                }
             }
         }
 
