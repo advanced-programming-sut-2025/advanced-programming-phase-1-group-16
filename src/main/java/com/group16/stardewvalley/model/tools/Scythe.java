@@ -36,7 +36,11 @@ public class Scythe extends Gadget{
             }
             if (!targetTile.getCrop().isColossal()) {
                 player.getInventory().addCrop(targetTile.getCrop(), 1);
-                targetTile.setCrop(null);
+                if (targetTile.getCrop().getCropType().isOneTime()){
+                    targetTile.setCrop(null);
+                } else {
+                    targetTile.getCrop().setHarvested(true);
+                }
                 player.decreaseEnergy(2);
                 player.addFarmingAbilityScore(5);
             } else {
