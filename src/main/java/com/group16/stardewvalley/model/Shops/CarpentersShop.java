@@ -7,6 +7,7 @@ import com.group16.stardewvalley.model.app.Game;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.items.Stone;
 import com.group16.stardewvalley.model.items.Wood;
+import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.user.Player;
 
 import java.util.HashMap;
@@ -91,7 +92,8 @@ public class CarpentersShop extends Shop {
         }
 
         //everything ok, lets build
-        Item newBuilding = new Building(buildingType.getName(), buildingType);
+        Pos buildingPos = new Pos(x, y);
+        Item newBuilding = new Building(buildingType.getName(), buildingType, buildingPos);
 
         //remove wood/stone from inventory
 
