@@ -1,49 +1,49 @@
 package com.group16.stardewvalley.model.Tools;
 
+import com.group16.stardewvalley.model.Result;
+import com.group16.stardewvalley.model.app.Game;
+import com.group16.stardewvalley.model.map.Tile;
+import com.group16.stardewvalley.model.map.TileType;
+import com.group16.stardewvalley.model.user.Player;
+
 import java.util.Map;
 
 public class Hoe extends Gadget {
 
-    public Hoe(String nam, String material) {
-        this.name = nam;
+    public Hoe(String name, String material) {
+        super(name);
         this.material = material;
     }
 
-//TODO
     public int getPrice() {
-        try {
-            // دسترسی به داده‌های ابزارها از ToolDataManager
-//            Map<String, Object> toolsMap = ToolDataManager.getToolsData();
-//            Map<String, Object> hoesMap = (Map<String, Object>) toolsMap.get("tools").get("hoes");
+       return ToolDataManager.getToolPrice("Hoe", this.material);
+    }
 
-//            // بررسی وجود قیمت مستقیم برای hoe
-//            if (hoesMap.containsKey("price")) {
-//                return (int) hoesMap.get("price");
-//            }
-//
-//            // اگر قیمت وابسته به متریال است
-//            if (hoesMap.containsKey("material")) {
-//                Map<String, Object> materials = (Map<String, Object>) hoesMap.get("material");
-//                Map<String, Object> materialData = (Map<String, Object>) materials.get(this.material.toLowerCase());
-//
-//                if (materialData != null && materialData.containsKey("price")) {
-//                    return (int) materialData.get("price");
-//                }
-//            }
+    public int getEnoughLevel() {
+        // In your JSON, enoughLevel is only defined for fishing pole
+        // You might want to add it for hoes too or return a default value
+        return 0; // Default level
+    }
 
-            return 0; // قیمت پیش‌فرض اگر پیدا نشد
-        } catch (Exception e) {
-            throw new RuntimeException("Error getting price for hoe with material " + this.material, e);
+    public int getConsumptionEnergy() {
+       return ToolDataManager.getEnergyConsumption("Hoe", this.material);
+    }
+
+    public Result use(Tile targetTile, Game game) {
+        Player player = game.getCurrentPlayer();
+        if (player.getEnergy() < this.getConsumptionEnergy()) {
+            player.decreaseEnergy(this.getConsumptionEnergy());
+            player.faint();
+            return new Result(false, "Have you not eaten bread today?");
         }
 
-//    public int getEnoughLevel() {
-//
-//    }
-//
-//    public void getConsumptionEnergy() {
-//
-//    }
+        if (targetTile.getType() != TileType.Ground) {
+            player.decreaseEnergy(this.getConsumptionEnergy());
+            return new Result(false, "Invalid operation: Hoe can only be used on empty dirt!");
+        }
 
-
-}
+        targetTile.setType(TileType.Plowed);
+        player.decreaseEnergy(this.getConsumptionEnergy());
+        return new Result(true, "Success! Dirt dug up cleanly.");
+    }
 }

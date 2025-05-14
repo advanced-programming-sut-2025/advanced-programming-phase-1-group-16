@@ -1,8 +1,8 @@
 package com.group16.stardewvalley.model;
 
 
-import com.group16.stardewvalley.model.Items.Item;
-import com.group16.stardewvalley.model.Items.Seed;
+import com.group16.stardewvalley.model.items.Item;
+import com.group16.stardewvalley.model.items.Seed;
 import com.group16.stardewvalley.model.Tools.Gadget;
 import com.group16.stardewvalley.model.agriculture.SeedType;
 import com.group16.stardewvalley.model.crafting.CraftingRecipes;

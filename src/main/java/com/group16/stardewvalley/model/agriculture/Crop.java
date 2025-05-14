@@ -9,11 +9,9 @@ public class Crop {
     private final int finalStage;
     private int dayPastFromLastStage;
     private int daysSinceLastHarvest;
-    private int daySinceLastWater;
-    private int daysSincePlanting;
     private boolean isWatered;
     private boolean isMature;
-    private boolean isFertilized;
+    private boolean isColossal;
 
     public Crop(CropType cropType) {
         this.cropType = cropType;
@@ -25,35 +23,12 @@ public class Crop {
         this.stage = 0;
         this.dayPastFromLastStage = 0;
         this.daysSinceLastHarvest = 0;
-        this.daySinceLastWater = 0;
-        this.daysSincePlanting = 0;
         this.isWatered = false;
         this.isMature = false;
-        this.isFertilized = false;
     }
 
-    public int getDaySinceLastWater() {
-        return daySinceLastWater;
-    }
-
-    public void setDaySinceLastWater(int daySinceLastWater) {
-        this.daySinceLastWater = daySinceLastWater;
-    }
-
-    public void setDaysSincePlanting(int daysSincePlanting) {
-        this.daysSincePlanting = daysSincePlanting;
-    }
-
-    public boolean isFertilized() {
-        return isFertilized;
-    }
-
-    public void setFertilized(boolean fertilized) {
-        isFertilized = fertilized;
-    }
-
-    public int getDaysSincePlanting() {
-        return daysSincePlanting;
+    public boolean isColossal() {
+        return isColossal;
     }
 
     public CropType getCropType() {
@@ -127,7 +102,6 @@ public class Crop {
     public void advanceStage() {
         if (!isMature) {
             dayPastFromLastStage++;
-            daysSincePlanting++;
             if (dayPastFromLastStage >= cropType.getStages()[stage]) {
                 stage++;
                 if (stage == finalStage) {
@@ -141,4 +115,3 @@ public class Crop {
 
 
 }
-

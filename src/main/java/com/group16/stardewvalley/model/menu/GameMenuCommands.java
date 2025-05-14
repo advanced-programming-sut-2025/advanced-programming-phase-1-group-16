@@ -29,10 +29,23 @@ public enum GameMenuCommands implements CommandsInterface{
     Season("season"),
 
     //shop commands
-    ShopBuildCoopBarn("\\S*build\\s+-a\\s+(?<buildingName>\\S+)\\s+-l\\s+(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*");
+    ShopBuildCoopBarn("^\\S*build\\s+-a\\s+(?<buildingName>\\S+)\\s+-l\\s+(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*$"),
+    BuyAnimal("^buy\\s+animal\\s+-a\\s+(?<animal>\\S+)\\s+-n\\s+(?<name>\\S+)\\s*$ "),
+    ShowAllProducts("^\\s*show\\s*all\\s*products\\s*$"),
+    ShowAllAvailableProducts("^\\s*show\\s*all*available\\s*products\\s*$"),
+    Purchase("^\\s*purchase\\s*(?<productName>\\S+)(?:\\s+-n\\s+(?<count>\\d+))?\\s*$"),
 
-
-    //
+    // relationship commands
+    Friendship("^\\s*friendship\\s*$"),
+    Talk("^\\s*talk\\s*-u\\s*(?<username>\\S+)\\s*-m\\s*(?<message>.+?)$"),
+    TalkHistory("^\\s*talk\\s*$"),
+    Gift("^\\s*gift\\s*-u\\s*(?<username>\\S+)\\s*-i\\s*(?<itemName>\\S+)\\s*-a\\s*(?<amount>\\d+)\\s*$"),
+    GiftList("^\\s*gift\\s*list\\s*$"),
+    GiftRate("^\\s*gift\\s*rate\\s*-i\\s*(?<giftNumber>\\d+)\\s*\\s*$"),
+    GiftHistory("^\\s*gift\\s*history\\s*-u\\s*(?<username>\\S+)\\s*$"),
+    Hug("^\\s*hug\\s*-u\\s*(?<username>\\S+)\\s*$"),
+    Flower("^\\s*flower\\s*-u\\s*(?<username>\\S+)\\s*$"),
+    AskMarriage("^\\s*ask\\s*marriage\\s*-u\\s*(?<username>\\S+)\\s*-r\\s*(?<ring>\\S+)\\s*$");
 
 
     private final String pattern;

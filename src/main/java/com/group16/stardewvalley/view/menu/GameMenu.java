@@ -4,6 +4,8 @@ package com.group16.stardewvalley.view.menu;
 import com.group16.stardewvalley.controller.map.MapController;
 import com.group16.stardewvalley.controller.menu.GameMenuController;
 import com.group16.stardewvalley.model.Result;
+import com.group16.stardewvalley.model.Shops.CarpentersShop;
+import com.group16.stardewvalley.model.Shops.MarniesRanch;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.menu.GameMenuCommands;
 import com.group16.stardewvalley.model.menu.LoginMenuCommands;
@@ -20,7 +22,8 @@ public class GameMenu implements GameMenuInterface {
     private final GameMenuController controller = new GameMenuController();
     private final MapController mapController = new MapController();
     private final TimeDate timeDate = new TimeDate();
-
+    private final CarpentersShop carpentersShop = new CarpentersShop();
+    private final MarniesRanch marniesRanch = new MarniesRanch();
 
     @Override
     public void check(Scanner scanner) {
@@ -126,9 +129,14 @@ public class GameMenu implements GameMenuInterface {
 
 
 
+    //Shop
+        else if ((matcher = GameMenuCommands.ShopBuildCoopBarn.getMatcher(input)) != null ){
+            System.out.println(carpentersShop.buildCoop_Barn(matcher.group("buildingName"),
+                    Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
 
-
-
+        }else if ((matcher = GameMenuCommands.BuyAnimal.getMatcher(input)) != null ){
+            System.out.println(marniesRanch.buyAnimal(matcher.group("animal"), matcher.group("name")));
+        }
 
 
 

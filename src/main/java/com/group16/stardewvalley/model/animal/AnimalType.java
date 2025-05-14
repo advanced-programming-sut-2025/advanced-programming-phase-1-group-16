@@ -1,4 +1,4 @@
-package com.group16.stardewvalley.model.animal3;
+package com.group16.stardewvalley.model.animal;
 
 import java.util.List;
 

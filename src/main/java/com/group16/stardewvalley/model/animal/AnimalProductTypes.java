@@ -1,4 +1,4 @@
-package com.group16.stardewvalley.model.animal3;
+package com.group16.stardewvalley.model.animal;
 
 public enum AnimalProductTypes {
     HEN_EGG("hen egg",50),

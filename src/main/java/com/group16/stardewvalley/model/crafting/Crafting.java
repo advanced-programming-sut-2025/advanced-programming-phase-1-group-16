@@ -2,7 +2,7 @@ package com.group16.stardewvalley.model.crafting;
 
 import com.group16.stardewvalley.model.Inventory;
 import com.group16.stardewvalley.model.Result;
-import com.group16.stardewvalley.model.Items.Item;
+import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.map.Direction;
 import com.group16.stardewvalley.model.user.Player;
@@ -35,7 +35,7 @@ public class Crafting {
         Map<Item, Integer> inventoryItems = player.getPlayerInventory().getItems();  // Inventory content
 
         if (!isInsideHouse(App.getActiveGame().getCurrentPlayer())) {
-            return new Result(false, "You are not inside your house !");
+            return new Result(false, "You are not inside your house!");
         }
 
         for (CraftingRecipes recipe : CraftingRecipes.values()) {
