@@ -91,11 +91,9 @@ public enum SeedType {
     POWDERMELON_SEEDS("Powdermelon Seeds", 20, 10, -1,List.of(Season.Winter), "CROP"),
 
     //atena add for crop:
-    GARLIC_SEEDS("Garlic Seeds", 50, 5, -1, List.of(Season.Spring), "CROP"),
     BLUEBERRY_SEEDS("Blueberry Seeds", 100, 5, 120, List.of(Season.Spring), "CROP"),
     PINEAPPLE_SEEDS("Pineapple Seeds", 50, 5, -1, List.of(Season.Spring), "CROP"),
     ARTICHOKE_SEEDS("Archook Seeds", 50, 5, 45, List.of(Season.Spring), "CROP"),
-    RED_CABBAGE_SEEDS("red Cabbage Seeds", 100, 5, -1, List.of(Season.Spring), "CROP"),
     //tree
     APRICOT_SAPLING("Apricot Sapling", 50, 5, -1, List.of(Season.Spring), "TREE"),
     CHERRY_SAPLING("Cherry Sapling", 50, 5, -1, List.of(Season.Spring), "TREE"),
@@ -111,7 +109,7 @@ public enum SeedType {
     MAHOGANY_SEEDS("Mahogany Seeds", 50, 5, -1, List.of(Season.Spring), "TREE"),
     MUSHROOM_TREE_SEEDS("Mushroom Tree", 50, 5, -1, List.of(Season.Spring), "TREE"),
     MYSTIC_TREE_SEEDS("Mystic Tree", 50, 5, -1, List.of(Season.Spring), "TREE"),
-    MIXED_SEED("Mixed seed", 50, 5, List.of(Season.Special), "TREE");
+    MIXED_SEED("Mixed seed", 50, 5, -1, List.of(Season.Special), "TREE");
 
 
     private final String name;
@@ -151,7 +149,7 @@ public enum SeedType {
     }
 
     public int getOutOfSeasonPrice() {
-
+        return outOfSeasonPrice;
     }
 
 }
