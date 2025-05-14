@@ -47,6 +47,7 @@ public class Crop {
 
     public boolean isColossal() {
         return isColossal;
+    }
     public boolean isFertilized() {
         return isFertilized;
     }
