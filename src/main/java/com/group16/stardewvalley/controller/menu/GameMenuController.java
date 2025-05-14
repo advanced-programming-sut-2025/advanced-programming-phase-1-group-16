@@ -82,7 +82,6 @@ public class GameMenuController {
         }
     }
 
-//TODO
     public void randomItems(Farm farm){
         Random random = new Random();
         int totalTiles = farm.getType().getHeight() * farm.getType().getWidth();
