@@ -1,9 +1,7 @@
 package com.group16.stardewvalley.model.user;
 
 import com.group16.stardewvalley.model.Inventory;
-//import com.group16.stardewvalley.model.Shops.Shop;
 import com.group16.stardewvalley.model.items.Item;
-import com.group16.stardewvalley.model.Shops.Shop;
 import com.group16.stardewvalley.model.Tools.Gadget;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.map.Farm;

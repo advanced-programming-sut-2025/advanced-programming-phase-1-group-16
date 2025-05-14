@@ -1,6 +1,7 @@
 package com.group16.stardewvalley.model.agriculture;
 
 import com.group16.stardewvalley.model.time.Season;
+import com.group16.stardewvalley.model.Seeds.*;
 
 public enum TreeType {
     APRICOT("Apricot Tree", SeedType.APRICOT_SAPLING, new int[]{7, 7, 7, 7}, 28,
@@ -46,7 +47,7 @@ public enum TreeType {
             "Mystic Syrup", 7, 1000, true, 500, 225, Season.Special);
 
     private final String name;
-    private final SeedType seed;
+    private final SeedType sapling;
     private final int[] growthStages;
     private final int totalGrowthTime;
     private final String fruitName;
@@ -57,11 +58,11 @@ public enum TreeType {
     private final int health;
     private final Season season;
 
-    TreeType(String name, SeedType seed, int[] growthStages, int totalGrowthTime,
+    TreeType(String name, SeedType sapling, int[] growthStages, int totalGrowthTime,
              String fruitName, int fruitCycleDays, int fruitSellPrice,
              boolean isEdible, int energy, int health, Season season) {
         this.name = name;
-        this.seed = seed;
+        this.sapling = sapling;
         this.growthStages = growthStages;
         this.totalGrowthTime = totalGrowthTime;
         this.fruitName = fruitName;
@@ -109,12 +110,11 @@ public enum TreeType {
         return totalGrowthTime;
     }
 
-    public SeedType getSeed() {
-        return seed;
+    public SeedType getSapling() {
+        return sapling;
     }
 
     public int[] getGrowthStages() {
         return growthStages;
     }
 }
-

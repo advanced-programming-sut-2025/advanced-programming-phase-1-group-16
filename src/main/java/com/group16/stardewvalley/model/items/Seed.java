@@ -1,4 +1,4 @@
-package com.group16.stardewvalley.model.Items;
+package com.group16.stardewvalley.model.items;
 
 public class Seed extends Item {
     private SeedType type;
@@ -6,9 +6,5 @@ public class Seed extends Item {
     Seed(String name, SeedType type) {
         super(name);
         this.type = type;
-    }
-
-    public SeedType getSeedType() {
-        return type;
     }
 }

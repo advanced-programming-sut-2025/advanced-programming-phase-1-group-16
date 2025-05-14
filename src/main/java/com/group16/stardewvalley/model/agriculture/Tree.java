@@ -1,18 +1,14 @@
 package com.group16.stardewvalley.model.agriculture;
 
-public class Tree {
+public class Tree extends PlantedSeed {
     private final TreeType treeType;
     private final int totalHarvestTime;
     private int fruitSellPrice;
     private int dayPastFromLastHarvest;
     private int dayPastFromLastStage;
-    private int dayPastFromPlanting;
     private int stage;
     private boolean isMature;
     private boolean isBurned;
-    private boolean isWatered;
-    private boolean isFertilized;
-    private int daySinceLastWater;
 
 
     public Tree(TreeType type) {
@@ -21,42 +17,10 @@ public class Tree {
         this.fruitSellPrice = type.getFruitSellPrice();
         this.dayPastFromLastHarvest = 0;
         this.dayPastFromLastStage = 0;
-        this.dayPastFromPlanting = 0;
-        this.daySinceLastWater = 0;
         this.stage = 0;
         this.isMature = false;
         this.isBurned = false;
-        this.isWatered = false;
-        this.isFertilized = false;
 
-    }
-
-    public void setDayPastFromPlanting(int dayPastFromPlanting) {
-        this.dayPastFromPlanting = dayPastFromPlanting;
-    }
-
-    public int getDaySinceLastWater() {
-        return daySinceLastWater;
-    }
-
-    public void setDaySinceLastWater(int daySinceLastWater) {
-        this.daySinceLastWater = daySinceLastWater;
-    }
-
-    public boolean isFertilized() {
-        return isFertilized;
-    }
-
-    public void setFertilized(boolean fertilized) {
-        isFertilized = fertilized;
-    }
-
-    public boolean isWatered() {
-        return isWatered;
-    }
-
-    public void setWatered(boolean watered) {
-        isWatered = watered;
     }
 
     public TreeType getTreeType() {
@@ -79,24 +43,12 @@ public class Tree {
         isMature = mature;
     }
 
-    public int getDayPastFromLastStage() {
-        return dayPastFromLastStage;
-    }
-
-    public void setDayPastFromLastStage(int dayPastFromLastStage) {
-        this.dayPastFromLastStage = dayPastFromLastStage;
-    }
-
     public int getDayPastFromLastHarvest() {
         return dayPastFromLastHarvest;
     }
 
     public void setDayPastFromLastHarvest(int dayPastFromLastHarvest) {
         this.dayPastFromLastHarvest = dayPastFromLastHarvest;
-    }
-
-    public int getDayPastFromPlanting() {
-        return dayPastFromPlanting;
     }
 
     public int getTotalHarvestTime() {
@@ -122,7 +74,6 @@ public class Tree {
     public void advanceStage() {
         if (!isMature) {
             dayPastFromLastStage++;
-            dayPastFromPlanting++;
             if (dayPastFromLastStage >= 7) {
                 stage++;
                 if (stage == 4) {

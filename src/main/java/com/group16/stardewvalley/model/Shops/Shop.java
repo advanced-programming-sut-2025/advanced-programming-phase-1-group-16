@@ -1,8 +1,11 @@
 package com.group16.stardewvalley.model.Shops;
 
-import com.group16.stardewvalley.model.Items.Item;
+import com.group16.stardewvalley.model.items.Item;
+import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.time.TimeDate;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,6 +16,8 @@ public abstract class Shop {
     private final Map<Item, Integer> soldToday = new HashMap<>();
     private final int START_TIME;
     private final int END_TIME;
+    private int balance;
+    private final TimeDate timeDate;
 
     public Shop(String shopName,
                 String shopkeeperName,
@@ -22,6 +27,8 @@ public abstract class Shop {
         this.shopkeeperName = shopkeeperName;
         this.START_TIME = START_TIME;
         this.END_TIME = END_TIME;
+        this.balance = 0;
+        timeDate = TimeDate.getInstance(App.getActiveGame());
     }
 
     public String getShopName() {
@@ -39,15 +46,76 @@ public abstract class Shop {
         return sold < limit;
     }
 
-    public Set<Item> getAvailableItems() {
-        return dailyLimit.keySet();
+    public void addBalance(int amount) {
+        balance += amount;
     }
 
-//    public void sellItem(Item item) {
-//        // ایا باید به موجودی فروشگاه ها اضافه شود یا اصلا لازم نداریم چنین چیزی
-//        if (canSell(item)) {
-//            soldToday.get(item)--;
-//        }
-//    }
+    public void sellItem(Item item) {
+
+        if (canSell(item)) {
+            int sold = soldToday.get(item);
+            soldToday.put(item, sold + 1);
+            addBalance(item.getPrice());    //**
+        }
+    }
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public void increaseBalance(int amount) {
+        balance += amount;
+    }
+
+    public void addItem(Item item, int dailyLimit) {
+        this.dailyLimit.put(item, dailyLimit);
+        this.soldToday.put(item, 0);
+    }
+
+    public boolean isOpen() {
+        return (START_TIME <= timeDate.getHour() && timeDate.getHour() <= END_TIME);
+    }
+
+    public Set<Item> getAvailableItems() {
+        Set<Item> availableItems = new HashSet<>();
+        for (Map.Entry<Item, Integer> entry : dailyLimit.entrySet()) {
+            Item item = entry.getKey();
+            int limit = entry.getValue();
+            int sold = soldToday.getOrDefault(item, 0);
+
+            if (sold < limit) {
+                availableItems.add(item);
+            }
+        }
+        return availableItems;
+    }
+
+    public Set<Item> getAllProducts() {
+        return new HashSet<>(dailyLimit.keySet());
+    }
+
+    public Item findItemByName(String itemName) {
+        if (itemName == null || itemName.isEmpty()) {
+            return null;
+        }
+
+        for (Item item : dailyLimit.keySet()) {
+            if (item.getName().equalsIgnoreCase(itemName)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    public int getAvailableCountForToday(Item item) {
+        if (!dailyLimit.containsKey(item)) {
+            return 0;
+        }
+
+        int limit = dailyLimit.get(item);
+        int sold = soldToday.getOrDefault(item, 0);
+
+        return limit - sold;
+    }
 
 }
