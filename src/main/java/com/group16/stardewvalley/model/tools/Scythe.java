@@ -12,7 +12,7 @@ public class Scythe extends Gadget{
     }
 
     public int getPrice() {
-        return ToolDataManager.getToolPrice("Scythe", this.material)
+        return ToolDataManager.getToolPrice("Scythe", this.material);
     }
 
     public int getConsumptionEnergy() {
@@ -31,12 +31,16 @@ public class Scythe extends Gadget{
 
         // فقط برداشت محصولات
         if (targetTile.getCrop() != null) {
+            if (!targetTile.getCrop().isMature()) {
+                return new Result(false, "The crop is not mature");
+            }
             if (!targetTile.getCrop().isColossal()) {
                 player.getInventory().addCrop(targetTile.getCrop(), 1);
+                targetTile.setCrop(null);
                 player.decreaseEnergy(2);
                 player.addFarmingAbilityScore(5);
             } else {
-                //TODO اتنا
+                //TODO محصولات غول پیکر
                 player.decreaseEnergy(2);
             }
         }
