@@ -91,6 +91,10 @@ public class GameMenu implements MenuInterface {
             System.out.println(mapController.helpReadingMap());
         } else if ((matcher = GameMenuCommands.CraftInfo.getMatcher(input)) != null){
             System.out.println(agricultureController.craftInfo(matcher.group("name")));
+        } else if ((matcher = GameMenuCommands.TreeInfo.getMatcher(input)) != null){
+            System.out.println(agricultureController.treeInfo(matcher.group("name")));
+        } else if ((matcher = GameMenuCommands.ForagingInfo.getMatcher(input)) != null){
+            System.out.println(agricultureController.foragingInfo(matcher.group("name")));
         } else if ((matcher = GameMenuCommands.PlantSeed.getMatcher(input)) != null){
             System.out.println(agricultureController.planting(matcher.group("seed"), matcher.group("dir")));
         } else if ((matcher = GameMenuCommands.ShowPlant.getMatcher(input)) != null){

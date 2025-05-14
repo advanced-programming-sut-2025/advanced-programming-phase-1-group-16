@@ -31,7 +31,9 @@ public enum GameMenuCommands implements CommandsInterface{
     //shop commands
     ShopBuildCoopBarn("\\S*build\\s+-a\\s+(?<buildingName>\\S+)\\s+-l\\s+(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*"),
 
-    CraftInfo("\\s*craftinfo -n (?<name>.+?)\\s*"),
+    CraftInfo("\\s*craft info -n (?<name>.+?)\\s*"),
+    TreeInfo("tree info -n (?<name>.+?)\\s*"),
+    ForagingInfo("foraging info -n (?<name>.+?)\\s*"),
     PlantSeed("plant -s (?<seed>.+?) -d (?<dir>.+?)"),
     ShowPlant("show plant -l (?<x>\\d+),\\s*(?<y>\\d+)"),
     Fertilize("fertilize -f (?<fertilizer>.+?) -d (?<dir>.+?))"),
