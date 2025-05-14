@@ -27,4 +27,18 @@ public class Pos {
 
 
 
+    //To check whether Pos1 is in the 8 neighboring tiles of Pos2.
+    public static boolean isNear(Pos pos1, Pos pos2) {
+        for (int dy = -1; dy <= 1; dy++) {
+            for (int dx = -1; dx <= 1; dx++) {
+                if (dx == 0 && dy == 0) continue; // skip the center (pos2 itself)
+                int newX = pos2.x + dx;
+                int newY = pos2.y + dy;
+                if (pos1.x == newX && pos1.y == newY) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
