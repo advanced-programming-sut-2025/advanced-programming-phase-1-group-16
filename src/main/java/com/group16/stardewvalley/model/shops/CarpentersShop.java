@@ -7,6 +7,7 @@ import com.group16.stardewvalley.model.app.Game;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.items.Stone;
 import com.group16.stardewvalley.model.items.Wood;
+import com.group16.stardewvalley.model.map.PlaceType;
 import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.user.Player;
 
@@ -18,7 +19,7 @@ import static com.group16.stardewvalley.controller.map.MapController.isPlayerInF
 
 public class CarpentersShop extends Shop {
     public CarpentersShop() {
-        super("Carpenter's Shop", "Robin", 9, 8);
+        super("Carpenter's Shop", "Robin", 9, 8, PlaceType.CarpentersShop);
     }
 
     public void initializeItems() {

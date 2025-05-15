@@ -7,6 +7,7 @@ import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.items.Stone;
+import com.group16.stardewvalley.model.map.PlaceType;
 import com.group16.stardewvalley.model.user.Player;
 
 import java.awt.geom.RectangularShape;
@@ -18,7 +19,7 @@ import static com.group16.stardewvalley.model.animal.AnimalType.animalTypeFromNa
 
 public class MarniesRanch extends Shop {
     public MarniesRanch() {
-        super("Marnie's Ranch", "Marnie", 9, 16);
+        super("Marnie's Ranch", "Marnie", 9, 16, PlaceType.MarniesRanch);
     }
 
     private MarniesRanchAnimals animals;

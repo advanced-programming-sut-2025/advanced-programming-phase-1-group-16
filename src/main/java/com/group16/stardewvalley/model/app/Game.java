@@ -1,5 +1,8 @@
 package com.group16.stardewvalley.model.app;
 
+import com.group16.stardewvalley.model.NPC.NPC;
+import com.group16.stardewvalley.model.NPC.NPCType;
+import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.shops.*;
 import com.group16.stardewvalley.model.weather.WeatherCondition;
 import com.group16.stardewvalley.model.animal.Animal;
@@ -7,6 +10,7 @@ import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.model.time.TimeDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Game {
     private ArrayList<Player> players = new ArrayList<>();
@@ -24,6 +28,7 @@ public class Game {
     private final int MAX_NATURETOURISMABILITY_LEVEL = 4;
     private final int MAX_FISHINGABILITY_LEVEL = 4;
     private final ArrayList<Shop> shops = new ArrayList<>();
+    private final List<NPC> NPCs;
     private WeatherCondition weatherCondition;
     private WeatherCondition tomorrowWeatherCondition;
 
@@ -44,6 +49,20 @@ public class Game {
         this.shops.add(new FishShop());
         this.shops.add(new MarniesRanch());
         this.shops.add(new TheStardropSaloon());
+        this.NPCs = new ArrayList<>();
+        NPCs.add(new NPC(NPCType.Sebastian));
+        NPCs.add(new NPC(NPCType.Abigail));
+        NPCs.add(new NPC(NPCType.Harvey));
+        NPCs.add(new NPC(NPCType.Leah));
+        NPCs.add(new NPC(NPCType.Robin));
+    }
+
+    public List<NPC> getNPCs() {
+        return NPCs;
+    }
+
+    public ArrayList<Shop> getShops() {
+        return shops;
     }
 
     public Blacksmith getBlacksmith() {

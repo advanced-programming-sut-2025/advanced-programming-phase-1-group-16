@@ -1,6 +1,7 @@
 package com.group16.stardewvalley.model.shops;
 
 import com.group16.stardewvalley.model.agriculture.SeedType;
+import com.group16.stardewvalley.model.map.PlaceType;
 
 import java.util.EnumMap;
 
@@ -12,7 +13,7 @@ public class JojaMart extends Shop{
     private final EnumMap<SeedType, Integer> winterStock = new EnumMap<>(SeedType.class);
 
     public JojaMart() {
-        super("JojaMart", "Morris", 9, 23);
+        super("JojaMart", "Morris", 9, 23, PlaceType.JojaMart);
         initializeItems();
     }
 

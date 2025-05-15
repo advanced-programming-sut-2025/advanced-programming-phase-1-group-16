@@ -1,16 +1,18 @@
 package com.group16.stardewvalley.controller.map;
 
+import com.group16.stardewvalley.model.NPC.NPC;
 import com.group16.stardewvalley.model.Result;
+import com.group16.stardewvalley.model.agriculture.Mineral;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
+import com.group16.stardewvalley.model.items.Stone;
 import com.group16.stardewvalley.model.map.*;
+import com.group16.stardewvalley.model.shops.Shop;
 import com.group16.stardewvalley.model.user.Player;
 
 import java.util.*;
 
 public class MapController {
-    Game game = App.getActiveGame();
-
     public void createMap() {
         Game game = App.getActiveGame();
         Tile[][] map = new Tile[game.getMapHeight()][game.getMapWidth()];
@@ -29,8 +31,16 @@ public class MapController {
         int index = 0;
         for (Player player : game.getPlayers()) {
             player.getFarm().setStartPosition(positions[index]);
+            int x, y;
+            Random r = new Random();
+            do {
+                x = r.nextInt(player.getFarm().getType().getWidth());
+                y = r.nextInt(player.getFarm().getType().getHeight());
+            } while (player.getFarm().getType().getTiles()[y][x] != TileType.Ground);
+            player.setPosition(new Pos(player.getFarm().getStartPosition().getX() + x,  player.getFarm().getStartPosition().getY() + y));
             index++;
         }
+
         for (Player player : game.getPlayers()) {
             for (int i = 0; i < player.getFarm().getType().getHeight()-1; i++) {
                 for (int j = 0; j < player.getFarm().getType().getWidth()-1; j++) {
@@ -40,12 +50,46 @@ public class MapController {
                 }
             }
         }
+
+        for (Shop shop : App.getActiveGame().getShops()) {
+            PlaceType placeType = shop.getPlaceType();
+            for (int i = 0; i < placeType.getHeight()-1; i++) {
+                for (int j = 0; j < placeType.getWidth()-1; j++) {
+                    map[i + placeType.getStartPosition().getY()][j + placeType.getStartPosition().getX()] =
+                            new Tile(placeType.getTiles()[i][j]);
+                    map[i + placeType.getStartPosition().getY()][j + placeType.getStartPosition().getX()].setLocation(getLocationByName(shop.getShopName()));
+                }
+            }
+        }
+        for (NPC npc : App.getActiveGame().getNPCs()) {
+            PlaceType placeType = npc.getNpcType().getPlaceType();
+            for (int i = 0; i < placeType.getHeight()-1; i++) {
+                for (int j = 0; j < placeType.getWidth()-1; j++) {
+                    map[i + placeType.getStartPosition().getY()][j + placeType.getStartPosition().getX()] =
+                            new Tile(placeType.getTiles()[i][j]);
+                    map[i + placeType.getStartPosition().getY()][j + placeType.getStartPosition().getX()].setLocation(Location.NPCFarm);
+                }
+            }
+        }
         game.setMap(map);
+    }
+
+    private Location getLocationByName(String name) {
+        return switch (name) {
+            case "Blacksmith" -> Location.Blacksmith;
+            case "Carpenter's Shop" -> Location.CarpentersShop;
+            case "Fish Shop" -> Location.FishShop;
+            case "JojaMart" -> Location.JojaMart;
+            case "Marnie's Ranch" -> Location.MarniesRanch;
+            case "Pierr's General Store" -> Location.PierresGeneralStore;
+            case "The Stardrop Saloon" -> Location.TheStardropSaloon;
+            default -> null;
+        };
     }
 
     public Result askWalking(int x, int y) {
         Pos dest = new Pos(x, y);
-        Player player = game.getCurrentPlayer();
+        Player player = App.getActiveGame().getCurrentPlayer();
 
         if (isInOtherPlayersFarm(dest, player, App.getActiveGame().getPlayers())) {
             return new Result(false, "Destination is inside another player's farm.");
@@ -61,7 +105,7 @@ public class MapController {
 
     public Result walk(int x, int y) {
         Pos dest = new Pos(x, y);
-        Player player = game.getCurrentPlayer();
+        Player player = App.getActiveGame().getCurrentPlayer();
 
         PathInfo pathInfo = calculatePathInfo(player.getPosition(), dest);
         if (!pathInfo.isValid()) {
@@ -84,7 +128,7 @@ public class MapController {
     }
 
     private PathInfo calculatePathInfo(Pos start, Pos dest) {
-        Tile[][] map = game.getMap(); // فرض بر این است که map حالا از نوع Tile[][] است
+        Tile[][] map = App.getActiveGame().getMap(); // فرض بر این است که map حالا از نوع Tile[][] است
         int height = map.length;
         int width = map[0].length;
 
@@ -179,23 +223,41 @@ public class MapController {
         for (int i = y; i < y + size; i++) {
             for (int j = x; j < x + size; j++) {
                 if (i < 0 || j < 0 || i >= height || j >= width) {
-                    builder.append(" "); // خارج از محدوده
-                } else {
-                    if (map[i][j].getLocation().equals(Location.Farm)){
-                        if (map[i][j].getTree() != null) {
-                            builder.append(TileType.Tree.getColorCode()).append(TileType.Tree.getSymbol()).append("\033[0m");
-                        } else if (map[i][j].getCrop() != null) {
-                            builder.append(TileType.Forage.getColorCode()).append(TileType.Forage.getSymbol()).append("\033[0m");
-                        } else if (map[i][j].getItem() != null) {
-                            builder.append(TileType.Stone.getColorCode()).append(TileType.Stone.getSymbol()).append("\033[0m");
-                        } else{
-                            builder.append(map[i][j].getType().getColorCode()).append(map[i][j].getType().getSymbol()).append("\033[0m");
-                        }
-                    }
-                    else {
-                        builder.append(map[i][j].getType().getSymbol());
+                    builder.append(" ");
+                    continue;
+                }
+
+                boolean playerDrawn = false;
+                for (Player player : App.getActiveGame().getPlayers()) {
+                    if (player.getPosition().getY() == i && player.getPosition().getX() == j) {
+                        builder.append("\u001B[31m@\u001B[0m");
+                        playerDrawn = true;
+                        break; // چون پلیر پیدا شد، بقیه پلیرها مهم نیستن
                     }
                 }
+
+                if (playerDrawn) continue; // اگر پلیر چاپ شد، بقیه‌ی شرط‌ها رو چک نکن
+
+                if (map[i][j].getLocation().equals(Location.Farm)){
+                    if (map[i][j].getTree() != null) {
+                        builder.append(TileType.Tree.getColorCode()).append(TileType.Tree.getSymbol()).append("\033[0m");
+                    } else if (map[i][j].getCrop() != null) {
+                        builder.append(TileType.Forage.getColorCode()).append(TileType.Forage.getSymbol()).append("\033[0m");
+                    } else if (map[i][j].getItem() != null && map[i][j].getItem() instanceof Stone) {
+                        builder.append(TileType.Stone.getColorCode()).append(TileType.Stone.getSymbol()).append("\033[0m");
+                    } else if (map[i][j].getItem() != null && map[i][j].getItem() instanceof Mineral) {
+                        builder.append(TileType.MineralForage.getColorCode()).append(TileType.MineralForage.getSymbol()).append("\033[0m");
+                    } else{
+                        builder.append(map[i][j].getType().getColorCode()).append(map[i][j].getType().getSymbol()).append("\033[0m");
+                    }
+                }
+                else if (map[i][j].getLocation().equals(Location.Game)) {
+                    builder.append(map[i][j].getType().getSymbol());
+                }
+                else {
+                    builder.append(map[i][j].getType().getColorCode()).append(map[i][j].getType().getSymbol()).append("\033[0m");
+                }
+
             }
             builder.append("\n");
         }

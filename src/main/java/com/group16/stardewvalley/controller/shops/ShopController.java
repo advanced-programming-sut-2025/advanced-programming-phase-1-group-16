@@ -21,10 +21,8 @@ public class ShopController {
         this.game = App.getActiveGame();
     }
 
-    private Player currentPlayer = App.getActiveGame().getCurrentPlayer();
-
-
     public Result handleCommand(String command, Matcher matcher) {
+        Player currentPlayer = App.getActiveGame().getCurrentPlayer();
         String[] parts = command.split(" ");
         Location l = game.getCurrentPlayer().getLocation().getLocation();
         // در اینجا باید اگر در این مغازه نبود ارور بدیم
@@ -135,6 +133,7 @@ public class ShopController {
     }
 
     private Result handlePurchase(Location location, Matcher matcher) {
+        Player currentPlayer = App.getActiveGame().getCurrentPlayer();
         String productName = matcher.group("productName");
         String countStr = matcher.group("count");
         int count;

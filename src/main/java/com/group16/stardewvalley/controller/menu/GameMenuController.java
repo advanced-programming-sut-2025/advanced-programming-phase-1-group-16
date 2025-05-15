@@ -2,6 +2,7 @@ package com.group16.stardewvalley.controller.menu;
 
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
+import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.map.TileType;
 import com.group16.stardewvalley.model.menu.GameMenuCommands;
 import com.group16.stardewvalley.model.menu.Menu;

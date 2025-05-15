@@ -66,7 +66,7 @@ public class GameMenu implements MenuInterface {
             System.out.println(controller.exit());
 
         }
-        else if( (matcher = GameMenuCommands.ForceTerminateVote.getMatcher(input)) != null){
+        else if(App.getActiveGame() != null && (matcher = GameMenuCommands.ForceTerminateVote.getMatcher(input)) != null){
             Map<Player, Boolean> votes = new HashMap<Player, Boolean>();
             votes.put(App.getActiveGame().getCurrentPlayer(), true);
             System.out.println("vote in turn! (true/false)");
