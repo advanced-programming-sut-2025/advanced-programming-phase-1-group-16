@@ -111,6 +111,8 @@ public class ShopController {
         int count = Integer.parseInt(countStr);
 
         // قابلیت فروش نداشته باشد
+        // چی هست این شرط اصلا
+        return new Result(true, "nothing here yet");
 
     }
 
@@ -226,6 +228,8 @@ public class ShopController {
         // اپگرید کند
        game.getBlacksmith().increaseBalance(upgradeCost);
       currentPlayer.decreaseCoin(upgradeCost);
+      currentTool.setMaterial(getNextMaterial(currentMaterial));
+      return new Result(true, "Upgrade complete! Your new material is : " + currentTool.getMaterial());
 
     }
 
@@ -249,5 +253,6 @@ public class ShopController {
         if (currentMaterial.equalsIgnoreCase("Iridium")) {
             return null;
         }
+        else return null;
     }
 }
