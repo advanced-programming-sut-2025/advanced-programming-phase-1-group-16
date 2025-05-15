@@ -23,4 +23,11 @@ public enum AnimalProductTypes {
         this.price = price;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
 }

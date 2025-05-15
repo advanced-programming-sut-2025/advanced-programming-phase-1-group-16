@@ -6,8 +6,8 @@ import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.user.Player;
 
 public class Animal {
-    private AnimalType animalType;
-    private MarniesRanchAnimals fromShopType;
+    private final AnimalType animalType;
+    private final MarniesRanchAnimals fromShopType;
     private Pos animalPos;
     private AnimalProductTypes todayProduct;
     private Integer friendship;
@@ -16,7 +16,10 @@ public class Animal {
     private final String name;
     private boolean isOut;
     private boolean isAnimalStayOutAllNight = false;
+    private boolean haveFedWithHayToday = false;
     private Player owner;
+
+    private boolean havePickedProducts = false;
 
     public Animal(MarniesRanchAnimals fromShopType, AnimalType animalType, String name, Player owner ) {
         this.fromShopType = fromShopType;
@@ -45,14 +48,31 @@ public class Animal {
 
 
 
+
     //getter and setter
 
+
+    public boolean haveFedWithHayToday() {
+        return haveFedWithHayToday;
+    }
+
+    public void setHaveFedWithHayToday(boolean haveFedWithHayToday) {
+        this.haveFedWithHayToday = haveFedWithHayToday;
+    }
+
+    public boolean havePickedProducts() {
+        return havePickedProducts;
+    }
+
+    public void setHavePickedProducts(boolean havePickedProducts) {
+        this.havePickedProducts = havePickedProducts;
+    }
 
     public boolean isOut() {
         return isOut;
     }
 
-    public void setOut(boolean out) {
+    public void setIsOut(boolean out) {
         isOut = out;
     }
 
@@ -80,12 +100,20 @@ public class Animal {
         return friendship;
     }
 
-    public boolean getIsFeed() {
+    public boolean isFeed() {
         return isFeed;
     }
 
-    public boolean getIsPet() {
+    public void setIsFeed(boolean feed) {
+        isFeed = feed;
+    }
+
+    public boolean isPet() {
         return isPet;
+    }
+
+    public void setIsPet(boolean isPet) {
+        this.isPet = isPet;
     }
 
     public String getName() {
@@ -106,14 +134,6 @@ public class Animal {
 
     public void setFriendship(Integer friendship) {
         this.friendship = friendship;
-    }
-
-    public void setFeed(boolean feed) {
-        isFeed = feed;
-    }
-
-    public void setIsPet(boolean isPet) {
-        this.isPet = isPet;
     }
 
     public void setAnimalStayOutAllNight(boolean animalStayOutAllNight) {
