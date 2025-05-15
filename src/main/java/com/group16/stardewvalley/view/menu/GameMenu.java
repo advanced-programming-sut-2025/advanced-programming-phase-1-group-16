@@ -110,6 +110,12 @@ public class GameMenu implements MenuInterface {
                 System.out.println(homeMenuController.putItemInRefrigerator(matcher.group("food")));
             } else if ((matcher = GameMenuCommands.PickFood.getMatcher(input)) != null){
                 System.out.println(homeMenuController.pickItemInRefrigerator(matcher.group("food")));
+            } else if ((matcher = GameMenuCommands.CookingRecipes.getMatcher(input)) != null){
+                System.out.println(homeMenuController.showRecipeOfFood());
+            } else if ((matcher = GameMenuCommands.PrepareFood.getMatcher(input)) != null){
+                System.out.println(homeMenuController.cooking(matcher.group("food")));
+            } else if ((matcher = GameMenuCommands.EatFood.getMatcher(input)) != null){
+                System.out.println(homeMenuController.eat(matcher.group("food")));
             }
         }
         else if ((matcher = GameMenuCommands.Time.getMatcher(input)) != null) {
