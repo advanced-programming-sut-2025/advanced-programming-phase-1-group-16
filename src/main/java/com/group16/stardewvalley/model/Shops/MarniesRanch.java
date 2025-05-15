@@ -39,6 +39,8 @@ public class MarniesRanch extends Shop {
                 if(building.getBuildingType().equals(requiredBuilding)){ //check if a suitable building for that animal exist.
 
                     if(building.getCapacity() < requiredBuilding.getAnimalLimit()){ //چک کن قفس جا داره یا نه
+                        //decrease money
+                        game.getCurrentPlayer().decreaseCoin(newAnimal.getAnimalType().getPrice());
                         //add animal to game animal
                         game.getGameAnimals().add(newAnimal);
                         //add to list of this building

@@ -117,7 +117,9 @@ public class Player {
     public void increaseCoin(int amount) {
         coin += amount;
     }
-
+    public void decreaseCoin(int amount) {
+        coin -= amount;
+    }
     public int getLevel() {
         return level;
     }
