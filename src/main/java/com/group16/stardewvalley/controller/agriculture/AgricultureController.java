@@ -11,6 +11,8 @@ import com.group16.stardewvalley.model.time.Season;
 import java.rmi.server.RemoteRef;
 import java.util.Random;
 
+import static com.group16.stardewvalley.model.map.Direction.getDirectionOffset;
+
 
 public class AgricultureController {
     private final Random random = new Random();
@@ -47,7 +49,7 @@ public class AgricultureController {
         }
         StringBuilder result = new StringBuilder();
         result.append("Name: ").append(tree.getName())
-                .append("\nSource:").append(tree.getSeed().getName())
+                .append("\nSource:").append(tree.getSapling().getName())
                 .append("\nStages:");
         for (int stage : tree.getGrowthStages()) {
             result.append(stage).append("-");
@@ -72,7 +74,7 @@ public class AgricultureController {
         }
         StringBuilder result = new StringBuilder();
         result.append("Name: ").append(tree.getName())
-                .append("\nSource:").append(tree.getSeed().getName())
+                .append("\nSource:").append(tree.getSapling().getName())
                 .append("\nStages:");
         for (int stage : tree.getGrowthStages()) {
             result.append(stage).append("-");
@@ -315,20 +317,6 @@ public class AgricultureController {
         return null;
     }
 
-    private Pos getDirectionOffset(String direction) {
-        return switch (direction.toLowerCase()) {
-            case "up" -> new Pos(0, 1);
-            case "down" -> new Pos(0, -1);
-            case "left" -> new Pos(-1, 0);
-            case "right" -> new Pos(1, 0);
-            case "up left" -> new Pos(-1, 1);
-            case "up right" -> new Pos(1, 1);
-            case "down left" -> new Pos(-1, -1);
-            case "down right" -> new Pos(1, -1);
-            default -> null;
-        };
-    }
-
 
     public static CropType findCropTypeBySeed(SeedType seedType) {
         for (CropType crop : CropType.values()) {
@@ -341,7 +329,7 @@ public class AgricultureController {
 
     public static TreeType findTreeTypeBySeed(SeedType seedType) {
         for (TreeType tree : TreeType.values()) {
-            if (tree.getSeed().equals(seedType)) {
+            if (tree.getSapling().equals(seedType)) {
                 return tree;
             }
         }

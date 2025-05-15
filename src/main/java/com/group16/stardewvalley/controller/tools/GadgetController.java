@@ -9,6 +9,8 @@ import com.group16.stardewvalley.model.tools.*;
 import  java.util.Map;
 import java.util.regex.Matcher;
 
+import static com.group16.stardewvalley.model.map.Direction.getDirectionOffset;
+
 public class GadgetController {
     private final Game game = App.getActiveGame();
 
@@ -33,6 +35,7 @@ public class GadgetController {
         }
         return new Result(true, targetTool.getName());
     }
+
     public Result showAvailableTools() {
         Map<Gadget, Integer> tools = game.getCurrentPlayer().getInventory().getTools();
 
@@ -81,5 +84,38 @@ public class GadgetController {
     }
 
     //
+
+    public Result fishing(String name) {
+        FishingPole fishingPole = App.getActiveGame().getCurrentPlayer().getInventory().getFishingPole(name);
+        if (fishingPole == null) {
+            return new Result(false, "You don't have this pole in your inventory");
+        }
+        Tile targetTile = getFirstLakeNearby(App.getActiveGame().getMap(), App.getActiveGame().getCurrentPlayer().getPosition());
+        return fishingPole.use(targetTile, App.getActiveGame());
+    }
+
+    public Tile getFirstLakeNearby(Tile[][] map, Pos position) {
+        int rows = map.length;
+        int cols = map[0].length;
+
+        int[] dx = {-1, -1, -1,  0, 0, 1, 1, 1};
+        int[] dy = {-1,  0,  1, -1, 1, -1, 0, 1};
+
+        for (int i = 0; i < 8; i++) {
+            int newX = position.getX() + dx[i];
+            int newY = position.getY() + dy[i];
+
+            if (newX >= 0 && newX < rows && newY >= 0 && newY < cols) {
+                Tile neighbor = map[newX][newY];
+                if (neighbor.getType() == TileType.Lake) {
+                    return neighbor; // اولین تایل با نوع دریاچه
+                }
+            }
+        }
+
+        return null; // هیچ دریاچه‌ای در اطراف نیست
+    }
+
+
 
 }

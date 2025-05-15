@@ -1,6 +1,6 @@
 package com.group16.stardewvalley.model.agriculture;
 
-import com.group16.stardewvalley.model.Items.Item;
+import com.group16.stardewvalley.model.items.Item;
 
 public class Mineral extends Item {
     private final MineralType type;

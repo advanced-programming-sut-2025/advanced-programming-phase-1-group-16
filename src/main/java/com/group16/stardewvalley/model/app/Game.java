@@ -1,7 +1,9 @@
 package com.group16.stardewvalley.model.app;
 
+import com.group16.stardewvalley.model.Shops.Building;
 import com.group16.stardewvalley.model.shops.*;
 import com.group16.stardewvalley.model.weather.WeatherCondition;
+import com.group16.stardewvalley.model.animal.Animal;
 import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.model.time.TimeDate;
@@ -38,7 +40,8 @@ public class Game {
     public WeatherCondition getWeatherCondition() {
         return weatherCondition;
     }
-
+    public ArrayList<Animal> gameAnimals = new ArrayList<>();
+    public ArrayList<Building> buildings = new ArrayList<>();
 
     public Game(Player creator, ArrayList<Player> players) {
         this.creator = creator;
@@ -138,6 +141,9 @@ public class Game {
             turnsPassedInRound = 0;
             timeDate.advanceOneHour();
         }
+//        if (timeDate.getHour() == 8) {
+//            onEightAM();
+//        }
 
         // اینجا چرا چیزی پرینت شده ؟؟ اصلا توی پلیر مگه یوزر هست به چه دردی میخوره ؟
         System.out.println("its " + getCurrentPlayer().getUser().getUsername() + "  turn now.");
@@ -156,4 +162,12 @@ public class Game {
         return tomorrowWeatherCondition;
     }
 
+
+    public ArrayList<Animal> getGameAnimals() {
+        return gameAnimals;
+    }
+
+    public ArrayList<Building> getBuildings() {
+        return buildings;
+    }
 }

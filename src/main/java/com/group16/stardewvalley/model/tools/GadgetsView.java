@@ -1,6 +1,6 @@
-package com.group16.stardewvalley.model.tools;
+package com.group16.stardewvalley.model.Tools;
 
-import com.group16.stardewvalley.controller.tools.GadgetController;
+import com.group16.stardewvalley.controller.Tools.GadgetController;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;

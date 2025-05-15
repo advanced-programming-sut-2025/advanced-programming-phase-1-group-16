@@ -24,4 +24,6 @@ GadgetController -> useTool
 (gadget controller class need to complete)
 Hoe -> getPrice
 
-- how crafting ingredients can extend item?
+- how to do next turn
+
+- in building coop and barn check if coordination is inside the farm

@@ -3,9 +3,10 @@ package com.group16.stardewvalley.model;
 
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.agriculture.*;
-import com.group16.stardewvalley.model.Items.Seed;
+import com.group16.stardewvalley.model.items.Seed;
 import com.group16.stardewvalley.model.Tools.Gadget;
 import com.group16.stardewvalley.model.crafting.CraftingRecipes;
+import com.group16.stardewvalley.model.tools.FishingPole;
 import com.group16.stardewvalley.model.user.BackPackType;
 import com.group16.stardewvalley.model.food.Food;
 import com.group16.stardewvalley.model.food.FoodIngredient;
@@ -154,6 +155,17 @@ public class Inventory {
             if (item instanceof FoodIngredient foodIngredient) {
                 if (foodIngredient.getType().equals(ingredient) && items.get(item) > 0) {
                     return foodIngredient;
+                }
+            }
+        }
+        return null;
+    }
+
+    public FishingPole getFishingPole(String name) {
+        for (Item item : items.keySet()) {
+            if (item instanceof FishingPole fishingPole) {
+                if (fishingPole.getName().equalsIgnoreCase(name)) {
+                    return fishingPole;
                 }
             }
         }

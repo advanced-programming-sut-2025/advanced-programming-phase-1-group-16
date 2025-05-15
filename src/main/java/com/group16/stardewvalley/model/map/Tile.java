@@ -1,9 +1,9 @@
 package com.group16.stardewvalley.model.map;
 
 import com.group16.stardewvalley.controller.agriculture.AgricultureController;
-import com.group16.stardewvalley.model.Items.Item;
-import com.group16.stardewvalley.model.Items.Stone;
+import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.agriculture.*;
+import com.group16.stardewvalley.model.items.Stone;
 
 import java.util.Arrays;
 import java.util.List;
