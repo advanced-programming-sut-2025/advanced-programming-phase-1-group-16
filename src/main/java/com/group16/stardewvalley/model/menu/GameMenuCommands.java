@@ -35,6 +35,17 @@ public enum GameMenuCommands implements CommandsInterface{
     ShowAllAvailableProducts("^\\s*show\\s*all*available\\s*products\\s*$"),
     Purchase("^\\s*purchase\\s*(?<productName>\\S+)(?:\\s+-n\\s+(?<count>\\d+))?\\s*$"),
 
+
+    //Animals
+    Pet("\\s*pet\\s+-n\\s+(?<name>\\S+)\\s*"),
+    CheatSetAnimalFriendship("\\s*cheat\\s+set\\s+friendship\\s+-n\\s+(?<name>\\S+)\\s+-c\\s+(?<count>\\d+)\\s*"),
+    ShowAnimalInfo("\\s*animals\\s*"),
+    ShepherdAnimals("^\\s*shepherd\\s+animals\\s+-n\\s+(?<name>\\S+)\\s+-l\\s+(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*$"),
+    FeedHay("\\s*feed\\s+hay\\s+-n\\s+(?<name>\\S+)\\s*"),
+    AnimalProduces("\\s*produces\\s*"),
+    CollectProduct("\\s*collect\\s+produce\\s+-n\\s+(?<name>\\S+)\\s*"),
+    SellAnimal("\\s*sell\\s+animal\\s+-n\\s+(?<name>\\S+)\\s*"),
+
     // relationship commands
     Friendship("^\\s*friendship\\s*$"),
     Talk("^\\s*talk\\s*-u\\s*(?<username>\\S+)\\s*-m\\s*(?<message>.+?)$"),

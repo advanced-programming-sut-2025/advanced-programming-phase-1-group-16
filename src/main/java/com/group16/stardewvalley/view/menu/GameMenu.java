@@ -1,11 +1,13 @@
 package com.group16.stardewvalley.view.menu;
 
 
+import com.group16.stardewvalley.controller.AnimalController;
 import com.group16.stardewvalley.controller.map.MapController;
 import com.group16.stardewvalley.controller.menu.GameMenuController;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.Shops.CarpentersShop;
 import com.group16.stardewvalley.model.Shops.MarniesRanch;
+import com.group16.stardewvalley.model.animal.Animal;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.menu.GameMenuCommands;
 import com.group16.stardewvalley.model.menu.LoginMenuCommands;
@@ -24,6 +26,7 @@ public class GameMenu implements GameMenuInterface {
     private final TimeDate timeDate = new TimeDate();
     private final CarpentersShop carpentersShop = new CarpentersShop();
     private final MarniesRanch marniesRanch = new MarniesRanch();
+    private final AnimalController animalController = new AnimalController();
 
     @Override
     public void check(Scanner scanner) {
@@ -123,20 +126,52 @@ public class GameMenu implements GameMenuInterface {
         System.out.println(timeDate.advanceDateCheat(Integer.parseInt(matcher.group("amount"))));
 
     }else if((matcher = GameMenuCommands.Season.getMatcher(input)) != null ){
-            System.out.println(timeDate.getSeason());
+        System.out.println(timeDate.getSeason());
     }
 
 
 
 
     //Shop
-        else if ((matcher = GameMenuCommands.ShopBuildCoopBarn.getMatcher(input)) != null ){
-            System.out.println(carpentersShop.buildCoop_Barn(matcher.group("buildingName"),
-                    Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
+    else if ((matcher = GameMenuCommands.ShopBuildCoopBarn.getMatcher(input)) != null ){
+            System.out.println(carpentersShop.buildCoop_Barn(matcher.group("buildingName"), Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
 
-        }else if ((matcher = GameMenuCommands.BuyAnimal.getMatcher(input)) != null ){
-            System.out.println(marniesRanch.buyAnimal(matcher.group("animal"), matcher.group("name")));
-        }
+    }else if ((matcher = GameMenuCommands.BuyAnimal.getMatcher(input)) != null ){
+        System.out.println(marniesRanch.buyAnimal(matcher.group("animal"), matcher.group("name")));
+    }
+
+    //Animal commands
+    else if((matcher = GameMenuCommands.Pet.getMatcher(input)) != null ){
+        System.out.println(animalController.pet(matcher.group("name")));
+    }
+    else if((matcher = GameMenuCommands.CheatSetAnimalFriendship.getMatcher(input)) != null ){
+        System.out.println(animalController.cheatSetAnimalFriendship(matcher.group("animal"), Integer.parseInt(matcher.group("count"))));
+    }
+    else if((matcher = GameMenuCommands.ShowAnimalInfo.getMatcher(input)) != null ){
+        System.out.println(animalController.showAnimalInfo());
+    }
+    else if((matcher = GameMenuCommands.ShepherdAnimals.getMatcher(input)) != null){
+        System.out.println(animalController.shepherdAnimals(matcher.group("name"),
+                Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
+    }
+    else if((matcher = GameMenuCommands.FeedHay.getMatcher(input)) != null){
+        System.out.println(animalController.feedHay(matcher.group("name")));
+    }
+    else if((matcher = GameMenuCommands.AnimalProduces.getMatcher(input)) != null ){
+        System.out.println(animalController.animalProduces());
+    }
+    else if((matcher = GameMenuCommands.CollectProduct.getMatcher(input)) != null){
+        System.out.println(animalController.collectProduct(matcher.group("name")));
+    }
+    else if((matcher = GameMenuCommands.SellAnimal.getMatcher(input)) != null){
+        System.out.println(animalController.sellAnimal(matcher.group("name")));
+    }
+
+
+
+
+
+
 
 
 

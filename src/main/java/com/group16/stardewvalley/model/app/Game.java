@@ -93,6 +93,9 @@ public class Game {
             turnsPassedInRound = 0;
             timeDate.advanceOneHour();
         }
+//        if (timeDate.getHour() == 8) {
+//            onEightAM();
+//        }
 
         System.out.println("its " + getCurrentPlayer().getUser().getUsername() + "  turn now.");
     }

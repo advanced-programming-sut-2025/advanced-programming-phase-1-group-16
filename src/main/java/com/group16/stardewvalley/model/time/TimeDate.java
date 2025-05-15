@@ -82,6 +82,11 @@ public class TimeDate {
 
     // current state methods
 
+
+    public int getHour() {
+        return hour;
+    }
+
     public String getTime() {
         return String.format("%02d:%02d", hour, minute);
     }
