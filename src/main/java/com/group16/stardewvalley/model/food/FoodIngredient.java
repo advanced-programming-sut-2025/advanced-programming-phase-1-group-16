@@ -1,4 +1,4 @@
-package com.group16.stardewvalley.model.Foods;
+package com.group16.stardewvalley.model.food;
 
 import com.group16.stardewvalley.model.items.Item;
 

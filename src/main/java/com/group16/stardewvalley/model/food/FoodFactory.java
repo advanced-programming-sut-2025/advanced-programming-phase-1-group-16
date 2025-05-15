@@ -1,4 +1,4 @@
-package com.group16.stardewvalley.model.Foods;
+package com.group16.stardewvalley.model.food;
 
 import java.util.List;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package com.group16.stardewvalley.model.Foods;
+package com.group16.stardewvalley.model.food;
 
 public enum Ingredient {
     EGG,
@@ -75,4 +75,8 @@ public enum Ingredient {
     SWEET_GEM_BERRY,
     POWDERMELON,
     ANCIENT_FRUIT;
+
+    public String getName() {
+        return name();
+    }
 }

@@ -79,6 +79,9 @@ public class TimeDate {
         for (Player player : game.getPlayers()) {
             player.resetForNewDay();
         }
+        game.getBlacksmith().resetDailyUpgrades();
+        // اضافه شدن پول به حساب واسه چیزایی که فروحته رو هم اضافه کن
+
     }
 
     private DaysOfWeek getDayOfWeekByIndex(int index) {

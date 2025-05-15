@@ -178,7 +178,7 @@ public class ShopController {
         String toolName = matcher.group("toolName");
         Player currentPlayer = game.getCurrentPlayer();
         // خطای مراجعخ در زمان نامناسب
-        if (!isShopTime()) {
+        if (!game.getBlacksmith().isOpen()) {
             return new Result(false, "Sorry! we're closed! Shop hours: 9 AM to 4 PM");
         }
 
@@ -222,6 +222,11 @@ public class ShopController {
           return new Result(false, "My anvil needs a break! " +
                   "One upgrade a day keeps the warranty valid ^ ^");
       }
+
+        // اپگرید کند
+       game.getBlacksmith().increaseBalance(upgradeCost);
+      currentPlayer.decreaseCoin(upgradeCost);
+
     }
 
     private String getNextMaterial(String currentMaterial) {
