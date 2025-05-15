@@ -1,7 +1,6 @@
 package com.group16.stardewvalley.model.NPC;
 
-import com.group16.stardewvalley.model.map.Farm;
-import com.group16.stardewvalley.model.map.FarmType;
+import com.group16.stardewvalley.model.map.PlaceType;
 
 import java.util.List;
 
@@ -18,31 +17,31 @@ public enum NPCType {
                     "The snow's getting heavy.want to skip everything and stay in together",  // afternoon / winter / snowy
                     "I like walking with you in weather like this.. wind our ears no one else around...", // evening / fall /windy
                     "Let’s ride out to the ridge. Just us, the stars, and a few too many mosquitoes."),  // night / fall / windy
-            new Farm(FarmType.small, "SebastianFarm")),
+            PlaceType.Sebastian),
     Abigail("Abigail",
             List.of("stone", "iron ore", "coffee"),
             List.of("Delivery of a gold bar", "Delivery a pumpkin pie", "Delivery of 50 pieces of wheat"),
             List.of("1 level friendship", "500 gold coin", "Automatic iridium sprinkler"),
             List.of(""),
-            new Farm(FarmType.small, "AbigailFarm")),
+            PlaceType.Abigail),
     Harvey("Harvey",
             List.of("coffee", "pickle", "liquor"),
             List.of("Delivering 12 of a desired plant", "Delivery of a salmon", "Delivery of a bottle of liquor"),
             List.of("750 coin", "1 level friendship", "5 salad"),
             List.of(""),
-            new Farm(FarmType.small, "HarveyFarm")),
+            PlaceType.Harvey),
     Leah("Leah",
             List.of("salad", "grape", "liquor"),
             List.of("Delivery of 10 hardwoods", "Delivery of a salmon", "Delivery of a bottle of liquor"),
             List.of("500 coin", "dinner salmoon recipe", "3 deluxe scarecrow"),
             List.of(""),
-            new Farm(FarmType.small, "LeahFarm")),
+            PlaceType.Leah),
     Robin("Robin",
             List.of("spaghetti", "wood", "iron ingot"),
             List.of("Delivery 80 wood", "Delivery 10 iron ingot", "Delivery 1000 wood"),
             List.of("1000 coin", "3 beeHouse", "25000 coin"),
             List.of(""),
-            new Farm(FarmType.small, "RobinFarm"));
+            PlaceType.Robin);
 
 
 
@@ -51,26 +50,48 @@ public enum NPCType {
     private final List<String> requests;
     private final List<String> rewards;
     private final List<String> dialogs;
-    private final Farm farm;
+    private final PlaceType house;
+
 
     NPCType(String name,
             List<String> favoriteItems,
             List<String> requests,
             List<String> rewards,
             List<String> dialogs,
-            Farm farm) {
+            PlaceType house) {
         this.name = name;
         this.favoriteItems = favoriteItems;
         this.requests = requests;
         this.rewards = rewards;
         this.dialogs = dialogs;
-        this.farm = farm;
+        this.house = house;
     }
 
     public String getName() {
         return name;
     }
 
-    public
+    public void setName(String name) {
+        this.name = name;
+    }
 
+    public PlaceType getHouse() {
+        return house;
+    }
+
+    public List<String> getDialogs() {
+        return dialogs;
+    }
+
+    public List<String> getRewards() {
+        return rewards;
+    }
+
+    public List<String> getFavoriteItems() {
+        return favoriteItems;
+    }
+
+    public List<String> getRequests() {
+        return requests;
+    }
 }

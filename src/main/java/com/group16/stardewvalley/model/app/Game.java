@@ -1,13 +1,9 @@
 package com.group16.stardewvalley.model.app;
 
-import com.group16.stardewvalley.model.Shops.Building;
 import com.group16.stardewvalley.model.shops.*;
 import com.group16.stardewvalley.model.weather.WeatherCondition;
 import com.group16.stardewvalley.model.animal.Animal;
 import com.group16.stardewvalley.model.map.Tile;
-import com.group16.stardewvalley.model.user.Player;
-import com.group16.stardewvalley.model.time.TimeDate;
-import com.group16.stardewvalley.model.map.TileType;
 import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.model.time.TimeDate;
 import java.util.ArrayList;
@@ -27,13 +23,7 @@ public class Game {
     private final int MAX_MININGABILITY_LEVELL = 4;
     private final int MAX_NATURETOURISMABILITY_LEVEL = 4;
     private final int MAX_FISHINGABILITY_LEVEL = 4;
-    private final Blacksmith blacksmith;
-    private final JojaMart jojaMart;
-    private final PierresGeneralStore pierresGeneralStore;
-    private final CarpentersShop carpentersShop;
-    private final FishShop fishShop;
-    private final MarniesRanch marniesRanch;
-    private final TheStardropSaloon theStardropSaloon;
+    private final ArrayList<Shop> shops = new ArrayList<>();
     private WeatherCondition weatherCondition;
     private WeatherCondition tomorrowWeatherCondition;
 
@@ -47,41 +37,76 @@ public class Game {
         this.creator = creator;
         this.players = players;
         this.turnsPassed = 0;
-        this.blacksmith = new Blacksmith();
-        this.jojaMart = new JojaMart();
-        this.pierresGeneralStore = new PierresGeneralStore();
-        this.carpentersShop = new CarpentersShop();
-        this.fishShop = new FishShop();
-        this.marniesRanch = new MarniesRanch();
-        this.theStardropSaloon = new TheStardropSaloon();
+        this.shops.add(new Blacksmith());
+        this.shops.add(new JojaMart());
+        this.shops.add(new PierresGeneralStore());
+        this.shops.add(new CarpentersShop());
+        this.shops.add(new FishShop());
+        this.shops.add(new MarniesRanch());
+        this.shops.add(new TheStardropSaloon());
     }
 
     public Blacksmith getBlacksmith() {
-        return blacksmith;
+        for (Shop shop : shops) {
+            if (shop instanceof Blacksmith) {
+                return (Blacksmith) shop;
+            }
+        }
+        return null;
     }
 
     public JojaMart getJojaMart() {
-        return jojaMart;
+        for (Shop shop : shops) {
+            if (shop instanceof JojaMart) {
+                return (JojaMart) shop;
+            }
+        }
+        return null;
     }
 
     public PierresGeneralStore getPierresGeneralStore() {
-        return pierresGeneralStore;
+        for (Shop shop : shops) {
+            if (shop instanceof PierresGeneralStore) {
+                return (PierresGeneralStore) shop;
+            }
+        }
+        return null;
     }
 
     public CarpentersShop getCarpentersShop() {
-        return carpentersShop;
+        for (Shop shop : shops) {
+            if (shop instanceof CarpentersShop) {
+                return (CarpentersShop) shop;
+            }
+        }
+        return null;
     }
 
     public FishShop getFishShop() {
-        return fishShop;
+        for (Shop shop : shops) {
+            if (shop instanceof FishShop) {
+                return (FishShop) shop;
+            }
+        }
+        return null;
     }
 
     public MarniesRanch getMarniesRanch() {
-        return marniesRanch;
+        for (Shop shop : shops) {
+            if (shop instanceof MarniesRanch) {
+                return (MarniesRanch) shop;
+            }
+        }
+        return null;
     }
 
     public TheStardropSaloon getTheStardropSaloon() {
-        return theStardropSaloon;
+        for (Shop shop : shops) {
+            if (shop instanceof TheStardropSaloon) {
+                return (TheStardropSaloon) shop;
+            }
+        }
+        return null;
     }
 
     public TimeDate getTimeDate() {

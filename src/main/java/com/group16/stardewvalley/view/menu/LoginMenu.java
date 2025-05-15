@@ -9,7 +9,7 @@ import com.group16.stardewvalley.model.Result;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
-public class LoginMenu implements GameMenuInterface {
+public class LoginMenu implements MenuInterface {
 
     private final LoginMenuController controller = new LoginMenuController();
 

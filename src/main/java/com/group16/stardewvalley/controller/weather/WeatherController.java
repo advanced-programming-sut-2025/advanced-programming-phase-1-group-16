@@ -27,7 +27,11 @@ public class WeatherController {
         return new Result(true, "Tomorrow's weather : " + weatherCondition.getWeatherName());
     }
 
+    //TODO mirshekar
+    /*
     public Result buildGreenhouse() {
 
     }
+
+     */
 }

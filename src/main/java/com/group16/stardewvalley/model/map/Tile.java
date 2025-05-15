@@ -18,6 +18,7 @@ public class Tile {
     private Location location;
     private boolean isFertilized;
     private FertilizerType fertilizerType;
+    private boolean hasWater;
 
     public Tile(TileType tileType) {
         location = Location.Game;
@@ -55,6 +56,14 @@ public class Tile {
         else {
             this.type = tileType;
         }
+    }
+
+    public boolean isHasWater() {
+        return hasWater;
+    }
+
+    public void setHasWater(boolean hasWater) {
+        this.hasWater = hasWater;
     }
 
     public FertilizerType getFertilizerType() {

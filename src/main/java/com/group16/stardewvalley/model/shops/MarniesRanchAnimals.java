@@ -1,4 +1,4 @@
-package com.group16.stardewvalley.model.Shops;
+package com.group16.stardewvalley.model.shops;
 
 import com.group16.stardewvalley.model.animal.AnimalType;
 

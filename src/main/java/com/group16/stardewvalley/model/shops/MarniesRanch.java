@@ -1,4 +1,4 @@
-package com.group16.stardewvalley.model.Shops;
+package com.group16.stardewvalley.model.shops;
 
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.animal.Animal;
@@ -13,7 +13,7 @@ import java.awt.geom.RectangularShape;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.group16.stardewvalley.model.Shops.MarniesRanchAnimals.sellAnimalFromName;
+import static com.group16.stardewvalley.model.shops.MarniesRanchAnimals.sellAnimalFromName;
 import static com.group16.stardewvalley.model.animal.AnimalType.animalTypeFromName;
 
 public class MarniesRanch extends Shop {

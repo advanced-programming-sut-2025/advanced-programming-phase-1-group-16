@@ -211,7 +211,7 @@ public class MapController {
         return new Result(true, builder.toString());
     }
 
-    public boolean isPlayerInFarm(Player currentPlayer) {
+    public static boolean isPlayerInFarm(Player currentPlayer) {
         Pos start = currentPlayer.getFarm().getStartPosition();
         Pos playerPos = currentPlayer.getPosition();
         return playerPos.getX() > start.getX() &&
@@ -220,7 +220,7 @@ public class MapController {
                 playerPos.getY() > start.getY() + currentPlayer.getFarm().getType().getHeight();
     }
 
-    public boolean isPlayerInCottage(Player currentPlayer) {
+    public static boolean isPlayerInCottage(Player currentPlayer) {
         Pos pos = currentPlayer.getPosition();
         return App.getActiveGame().getMap()[pos.getY()][pos.getX()].getType() == TileType.Cottage;
     }

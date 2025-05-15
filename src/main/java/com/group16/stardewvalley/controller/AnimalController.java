@@ -1,8 +1,8 @@
 package com.group16.stardewvalley.controller;
 
 import com.group16.stardewvalley.model.Result;
-import com.group16.stardewvalley.model.Shops.Building;
-import com.group16.stardewvalley.model.Weather.WeatherCondition;
+import com.group16.stardewvalley.model.shops.Building;
+import com.group16.stardewvalley.model.weather.WeatherCondition;
 import com.group16.stardewvalley.model.animal.Animal;
 import com.group16.stardewvalley.model.animal.AnimalProductTypes;
 import com.group16.stardewvalley.model.app.App;
@@ -176,9 +176,12 @@ public class AnimalController {
         return( (animal.getFriendship() + (150 * random)) / 1500);
     }
 
+    //TODO nilli
+    /*
     public Result collectProduct(String name){//برداشت محصول حیوان
 
     }
+     */
 
     public Result sellAnimal(String name){
         Game game = App.getActiveGame();

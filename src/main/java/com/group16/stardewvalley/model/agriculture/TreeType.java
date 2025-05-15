@@ -1,7 +1,6 @@
 package com.group16.stardewvalley.model.agriculture;
 
 import com.group16.stardewvalley.model.time.Season;
-import com.group16.stardewvalley.model.Seeds.*;
 
 public enum TreeType {
     APRICOT("Apricot Tree", SeedType.APRICOT_SAPLING, new int[]{7, 7, 7, 7}, 28,

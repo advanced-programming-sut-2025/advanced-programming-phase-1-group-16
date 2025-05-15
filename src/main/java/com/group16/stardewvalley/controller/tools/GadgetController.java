@@ -66,14 +66,16 @@ public class GadgetController {
             return new Result(false, "Out of bound");
         }
 
-        gadget.use(targetTile, game);
-
+        return gadget.use(targetTile, game);
     }
 
     // یا هیچی روی اون موقعیت سازگار نیست یا یکی از این کارهای ابزاره هست
+    //TODO mirshekar
+    /*
     private ToolAction whichOneIsSuitable() {
 
     }
+     */
 
     private boolean hasEnoughEnergy(Gadget gadget, ToolAction action) {
         Player currentPlayer = game.getCurrentPlayer();

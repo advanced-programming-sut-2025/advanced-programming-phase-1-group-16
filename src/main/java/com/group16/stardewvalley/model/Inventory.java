@@ -4,7 +4,7 @@ package com.group16.stardewvalley.model;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.agriculture.*;
 import com.group16.stardewvalley.model.items.Seed;
-import com.group16.stardewvalley.model.Tools.Gadget;
+import com.group16.stardewvalley.model.tools.Gadget;
 import com.group16.stardewvalley.model.crafting.CraftingRecipes;
 import com.group16.stardewvalley.model.tools.FishingPole;
 import com.group16.stardewvalley.model.user.BackPackType;
@@ -33,12 +33,24 @@ public class Inventory {
         this.backPackType = BackPackType.Base_Pack;
     }
 
-    public void setTools(Map<Gadget, Integer> tools) {
-        this.tools = tools;
+    public Map<Crop, Integer> getCrops() {
+        return crops;
     }
 
-    public BackPackType getBackPackType() {
-        return backPackType;
+    public void setCrops(Map<Crop, Integer> crops) {
+        this.crops = crops;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public void setTools(Map<Gadget, Integer> tools) {
+        this.tools = tools;
     }
 
     public void setBackPackType(BackPackType backPackType) {
@@ -87,7 +99,7 @@ public class Inventory {
     public BackPackType getBackPackType() {
         return backPackType;
     }
-    public Void addCrop(Crop crop, int count) {
+    public void addCrop(Crop crop, int count) {
         crops.put(crop, crops.getOrDefault(crop, 0));
     }
 
@@ -118,9 +130,8 @@ public class Inventory {
 
     public boolean isSeedInInventory(SeedType seedType) {
         for (Item item : items.keySet()) {
-            if (item instanceof Seed) {
-                Seed seed = (Seed) item;
-                if (item.getSeedType == seedType && items.get(item) > 0) {
+            if (item instanceof Seed seed) {
+                if (seed.getType().equals(seedType) && items.get(item) > 0) {
                     return true;
                 }
             }

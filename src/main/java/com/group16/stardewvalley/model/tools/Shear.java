@@ -28,12 +28,15 @@ public class Shear extends Gadget{
             return new Result(false, "Have you not eaten bread today?");
         }
 
+        /*
         // استفاده از قیچی روی دام
         if () {
             //TODO نیلی
             player.decreaseEnergy(4);
             player.addFarmingAbilityScore(5); // پیام مناسب هم بذار یا بگو خودم بذارم
         }
+
+         */
 
         //هیچار در این منطقه با قیچی نتواند بکند
         player.decreaseEnergy(4);

@@ -344,6 +344,10 @@ public class Player {
 
     }
 
+    public void decreaseCoin(int amount) {
+        this.coin -= amount;
+    }
+
     public void faint(){
 
     }

@@ -14,7 +14,7 @@ import java.util.Map;
 public class Crafting {
     public Result showRecipes() {
         Player player = App.getActiveGame().getCurrentPlayer();
-        Inventory inventory = player.getPlayerInventory();
+        Inventory inventory = player.getInventory();
 
         if(!isInsideHouse(App.getActiveGame().getCurrentPlayer())){
             return new Result(false, "You are not inside your house !");
@@ -32,7 +32,7 @@ public class Crafting {
 
     public Result craft(String itemName) {
         Player player = App.getActiveGame().getCurrentPlayer();
-        Map<Item, Integer> inventoryItems = player.getPlayerInventory().getItems();  // Inventory content
+        Map<Item, Integer> inventoryItems = player.getInventory().getItems();  // Inventory content
 
         if (!isInsideHouse(App.getActiveGame().getCurrentPlayer())) {
             return new Result(false, "You are not inside your house!");
@@ -61,7 +61,7 @@ public class Crafting {
                 //return true;  // All ingredients are available in required amounts
                 //create new crafting item
                 CraftItem newCraftItem = new CraftItem(recipe.getName(), recipe.getNeededIngredients());
-                player.getPlayerInventory().addItem(newCraftItem, 1);
+                player.getInventory().addItem(newCraftItem, 1);
 
                 //consume energy
                 if(player.getEnergy() - 2 < 0){
@@ -109,7 +109,7 @@ public class Crafting {
             System.out.println("Invalid direction entered.");
         }
 
-        Inventory inventory = App.getActiveGame().getCurrentPlayer().getPlayerInventory();
+        Inventory inventory = App.getActiveGame().getCurrentPlayer().getInventory();
 
 
         for(Item item: inventory.getItems().keySet()){
@@ -130,13 +130,13 @@ public class Crafting {
 
     public Result cheatAddItem(String itemName, int count) {
         Player player = App.getActiveGame().getCurrentPlayer();
-        Inventory inventory = player.getPlayerInventory();
+        Inventory inventory = player.getInventory();
 
         //create new crafting item
         for (CraftingRecipes recipe : CraftingRecipes.values()) {//find which item is it
             if (recipe.getName().equalsIgnoreCase(itemName)) {
                 CraftItem newCraftItem = new CraftItem(recipe.getName(), recipe.getNeededIngredients());
-                player.getPlayerInventory().addItem(newCraftItem, 1);
+                player.getInventory().addItem(newCraftItem, 1);
                 return new Result(true, "successfully cheated" );
             }
         }

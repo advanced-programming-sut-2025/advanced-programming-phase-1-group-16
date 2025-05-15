@@ -111,7 +111,8 @@ public class ShopController {
         int count = Integer.parseInt(countStr);
 
         // قابلیت فروش نداشته باشد
-
+        //TODO mirshekar
+        return new Result(true, "");
     }
 
 
@@ -171,14 +172,13 @@ public class ShopController {
         targetShop.addBalance(targetItem.getPrice());
         return new Result(true, "Purchase complete! Enjoy your new item");
 
-
     }
 
-    private Result upgradeTool(Matcher matcher) {
+    public Result upgradeTool(Matcher matcher) {
         String toolName = matcher.group("toolName");
         Player currentPlayer = game.getCurrentPlayer();
         // خطای مراجعخ در زمان نامناسب
-        if (!isShopTime()) {
+        if (!App.getActiveGame().getBlacksmith().isOpen()) {
             return new Result(false, "Sorry! we're closed! Shop hours: 9 AM to 4 PM");
         }
 
@@ -218,10 +218,12 @@ public class ShopController {
         }
 
         // خطای اینکه امروز یکبار انجام شده
-      if (!game.getBlacksmith().cabUpgradeToday(upgradeType)) {
+        if (!game.getBlacksmith().cabUpgradeToday(upgradeType)) {
           return new Result(false, "My anvil needs a break! " +
                   "One upgrade a day keeps the warranty valid ^ ^");
-      }
+        }
+        //TODO mirshekar kamel mikone
+        return new Result(true, "Upgrade complete!");
     }
 
     private String getNextMaterial(String currentMaterial) {
@@ -241,8 +243,6 @@ public class ShopController {
             return "Iridium";
         }
 
-        if (currentMaterial.equalsIgnoreCase("Iridium")) {
-            return null;
-        }
+        return null;
     }
 }
