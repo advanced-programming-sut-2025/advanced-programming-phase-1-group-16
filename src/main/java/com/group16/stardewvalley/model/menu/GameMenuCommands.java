@@ -40,7 +40,7 @@ public enum GameMenuCommands implements CommandsInterface{
     ForagingInfo("foraging info -n (?<name>.+?)\\s*"),
     PlantSeed("plant -s (?<seed>.+?) -d (?<dir>.+?)"),
     ShowPlant("show plant -l (?<x>\\d+),\\s*(?<y>\\d+)"),
-    Fertilize("fertilize -f (?<fertilizer>.+?) -d (?<dir>.+?))"),
+    Fertilize("fertilize -f (?<fertilizer>.+?) -d (?<dir>.+?)"),
     HowMuchWater("how much water"),
     PutFood("cooking refrigerator put (?<food>.+?))"),
     PickFood("cooking refrigerator pick (?<food>.+?))"),

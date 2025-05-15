@@ -128,7 +128,7 @@ public class MapController {
     }
 
     private PathInfo calculatePathInfo(Pos start, Pos dest) {
-        Tile[][] map = App.getActiveGame().getMap(); // فرض بر این است که map حالا از نوع Tile[][] است
+        Tile[][] map = App.getActiveGame().getMap();
         int height = map.length;
         int width = map[0].length;
 
