@@ -23,6 +23,8 @@ public enum GameMenuCommands implements CommandsInterface{
     ShowAllAvailableProducts("^\\s*show\\s*all*available\\s*products\\s*$"),
     Purchase("^\\s*purchase\\s*(?<productName>\\S+)(?:\\s+-n\\s+(?<count>\\d+))?\\s*$"),
     // relation Ship
+    Meet("^\\s*meet\\s*NPC\\s*(?<NPCName>\\S+)\\s*$"),
+    Gift("^\\s*gift\\s*NPC\\s*(?<NPCName>\\S+)\\s*-i\\s*(?<giftName>\\S+)\\s*$"),
     Friendship("^\\s*friendship\\s*$"),
     Talk("^\\s*talk\\s*-u\\s*(?<username>\\S+)\\s*-m\\s*(?<message>.+?)$"),
     TalkHistory("^\\s*talk\\s*$"),
@@ -32,7 +34,7 @@ public enum GameMenuCommands implements CommandsInterface{
     GiftHistory("^\\s*gift\\s*history\\s*-u\\s*(?<username>\\S+)\\s*$"),
     Hug("^\\s*hug\\s*-u\\s*(?<username>\\S+)\\s*$"),
     Flower("^\\s*flower\\s*-u\\s*(?<username>\\S+)\\s*$"),
-    AskMarriage("^\\s*ask\\s*marriage\\s*-u\\s*(?<username>\\S+)\\s*-r\\s*(?<ring>\\S+)\\s*$"),
+    AskMarriage("^\\s*ask\\s*marriage\\s*-u\\s*(?<username>\\S+)\\s*-r\\s*(?<ring>\\S+)\\s*$");
 
 
 

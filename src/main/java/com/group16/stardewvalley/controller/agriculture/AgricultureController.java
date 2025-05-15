@@ -62,7 +62,7 @@ public class AgricultureController {
             return new Result(false, "You dont have this seed!");
         }
         if (seedType.equals(SeedType.MIXED_SEED)){
-            seedType = getRandomSeed(App.getActiveGame().getTimeDate().getCurrentSeason());
+            seedType = getRandomSeed(App.getActiveGame().getTimeDate().getSeason());
         }
         switch (seedType.getType()) {
             case "TREE":

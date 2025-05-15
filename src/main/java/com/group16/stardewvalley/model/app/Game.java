@@ -1,5 +1,9 @@
 package com.group16.stardewvalley.model.app;
 
+import com.group16.stardewvalley.model.NPC.NPC;
+import com.group16.stardewvalley.model.NPC.NPCType;
+import com.group16.stardewvalley.model.map.Direction;
+import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.shops.*;
 import com.group16.stardewvalley.model.weather.WeatherCondition;
 import com.group16.stardewvalley.model.map.Tile;
@@ -7,6 +11,7 @@ import com.group16.stardewvalley.model.user.Player;
 
 import com.group16.stardewvalley.model.time.TimeDate;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Game {
@@ -16,7 +21,7 @@ public class Game {
     private Player loader = null;
     private int turnsPassedInRound;   // counts up to players size
     private int turnsPassed;              // total rounds played
-    private TimeDate timeDate;
+    private final TimeDate timeDate;
     private final int MAX_FARMINGABILITY_LEVE = 4;
     private final int MAX_MININGABILITY_LEVELL = 4;
     private final int MAX_NATURETOURISMABILITY_LEVEL = 4;
@@ -28,8 +33,7 @@ public class Game {
     private final FishShop fishShop;
     private final MarniesRanch marniesRanch;
     private final TheStardropSaloon theStardropSaloon;
-
-
+    private final List<NPC> NPCs;
 
     private Tile[][] map;
     private final int mapHeight = 200;
@@ -44,6 +48,7 @@ public class Game {
 
 
     public Game(Player creator, ArrayList<Player> players) {
+        this.timeDate = TimeDate.getInstance(this);
         this.creator = creator;
         this.players = players;
         this.turnsPassed = 0;
@@ -54,6 +59,25 @@ public class Game {
         this.fishShop = new FishShop();
         this.marniesRanch = new MarniesRanch();
         this.theStardropSaloon = new TheStardropSaloon();
+        this.NPCs = new ArrayList<>();
+        NPCs.add(new NPC(NPCType.Sebastian, new Pos())); //---> TODO اتنا
+        NPCs.add(new NPC(NPCType.Abigail, new Pos()));
+        NPCs.add(new NPC(NPCType.Harvey, new Pos()));
+        NPCs.add(new NPC(NPCType.Leah, new Pos()));
+        NPCs.add(new NPC(NPCType.Robin, new Pos()));
+    }
+
+    public NPC getNPCByName(String NPCName) {
+        for (NPC npc : NPCs) {
+            if (npc.getName().equalsIgnoreCase(NPCName)) {
+                return npc;
+            }
+        }
+        return null;
+    }
+
+    public TimeDate getTimeDate() {
+        return timeDate;
     }
 
     public Blacksmith getBlacksmith() {
@@ -153,6 +177,16 @@ public class Game {
 
     public WeatherCondition getTomorrowWeatherCondition() {
         return tomorrowWeatherCondition;
+    }
+
+    public boolean isAdjacent(Pos pos1, Pos pos2) {
+        for (Direction dir : Direction.values()) {
+            Pos adjacentPos = dir.applyToPosition(pos1);
+            if (adjacentPos.equals(pos2)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

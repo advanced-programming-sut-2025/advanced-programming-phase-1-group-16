@@ -2,12 +2,14 @@ package com.group16.stardewvalley.model.user;
 
 import com.group16.stardewvalley.model.Inventory;
 import com.group16.stardewvalley.model.NPC.NPC;
+import com.group16.stardewvalley.model.NPC.NPCInteraction;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.tools.Gadget;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.map.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Player {
@@ -33,11 +35,9 @@ public class Player {
     private int rejectionCooldown;
     private final Map<Player, Integer> interactionsLevel;
     private final Map<Player, Integer> interactionScore;
+    private final Map<NPC, NPCInteraction> dailyNPCInteraction;
     private final Map<Player, Boolean> interactionTodayStatus;
-    private final Map<NPC, Integer> friendshipNPCScore;
-    private final Map<NPC, Integer> friendshipNPCLevel;
     private final int[] relationshipRanks = {100, 200, 300, 400};
-    private final int[] NPCRelationshipRanks = {200, 400, 600, 800};
 
     // مقدار های ماکسیمم هر توانایی رو هم در گیم ذخیره کردم سر جمع شه
     // تابعی برای بالا بردن لول شخص در این موارد نوشته نشده است
@@ -59,8 +59,21 @@ public class Player {
         this.interactionsLevel = new HashMap<>();
         this.interactionScore = new HashMap<>();
         this.interactionTodayStatus = new HashMap<>();
-        this.friendshipNPCScore = new HashMap<>();
-        this.friendshipNPCLevel = new HashMap<>();
+        this.dailyNPCInteraction = new HashMap<>();
+        initializeNPCs();
+    }
+
+
+    public void initializeNPCs() {
+        dailyNPCInteraction.put(App.getActiveGame().getNPCByName("Sebastian"), new NPCInteraction());
+        dailyNPCInteraction.put(App.getActiveGame().getNPCByName("Abigail"), new NPCInteraction());
+        dailyNPCInteraction.put(App.getActiveGame().getNPCByName("Harvey"), new NPCInteraction());
+        dailyNPCInteraction.put(App.getActiveGame().getNPCByName("Leah"), new NPCInteraction());
+        dailyNPCInteraction.put(App.getActiveGame().getNPCByName("Robin"), new NPCInteraction());
+    }
+
+    public NPCInteraction getInteractionWith(NPC npc) {
+        return dailyNPCInteraction.get(npc);
     }
 
     public String getName() {
@@ -256,7 +269,25 @@ public class Player {
         this.isFainted = false;
         energy = energyCeiling;
         interactionTodayStatus.replaceAll((player, status) -> false);
+        for (Map.Entry<NPC, NPCInteraction> entry : dailyNPCInteraction.entrySet()) {
+            NPCInteraction interaction = entry.getValue();
+            interaction.setMetToday(false);
+            interaction.setGiftedToday(false);
+        }
 
+    }
+
+    public void recordNPCDialogue(NPC npc, String dialogueLine) {
+        NPCInteraction interaction = dailyNPCInteraction.getOrDefault(npc, new NPCInteraction());
+        interaction.addDialogue(dialogueLine);
+        dailyNPCInteraction.put(npc, interaction);
+    }
+
+    public List<String> getDialogueWith(NPC npc) {
+        if (dailyNPCInteraction.containsKey(npc)) {
+            return dailyNPCInteraction.get(npc).getDialogueHistory();
+        }
+        return null;
     }
 
 }

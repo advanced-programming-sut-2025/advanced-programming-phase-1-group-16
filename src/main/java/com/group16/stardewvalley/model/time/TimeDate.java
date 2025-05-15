@@ -36,6 +36,10 @@ public class TimeDate {
         return instance;
     }
 
+    public Season getSeason() {
+        return currentSeason;
+    }
+
     // افزایش یک ساعت
     public void advanceOneHour() {
         hour++;
@@ -113,9 +117,6 @@ public class TimeDate {
         return currentDayOfWeek.getName();
     }
 
-    public String getSeason() {
-        return currentSeason.getName();
-    }
 
 
 

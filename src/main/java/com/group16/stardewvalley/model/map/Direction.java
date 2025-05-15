@@ -48,4 +48,8 @@ public enum Direction {
         }
     return null;
     }
+
+    public Pos applyToPosition(Pos currentPos) {
+        return new Pos(currentPos.getX() + xDelta, currentPos.getY() + yDelta);
+    }
 }

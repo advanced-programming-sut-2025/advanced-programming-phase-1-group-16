@@ -5,7 +5,9 @@ import com.group16.stardewvalley.model.app.Game;
 import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.user.Player;
 
-public class FishingPole extends Gadget{
+public class
+
+FishingPole extends Gadget{
     public FishingPole(String name, String material) {
         super(name);
         this.material = material;
