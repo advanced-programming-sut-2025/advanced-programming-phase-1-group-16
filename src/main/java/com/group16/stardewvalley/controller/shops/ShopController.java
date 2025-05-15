@@ -97,9 +97,21 @@ public class ShopController {
                     upgradeTool(matcher);
                 }
 
+            case "sell":
+                handleSellProduct(matcher);
+
             default:
                 return new Result(false, "Invalid command");
         }
+    }
+
+    public Result handleSellProduct(Matcher matcher) {
+        String productName = matcher.group("productName");
+        String countStr = matcher.group("count");
+        int count = Integer.parseInt(countStr);
+
+        // قابلیت فروش نداشته باشد
+
     }
 
 
@@ -149,9 +161,13 @@ public class ShopController {
             return new Result(false, "Shop's stock is empty for today! Come back tomorrow.");
         }
 
+        // اینونتوری اش جا نداشته باشد
+        if (currentPlayer.getInventory().isFull()) {
+            return new Result(false, "Oops! Your backpack is completely full!");
+        }
         // با موفقیت خرید کند و به اینونتوری اش اضافه شود
         currentPlayer.getInventory().addItem(targetItem, count);
-        currentPlayer.increaseCoin(targetItem.getPrice());
+        currentPlayer.decreaseCoin(targetItem.getPrice());
         targetShop.addBalance(targetItem.getPrice());
         return new Result(true, "Purchase complete! Enjoy your new item");
 
