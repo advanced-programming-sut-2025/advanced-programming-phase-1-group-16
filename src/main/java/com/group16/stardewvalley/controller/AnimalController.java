@@ -153,7 +153,7 @@ public class AnimalController {
         StringBuilder sb = new StringBuilder();
 
         for (Animal animal : game.getGameAnimals()) {
-            if( !animal.havePickedProducts() ){
+            if( !animal.havePickedProducts() ){ //محصولاتی که جمع نشده
                 sb.append("animal type: ").append(animal.getAnimalType().getName());
                 sb.append("\nname: ").append(animal.getName());
                 sb.append("\nproducts: ");
