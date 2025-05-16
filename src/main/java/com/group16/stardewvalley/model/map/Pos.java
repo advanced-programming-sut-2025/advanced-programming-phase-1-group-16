@@ -39,4 +39,8 @@ public class Pos {
         }
         return false;
     }
+
+    public boolean isEqual(Pos pos) {
+        return pos.getY() == this.y && pos.getX() == this.x;
+    }
 }

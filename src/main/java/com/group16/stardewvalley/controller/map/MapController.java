@@ -124,7 +124,7 @@ public class MapController {
 
     private boolean isValidPos(Pos pos, int width, int height) {
         int x = pos.getX(), y = pos.getY();
-        return x >= 0 && y >= 0 && x < height && y < width;
+        return x >= 0 && y >= 0 && x < width && y < height;
     }
 
     private PathInfo calculatePathInfo(Pos start, Pos dest) {
@@ -155,14 +155,14 @@ public class MapController {
         Pos[][] parent = new Pos[height][width];
         Queue<Pos> queue = new LinkedList<>();
         queue.add(start);
-        visited[start.getX()][start.getY()] = true;
+        visited[start.getY()][start.getX()] = true;
 
         int[] dx = {-1, 1, 0, 0};
         int[] dy = {0, 0, -1, 1};
 
         while (!queue.isEmpty()) {
             Pos curr = queue.poll();
-            if (curr.equals(dest)) {
+            if (curr.isEqual(dest)) {
                 return reconstructPath(parent, dest, start);
             }
 
@@ -172,10 +172,10 @@ public class MapController {
                 Pos next = new Pos(nx, ny);
 
                 if (isValidPos(next, width, height)
-                        && !visited[nx][ny]
-                        && map[nx][ny].getType() == TileType.Ground) {
-                    visited[nx][ny] = true;
-                    parent[nx][ny] = curr;
+                        && !visited[ny][nx]
+                        && map[ny][nx].isTileEmpty()) {
+                    visited[ny][nx] = true;
+                    parent[ny][nx] = curr;
                     queue.add(next);
                 }
             }
@@ -187,7 +187,7 @@ public class MapController {
 
     private List<Pos> reconstructPath(Pos[][] parent, Pos end, Pos start) {
         List<Pos> path = new ArrayList<>();
-        for (Pos at = end; at != null && !at.equals(start); at = parent[at.getX()][at.getY()]) {
+        for (Pos at = end; at != null && !at.equals(start); at = parent[at.getY()][at.getX()]) {
             path.add(at);
         }
         path.add(start);
@@ -220,10 +220,9 @@ public class MapController {
 
         StringBuilder builder = new StringBuilder();
 
-        for (int i = y; i < y + size; i++) {
-            for (int j = x; j < x + size; j++) {
+        for (int i = y; i < Math.min(y + size, height); i++) {
+            for (int j = x; j < Math.min(x + size, width); j++) {
                 if (i < 0 || j < 0 || i >= height || j >= width) {
-                    builder.append(" ");
                     continue;
                 }
 

@@ -83,7 +83,7 @@ public class Tile {
     }
 
     public boolean isTileEmpty() {
-        return item == null && crop == null && tree == null;
+        return item == null && crop == null && tree == null && type != TileType.Lake;
     }
 
     public CropType getRandomForagingSeed() {
