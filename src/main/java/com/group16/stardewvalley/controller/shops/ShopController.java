@@ -112,12 +112,23 @@ public class ShopController {
         String productName = matcher.group("productName");
         String countStr = matcher.group("count");
         Player currentPlayer = game.getCurrentPlayer();
-        int count = Integer.parseInt(countStr);
         Item targetItem = currentPlayer.getInventory().getItemByName(productName);
 
         // اصلا نداشته باشد این کالا را
         if (targetItem == null) {
             return new Result(false, "You don’t have this item in your inventory");
+        }
+
+        int count;
+        if (countStr == null) {
+            count = currentPlayer.getInventory().getNumberOfItem(targetItem);
+        } else {
+            count = Integer.parseInt(countStr);
+        }
+
+        // این تعداد را نداشته باشد
+        if (currentPlayer.getInventory().getNumberOfItem(targetItem) < count) {
+            return new Result(false, "You don’t have enough of this item to sell!");
         }
 
         // قابلیت فروش نداشته باشد
@@ -129,11 +140,19 @@ public class ShopController {
         boolean isNear = false;
         for (Building building : game.getBuildings()) {
             if (building.getBuildingType() == BuildingType.Shipping_Bin) {
-                if (building.)
+                if (building.isNearBuilding(currentPlayer.getPosition())) {
+                    isNear = true;
+                }
             }
         }
-        return new Result(true, "nothing here yet");
+        // نزدیک ان نباشد
+        if (!isNear){
+            return new Result(false, "You need to be near a Shipping Bin to sell items!");
+        }
 
+        currentPlayer.increaseTodayIncome(targetItem.getPrice());
+        currentPlayer.getInventory().removeItem(targetItem, count);
+        return new Result(true, "Item sold successfully!");
 }
 
 

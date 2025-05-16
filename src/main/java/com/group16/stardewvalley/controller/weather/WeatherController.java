@@ -1,6 +1,7 @@
 package com.group16.stardewvalley.controller.weather;
 
 import com.group16.stardewvalley.model.Result;
+import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.weather.WeatherCondition;
 import com.group16.stardewvalley.model.app.Game;
 
@@ -10,8 +11,8 @@ public class WeatherController {
 
     private final Game game;
 
-    public WeatherController(Game game) {
-        this.game = game;
+    public WeatherController() {
+        this.game = App.getActiveGame();
     }
 
     public Result showWeather() {

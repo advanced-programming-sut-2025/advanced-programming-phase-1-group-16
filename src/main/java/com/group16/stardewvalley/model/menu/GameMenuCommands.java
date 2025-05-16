@@ -38,9 +38,11 @@ public enum GameMenuCommands implements CommandsInterface{
 
     //Animals
     Pet("\\s*pet\\s+-n\\s+(?<name>\\S+)\\s*"),
-    CheatSetAnimalFriendship("\\s*cheat\\s+set\\s+friendship\\s+-n\\s+(?<name>\\S+)\\s+-c\\s+(?<count>\\d+)\\s*"),
+    CheatSetAnimalFriendship("\\s*cheat\\s+set\\s+friendship\\s+-n\\s+" +
+            "(?<name>\\S+)\\s+-c\\s+(?<count>\\d+)\\s*"),
     ShowAnimalInfo("\\s*animals\\s*"),
-    ShepherdAnimals("^\\s*shepherd\\s+animals\\s+-n\\s+(?<name>\\S+)\\s+-l\\s+(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*$"),
+    ShepherdAnimals("^\\s*shepherd\\s+animals\\s+-n\\s+(?<name>\\S+)\\s+-l" +
+            "\\s+(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*$"),
     FeedHay("\\s*feed\\s+hay\\s+-n\\s+(?<name>\\S+)\\s*"),
     AnimalProduces("\\s*produces\\s*"),
     CollectProduct("\\s*collect\\s+produce\\s+-n\\s+(?<name>\\S+)\\s*"),
@@ -63,8 +65,14 @@ public enum GameMenuCommands implements CommandsInterface{
     Hug("^\\s*hug\\s*-u\\s*(?<username>\\S+)\\s*$"),
     Flower("^\\s*flower\\s*-u\\s*(?<username>\\S+)\\s*$"),
     AskMarriage("^\\s*ask\\s*marriage\\s*-u\\s*(?<username>\\S+)\\s*-r\\s*(?<ring>\\S+)\\s*$"),
-    Sell("^\\s*sell\\s*(?<productName>\\S+)(?:\\s+-n\\s*(?<count>\\d+))?\\s*$");
+    Sell("^\\s*sell\\s*(?<productName>\\S+)(?:\\s+-n\\s*(?<count>\\d+))?\\s*$"),
 
+    //trade
+    Start_Trade("^\\s*start\\s*trade\\s*$"),
+    Trade("^\\s*trade\\s+-u\\s+(?<username>\\S+)\\s+-t\\s+" +
+            "(?<type>offer|request)\\s+-i\\s+(?<item>\\S+)\\s+-a\\s+" +
+            "(?<amount>\\d+)(?:\\s+-p\\s+(?<price>\\S+)|\\s+-ti\\s+" +
+            "(?<targetItem>\\S+)\\s+-ta\\s+(?<targetAmount>\\d+))?\\s*$");
     private final String pattern;
 
     GameMenuCommands(String pattern) {

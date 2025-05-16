@@ -37,9 +37,9 @@ public class Player {
     private final Map<NPC, NPCInteraction> dailyNPCInteraction;
     private final Map<Player, PlayerInteraction> dailyPlayerInteraction;
     private final List<String> quests;
+    private final List<String> notifications;
+    private int todayIncome;
 
-    // مقدار های ماکسیمم هر توانایی رو هم در گیم ذخیره کردم سر جمع شه
-    // تابعی برای بالا بردن لول شخص در این موارد نوشته نشده است
     public Player(User user) {
         this.user = user;
         farmingAbilityLevel = 0;
@@ -58,6 +58,8 @@ public class Player {
         this.dailyNPCInteraction = new HashMap<>();
         this.dailyPlayerInteraction = new HashMap<>();
         this.quests = new ArrayList<>();
+        this.notifications = new ArrayList<>();
+        todayIncome = 0;
         initializeInteractions();
     }
 
@@ -85,6 +87,22 @@ public class Player {
         for (String target : quests) {
             if (target.equalsIgnoreCase(line)) {
                 quests.remove(target);
+            }
+        }
+    }
+
+    public List<String> getNotifications() {
+        return notifications;
+    }
+
+    public void addNotification(String line) {
+        notifications.add(line);
+    }
+
+    public void removeNotification(String line) {
+        for (String target : notifications) {
+            if (target.equalsIgnoreCase(line)) {
+                notifications.remove(target);
             }
         }
     }
@@ -315,7 +333,17 @@ public class Player {
             interaction.setHugged(false);
             interaction.setTraded(false);
         }
+        increaseCoin(todayIncome);
+        this.todayIncome = 0;
 
+    }
+
+    public void increaseTodayIncome(int amount) {
+        todayIncome += amount;
+    }
+
+    public int getTodayIncome() {
+        return todayIncome;
     }
 
     public void recordNPCDialogue(NPC npc, String dialogueLine) {
