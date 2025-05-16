@@ -27,4 +27,11 @@ public enum BuildingType {
         this.dailyLimit = dailyLimit;
     }
 
+    public int getWidth() {
+        return width;
+    }
+
+    public int getLength() {
+        return length;
+    }
 }

@@ -56,4 +56,23 @@ public class Building extends Item {
         this.capacity += 1;
     }
 
+    public boolean isNearBuilding(Pos pos) {
+        int length = buildingType.getLength();
+        int width = buildingType.getWidth();
+
+        // Building boundaries
+        int buildingMinX = startPosition.getX();
+        int buildingMaxX = startPosition.getX() + length - 1;
+        int buildingMinY = startPosition.getY();
+        int buildingMaxY = startPosition.getY() + width - 1;
+
+        // Check if position is adjacent (left/right/top/bottom)
+        boolean isLeft = pos.getX() == buildingMinX - 1 && pos.getY() >= buildingMinY && pos.getY() <= buildingMaxY;
+        boolean isRight = pos.getX() == buildingMaxX + 1 && pos.getY() >= buildingMinY && pos.getY() <= buildingMaxY;
+        boolean isTop = pos.getY() == buildingMaxY + 1 && pos.getX() >= buildingMinX && pos.getX() <= buildingMaxX;
+        boolean isBottom = pos.getY() == buildingMinY - 1 && pos.getX() >= buildingMinX && pos.getX() <= buildingMaxX;
+
+        return isLeft || isRight || isTop || isBottom;
+    }
+
 }

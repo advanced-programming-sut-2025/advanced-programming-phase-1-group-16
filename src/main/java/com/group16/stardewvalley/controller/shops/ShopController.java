@@ -1,7 +1,10 @@
 package com.group16.stardewvalley.controller.shops;
 
+import com.group16.stardewvalley.model.animal.sellable;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.Result;
+import com.group16.stardewvalley.model.shops.Building;
+import com.group16.stardewvalley.model.shops.BuildingType;
 import com.group16.stardewvalley.model.shops.Shop;
 import com.group16.stardewvalley.model.shops.UpgradeType;
 import com.group16.stardewvalley.model.tools.Gadget;
@@ -29,9 +32,9 @@ public class ShopController {
         Location l = game.getCurrentPlayer().getLocation().getLocation();
         // در اینجا باید اگر در این مغازه نبود ارور بدیم
         if (!(l == Location.Blacksmith || l == Location.JojaMart ||
-              l == Location.CarpentersShop || l == Location.FishShop ||
-              l == Location.MarniesRanch || l == Location.TheStardropSaloon ||
-              l == Location.PierresGeneralStore  )) {
+                l == Location.CarpentersShop || l == Location.FishShop ||
+                l == Location.MarniesRanch || l == Location.TheStardropSaloon ||
+                l == Location.PierresGeneralStore  )) {
 
         }
 
@@ -111,163 +114,172 @@ public class ShopController {
         Player currentPlayer = game.getCurrentPlayer();
         int count = Integer.parseInt(countStr);
         Item targetItem = currentPlayer.getInventory().getItemByName(productName);
-        int sellPrice = targetItem.getPrice();
-        switch (targetItem.getMaterial()) {
-            case "base":
-                sellPrice *= 1.25;
-            case "silver"
+
+        // اصلا نداشته باشد این کالا را
+        if (targetItem == null) {
+            return new Result(false, "You don’t have this item in your inventory");
         }
-    }
+
         // قابلیت فروش نداشته باشد
-        // چی هست این شرط اصلا
+        if (!(targetItem instanceof sellable)) {
+            return new Result(false, "This item cannot be sold!");
+        }
+        int sellPrice = targetItem.getPrice();
+
+        boolean isNear = false;
+        for (Building building : game.getBuildings()) {
+            if (building.getBuildingType() == BuildingType.Shipping_Bin) {
+                if (building.)
+            }
+        }
         return new Result(true, "nothing here yet");
 
+}
+
+
+public Result handleShowProducts(Set<Item> items) {
+    if (items == null || items.isEmpty()) {
+        return new Result(false, "No products available");
+    }
+
+    StringBuilder productsInfo = new StringBuilder("Available Products:\n");
+
+    for (Item item : items) {
+        productsInfo.append(String.format(
+                "- %s (Price: %d)%n",
+                item.getName(),
+                item.getPrice()
+        ));
+    }
+
+    return new Result(true, productsInfo.toString());
+}
+
+private Result handlePurchase(Location location, Matcher matcher) {
+    String productName = matcher.group("productName");
+    String countStr = matcher.group("count");
+    int count;
+    if (countStr == null) {
+        count = 1;
+    } else {
+        count = Integer.parseInt(countStr);
+    }
+    Item targetItem = null;
+    Shop targetShop = currentPlayer.getLocation().getLocation().getShopByLocation();
+
+    targetItem = targetShop.findItemByName(productName);
+    // فروشگاه مورد نظر این محصول را نداشته باشد
+    if (targetItem == null) {
+        return new Result(false, "Sorry, we don't stock that item. " +
+                "Try the specialty shops around town.");
+    }
+
+    // فرد موجودی لازم برای خرید ان را نداشته باشد
+    if (currentPlayer.getCoin() < targetItem.getPrice()) {
+        return new Result(false, "Oops! Too expensive!");
+    }
+
+    // فروشگاه برای امروز تعداد کافی برای فروش نداشت
+    if (targetShop.getAvailableCountForToday(targetItem) <= count) {
+        return new Result(false, "Shop's stock is empty for today! Come back tomorrow.");
+    }
+
+    // اینونتوری اش جا نداشته باشد
+    if (currentPlayer.getInventory().isFull()) {
+        return new Result(false, "Oops! Your backpack is completely full!");
+    }
+
+    // چیزی که می خواهد بخرد حیوان باشد و برای هر کدام مکان نگهداری لازم را نداشته باشد
+    //TODO nili
+
+    // با موفقیت خرید کند و به اینونتوری اش اضافه شود
+    currentPlayer.getInventory().addItem(targetItem, count);
+    currentPlayer.decreaseCoin(targetItem.getPrice());
+    targetShop.addBalance(targetItem.getPrice());
+    return new Result(true, "Purchase complete! Enjoy your new item");
+
+
+}
+
+private Result upgradeTool(Matcher matcher) {
+    String toolName = matcher.group("toolName");
+    Player currentPlayer = game.getCurrentPlayer();
+    // خطای مراجعخ در زمان نامناسب
+    if (!game.getBlacksmith().isOpen()) {
+        return new Result(false, "Sorry! we're closed! Shop hours: 9 AM to 4 PM");
+    }
+
+    // خطای نداشتن این ابزار
+    if (currentPlayer.getInventory().findToolByName(toolName) == null) {
+        return new Result(false, "You want me to upgrade... " +
+                "what exactly? You don't even have this tool!");
+    }
+
+    Gadget currentTool = currentPlayer.getInventory().findToolByName(toolName);
+    String currentMaterial = currentTool.getMaterial();
+
+    // خطای اینکه این ابزار ارتفا پذیر نیست
+    if (currentMaterial == null) {
+        return new Result(false, "This tool cannot be upgraded");
+    }
+
+    // خطای اینکه ابزار تا بالاترین مرحله ارتقا یافته
+    String nextMaterial = getNextMaterial(currentMaterial);
+    if (nextMaterial == null) {
+        return new Result(false, "Your " + toolName + " is already at the highest upgrade level!");
     }
 
 
-    public Result handleShowProducts(Set<Item> items) {
-        if (items == null || items.isEmpty()) {
-            return new Result(false, "No products available");
-        }
-
-        StringBuilder productsInfo = new StringBuilder("Available Products:\n");
-
-        for (Item item : items) {
-            productsInfo.append(String.format(
-                    "- %s (Price: %d)%n",
-                    item.getName(),
-                    item.getPrice()
-            ));
-        }
-
-        return new Result(true, productsInfo.toString());
+    int upgradeCost = ToolDataManager.getUpgradeCost(toolName, currentMaterial, nextMaterial);
+    // خطای پول کافی نداشتن
+    if (currentPlayer.getCoin() < upgradeCost) {
+        return new Result(false, "Heh. Looks like your wallet’s " +
+                "as rusty as this tool. Bring more gold next time!");
     }
 
-    private Result handlePurchase(Location location, Matcher matcher) {
-        String productName = matcher.group("productName");
-        String countStr = matcher.group("count");
-        int count;
-        if (countStr == null) {
-            count = 1;
-        } else {
-            count = Integer.parseInt(countStr);
-        }
-        Item targetItem = null;
-        Shop targetShop = currentPlayer.getLocation().getLocation().getShopByLocation();
-
-        targetItem = targetShop.findItemByName(productName);
-        // فروشگاه مورد نظر این محصول را نداشته باشد
-        if (targetItem == null) {
-            return new Result(false, "Sorry, we don't stock that item. " +
-                    "Try the specialty shops around town.");
-        }
-
-        // فرد موجودی لازم برای خرید ان را نداشته باشد
-        if (currentPlayer.getCoin() < targetItem.getPrice()) {
-            return new Result(false, "Oops! Too expensive!");
-        }
-
-        // فروشگاه برای امروز تعداد کافی برای فروش نداشت
-        if (targetShop.getAvailableCountForToday(targetItem) <= count) {
-            return new Result(false, "Shop's stock is empty for today! Come back tomorrow.");
-        }
-
-        // اینونتوری اش جا نداشته باشد
-        if (currentPlayer.getInventory().isFull()) {
-            return new Result(false, "Oops! Your backpack is completely full!");
-        }
-
-        // چیزی که می خواهد بخرد حیوان باشد و برای هر کدام مکان نگهداری لازم را نداشته باشد
-        //TODO nili
-
-        // با موفقیت خرید کند و به اینونتوری اش اضافه شود
-        currentPlayer.getInventory().addItem(targetItem, count);
-        currentPlayer.decreaseCoin(targetItem.getPrice());
-        targetShop.addBalance(targetItem.getPrice());
-        return new Result(true, "Purchase complete! Enjoy your new item");
-
-
+    UpgradeType upgradeType;
+    try {
+        upgradeType = UpgradeType.valueOf(nextMaterial.toUpperCase() + "_TOOL");
+    } catch (IllegalArgumentException e) {
+        return new Result(false, "Invalid upgrade type for " + toolName);
     }
 
-    private Result upgradeTool(Matcher matcher) {
-        String toolName = matcher.group("toolName");
-        Player currentPlayer = game.getCurrentPlayer();
-        // خطای مراجعخ در زمان نامناسب
-        if (!game.getBlacksmith().isOpen()) {
-            return new Result(false, "Sorry! we're closed! Shop hours: 9 AM to 4 PM");
-        }
-
-        // خطای نداشتن این ابزار
-        if (currentPlayer.getInventory().findToolByName(toolName) == null) {
-            return new Result(false, "You want me to upgrade... " +
-                    "what exactly? You don't even have this tool!");
-        }
-
-        Gadget currentTool = currentPlayer.getInventory().findToolByName(toolName);
-        String currentMaterial = currentTool.getMaterial();
-
-        // خطای اینکه این ابزار ارتفا پذیر نیست
-        if (currentMaterial == null) {
-            return new Result(false, "This tool cannot be upgraded");
-        }
-
-        // خطای اینکه ابزار تا بالاترین مرحله ارتقا یافته
-        String nextMaterial = getNextMaterial(currentMaterial);
-        if (nextMaterial == null) {
-            return new Result(false, "Your " + toolName + " is already at the highest upgrade level!");
-        }
-
-
-        int upgradeCost = ToolDataManager.getUpgradeCost(toolName, currentMaterial, nextMaterial);
-        // خطای پول کافی نداشتن
-        if (currentPlayer.getCoin() < upgradeCost) {
-            return new Result(false, "Heh. Looks like your wallet’s " +
-                    "as rusty as this tool. Bring more gold next time!");
-        }
-
-        UpgradeType upgradeType;
-        try {
-            upgradeType = UpgradeType.valueOf(nextMaterial.toUpperCase() + "_TOOL");
-        } catch (IllegalArgumentException e) {
-            return new Result(false, "Invalid upgrade type for " + toolName);
-        }
-
-        // خطای اینکه امروز یکبار انجام شده
-      if (!game.getBlacksmith().cabUpgradeToday(upgradeType)) {
-          return new Result(false, "My anvil needs a break! " +
-                  "One upgrade a day keeps the warranty valid ^ ^");
-      }
-
-        // اپگرید کند
-       game.getBlacksmith().increaseBalance(upgradeCost);
-      currentPlayer.decreaseCoin(upgradeCost);
-      currentTool.setMaterial(getNextMaterial(currentMaterial));
-      return new Result(true, "Upgrade complete! Your new material is : " + currentTool.getMaterial());
-
+    // خطای اینکه امروز یکبار انجام شده
+    if (!game.getBlacksmith().cabUpgradeToday(upgradeType)) {
+        return new Result(false, "My anvil needs a break! " +
+                "One upgrade a day keeps the warranty valid ^ ^");
     }
 
-    private String getNextMaterial(String currentMaterial) {
-        if (currentMaterial.equalsIgnoreCase("base")) {
-            return "Copper";
-        }
+    // اپگرید کند
+    game.getBlacksmith().increaseBalance(upgradeCost);
+    currentPlayer.decreaseCoin(upgradeCost);
+    currentTool.setMaterial(getNextMaterial(currentMaterial));
+    return new Result(true, "Upgrade complete! Your new material is : " + currentTool.getMaterial());
 
-        if (currentMaterial.equalsIgnoreCase("Copper")) {
-            return "Iron";
-        }
+}
 
-        if (currentMaterial.equalsIgnoreCase("Iron")) {
-            return "Gold";
-        }
-
-        if (currentMaterial.equalsIgnoreCase("Gold")) {
-            return "Iridium";
-        }
-
-        if (currentMaterial.equalsIgnoreCase("Iridium")) {
-            return null;
-        }
-        else return null;
+private String getNextMaterial(String currentMaterial) {
+    if (currentMaterial.equalsIgnoreCase("base")) {
+        return "Copper";
     }
+
+    if (currentMaterial.equalsIgnoreCase("Copper")) {
+        return "Iron";
+    }
+
+    if (currentMaterial.equalsIgnoreCase("Iron")) {
+        return "Gold";
+    }
+
+    if (currentMaterial.equalsIgnoreCase("Gold")) {
+        return "Iridium";
+    }
+
+    if (currentMaterial.equalsIgnoreCase("Iridium")) {
+        return null;
+    }
+    else return null;
+}
 
 
 }
