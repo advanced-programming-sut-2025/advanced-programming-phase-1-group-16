@@ -1,6 +1,6 @@
 package com.group16.stardewvalley.model.animal;
 
-public class AnimalProduct {
+public class AnimalProduct  {
 
     AnimalProductTypes productType;
     ProductQuality productQuality;

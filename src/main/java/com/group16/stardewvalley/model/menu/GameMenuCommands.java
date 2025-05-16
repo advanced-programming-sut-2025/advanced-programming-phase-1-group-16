@@ -46,6 +46,10 @@ public enum GameMenuCommands implements CommandsInterface{
     CollectProduct("\\s*collect\\s+produce\\s+-n\\s+(?<name>\\S+)\\s*"),
     SellAnimal("\\s*sell\\s+animal\\s+-n\\s+(?<name>\\S+)\\s*"),
 
+    //Artisan commands
+    ArtisanUse("\\s*artisan\\s+use\\s+(?<artisanName>\\S+)\\s+(?<itemsName>.+)\\s*"),
+    ArtisanGet("\\s*artisan\\s+get\\s+(?<artisanName>\\S+)\\s*"),
+
     // relationship commands
     Friendship("^\\s*friendship\\s*$"),
     Talk("^\\s*talk\\s*-u\\s*(?<username>\\S+)\\s*-m\\s*(?<message>.+?)$"),
