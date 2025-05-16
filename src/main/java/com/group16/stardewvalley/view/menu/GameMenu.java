@@ -1,6 +1,7 @@
 package com.group16.stardewvalley.view.menu;
 
 
+import com.group16.stardewvalley.controller.CheatCodeController;
 import com.group16.stardewvalley.controller.agriculture.AgricultureController;
 import com.group16.stardewvalley.controller.AnimalController;
 import com.group16.stardewvalley.controller.map.MapController;
@@ -10,6 +11,7 @@ import com.group16.stardewvalley.controller.shops.ShopController;
 import com.group16.stardewvalley.controller.tools.GadgetController;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.menu.GameMenuCheatCodeCommands;
 import com.group16.stardewvalley.model.menu.GameMenuCommands;
 import com.group16.stardewvalley.model.menu.LoginMenuCommands;
 import com.group16.stardewvalley.model.menu.ProfileMenuCommands;
@@ -29,6 +31,7 @@ public class GameMenu implements MenuInterface {
     private final TimeDate timeDate = new TimeDate(App.getActiveGame());
     private final AnimalController animalController = new AnimalController();
     private final AgricultureController agricultureController = new AgricultureController();
+    private final CheatCodeController cheatCodeController = new CheatCodeController();
     private final HomeMenuController homeMenuController = new HomeMenuController();
     private final GadgetController gadgetController = new GadgetController();
     private final ShopController shopController = new ShopController();
@@ -114,8 +117,6 @@ public class GameMenu implements MenuInterface {
             System.out.println(agricultureController.craftInfo(matcher.group("name")));
         } else if ((matcher = GameMenuCommands.TreeInfo.getMatcher(input)) != null){
             System.out.println(agricultureController.treeInfo(matcher.group("name")));
-        } else if ((matcher = GameMenuCommands.ForagingInfo.getMatcher(input)) != null){
-            System.out.println(agricultureController.foragingInfo(matcher.group("name")));
         } else if ((matcher = GameMenuCommands.PlantSeed.getMatcher(input)) != null){
             System.out.println(agricultureController.planting(matcher.group("seed"), matcher.group("dir")));
         } else if ((matcher = GameMenuCommands.ShowPlant.getMatcher(input)) != null){
@@ -225,6 +226,16 @@ public class GameMenu implements MenuInterface {
         } else if ((matcher = GadgetsCommands.USE_TOOL.getMatcher(input)).matches()) {
             System.out.println(gadgetController.useTool(matcher));
         }
+
+
+        //cheat code
+        else if ((matcher = GameMenuCheatCodeCommands.AddSeed.getMatcher(input)) != null){
+            System.out.println(agricultureController.cheatAdd(matcher.group("seed")));
+        } else if ((matcher = GameMenuCheatCodeCommands.AddTool.getMatcher(input)) != null){
+            System.out.println(cheatCodeController.addTool(matcher.group("tool")));
+        }
+
+        //ENERGY
 
 
 
