@@ -54,7 +54,7 @@ public class TimeDate {
     }
 
     // افزایش یک روز
-    private void advanceOneDay() {
+    public void advanceOneDay() {
         // برای سیتسم پیش بینی هوای فردا باید این ها تنظیم بشود
         game.setWeatherCondition(game.getTomorrowWeatherCondition());
         game.setTomorrowWeatherCondition(null);

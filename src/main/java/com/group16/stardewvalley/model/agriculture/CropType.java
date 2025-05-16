@@ -41,6 +41,10 @@ public enum CropType {
     FAIRY_ROSE("Fairy Rose", SeedType.FAIRY_SEEDS, new int[]{1, 4, 4, 3}, 12, true, -1, 290, true, 45, 20, List.of(Season.Fall), false, false),
     GRAPE("Grape", SeedType.GRAPE_STARTER, new int[]{1, 1, 2, 3, 3}, 10, false, 3, 80, true, 38, 17, List.of(Season.Fall), false, true),
     PUMPKIN("Pumpkin", SeedType.PUMPKIN_SEEDS, new int[]{1, 2, 3, 4, 3}, 13, true, -1, 320, false, -1, -1, List.of(Season.Fall), true, false),
+    YAM("Yam", SeedType.YAM_SEEDS, new int[]{1, 3, 3, 3}, 10, true, -1, 160, true, 45, 20, List.of(Season.Fall), false, false),
+    SWEET_GEM_BERRY("Sweet Gem Berry", SeedType.RARE_SEED, new int[]{2, 4, 6, 6, 6}, 24, true, -1, 3000, false, -1, -1, List.of(Season.Fall), false, false),
+    POWDERMELON("Powdermelon", SeedType.POWDERMELON_SEEDS, new int[]{1, 2, 1, 2, 1}, 7, true, -1, 60, true, 63, 28, List.of(Season.Winter), true, true),
+    ANCIENT_FRUIT("Ancient Fruit", SeedType.ANCIENT_SEED, new int[]{2, 7, 7, 7, 5}, 28, false, 7, 550, false, -1, -1, List.of(Season.Spring, Season.Summer, Season.Fall), false, false),
 
 
     // ===================== FORAGING CROPS =====================

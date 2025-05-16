@@ -177,9 +177,19 @@ public class Game {
 
 
     public void nextTurn() {
-        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+        if (players.stream().allMatch(Player::isFainted)) {
+            timeDate.advanceOneDay();
+            return;
+        }
+        int index = (currentPlayerIndex + 1) % players.size();
+        int passTurn = 1;
+        while (getPlayers().get(index).isFainted()) {
+            index = (index + 1) % players.size();
+            passTurn++;
+        }
+        currentPlayerIndex = index;
 
-        turnsPassedInRound++;
+        turnsPassedInRound += passTurn;
 
         // After all players have played → pass 1 hour
         if (turnsPassedInRound >= players.size()) {

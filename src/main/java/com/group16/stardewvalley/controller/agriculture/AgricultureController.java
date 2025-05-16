@@ -24,16 +24,19 @@ public class AgricultureController {
         }
         StringBuilder result = new StringBuilder();
         result.append("Name: ").append(crop.getName())
-                .append("\nSource:").append(crop.getSource().getName())
-                .append("\nStages:");
+                .append("\nSource: ").append(crop.getSource().getName())
+                .append("\nStages: ");
         for (int stage : crop.getStages()) {
             result.append(stage).append("-");
         }
         result.deleteCharAt(result.length() - 1);
         result.append("\nTotal Harvest Time: ").append(crop.getHarvestTime())
                 .append("\nOne Time: ").append(crop.isOneTime())
-                .append("\nRegrowth Time: ").append(crop.getRegrowthTime())
-                .append("\nBase Sell Price: ").append(crop.getBaseSellPrice())
+                .append("\nRegrowth Time: ");
+        if (crop.getRegrowthTime() != -1) {
+            result.append(crop.getRegrowthTime());
+        }
+        result.append("\nBase Sell Price: ").append(crop.getBaseSellPrice())
                 .append("\nIs Edible: ").append(crop.isEdible())
                 .append("\nBase Energy: ").append(crop.getEnergy())
                 .append("\nBase Health: ").append(crop.getBaseHealth())
