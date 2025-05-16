@@ -113,8 +113,17 @@ public class Game {
     }
 
     public Player getCurrentPlayer() {
-        return players.get(currentPlayerIndex);    }
+        return players.get(currentPlayerIndex);
+    }
 
+    public Player getPlayerByUsername(String username) {
+        for (Player player : players) {
+            if (player.getUsername().equalsIgnoreCase(username)) {
+                return player;
+            }
+        }
+        return null;
+    }
 
     public void setPlayers(ArrayList<Player> players) {
         this.players = players;

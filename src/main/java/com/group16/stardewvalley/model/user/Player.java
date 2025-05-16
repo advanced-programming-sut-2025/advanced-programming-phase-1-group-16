@@ -35,6 +35,7 @@ public class Player {
     private int rejectionCooldown;
     private final Map<NPC, NPCInteraction> dailyNPCInteraction;
     private final Map<Player, PlayerInteraction> dailyPlayerInteraction;
+    private final Gender gender;
     // مقدار های ماکسیمم هر توانایی رو هم در گیم ذخیره کردم سر جمع شه
     // تابعی برای بالا بردن لول شخص در این موارد نوشته نشده است
     public Player(User user) {
@@ -69,8 +70,16 @@ public class Player {
         }
     }
 
+    public Gender getGender() {
+        return gender;
+    }
+
     public NPCInteraction getInteractionWith(NPC npc) {
         return dailyNPCInteraction.get(npc);
+    }
+
+    public PlayerInteraction getInteractionWith(Player player) {
+        return dailyPlayerInteraction.get(player);
     }
 
     public Map<Player , Integer> getInteractionsLevel() {
@@ -79,6 +88,10 @@ public class Player {
 
     public Map<Player, Integer> getInteractionScore() {
         return interactionScore;
+    }
+
+    public String getUsername() {
+        return user.getUsername();
     }
 
     public String getName() {
@@ -273,11 +286,19 @@ public class Player {
         }
         this.isFainted = false;
         energy = energyCeiling;
-        interactionTodayStatus.replaceAll((player, status) -> false);
         for (Map.Entry<NPC, NPCInteraction> entry : dailyNPCInteraction.entrySet()) {
             NPCInteraction interaction = entry.getValue();
             interaction.setMetToday(false);
             interaction.setGiftedToday(false);
+        }
+
+        for (Map.Entry<Player, PlayerInteraction> entry : dailyPlayerInteraction.entrySet()) {
+            PlayerInteraction interaction = entry.getValue();
+            interaction.setTalked(false);
+            interaction.setFlowered(false);
+            interaction.setGifted(false);
+            interaction.setHugged(false);
+            interaction.setTraded(false);
         }
 
     }
