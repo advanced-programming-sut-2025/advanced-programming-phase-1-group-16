@@ -349,7 +349,11 @@ public class Player {
     }
 
     public void faint(){
-
+        this.isFainted = true;
+        this.energy = 0;
     }
 
+    public boolean isFainted() {
+        return isFainted;
+    }
 }

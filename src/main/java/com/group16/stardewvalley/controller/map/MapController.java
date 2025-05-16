@@ -113,12 +113,11 @@ public class MapController {
         }
         if (player.getEnergy() < pathInfo.energyCost()) {
             player.faint();
-            return new Result(false, "You fainted");
+            player.setPosition(dest);
+            return new Result(false, "Moved to <" + dest.getX() + "," + dest.getY() + "> but \033[31mYou fainted\033[0m");
         }
-
         player.setPosition(dest);
-        player.setEnergy(player.getEnergy() - pathInfo.energyCost());
-
+        player.decreaseEnergy(pathInfo.energyCost());
         return new Result(true, "Moved to <" + dest.getX() + "," + dest.getY() + ">");
     }
 
@@ -141,10 +140,53 @@ public class MapController {
             return PathInfo.invalid("No path exists.");
         }
 
-        int steps = path.size() - 1;
-        int energyCost = steps / 20;
+        int energyCost = 0;
+        Pos prev = start;
+        Direction lastDirection = null;
+
+        for (int i = 1; i < path.size(); i++) {
+            Pos curr = path.get(i);
+            Tile tile = map[curr.getX()][curr.getY()];
+
+            // Base cost per step
+            int stepCost = 1;
+
+            // Additional cost based on tile type
+            switch (tile.getType()) {
+                case Plowed -> stepCost += 2;
+                case Quarry -> stepCost += 1;
+                case  GreenHouse -> stepCost -= 1;
+                default -> {} // no change for Ground or others
+            }
+
+            // Add extra cost for direction change
+            Direction currentDirection = getDirection(prev, curr);
+            if (lastDirection != null && currentDirection != lastDirection) {
+                stepCost += 1; // turning costs more energy
+            }
+
+            energyCost += stepCost;
+            lastDirection = currentDirection;
+            prev = curr;
+        }
+        energyCost /= 20;
 
         return PathInfo.valid(path, energyCost);
+    }
+
+    private Direction getDirection(Pos from, Pos to) {
+        int dx = to.getX() - from.getX();
+        int dy = to.getY() - from.getY();
+        if (dx == 1) return Direction.RIGHT;
+        if (dx == -1) return Direction.LEFT;
+        if (dy == 1) return Direction.DOWN;
+        if (dy == -1) return Direction.UP;
+        return null;
+    }
+
+    // Enum for direction
+    private enum Direction {
+        UP, DOWN, LEFT, RIGHT
     }
 
     private List<Pos> findShortestPath(Tile[][] map, Pos start, Pos dest) {
@@ -229,7 +271,11 @@ public class MapController {
                 boolean playerDrawn = false;
                 for (Player player : App.getActiveGame().getPlayers()) {
                     if (player.getPosition().getY() == i && player.getPosition().getX() == j) {
-                        builder.append("\u001B[31m@\u001B[0m");
+                        if (player.isFainted()) {
+                            builder.append("\u001B[31mx\u001B[0m");
+                        } else {
+                            builder.append("\u001B[31m@\u001B[0m");
+                        }
                         playerDrawn = true;
                         break; // چون پلیر پیدا شد، بقیه پلیرها مهم نیستن
                     }
