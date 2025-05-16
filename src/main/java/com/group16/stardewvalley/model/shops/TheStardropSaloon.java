@@ -1,6 +1,9 @@
 package com.group16.stardewvalley.model.shops;
 
+import com.group16.stardewvalley.model.food.Food;
 import com.group16.stardewvalley.model.map.PlaceType;
+
+import java.util.ArrayList;
 
 public class TheStardropSaloon extends Shop{
     public TheStardropSaloon() {

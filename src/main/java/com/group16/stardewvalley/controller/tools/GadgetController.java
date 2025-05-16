@@ -12,24 +12,23 @@ import java.util.regex.Matcher;
 import static com.group16.stardewvalley.model.map.Direction.getDirectionOffset;
 
 public class GadgetController {
-    private final Game game = App.getActiveGame();
 
     public Result equip(Matcher matcher) {
         String toolName = matcher.group("toolName");
-        Player currentPlayer = game.getCurrentPlayer();
+        Player currentPlayer = App.getActiveGame().getCurrentPlayer();
 
         if (currentPlayer.getInventory().findToolByName(toolName) == null) {
             return new Result(false, "Oops! You don't have this tool (~_^) ");
         }
 
-        Gadget toolToEquip = game.getCurrentPlayer().getInventory().findToolByName(toolName);
+        Gadget toolToEquip = App.getActiveGame().getCurrentPlayer().getInventory().findToolByName(toolName);
         currentPlayer.equip(toolToEquip);
 
         return new Result(true, "Now you have " + toolName + " equipped!");
     }
 
     public Result showCurrentTool() {
-        Gadget targetTool = game.getCurrentPlayer().getCurrentEquipment();
+        Gadget targetTool = App.getActiveGame().getCurrentPlayer().getCurrentEquipment();
         if (targetTool == null) {
             return new Result(false, "you don't have any gadget in your hand (~_^)");
         }
@@ -37,7 +36,7 @@ public class GadgetController {
     }
 
     public Result showAvailableTools() {
-        Map<Gadget, Integer> tools = game.getCurrentPlayer().getInventory().getTools();
+        Map<Gadget, Integer> tools = App.getActiveGame().getCurrentPlayer().getInventory().getTools();
 
         if (tools.isEmpty()) {
             return new Result(false, "Your inventory is empty! (•_•)");
@@ -57,16 +56,16 @@ public class GadgetController {
 
     public Result useTool(Matcher matcher) {
         String direction = matcher.group("direction");
-        Player currentPlayer = game.getCurrentPlayer();
+        Player currentPlayer = App.getActiveGame().getCurrentPlayer();
         Gadget gadget = currentPlayer.getCurrentEquipment();
         Direction dir = Direction.fromString(direction);
-        Tile targetTile = dir.applyPosition(game);
+        Tile targetTile = dir.applyPosition(App.getActiveGame());
 
         if (targetTile == null) {
             return new Result(false, "Out of bound");
         }
 
-        return gadget.use(targetTile, game);
+        return gadget.use(targetTile, App.getActiveGame());
     }
 
     // یا هیچی روی اون موقعیت سازگار نیست یا یکی از این کارهای ابزاره هست
@@ -78,7 +77,7 @@ public class GadgetController {
      */
 
     private boolean hasEnoughEnergy(Gadget gadget, ToolAction action) {
-        Player currentPlayer = game.getCurrentPlayer();
+        Player currentPlayer = App.getActiveGame().getCurrentPlayer();
         int requiredEnergy = ToolDataManager.getEnergyConsumption(gadget.getClass().getSimpleName()
                 .toLowerCase(), gadget.getMaterial());
         return requiredEnergy > currentPlayer.getEnergy();

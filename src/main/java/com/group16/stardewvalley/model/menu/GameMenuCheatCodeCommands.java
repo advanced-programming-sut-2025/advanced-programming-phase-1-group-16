@@ -1,0 +1,19 @@
+package com.group16.stardewvalley.model.menu;
+
+import com.group16.stardewvalley.view.menu.CommandsInterface;
+
+public enum GameMenuCheatCodeCommands implements CommandsInterface {
+    AddSeed("cheat add seed (?<seed>.+?)"),
+    AddTool("cheat add tool (?<tool>.+?)"),
+    CheatAdd("^\\s*cheat\\s*add\\s*(?<count>\\d+)\\s*dollars\\s*$");
+
+
+    private final String pattern;
+    GameMenuCheatCodeCommands(String pattern) {
+        this.pattern = pattern;
+    }
+
+    public String getPattern() {
+        return pattern;
+    }
+}

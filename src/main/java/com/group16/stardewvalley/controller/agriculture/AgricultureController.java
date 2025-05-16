@@ -3,6 +3,7 @@ package com.group16.stardewvalley.controller.agriculture;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.agriculture.*;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.items.Seed;
 import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.map.TileType;
@@ -23,54 +24,38 @@ public class AgricultureController {
             return new Result(false, "Crop not found");
         }
         StringBuilder result = new StringBuilder();
-        result.append("Name: ").append(crop.getName())
-                .append("\nSource: ").append(crop.getSource().getName())
-                .append("\nStages: ");
-        for (int stage : crop.getStages()) {
-            result.append(stage).append("-");
+        if (crop.isForaging()) {
+            result.append("Foraging\n")
+                    .append("Season: ").append(crop.getSeason()).append("\n")
+                    .append("Base sell price: ").append(crop.getBaseSellPrice()).append("\n")
+                    .append("Energy: ").append(crop.getEnergy()).append("\n");
         }
-        result.deleteCharAt(result.length() - 1);
-        result.append("\nTotal Harvest Time: ").append(crop.getHarvestTime())
-                .append("\nOne Time: ").append(crop.isOneTime())
-                .append("\nRegrowth Time: ");
-        if (crop.getRegrowthTime() != -1) {
-            result.append(crop.getRegrowthTime());
+        else {
+            result.append("Name: ").append(crop.getName())
+                    .append("\nSource: ").append(crop.getSource().getName())
+                    .append("\nStages: ");
+            for (int stage : crop.getStages()) {
+                result.append(stage).append("-");
+            }
+            result.deleteCharAt(result.length() - 1);
+            result.append("\nTotal Harvest Time: ").append(crop.getHarvestTime())
+                    .append("\nOne Time: ").append(crop.isOneTime())
+                    .append("\nRegrowth Time: ");
+            if (crop.getRegrowthTime() != -1) {
+                result.append(crop.getRegrowthTime());
+            }
+            result.append("\nBase Sell Price: ").append(crop.getBaseSellPrice())
+                    .append("\nIs Edible: ").append(crop.isEdible())
+                    .append("\nBase Energy: ").append(crop.getEnergy())
+                    .append("\nBase Health: ").append(crop.getBaseHealth())
+                    .append("\nSeason: ").append(crop.getSeason())
+                    .append("\nCan Become Giant: ").append(crop.canBecomeGiant());
         }
-        result.append("\nBase Sell Price: ").append(crop.getBaseSellPrice())
-                .append("\nIs Edible: ").append(crop.isEdible())
-                .append("\nBase Energy: ").append(crop.getEnergy())
-                .append("\nBase Health: ").append(crop.getBaseHealth())
-                .append("\nSeason: ").append(crop.getSeason())
-                .append("\nCan Become Giant: ").append(crop.canBecomeGiant());
+
         return new Result(true, result.toString());
     }
 
     public Result treeInfo(String name) {
-        TreeType tree = findTreeTypeByName(name);
-        if (tree == null) {
-            return new Result(false, "Tree not found");
-        }
-        StringBuilder result = new StringBuilder();
-        result.append("Name: ").append(tree.getName())
-                .append("\nSource:").append(tree.getSapling().getName())
-                .append("\nStages:");
-        for (int stage : tree.getGrowthStages()) {
-            result.append(stage).append("-");
-        }
-        result.deleteCharAt(result.length() - 1);
-        result.append("\nTotal Harvest Time: ").append(tree.getTotalGrowthTime())
-                .append("\nOne Time: ").append("no")
-                .append("\nRegrowth Time: ").append(tree.getFruitCycleDays())
-                .append("\nBase Sell Price: ").append(tree.getFruitSellPrice())
-                .append("\nIs Edible: ").append(tree.isEdible())
-                .append("\nBase Energy: ").append(tree.getEnergy())
-                .append("\nBase Health: ").append(tree.getHealth())
-                .append("\nSeason: ").append(tree.getSeason())
-                .append("\nCan Become Giant: ").append("no");
-        return new Result(true, result.toString());
-    }
-
-    public Result foragingInfo(String name) {
         TreeType tree = findTreeTypeByName(name);
         if (tree == null) {
             return new Result(false, "Tree not found");
@@ -341,7 +326,7 @@ public class AgricultureController {
 
     private TreeType findTreeTypeByName(String name) {
         for (TreeType tree : TreeType.values()) {
-            if (tree.getName().equals(name)) {
+            if (tree.getName().equals(name) || tree.getSapling().getName().equals(name)) {
                 return tree;
             }
         }
@@ -364,5 +349,17 @@ public class AgricultureController {
             }
         }
         return null;
+    }
+
+
+    //cheat code
+    public Result cheatAdd(String input) {
+        SeedType seedType = findSeedTypeByName(input);
+        if (seedType == null) {
+            return new Result(false, "Seed type not found");
+        }
+        Seed seed = new Seed(input, seedType);
+        App.getActiveGame().getCurrentPlayer().getInventory().addItem(seed, 1);
+        return new Result(true, "seed added");
     }
 }

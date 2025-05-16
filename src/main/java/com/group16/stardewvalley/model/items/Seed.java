@@ -5,7 +5,7 @@ import com.group16.stardewvalley.model.agriculture.SeedType;
 public class Seed extends Item {
     private SeedType type;
 
-    Seed(String name, SeedType type) {
+    public Seed(String name, SeedType type) {
         super(name);
         this.type = type;
     }
