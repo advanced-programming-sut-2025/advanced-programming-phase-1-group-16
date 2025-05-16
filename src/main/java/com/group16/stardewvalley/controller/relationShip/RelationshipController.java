@@ -7,13 +7,41 @@ import com.group16.stardewvalley.model.app.Game;
 import com.group16.stardewvalley.model.time.TimeDate;
 import com.group16.stardewvalley.model.user.Player;
 
+import java.util.Map;
 import java.util.regex.Matcher;
 
 public class RelationshipController {
 
     private final Game game = App.getActiveGame();
 
+    public Result showFriendship() {
+        Player currentPlayer = game.getCurrentPlayer();
+        Map<Player, Integer> levels = currentPlayer.getInteractionsLevel();
+        Map<Player, Integer> scores = currentPlayer.getInteractionScore();
+        StringBuilder sb = new StringBuilder();
+
+        for (Map.Entry<Player, Integer> entry : levels.entrySet()) {
+            Player player = entry.getKey();
+            Integer level = entry.getValue();
+            Integer score = scores.get(player);
+
+            sb.append("player name: ");
+            sb.append(player.getName());
+            sb.append(" friendship score: ");
+            sb.append(score);
+            sb.append(" friendship level: ");
+            sb.append(level);
+
+        }
+        return new Result(true ,sb.toString());
+    }
     public Result meet(Matcher matcher) {
+        String username = matcher.group("username");
+        String message = matcher.group("message");
+        if ()
+    }
+
+    public Result meetNPC(Matcher matcher) {
         String NPCName = matcher.group("NPCName");
         Player currentPlayer = game.getCurrentPlayer();
         NPC targetNPC = game.getNPCByName(NPCName);
@@ -72,7 +100,7 @@ public class RelationshipController {
 
     }
 
-    public Result gift(Matcher matcher) {
+    public Result giftNPC(Matcher matcher) {
         String NPCName = matcher.group("NPCName");
         String giftName = matcher.group("giftName");
         Player currentPlayer = game.getCurrentPlayer();

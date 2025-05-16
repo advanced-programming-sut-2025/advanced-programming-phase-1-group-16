@@ -5,7 +5,4 @@ public class PierresGeneralStore extends Shop{
         super("Pierr's General Store", "Pierre", 9, 17);
     }
 
-    public void initializeItems() {
-
-    }
 }

@@ -23,8 +23,8 @@ public enum GameMenuCommands implements CommandsInterface{
     ShowAllAvailableProducts("^\\s*show\\s*all*available\\s*products\\s*$"),
     Purchase("^\\s*purchase\\s*(?<productName>\\S+)(?:\\s+-n\\s+(?<count>\\d+))?\\s*$"),
     // relation Ship
-    Meet("^\\s*meet\\s*NPC\\s*(?<NPCName>\\S+)\\s*$"),
-    Gift("^\\s*gift\\s*NPC\\s*(?<NPCName>\\S+)\\s*-i\\s*(?<giftName>\\S+)\\s*$"),
+    MeetNPC("^\\s*meet\\s*NPC\\s*(?<NPCName>\\S+)\\s*$"),
+    GiftNPC("^\\s*gift\\s*NPC\\s*(?<NPCName>\\S+)\\s*-i\\s*(?<giftName>\\S+)\\s*$"),
     Friendship("^\\s*friendship\\s*$"),
     Talk("^\\s*talk\\s*-u\\s*(?<username>\\S+)\\s*-m\\s*(?<message>.+?)$"),
     TalkHistory("^\\s*talk\\s*$"),

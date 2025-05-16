@@ -33,12 +33,8 @@ public class Player {
     private int fishingAbilityScore;
     private boolean isFainted;
     private int rejectionCooldown;
-    private final Map<Player, Integer> interactionsLevel;
-    private final Map<Player, Integer> interactionScore;
     private final Map<NPC, NPCInteraction> dailyNPCInteraction;
-    private final Map<Player, Boolean> interactionTodayStatus;
-    private final int[] relationshipRanks = {100, 200, 300, 400};
-
+    private final Map<Player, PlayerInteraction> dailyPlayerInteraction;
     // مقدار های ماکسیمم هر توانایی رو هم در گیم ذخیره کردم سر جمع شه
     // تابعی برای بالا بردن لول شخص در این موارد نوشته نشده است
     public Player(User user) {
@@ -56,24 +52,33 @@ public class Player {
         energy = 200;
         isFainted = false;
         this.rejectionCooldown = 0;
-        this.interactionsLevel = new HashMap<>();
-        this.interactionScore = new HashMap<>();
-        this.interactionTodayStatus = new HashMap<>();
         this.dailyNPCInteraction = new HashMap<>();
-        initializeNPCs();
+        this.dailyPlayerInteraction = new HashMap<>();
+        initializeInteractions();
     }
 
 
-    public void initializeNPCs() {
+    public void initializeInteractions() {
         dailyNPCInteraction.put(App.getActiveGame().getNPCByName("Sebastian"), new NPCInteraction());
         dailyNPCInteraction.put(App.getActiveGame().getNPCByName("Abigail"), new NPCInteraction());
         dailyNPCInteraction.put(App.getActiveGame().getNPCByName("Harvey"), new NPCInteraction());
         dailyNPCInteraction.put(App.getActiveGame().getNPCByName("Leah"), new NPCInteraction());
         dailyNPCInteraction.put(App.getActiveGame().getNPCByName("Robin"), new NPCInteraction());
+        for (Player player1 : App.getActiveGame().getPlayers()) {
+            dailyPlayerInteraction.put(player1, new PlayerInteraction());
+        }
     }
 
     public NPCInteraction getInteractionWith(NPC npc) {
         return dailyNPCInteraction.get(npc);
+    }
+
+    public Map<Player , Integer> getInteractionsLevel() {
+        return interactionsLevel;
+    }
+
+    public Map<Player, Integer> getInteractionScore() {
+        return interactionScore;
     }
 
     public String getName() {
