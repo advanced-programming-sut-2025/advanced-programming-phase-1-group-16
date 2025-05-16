@@ -108,8 +108,16 @@ public class ShopController {
     public Result handleSellProduct(Matcher matcher) {
         String productName = matcher.group("productName");
         String countStr = matcher.group("count");
+        Player currentPlayer = game.getCurrentPlayer();
         int count = Integer.parseInt(countStr);
-
+        Item targetItem = currentPlayer.getInventory().getItemByName(productName);
+        int sellPrice = targetItem.getPrice();
+        switch (targetItem.getMaterial()) {
+            case "base":
+                sellPrice *= 1.25;
+            case "silver"
+        }
+    }
         // قابلیت فروش نداشته باشد
         // چی هست این شرط اصلا
         return new Result(true, "nothing here yet");
@@ -260,4 +268,6 @@ public class ShopController {
         }
         else return null;
     }
+
+
 }

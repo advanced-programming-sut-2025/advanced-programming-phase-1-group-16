@@ -9,7 +9,8 @@ public enum TileType {
     GreenHouse('G', "\u001B[35m"),
     Cottage('C', "\u001B[31m"),
     Quarry('Q', "\u001B[30m"),
-    Plowed('o', "");
+    Plowed('o', ""),
+    Sale_Bucket();
 
     private final char symbol;
     private final String colorCode;

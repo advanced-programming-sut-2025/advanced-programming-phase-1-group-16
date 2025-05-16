@@ -53,13 +53,13 @@ public class Game {
         this.creator = creator;
         this.players = players;
         this.turnsPassed = 0;
-        this.blacksmith = new Blacksmith();
-        this.jojaMart = new JojaMart();
-        this.pierresGeneralStore = new PierresGeneralStore();
-        this.carpentersShop = new CarpentersShop();
-        this.fishShop = new FishShop();
-        this.marniesRanch = new MarniesRanch();
-        this.theStardropSaloon = new TheStardropSaloon();
+        this.blacksmith = Blacksmith.getInstance();
+        this.jojaMart = JojaMart.getInstance();
+        this.pierresGeneralStore = PierresGeneralStore.getInstance();
+        this.carpentersShop = CarpentersShop.getInstance();
+        this.fishShop = FishShop.getInstance();
+        this.marniesRanch = MarniesRanch.getInstance();
+        this.theStardropSaloon = TheStardropSaloon.getInstance();
         this.NPCs = new ArrayList<>();
         NPCs.add(new NPC(NPCType.Sebastian, new Pos())); //---> TODO اتنا
         NPCs.add(new NPC(NPCType.Abigail, new Pos()));
