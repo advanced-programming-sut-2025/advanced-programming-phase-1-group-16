@@ -3,38 +3,24 @@ package com.group16.stardewvalley.model.animal;
 
 import com.group16.stardewvalley.model.items.Item;
 
-public class Fish extends Item {
-    private final FishType fishType;
+public class Fish  extends Item {
+    private FishType fishType;
     private Integer containingEnergy = 20; //TODO Energy not found
     private ProductQuality productQuality;
 
     public int getSellPrice() {
-        return (int) (this.fishType.getPrice() * productQuality.getPriceCoefficient());
+        return (int) (this.fishType.getPrice() * productQuality.());
     }
 
-    public Fish(FishType fishType, ProductQuality productQuality) {
-        super(fishType.getName());
+    public Fish(FishType fishType, String name) {
+        super(name);
+        this.fishType = fishType;
+    }
+    public Fish(String name, FishType fishType, ProductQuality productQuality) {
+        super(name);
         this.fishType = fishType;
         this.productQuality = productQuality;
     }
 
-    public ProductQuality getProductQuality() {
-        return productQuality;
-    }
 
-    public void setProductQuality(ProductQuality productQuality) {
-        this.productQuality = productQuality;
-    }
-
-    public Integer getContainingEnergy() {
-        return containingEnergy;
-    }
-
-    public void setContainingEnergy(Integer containingEnergy) {
-        this.containingEnergy = containingEnergy;
-    }
-
-    public FishType getFishType() {
-        return fishType;
-    }
 }

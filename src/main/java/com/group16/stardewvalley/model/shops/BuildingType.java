@@ -9,8 +9,8 @@ public enum BuildingType {
     Gig_Coop(10000, 400, 150, 6, 3, 1),
     Deluxe_Coop(20000, 500, 200, 6, 3, 1),
     Well(1000, 0, 75, 3, 3, 1),
-    Shipping_Bin(250, 150, 0, 1, 1, Integer.MAX_VALUE);
-
+    Shipping_Bin(250, 150, 0, 1, 1, Integer.MAX_VALUE),
+    Big_Coop();
     private final int cost;
     private final int woodCost;
     private final int stoneCost;

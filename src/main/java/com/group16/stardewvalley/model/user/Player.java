@@ -8,6 +8,7 @@ import com.group16.stardewvalley.model.tools.Gadget;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.map.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +36,8 @@ public class Player {
     private int rejectionCooldown;
     private final Map<NPC, NPCInteraction> dailyNPCInteraction;
     private final Map<Player, PlayerInteraction> dailyPlayerInteraction;
-    private final Gender gender;
+    private final List<String> quests;
+
     // مقدار های ماکسیمم هر توانایی رو هم در گیم ذخیره کردم سر جمع شه
     // تابعی برای بالا بردن لول شخص در این موارد نوشته نشده است
     public Player(User user) {
@@ -55,6 +57,7 @@ public class Player {
         this.rejectionCooldown = 0;
         this.dailyNPCInteraction = new HashMap<>();
         this.dailyPlayerInteraction = new HashMap<>();
+        this.quests = new ArrayList<>();
         initializeInteractions();
     }
 
@@ -70,8 +73,20 @@ public class Player {
         }
     }
 
-    public Gender getGender() {
-        return gender;
+    public List<String> getQuests() {
+        return quests;
+    }
+
+    public void addQuest(String line) {
+        quests.add(line);
+    }
+
+    public void removeQuest(String line) {
+        for (String target : quests) {
+            if (target.equalsIgnoreCase(line)) {
+                quests.remove(target);
+            }
+        }
     }
 
     public NPCInteraction getInteractionWith(NPC npc) {
@@ -82,16 +97,16 @@ public class Player {
         return dailyPlayerInteraction.get(player);
     }
 
-    public Map<Player , Integer> getInteractionsLevel() {
-        return interactionsLevel;
-    }
-
-    public Map<Player, Integer> getInteractionScore() {
-        return interactionScore;
+    public User getUser() {
+        return user;
     }
 
     public String getUsername() {
         return user.getUsername();
+    }
+
+    public String getGender() {
+        return user.getGender();
     }
 
     public String getName() {

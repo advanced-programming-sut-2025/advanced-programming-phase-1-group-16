@@ -11,11 +11,7 @@ public class CarpentersShop extends Shop{
     public void initializeItems() {
         addItem(new Wood("Wood"), Integer.MAX_VALUE);
         addItem(new Stone("Stone"), Integer.MAX_VALUE);
-    }
+        addItem(new Building());
 
-    private int barn;
-    private int bigBarn;
-    private int deluxeBarn;
-    private int coop;
-    private int
+    }
 }

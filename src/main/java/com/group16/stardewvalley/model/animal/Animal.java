@@ -4,35 +4,38 @@ import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.Shops.MarniesRanchAnimals;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.map.Pos;
+import com.group16.stardewvalley.model.shops.BuildingType;
 import com.group16.stardewvalley.model.user.Player;
 
 public class Animal extends Item {
     private final AnimalType animalType;
-    private final MarniesRanchAnimals fromShopType;
     private Pos animalPos;
     private AnimalProductTypes todayProduct;
     private Integer friendship;
     private boolean isFeed = false;
     private boolean isPet = false;
-    private final String name;
     private boolean isOut;
     private boolean isAnimalStayOutAllNight = false;
     private boolean haveFedWithHayToday = false;
     private Player owner;
+    private final BuildingType buildingRequired;
 
     private boolean havePickedProducts = false;
 
-    public Animal(MarniesRanchAnimals fromShopType, AnimalType animalType, String name, Player owner ) {
-        this.fromShopType = fromShopType;
+    public Animal(AnimalType animalType,
+                  String name,
+                  Player owner,
+                  BuildingType buildingRequired) {
+        super(name);
         this.animalType = animalType;
-        this.name = name;
         this.owner = owner;
         this.friendship = 0;
+        this.buildingRequired = buildingRequired;
     }
 
-
-
-
+    public BuildingType getBuildingRequired() {
+        return buildingRequired;
+    }
 
     public Result increaseFriendship(int amount) {
         if(this.friendship + amount < 1000) {
@@ -85,10 +88,6 @@ public class Animal extends Item {
         this.animalPos = animalPos;
     }
 
-    public MarniesRanchAnimals getFromShopType() {
-        return fromShopType;
-    }
-
     public AnimalType getAnimalType() {
         return animalType;
     }
@@ -117,8 +116,7 @@ public class Animal extends Item {
         this.isPet = isPet;
     }
 
-    public String getName() {
-        return name;
+    public String getName() {return getName();
     }
 
     public boolean getAnimalStayOutAllNight() {

@@ -33,6 +33,10 @@ public class Seed extends Item {
         return type;
     }
 
+    public int getDailyLimit() {
+        return dailyLimit;
+    }
+
     public boolean isAvailableInSeason(Season season) {
         return availableSeasons.contains(season) ||
                 availableSeasons.size() == Season.values().length;

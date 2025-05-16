@@ -6,6 +6,7 @@ import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.time.TimeDate;
+import com.group16.stardewvalley.model.user.Gender;
 import com.group16.stardewvalley.model.user.Player;
 
 import java.util.Map;
@@ -198,6 +199,28 @@ public class RelationshipController {
         if (player.getInteractionWith(targetPlayer).getFriendshipLevel() < 3) {
             return new Result(false, " 'Not enough hearts!");
         }
+
+        // پیشنهاد دهنده دختر باشد
+        if (player.getGender().equalsIgnoreCase("female")) {
+            return new Result(false, "Tradition in this valley says the groom must do the proposing!");
+        }
+
+
+        // به همجنس پیشنهاد دهد
+        if (player.getGender().equalsIgnoreCase(targetPlayer.getGender())) {
+            return new Result(false, "This valley doesn’t support same-sex marriage.");
+        }
+
+        // حلقه نداشته باشد
+        if (player.getInventory().getItemByName(ringName) == null) {
+            return new Result(false, "You need a Wedding Ring to propose!");
+        }
+        // پیام ارسال شد
+        return new Result(true, "Your proposal hangs in the air... " +
+                "Their answer will come with time ﮩ٨ـﮩﮩ٨ـ♡ﮩ٨ـﮩﮩ٨ـ");
+
+
+        //TODO ارسال نوتیفیکیشن
 
 
     }

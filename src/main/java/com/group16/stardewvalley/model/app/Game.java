@@ -2,6 +2,7 @@ package com.group16.stardewvalley.model.app;
 
 import com.group16.stardewvalley.model.NPC.NPC;
 import com.group16.stardewvalley.model.NPC.NPCType;
+import com.group16.stardewvalley.model.animal.Animal;
 import com.group16.stardewvalley.model.map.Direction;
 import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.shops.*;
@@ -34,11 +35,11 @@ public class Game {
     private final MarniesRanch marniesRanch;
     private final TheStardropSaloon theStardropSaloon;
     private final List<NPC> NPCs;
-
     private Tile[][] map;
     private final int mapHeight = 200;
     private final int mapWidth = 300;
-
+    public ArrayList<Animal> gameAnimals = new ArrayList<>();
+    public ArrayList<Building> buildings = new ArrayList<>();
     private WeatherCondition weatherCondition;
     private WeatherCondition tomorrowWeatherCondition;
 
@@ -170,8 +171,10 @@ public class Game {
             turnsPassedInRound = 0;
             timeDate.advanceOneHour();
         }
+//        if (timeDate.getHour() == 8) {
+//            onEightAM();
+//        }
 
-        // اینجا چرا چیزی پرینت شده ؟؟ اصلا توی پلیر مگه یوزر هست به چه دردی میخوره ؟
         System.out.println("its " + getCurrentPlayer().getUser().getUsername() + "  turn now.");
     }
 
@@ -198,4 +201,12 @@ public class Game {
         return false;
     }
 
+
+    public ArrayList<Animal> getGameAnimals() {
+        return gameAnimals;
+    }
+
+    public ArrayList<Building> getBuildings() {
+        return buildings;
+    }
 }

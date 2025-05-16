@@ -1,8 +1,7 @@
 package com.group16.stardewvalley.model.items;
 
-public class Flower extends Item{
-    public Flower(String name) {
+public class Hay extends Item{
+    public Hay(String name) {
         super(name);
     }
-
 }

@@ -147,49 +147,6 @@ public class ShopController {
         Item targetItem = null;
         Shop targetShop = currentPlayer.getLocation().getLocation().getShopByLocation();
 
-        if (location.equals(Location.JojaMart)) {
-
-            // فروشگاه مورد نظر این ایتم را ندرد
-                if (SeedType.getSeedForJojaMart(game.getTimeDate().getSeason(), productName) == null) {
-                    return new Result(false, "Sorry, we don't stock that item. " +
-                            "Try the specialty shops around town.");
-                }
-            SeedType targetSeed = SeedType.getSeedForJojaMart(game.getTimeDate().getSeason(), productName);
-            // فرد موجودی ندارد
-            if (targetSeed.getPrice() > currentPlayer.getCoin()) {
-                return new Result(false, "Oops! Too expensive!");
-            }
-
-            // موجودی لازم برای فروش را ندارد
-
-
-            // اینونتوری اش جا نداشته باشد
-
-            // با موفقیت خرید کند
-        }
-
-        if (location.equals(Location.PierresGeneralStore)) {
-            // فروشگاه مورد نظر این ایتم را ندارد
-                if (SeedType.getSeedForPiersGeneralStore(productName) == null) {
-                    return new Result(false, "Sorry, we don't stock that item. " +
-                            "Try the specialty shops around town.");
-                }
-                SeedType targetSeed = SeedType.getSeedForPiersGeneralStore(productName);
-
-            // فرد موجودی لازم ندارد
-            if (targetSeed.getPrice() > currentPlayer.getCoin()) {
-                return new Result(false, "Oops! Too expensive!");
-            }
-
-            // موجودی لازم برای فروش را ندارد
-
-
-            // اینونتوری اش جا نداشته باشد
-
-            // با موفقیت خرید کند
-        }
-
-
         targetItem = targetShop.findItemByName(productName);
         // فروشگاه مورد نظر این محصول را نداشته باشد
         if (targetItem == null) {
@@ -211,6 +168,10 @@ public class ShopController {
         if (currentPlayer.getInventory().isFull()) {
             return new Result(false, "Oops! Your backpack is completely full!");
         }
+
+        // چیزی که می خواهد بخرد حیوان باشد و برای هر کدام مکان نگهداری لازم را نداشته باشد
+        //TODO nili
+
         // با موفقیت خرید کند و به اینونتوری اش اضافه شود
         currentPlayer.getInventory().addItem(targetItem, count);
         currentPlayer.decreaseCoin(targetItem.getPrice());
