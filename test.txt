@@ -62,4 +62,28 @@ craft info -n Acorns
 tree info -n Pine Cones
 tree info -n Acorns
 
+//planting
+cheat add seed Jazz Seeds
+cheat add tool hoe
+tools equip hoe
+tools equip hoe
+tools equip hoe
+tools use -d n
+plant -s Jazz Seeds -d down
+show position
+show plant -l 91, 150
+cheat add tool watering can
+tools equip watering can
+how much water
+tools use -d n
+tools use -d s
+show plant -l 91, 150
+fertilize -f speed gro -d down
+add fertilizer speed
+add fertilizer deluxe
+fertilize -f deluxe retaining soil -d down
+cheat add seed Cherry Sapling
+plant -s Cherry Sapling -d up
+tools equip scythe
+cheat add tool scythe
 

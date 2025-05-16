@@ -43,4 +43,8 @@ public class Pos {
     public boolean isEqual(Pos pos) {
         return pos.getY() == this.y && pos.getX() == this.x;
     }
+
+    public String toString() {
+        return "(" + x + ", " + y + ")";
+    }
 }

@@ -44,7 +44,12 @@ public class Scythe extends Gadget{
                 player.decreaseEnergy(2);
                 player.addFarmingAbilityScore(5);
             } else {
-                //TODO محصولات غول پیکر
+                player.getInventory().addCrop(targetTile.getCrop(), 10);
+                if (targetTile.getCrop().getCropType().isOneTime()){
+                    targetTile.setCrop(null);
+                } else {
+                    targetTile.getCrop().setHarvested(true);
+                }
                 player.decreaseEnergy(2);
             }
         }

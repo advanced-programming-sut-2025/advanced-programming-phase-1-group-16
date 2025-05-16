@@ -14,9 +14,12 @@ public class AppView {
         String input = "";
         do {
             App.getCurrentMenu().checkCommand(scanner);
+            /*
             if(App.getActiveGame() != null){
                 App.getActiveGame().nextTurn();
             }
+
+             */
         } while (App.getCurrentMenu() != Menu.ExitMenu);
     }
 

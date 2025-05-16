@@ -58,7 +58,13 @@ public class GadgetController {
         String direction = matcher.group("direction");
         Player currentPlayer = App.getActiveGame().getCurrentPlayer();
         Gadget gadget = currentPlayer.getCurrentEquipment();
+        if (gadget == null) {
+            return new Result(false, "You don't have any gadget in your hand (~_^)");
+        }
         Direction dir = Direction.fromString(direction);
+        if (dir == null) {
+            return new Result(false, "invalid direction");
+        }
         Tile targetTile = dir.applyPosition(App.getActiveGame());
 
         if (targetTile == null) {

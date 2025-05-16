@@ -42,7 +42,7 @@ public class Game {
         this.creator = creator;
         this.players = players;
         this.turnsPassed = 0;
-        this.timeDate = new TimeDate(App.getActiveGame());
+        this.timeDate = new TimeDate();
         this.shops.add(new Blacksmith());
         this.shops.add(new JojaMart());
         this.shops.add(new PierresGeneralStore());

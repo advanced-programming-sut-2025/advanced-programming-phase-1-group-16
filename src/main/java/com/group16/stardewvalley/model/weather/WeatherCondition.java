@@ -32,7 +32,7 @@ public enum WeatherCondition {
                 return weather;
             }
         }
-        throw new IllegalArgumentException("no one");
+        return null;
     }
 
     public static WeatherCondition getByName(String name) {

@@ -1,13 +1,60 @@
 package com.group16.stardewvalley.controller;
 
 import com.group16.stardewvalley.model.Result;
-import com.group16.stardewvalley.model.agriculture.SeedType;
-import com.group16.stardewvalley.model.tools.Gadget;
+import com.group16.stardewvalley.model.agriculture.Fertilizer;
+import com.group16.stardewvalley.model.agriculture.FertilizerType;
+import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.map.Pos;
+import com.group16.stardewvalley.model.tools.*;
+
+import javax.swing.text.Position;
 
 public class CheatCodeController {
     public Result addTool(String tool) {
         switch (tool) {
-
+            case "axe":
+                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new Axe("axe", "base"), 1);
+                break;
+            case "hoe":
+                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new Hoe("hoe", "base"), 1);
+                break;
+            case "milk pail":
+                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new MilkPail("milk pail"), 1);
+                break;
+            case "scythe":
+                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new Scythe("scythe", "base"), 1);
+                break;
+            case "pickaxe":
+                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new Pickaxe("pickaxe", "base"), 1);
+                break;
+            case "shear":
+                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new Shear("shear"), 1);
+                break;
+            case "watering can":
+                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new WateringCan("watering can", "base"), 1);
+                break;
+            default:
+                return new Result(false, "Unknown tool");
         }
+        return new Result(true, "added tool");
+    }
+
+    public Result addFertilizer(String fertilizer) {
+        switch (fertilizer) {
+            case "speed":
+                Fertilizer fertilizer1 = new Fertilizer("speed gro", FertilizerType.SPEED_GRO);
+                App.getActiveGame().getCurrentPlayer().getInventory().addItem(fertilizer1, 1);
+                break;
+            case "deluxe":
+                Fertilizer fertilizer2 = new Fertilizer("deluxe retaining soil", FertilizerType.DELUXE_RETAINING_SOIL);
+                App.getActiveGame().getCurrentPlayer().getInventory().addItem(fertilizer2, 1);
+                break;
+        }
+        return new Result(true, "added fertilizer");
+    }
+
+    public Result showPosition() {
+        Pos position = App.getActiveGame().getCurrentPlayer().getPosition();
+        return new Result(true, position.toString());
     }
 }

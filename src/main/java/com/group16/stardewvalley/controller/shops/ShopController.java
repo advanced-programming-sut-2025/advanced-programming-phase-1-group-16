@@ -202,6 +202,9 @@ public class ShopController {
         }
 
 
+        if (ToolDataManager.getUpgradeCost(toolName, currentMaterial, nextMaterial) == -1) {
+            return new Result(false, "no tool");
+        }
         int upgradeCost = ToolDataManager.getUpgradeCost(toolName, currentMaterial, nextMaterial);
         // خطای پول کافی نداشتن
         if (currentPlayer.getCoin() < upgradeCost) {

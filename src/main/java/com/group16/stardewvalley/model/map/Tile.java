@@ -59,7 +59,7 @@ public class Tile {
     }
 
     public boolean isHasWater() {
-        return hasWater;
+        return hasWater || type == TileType.Lake;
     }
 
     public void setHasWater(boolean hasWater) {

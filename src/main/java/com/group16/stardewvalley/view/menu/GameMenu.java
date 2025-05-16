@@ -28,7 +28,7 @@ import java.util.regex.Matcher;
 public class GameMenu implements MenuInterface {
     private final GameMenuController controller = new GameMenuController();
     private final MapController mapController = new MapController();
-    private final TimeDate timeDate = new TimeDate(App.getActiveGame());
+    private final TimeDate timeDate = new TimeDate();
     private final AnimalController animalController = new AnimalController();
     private final AgricultureController agricultureController = new AgricultureController();
     private final CheatCodeController cheatCodeController = new CheatCodeController();
@@ -233,6 +233,10 @@ public class GameMenu implements MenuInterface {
             System.out.println(agricultureController.cheatAdd(matcher.group("seed")));
         } else if ((matcher = GameMenuCheatCodeCommands.AddTool.getMatcher(input)) != null){
             System.out.println(cheatCodeController.addTool(matcher.group("tool")));
+        } else if ((matcher = GameMenuCheatCodeCommands.AddFertilizer.getMatcher(input)) != null){
+            System.out.println(cheatCodeController.addFertilizer(matcher.group("fertilizer")));
+        } else if ((matcher = GameMenuCheatCodeCommands.ShowPosition.getMatcher(input)) != null){
+            System.out.println(cheatCodeController.showPosition());
         }
 
         //ENERGY

@@ -23,6 +23,9 @@ public class WeatherController {
         int randomValue = secureRandom.nextInt(4) + 1;
 
         WeatherCondition weatherCondition = WeatherCondition.getByNumber(randomValue);
+        if (weatherCondition == null) {
+            return new Result(false, "Invalid weather condition");
+        }
         game.setTomorrowWeatherCondition(weatherCondition);
         return new Result(true, "Tomorrow's weather : " + weatherCondition.getWeatherName());
     }

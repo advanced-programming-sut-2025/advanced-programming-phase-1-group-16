@@ -166,6 +166,15 @@ public class Crop {
                 dayPastFromLastStage = 0;
             }
         }
+        if (!cropType.isOneTime()) {
+            if (isHarvested) {
+                daysSinceLastHarvest++;
+                if (daysSinceLastHarvest > getCropType().getRegrowthTime()) {
+                    isMature = true;
+                    daysSinceLastHarvest = 0;
+                }
+            }
+        }
 
     }
 

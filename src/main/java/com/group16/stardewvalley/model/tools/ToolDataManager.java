@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.util.Map;
 
 public class ToolDataManager {
-    private static final String TOOLS_JSON_PATH = "src/main/resources/Tools/Tools.json";
+    private static final String TOOLS_JSON_PATH = "/Tools/Tools.json";
     private static Map<String, Object> toolsData;
 
     static {
@@ -43,9 +43,11 @@ public class ToolDataManager {
             if (toolMap.containsKey("material")) {
                 Map<String, Object> materials = (Map<String, Object>) toolMap.get("material");
                 Map<String, Object> materialData = (Map<String, Object>) materials.get(material.toLowerCase());
+                if (materialData.get("consumption energy") == null) {
+                    return 0;
+                }
                 return (int) materialData.get("consumption energy");
             }
-
             return 0;
         } catch (Exception e) {
             throw new RuntimeException("Error getting energy consumption for " + toolName, e);
@@ -62,7 +64,7 @@ public class ToolDataManager {
             Map<String, Object> toolMap = (Map<String, Object>) tools.get(toolName.toLowerCase());
 
             if (toolMap == null) {
-                throw new IllegalArgumentException("Tool not found :|");
+                return -1;
             }
 
             if (toolMap.containsKey("material")) {
@@ -106,7 +108,7 @@ public class ToolDataManager {
     public static int getWateringCanCapacity(String material) {
         try {
             Map<String, Object> tools = (Map<String, Object>) toolsData.get("tools");
-            Map<String, Object> wateringCan = (Map<String, Object>) tools.get("materials");
+            Map<String, Object> wateringCan = (Map<String, Object>) tools.get("watering can");
             Map<String, Object> materials = (Map<String, Object>) wateringCan.get("material");
 
             Map<String, Object> materialData = (Map<String, Object>) materials.get(material.toLowerCase());

@@ -5,6 +5,8 @@ import com.group16.stardewvalley.view.menu.CommandsInterface;
 public enum GameMenuCheatCodeCommands implements CommandsInterface {
     AddSeed("cheat add seed (?<seed>.+?)"),
     AddTool("cheat add tool (?<tool>.+?)"),
+    AddFertilizer("add fertilizer (?<fertilizer>.+?)"),
+    ShowPosition("show position"),
     CheatAdd("^\\s*cheat\\s*add\\s*(?<count>\\d+)\\s*dollars\\s*$");
 
 

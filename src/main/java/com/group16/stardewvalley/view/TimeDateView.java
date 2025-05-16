@@ -9,7 +9,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 
 public class TimeDateView implements MenuInterface {
-    private final TimeDate timeDate = new TimeDate(App.getActiveGame());
+    private final TimeDate timeDate = new TimeDate();
 
     @Override
     public void check(Scanner scanner) {

@@ -95,7 +95,9 @@ public class AgricultureController {
         if (playerPos.getX() + dirX < 0 || playerPos.getY() + dirY < 0 || playerPos.getX() + dirX > App.getActiveGame().getMapWidth() || playerPos.getY() + dirY > App.getActiveGame().getMapHeight()) {
             return new Result(false, "Invalid direction");
         }
-        Tile targetTile = App.getActiveGame().getMap()[playerPos.getY() + dirY][playerPos.getX() + dirX];
+        int x = playerPos.getX() + dirX;
+        int y = playerPos.getY() + dirY;
+        Tile targetTile = App.getActiveGame().getMap()[y][x];
         if (!targetTile.getType().equals(TileType.Plowed)) {
             return new Result(false, "Shokhm nazadi dadash!");
         }
@@ -125,6 +127,50 @@ public class AgricultureController {
                 Crop crop = new Crop(cropType);
                 if (targetTile.isFertilized()) {
                     crop.setFertilized(true);
+                }
+                if (cropType.isCanBecomeGiant()) {
+                    boolean sameTypeAround = true;
+                    Tile[][] map = App.getActiveGame().getMap();
+                    // فرض بر این است که Tile مختصات دارد
+
+                    int height = App.getActiveGame().getMapHeight();
+                    int width = App.getActiveGame().getMapWidth();
+
+// بالا
+                    if (x > 0) {
+                        Crop upCrop = map[x - 1][y].getCrop();
+                        if (upCrop == null || !upCrop.getCropType().equals(cropType)) {
+                            sameTypeAround = false;
+                        }
+                    } else sameTypeAround = false;
+
+// پایین
+                    if (x < height - 1) {
+                        Crop downCrop = map[x + 1][y].getCrop();
+                        if (downCrop == null || !downCrop.getCropType().equals(cropType)) {
+                            sameTypeAround = false;
+                        }
+                    } else sameTypeAround = false;
+
+// چپ
+                    if (y > 0) {
+                        Crop leftCrop = map[x][y - 1].getCrop();
+                        if (leftCrop == null || !leftCrop.getCropType().equals(cropType)) {
+                            sameTypeAround = false;
+                        }
+                    } else sameTypeAround = false;
+
+// راست
+                    if (y < width - 1) {
+                        Crop rightCrop = map[x][y + 1].getCrop();
+                        if (rightCrop == null || !rightCrop.getCropType().equals(cropType)) {
+                            sameTypeAround = false;
+                        }
+                    } else sameTypeAround = false;
+
+                    if (sameTypeAround) {
+                        crop.setColossal(true);
+                    }
                 }
                 targetTile.setCrop(crop);
                 break;
@@ -298,7 +344,7 @@ public class AgricultureController {
 
     private FertilizerType findFertilizerType(String fertilizerName) {
         for (FertilizerType fertilizer : FertilizerType.values()) {
-            if (fertilizer.name().equals(fertilizerName)) {
+            if (fertilizer.getName().equals(fertilizerName)) {
                 return fertilizer;
             }
         }
