@@ -258,6 +258,8 @@ public class GameMenu implements MenuInterface {
             System.out.println(energyController.setEnergy(matcher));
         } else if ((matcher = EnergyCommands.INVENTORY_SHOW.getMatcher(input)) != null){
             System.out.println(energyController.inventoryShow());
+        } else if ((matcher = EnergyCommands.ENERGY_UNLIMITED.getMatcher(input)) != null){
+            System.out.println(energyController.unlimitedEnergy());
         }
 
         //weather

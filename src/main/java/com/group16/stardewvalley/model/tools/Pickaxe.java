@@ -1,5 +1,6 @@
 package com.group16.stardewvalley.model.tools;
 
+import com.group16.stardewvalley.model.agriculture.Mineral;
 import com.group16.stardewvalley.model.items.Ore;
 import com.group16.stardewvalley.model.items.OreType;
 import com.group16.stardewvalley.model.items.Stone;
@@ -46,13 +47,18 @@ public class Pickaxe extends Gadget{
         }
         // زمانی که سنگ هست
         if (targetTile.getItem() instanceof Stone) {
+            player.addMiningAbilityScore(10);
             player.decreaseEnergy(this.getConsumptionEnergy() - optionForNerds);
+            if (player.getMiningAbilityLevel() == 4) {
+                player.getInventory().addItem(targetTile.getItem(), 10);
+            } else player.getInventory().addItem(targetTile.getItem(), 1);
             targetTile.setItem(null);
             return new Result(true, "Stone shattered! The shovel proves its might.");
         }
 
         // زمانی که کانی است
         if (targetTile.getItem() instanceof Ore) {
+            player.addMiningAbilityScore(10);
             if (this.material.equalsIgnoreCase("iridium") ||
                     this.material.equalsIgnoreCase("gold") ||
                     this.material.equalsIgnoreCase("iron")) {
@@ -68,6 +74,17 @@ public class Pickaxe extends Gadget{
                     }
             }
 
+        }
+
+        if (targetTile.getItem() instanceof Mineral) {
+            player.addMiningAbilityScore(10);
+            targetTile.setItem(null);
+            player.getInventory().addItem(targetTile.getItem(), 1);
+            return new Result(true, "Mineral added to the inventory.");
+        }
+
+        if (targetTile.getCrop() != null) {
+            player.addNatureTourismAbilityScore(10);
         }
 
         // از بین بردن ایتم هایی که بازیکن روی زمین گذاشته است

@@ -76,6 +76,7 @@ public class TimeDate {
         if (getDayOfWeekByIndex(nextDayIndex) != null) {
             currentDayOfWeek = getDayOfWeekByIndex(nextDayIndex);
         }
+        this.hour = 9;
 
         // بررسی تغییر فصل
         if (day > seasonLength) {

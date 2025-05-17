@@ -64,7 +64,7 @@ public class Crafting {
                 player.getInventory().addItem(newCraftItem, 1);
 
                 //consume energy
-                if(player.getEnergy() - 2 < 0){
+                if(player.getEnergy() - 2 < 0 && !player.isEnergyUnlimited()){
                     player.faint();
                 }
                 player.decreaseEnergy(2);

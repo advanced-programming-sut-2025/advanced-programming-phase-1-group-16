@@ -23,6 +23,7 @@ public class Player {
     private User user;
     private Farm farm;
     private int energy;
+    private boolean isEnergyUnlimited;
     private Pos position;
     private Inventory inventory;
     private int energyCeiling;
@@ -69,6 +70,7 @@ public class Player {
         miningAbilityScore = 0;
         foragingAbilityScore = 0;
         fishingAbilityScore = 0;
+        isEnergyUnlimited = false;
         inventory = new Inventory();
         energyCeiling = 200;// مقداردهی انرژی اولیه در ابتدای ساخت
         baseEnergyCeiling = 200;
@@ -84,6 +86,14 @@ public class Player {
         hourPastForBuff = 0;
         finalHourBuff = 0;
         this.buffer = "";
+    }
+
+    public boolean isEnergyUnlimited() {
+        return isEnergyUnlimited;
+    }
+
+    public void setEnergyUnlimited(boolean energyUnlimited) {
+        isEnergyUnlimited = energyUnlimited;
     }
 
     public int getBaseEnergyCeiling() {
@@ -290,6 +300,9 @@ public class Player {
     }
 
     public boolean hasEnoughEnergy(int amount) {
+        if (isEnergyUnlimited) {
+            return true;
+        }
         return energy > amount;
     }
 
@@ -339,8 +352,13 @@ public class Player {
             energyCeiling = 150;
             rejectionCooldown--;
         }
+        if (isFainted) {
+            energy = energyCeiling *  75 / 100;
+        } else {
+            energy = energyCeiling;
+        }
         this.isFainted = false;
-        energy = energyCeiling;
+        this.isEnergyUnlimited = false;
         interactionTodayStatus.replaceAll((player, status) -> false);
 
     }
