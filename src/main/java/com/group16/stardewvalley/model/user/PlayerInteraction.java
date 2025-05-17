@@ -89,6 +89,10 @@ public class PlayerInteraction {
         return friendshipLevel;
     }
 
+    public void setFriendshipScore(int amount) {
+        friendshipScore = 0;
+    }
+
     public int getFriendshipScore() {
         return friendshipScore;
     }

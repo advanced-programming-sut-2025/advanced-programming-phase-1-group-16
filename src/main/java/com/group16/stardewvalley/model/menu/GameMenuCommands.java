@@ -65,8 +65,8 @@ public enum GameMenuCommands implements CommandsInterface{
     Hug("^\\s*hug\\s*-u\\s*(?<username>\\S+)\\s*$"),
     Flower("^\\s*flower\\s*-u\\s*(?<username>\\S+)\\s*$"),
     AskMarriage("^\\s*ask\\s*marriage\\s*-u\\s*(?<username>\\S+)\\s*-r\\s*(?<ring>\\S+)\\s*$"),
+    Respond_Marriage("^\\s*respond\\s+(?<action>accept|reject)\\s+-u\\s+(?<username>\\S+)\\s*$"),
     Sell("^\\s*sell\\s*(?<productName>\\S+)(?:\\s+-n\\s*(?<count>\\d+))?\\s*$"),
-
     //trade
     Start_Trade("^\\s*start\\s*trade\\s*$"),
     Trade("^\\s*trade\\s+-u\\s+(?<username>\\S+)\\s+-t\\s+" +

@@ -5,6 +5,7 @@ import com.group16.stardewvalley.model.NPC.NPC;
 import com.group16.stardewvalley.model.NPC.NPCInteraction;
 import com.group16.stardewvalley.model.Request;
 import com.group16.stardewvalley.model.items.Item;
+import com.group16.stardewvalley.model.notification;
 import com.group16.stardewvalley.model.tools.Gadget;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.map.*;
@@ -38,7 +39,7 @@ public class Player {
     private final Map<NPC, NPCInteraction> dailyNPCInteraction;
     private final Map<Player, PlayerInteraction> dailyPlayerInteraction;
     private final List<Request> quests;
-    private final List<Request> notifications;
+    private final List<notification> notifications;
     private int todayIncome;
     private final List<Request> requestHistory;
     private Player spouse;
@@ -71,12 +72,24 @@ public class Player {
         initializeInteractions();
     }
 
+    public void setSpouse(Player spouse) {
+        this.spouse = spouse;
+    }
+
     public List<Request> getRequestHistory() {
         return requestHistory;
     }
 
     public void addToRequestHistory(Request request) {
         requestHistory.add(request);
+    }
+
+    public Player getSpouse() {
+        return spouse;
+    }
+
+    public void setCoin(int amount) {
+        this.coin = amount;
     }
 
     public void initializeInteractions() {
@@ -106,16 +119,16 @@ public class Player {
         }
     }
 
-    public List<Request> getNotifications() {
+    public List<notification> getNotifications() {
         return notifications;
     }
 
-    public void addNotification(Request request) {
-        notifications.add(request);
+    public void addNotification(notification notification) {
+        notifications.add(notification);
     }
 
     public void removeNotification(Request request) {
-        for (Request target : notifications) {
+        for (notification target : notifications) {
             if (target.equals(request)) {
                 notifications.remove(target);
             }
@@ -362,6 +375,10 @@ public class Player {
         increaseCoin(todayIncome);
         this.todayIncome = 0;
 
+    }
+
+    public Map<Player, PlayerInteraction> getDailyPlayerInteraction() {
+        return dailyPlayerInteraction;
     }
 
     public void increaseTodayIncome(int amount) {

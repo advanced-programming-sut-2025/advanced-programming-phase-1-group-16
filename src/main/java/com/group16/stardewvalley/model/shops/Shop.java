@@ -12,8 +12,8 @@ import java.util.Set;
 public abstract class Shop {
     private String shopName;
     private String shopkeeperName;
-    private final Map<Item, Integer> dailyLimit = new HashMap<>();
-    private final Map<Item, Integer> soldToday = new HashMap<>();
+    protected final Map<Item, Integer> dailyLimit = new HashMap<>();
+    protected final Map<Item, Integer> soldToday = new HashMap<>();
     private final int START_TIME;
     private final int END_TIME;
     private int balance;

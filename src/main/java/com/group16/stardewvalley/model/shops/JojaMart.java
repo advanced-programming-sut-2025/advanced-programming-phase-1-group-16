@@ -2,6 +2,8 @@ package com.group16.stardewvalley.model.shops;
 
 import com.group16.stardewvalley.model.agriculture.Seeds;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.food.FoodIngredient;
+import com.group16.stardewvalley.model.food.Ingredient;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.time.Season;
 import com.group16.stardewvalley.model.agriculture.*;
@@ -32,9 +34,13 @@ public class JojaMart extends Shop {
             }
         }
 
-        // اضافه کردن سایر آیتم‌های دائمی
+
         addItem(Seeds.JOJA_COLA, Seeds.JOJA_COLA.getDailyLimit());
         addItem(Seeds.GRASS_STARTER, Seeds.GRASS_STARTER.getDailyLimit());
+        addItem(new FoodIngredient("sugar", Ingredient.SUGAR), Integer.MAX_VALUE);
+        addItem(new FoodIngredient("wheat flour", Ingredient.WHEAT_FLOUR), Integer.MAX_VALUE);
+        addItem(new FoodIngredient("Rice", Ingredient.RICE), Integer.MAX_VALUE);
+
     }
 
     @Override

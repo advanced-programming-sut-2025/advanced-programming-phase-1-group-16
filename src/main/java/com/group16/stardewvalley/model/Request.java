@@ -3,7 +3,7 @@ package com.group16.stardewvalley.model;
 import com.group16.stardewvalley.model.items.Item;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Request {
+public class Request implements notification{
     private static final AtomicInteger nextId = new AtomicInteger(1);
     private final int Id;
     private final String requesterName;
@@ -36,7 +36,7 @@ public class Request {
         return offeredCoin;
     }
 
-    public String getRequestSummary() {
+    public String getMessage() {
         String baseMessage;
 
         if (isTradeOffer()) {

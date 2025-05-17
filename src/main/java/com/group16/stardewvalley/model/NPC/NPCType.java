@@ -12,7 +12,6 @@ import com.group16.stardewvalley.model.weather.WeatherCondition;
 import java.util.List;
 
 public enum NPCType {
-//TODO اتنا برای غذا ها
     //(●’◡’●) ಠ_ಠ (ᗒᗣᗕ) ( ˘ ³˘) (•̀ᴗ•́)  ﮩ٨ـﮩﮩ٨ـ♡ﮩ٨ـﮩﮩ٨ـ   ﮩ٨ـﮩﮩ٨ـ🖤ﮩ٨ـﮩﮩ٨ـ  (≧◡≦) (◡‿◡✿) (✿◠‿◠) (”__”)
     // (*^ -^*) (⊙▂⊙) (∪ ◡ ∪)  (✿ ♥‿♥)
     Sebastian("Sebastian",
@@ -77,6 +76,7 @@ public enum NPCType {
                             5,
                             0)),
             new Farm(FarmType.small, "HarveyFarm")),
+
     Leah("Leah",
             List.of("salad", "grape", "liquor"),
             List.of(new Request("Leah",
@@ -97,8 +97,7 @@ public enum NPCType {
                             1,
                             0)),
             new Farm(FarmType.small, "LeahFarm")),
-    //  List.of("Delivery 80 wood", "Delivery 10 iron ingot", "Delivery 1000 wood"),
-    //            List.of("1000 coin", "3 beeHouse", "25000 coin"),
+
     Robin("Robin",
             List.of("spaghetti", "wood", "iron ingot"),
             List.of(new Request("Robin",
@@ -110,8 +109,15 @@ public enum NPCType {
                     new Request("Robin",
                             new Stone("stone"),
                             100,
-                            ),
-                    new Request("Robin", )),
+                            FoodFactory.friedEgg(),
+                            3,
+                            0),
+                    new Request("Robin",
+                            new Wood("wood"),
+                            1000,
+                            null,
+                            0,
+                            0)),
             new Farm(FarmType.small, "RobinFarm"));
 
 

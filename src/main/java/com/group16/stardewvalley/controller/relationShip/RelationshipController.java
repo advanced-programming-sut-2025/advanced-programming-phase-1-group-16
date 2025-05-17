@@ -1,13 +1,16 @@
 package com.group16.stardewvalley.controller.relationShip;
 
+import com.group16.stardewvalley.model.Message;
 import com.group16.stardewvalley.model.NPC.NPC;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
 import com.group16.stardewvalley.model.items.Item;
+import com.group16.stardewvalley.model.items.MarriageRing;
 import com.group16.stardewvalley.model.time.TimeDate;
 import com.group16.stardewvalley.model.user.Gender;
 import com.group16.stardewvalley.model.user.Player;
+import com.group16.stardewvalley.model.user.PlayerInteraction;
 
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -18,25 +21,25 @@ public class RelationshipController {
 
     public Result showFriendship() {
         Player currentPlayer = game.getCurrentPlayer();
-        Map<Player, Integer> levels = currentPlayer.getInteractionsLevel();
-        Map<Player, Integer> scores = currentPlayer.getInteractionScore();
+        Map<Player, PlayerInteraction> interactions = currentPlayer.getDailyPlayerInteraction();
         StringBuilder sb = new StringBuilder();
 
-        for (Map.Entry<Player, Integer> entry : levels.entrySet()) {
+        for (Map.Entry<Player, PlayerInteraction> entry : interactions.entrySet()) {
             Player player = entry.getKey();
-            Integer level = entry.getValue();
-            Integer score = scores.get(player);
+            PlayerInteraction interaction = entry.getValue();
 
-            sb.append("player name: ");
+            sb.append("Player name: ");
             sb.append(player.getName());
-            sb.append(" friendship score: ");
-            sb.append(score);
-            sb.append(" friendship level: ");
-            sb.append(level);
-
+            sb.append(" | Friendship score: ");
+            sb.append(interaction.getFriendshipScore());
+            sb.append(" | Friendship level: ");
+            sb.append(interaction.getFriendshipLevel());
+            sb.append("\n");
         }
-        return new Result(true ,sb.toString());
+
+        return new Result(true, sb.toString());
     }
+
     public Result meet(Matcher matcher) {
         String username = matcher.group("username");
         String message = matcher.group("message");
@@ -60,7 +63,16 @@ public class RelationshipController {
         if (!currentPlayer.getInteractionWith(targetPlayer).isTalked()) {
             currentPlayer.getInteractionWith(targetPlayer).increaseFriendshipLevelScore(20);
         }
-        // TODO ارسال نوتیفیکیشن
+        if (currentPlayer.getSpouse() != null) {
+            if (currentPlayer.getSpouse().equals(targetPlayer)) {
+                currentPlayer.increaseEnergy(50);
+                targetPlayer.increaseEnergy(50);
+            }
+        }
+
+        Message message1 = new Message(currentPlayer, currentPlayer.getName() + "met you , " +
+                " you can see talk history with ' talk history' command");
+        currentPlayer.addNotification(message1);
 
         return new Result(true, "Message sent successfully!");
     }
@@ -75,11 +87,6 @@ public class RelationshipController {
         }
         return new Result(true, result.toString());
 
-    }
-
-    public Result trading(Matcher matcher) {
-        // این چرا هیچی نداره اصلا چطور باید پیاده بشه خب
-        //TODO
     }
 
     public Result gift(Matcher matcher) {
@@ -113,8 +120,16 @@ public class RelationshipController {
 
         // بتواند هدیه بدهد:
         targetPlayer.getInventory().addItem(targetItem, amount);
-       handleRospond(matcher, targetPlayer, itemName);
-       return new Result(true, "");
+        if (currentPlayer.getSpouse() != null) {
+            if (currentPlayer.getSpouse().equals(targetPlayer)) {
+                currentPlayer.increaseEnergy(50);
+                targetPlayer.increaseEnergy(50);
+            }
+        }
+       Message message = new Message(currentPlayer, currentPlayer + "sent you a gift please " +
+               "rate to your gift with a number between 1 - 5");
+       targetPlayer.addNotification(message);
+       return new Result(true, "your gift sent successfully");
 
     }
 
@@ -136,11 +151,17 @@ public class RelationshipController {
         if (!currentPlayer.getInteractionWith(targetPlayer).isHugged()) {
             currentPlayer.getInteractionWith(targetPlayer).increaseFriendshipLevelScore(60);
         }
-        // بتواند بغل کند
+        if (currentPlayer.getSpouse() != null) {
+            if (currentPlayer.getSpouse().equals(targetPlayer)) {
+                currentPlayer.increaseEnergy(50);
+                targetPlayer.increaseEnergy(50);
+            }
+        }
         return new Result(true, "Hug attack successful! +1 Happiness! ʕ•ᴥ•ʔ");
 
 
     }
+
 
     public Result flower(Matcher matcher) {
         String username = matcher.group("username");
@@ -163,6 +184,12 @@ public class RelationshipController {
 
         Item flower = player.getInventory().getItemByName("flower");
         // گل بدهد
+        if (player.getSpouse() != null) {
+            if (player.getSpouse().equals(targetPlayer)) {
+                player.increaseEnergy(50);
+                targetPlayer.increaseEnergy(50);
+            }
+        }
         targetPlayer.getInventory().addItem(flower, 1);
         player.getInventory().removeItem(flower, 1);
         player.getInteractionWith(targetPlayer).setFriendshipLevel(3);
@@ -215,14 +242,39 @@ public class RelationshipController {
         if (player.getInventory().getItemByName(ringName) == null) {
             return new Result(false, "You need a Wedding Ring to propose!");
         }
+
         // پیام ارسال شد
+        Message message = new Message(player, player.getName() +
+                "asked you marriage you can accept or reject with 'respond' command");
+        targetPlayer.addNotification(message);
         return new Result(true, "Your proposal hangs in the air... " +
                 "Their answer will come with time ﮩ٨ـﮩﮩ٨ـ♡ﮩ٨ـﮩﮩ٨ـ");
 
+    }
 
-        //TODO ارسال نوتیفیکیشن
-
-
+    public Result handleMarriage(Matcher matcher) {
+        String action = matcher.group("action");
+        String username = matcher.group("username");
+        Player target = game.getPlayerByUsername(username);
+        Player currentPlayer = game.getCurrentPlayer();
+        if (action.equalsIgnoreCase("accept")) {
+            target.setSpouse(currentPlayer);
+            currentPlayer.setSpouse(target);
+            MarriageRing marriageRing = (MarriageRing) currentPlayer.getInventory().getItemByName("marriage ring");
+            target.getInventory().addItem(marriageRing, 1);
+            currentPlayer.getInventory().removeItem(marriageRing, 1);
+            currentPlayer.getInteractionWith(target).setFriendshipLevel(4);
+            target.getInteractionWith(currentPlayer).setFriendshipLevel(4);
+            int totalCoin = currentPlayer.getCoin() + target.getCoin();
+            currentPlayer.setCoin(totalCoin / 2);
+            target.setCoin(totalCoin / 2);
+        } else if (action.equalsIgnoreCase("reject")) {
+            currentPlayer.setRejectionCooldown(7);
+            currentPlayer.getInteractionWith(target).setFriendshipLevel(0);
+            currentPlayer.getInteractionWith(target).setFriendshipScore(0);
+            target.getInteractionWith(currentPlayer).setFriendshipScore(0);
+            target.getInteractionWith(currentPlayer).setFriendshipScore(0);
+        }
     }
 
     public Result meetNPC(Matcher matcher) {

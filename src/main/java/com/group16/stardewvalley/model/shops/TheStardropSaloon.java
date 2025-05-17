@@ -1,6 +1,7 @@
 package com.group16.stardewvalley.model.shops;
 
 import com.group16.stardewvalley.model.food.Food;
+import com.group16.stardewvalley.model.food.FoodFactory;
 import com.group16.stardewvalley.model.food.FoodRecipe;
 
 public class TheStardropSaloon extends Shop{
@@ -18,12 +19,11 @@ public class TheStardropSaloon extends Shop{
     }
 
     public void initializeItems() {
-        addItem(new Food("Beer",), Integer.MAX_VALUE);
-        addItem(new Food("Salad", ), Integer.MAX_VALUE);
-        addItem(new Food("Bread", ), Integer.MAX_VALUE);
-        addItem(new Food("Spaghetti", ), Integer.MAX_VALUE);
-        addItem(new Food("Pizza", ), Integer.MAX_VALUE);
-        addItem(new Food("Coffee", ), Integer.MAX_VALUE);
+        addItem(FoodFactory.salad(), Integer.MAX_VALUE);
+        addItem(FoodFactory.bread(), Integer.MAX_VALUE);
+        addItem(FoodFactory.spaghetti(), Integer.MAX_VALUE);
+        addItem(FoodFactory.pizza(), Integer.MAX_VALUE);
+        addItem(FoodFactory.tripleShotEspresso(), Integer.MAX_VALUE);
         addItem(new FoodRecipe(new Food("Hashbrowns"), "Hashbrowns Recipe"));
         addItem(new FoodRecipe(new Food("Omelet"), "Omelet"));
         addItem(new FoodRecipe(new Food("Pancakes"), "Pancakes"));
