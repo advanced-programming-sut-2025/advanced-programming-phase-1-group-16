@@ -54,8 +54,8 @@ public class TimeDate {
                 }
             }
         }
-        if (hour >= 24) {
-            hour = 0;
+        if (hour >= 22) {
+            hour = 9;
             advanceOneDay();
         }
     }
