@@ -1,21 +1,17 @@
 package com.group16.stardewvalley.controller.energy;
 
-import com.group16.stardewvalley.model.Tools.Gadget;
+import com.group16.stardewvalley.model.*;
+import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.tools.Gadget;
 import com.group16.stardewvalley.model.app.Game;
-import com.group16.stardewvalley.model.Result;
 
 import java.util.Map;
 import java.util.regex.Matcher;
 
 public class EnergyController {
-    private final Game game;
-
-    public EnergyController(Game game) {
-        this.game = game;
-    }
 
     public Result show(){
-        return new Result(true, Integer.toString(game.getCurrentPlayer().getEnergy()));
+        return new Result(true, Integer.toString(App.getActiveGame().getCurrentPlayer().getEnergy()));
     }
 
     public Result setEnergy(Matcher matcher) {
@@ -29,12 +25,12 @@ public class EnergyController {
         if (value < 0) {
             return new Result(false, "Seriously? You call this energy? :/");
         }
-        game.getCurrentPlayer().setEnergy(value);
+        App.getActiveGame().getCurrentPlayer().setEnergy(value);
         return new Result(true, "");
     }
 
     public Result inventoryShow() {
-        Map<Gadget, Integer> tools = game.getCurrentPlayer().getPlayerInventory().getTools();
+        Map<Gadget, Integer> tools = App.getActiveGame().getCurrentPlayer().getInventory().getTools();
 
         if (tools.isEmpty()) {
             return new Result(false, "Your inventory is empty! (•_•)");

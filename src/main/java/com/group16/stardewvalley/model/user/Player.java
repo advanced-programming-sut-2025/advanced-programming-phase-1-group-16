@@ -2,9 +2,6 @@ package com.group16.stardewvalley.model.user;
 
 import com.group16.stardewvalley.model.Inventory;
 import com.group16.stardewvalley.model.food.Food;
-import com.group16.stardewvalley.model.items.Item;
-import com.group16.stardewvalley.model.Tools.Gadget;
-import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.map.Farm;
 import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.map.Tile;
@@ -14,21 +11,26 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import com.group16.stardewvalley.model.NPC.NPC;
+import com.group16.stardewvalley.model.shops.Shop;
+import com.group16.stardewvalley.model.items.Item;
+import com.group16.stardewvalley.model.tools.Gadget;
+import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.map.*;
+
 
 public class Player {
     private User user;
     private Farm farm;
     private int energy;
     private Pos position;
-
-
+    private Inventory inventory;
+    private int energyCeiling;
+    private final int baseEnergyCeiling;
     private Gadget currentEquipment;
     private Item currentThing;
-    private int energyCeiling;
-    private int level;
+    private Set<Food> knownRecipes = new HashSet<>();
     private int coin;
-    private Inventory inventory;
-
     private final int[] levelRanks = {450, 350, 250, 150};
     private int farmingAbilityLevel;
     private int farmingAbilityScore;
@@ -39,15 +41,12 @@ public class Player {
     private int fishingAbilityLevel;
     private int fishingAbilityScore;
     private boolean isFainted;
+    private int rejectionCooldown;
     private Map<Player, Integer> interactionsLevel;
     private Map<Player, Integer> interactionScore;
-
-    private Set<Food> knownRecipes = new HashSet<>();
-
-    private int rejectionCooldown;
     private Map<Player, Boolean> interactionTodayStatus;
-//    private Map<NPC, Integer> friendshipNPCScore;
-//    private Map<NPC, Integer> friendshipNPCLevel;
+    private Map<NPC, Integer> friendshipNPCScore;
+    private Map<NPC, Integer> friendshipNPCLevel;
     private final int[] relationshipRanks = {100, 200, 300, 400};
     private final int[] NPCRelationshipRanks = {200, 400, 600, 800};
     private String buffer;
@@ -56,6 +55,10 @@ public class Player {
     private int finalHourBuff;
 
 
+
+
+    // مقدار های ماکسیمم هر توانایی رو هم در گیم ذخیره کردم سر جمع شه
+    // تابعی برای بالا بردن لول شخص در این موارد نوشته نشده است
     public Player(User user) {
         this.user = user;
         farmingAbilityLevel = 0;
@@ -68,6 +71,7 @@ public class Player {
         fishingAbilityScore = 0;
         inventory = new Inventory();
         energyCeiling = 200;// مقداردهی انرژی اولیه در ابتدای ساخت
+        baseEnergyCeiling = 200;
         energy = 200;
         isFainted = false;
         this.rejectionCooldown = 0;
@@ -79,12 +83,68 @@ public class Player {
         this.isBuffActive = false;
         hourPastForBuff = 0;
         finalHourBuff = 0;
+        this.buffer = "";
+    }
+
+    public int getBaseEnergyCeiling() {
+        return baseEnergyCeiling;
+    }
+
+    public void learnFood(Food food) {
+        this.knownRecipes.add(food);
+    }
+
+    public int getFinalHourBuff() {
+        return finalHourBuff;
+    }
+
+    public void setFinalHourBuff(int finalHourBuff) {
+        this.finalHourBuff = finalHourBuff;
+    }
+
+    public int getEnergyCeiling() {
+        return energyCeiling;
+    }
+
+    public void setEnergyCeiling(int energyCeiling) {
+        this.energyCeiling = energyCeiling;
+    }
+
+    public int getHourPastForBuff() {
+        return hourPastForBuff;
+    }
+
+    public void setHourPastForBuff(int hourPastForBuff) {
+        this.hourPastForBuff = hourPastForBuff;
+    }
+
+    public boolean isBuffActive() {
+        return isBuffActive;
+    }
+
+    public void setBuffActive(boolean buffActive) {
+        isBuffActive = buffActive;
+    }
+
+    public String getBuffer() {
+        return buffer;
+    }
+
+    public void setBuffer(String buffer) {
+        this.buffer = buffer;
     }
 
     public Inventory getInventory() {
         return inventory;
     }
 
+    public void learnRecipe(Food food) {
+        knownRecipes.add(food);
+    }
+
+    public Set<Food> getKnownRecipes() {
+        return knownRecipes;
+    }
     public void setInventory(Inventory inventory) {
         this.inventory = inventory;
     }
@@ -93,8 +153,9 @@ public class Player {
         return energy;
     }
 
-
-
+    public void setEnergy(int energy) {
+        this.energy = energy;
+    }
 
     public Pos getPosition() {
         return position;
@@ -120,7 +181,6 @@ public class Player {
         return farm;
     }
 
-
     public int getFarmingAbilityLevel() {
         return farmingAbilityLevel;
     }
@@ -129,51 +189,20 @@ public class Player {
         return miningAbilityLevel;
     }
 
+    public int getForagingAbilityLevel() {
+        return foragingAbilityLevel;
+    }
 
     public int getFishingAbilityLevel() {
         return fishingAbilityLevel;
     }
-    // thing برای ابزارالاتی است که در زیر مجموعه ی tools قرار نمی گیرد که هنوز نمیدونم چیه
 
     public int getCoin() {
         return coin;
     }
 
     public void increaseCoin(int amount) {
-        coin += amount;
-    }
-    public void decreaseCoin(int amount) {
         coin -= amount;
-    }
-    public int getLevel() {
-        return level;
-    }
-
-
-    public boolean hasEnoughEnergy(int amount) {
-        return energy > amount;
-    }
-
-
-
-    public void equip(Gadget gadget) {
-        this.currentEquipment = gadget;
-    }
-
-    public Gadget getCurrentEquipment() {
-        return currentEquipment;
-    }
-
-
-
-    private boolean isValidPosition(int x, int y, TileType[][] map) {
-        return x >= 0 && x < map.length && y >= 0 && y < map[0].length;
-    }
-
-
-
-    public int getForagingAbilityLevel() {
-        return foragingAbilityLevel;
     }
 
     public void addFarmingAbilityScore(int amount) {
@@ -252,7 +281,6 @@ public class Player {
         }
     }
 
-
     public int getX() {
         return position.getX();
     }
@@ -261,13 +289,21 @@ public class Player {
         return position.getY();
     }
 
+    public boolean hasEnoughEnergy(int amount) {
+        return energy > amount;
+    }
+
+    public void equip(Gadget gadget) {
+        this.currentEquipment = gadget;
+    }
+
+    public Gadget getCurrentEquipment() {
+        return currentEquipment;
+    }
 
 
     public void decreaseEnergy(int amount) {
-        if (energy >= amount) {
-            energy -= amount;
-        }
-        energy = 0;
+        energy = Math.max(0, energy - amount);
     }
 
     public Tile getLocation() {
@@ -277,33 +313,48 @@ public class Player {
         }
         return null;
     }
+
     public void increaseEnergy(int amount) {
         if (amount <= 0) {
             amount = 0;
         }
-        if (energy + amount >= energyCeiling) {
-            energy = energyCeiling;
-        }
-        energy += amount;
+        energy = Math.min(energy + amount, energyCeiling);
     }
 
     private boolean isInBound(int x, int y, TileType[][] map) {
         return x >= 0 && x < map.length && y >= 0 && y < map[0].length;
     }
 
-    public void setEnergy(int energy) {
-        this.energy = energy;    // این باید بخش زمان و در شروع روز جدید کامل بشه و عوامل دیگه ای که روی سقف این تاثیر داشتن لحاظ بشن
-        // یا اگه غش کرده بشه ۷۵ درصد
-    }
 
-
-    public void faint() {
-        this.isFainted = true;
-        System.out.println("you fainted!");
-    }
-
-    // اول هر روز از غش کردگی با موفقیت در میاد
     public void setFaintStatus(boolean b) {
         this.isFainted = b;
+    }
+
+    public void setRejectionCooldown(int amount) {
+        rejectionCooldown = amount;
+    }
+    //RESETFORNEWDAY
+    public void resetForNewDay() {
+        if (rejectionCooldown > 0) {
+            energyCeiling = 150;
+            rejectionCooldown--;
+        }
+        this.isFainted = false;
+        energy = energyCeiling;
+        interactionTodayStatus.replaceAll((player, status) -> false);
+
+    }
+
+    public void decreaseCoin(int amount) {
+        this.coin -= amount;
+    }
+
+    public void faint(){
+        this.isFainted = true;
+        this.energy = 0;
+    }
+
+    public boolean isFainted() {
+        return isFainted;
     }
 }

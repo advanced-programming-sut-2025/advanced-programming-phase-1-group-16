@@ -52,4 +52,10 @@ public enum FishType {
     public Boolean getIsNormal() {
         return isNormal;
     }
+
+
+    @Override
+    public String toString() {
+        return "name: " + name + ", price: " + price + ", season: " + season + ", isNormal: " + isNormal;
+    }
 }

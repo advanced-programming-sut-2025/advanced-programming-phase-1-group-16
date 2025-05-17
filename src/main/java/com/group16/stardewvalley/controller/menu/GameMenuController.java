@@ -1,6 +1,8 @@
 package com.group16.stardewvalley.controller.menu;
 
-import com.group16.stardewvalley.model.app.*;
+import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.app.Game;
+import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.map.TileType;
 import com.group16.stardewvalley.model.menu.GameMenuCommands;
 import com.group16.stardewvalley.model.menu.Menu;
@@ -81,7 +83,6 @@ public class GameMenuController {
         }
     }
 
-//TODO
     public void randomItems(Farm farm){
         Random random = new Random();
         int totalTiles = farm.getType().getHeight() * farm.getType().getWidth();
@@ -95,19 +96,18 @@ public class GameMenuController {
             if (farm.getType().getTiles()[j][i].equals(TileType.Ground) ) {
                 farm.getType().getTiles()[j][i] = TileType.Tree;
             }
-        }
-        for (int k = 0; k < itemCount; k++) {
-            int j = random.nextInt(farm.getType().getHeight());           // ردیف رندم
-            int i = random.nextInt(farm.getType().getWidth());        // ستون رندم
-            if (farm.getType().getTiles()[j][i].equals(TileType.Ground)) {
+            if (farm.getType().getTiles()[j][i].equals(TileType.Quarry)) {
                 farm.getType().getTiles()[j][i] = TileType.Stone;
             }
         }
-        for (int k = 0; k < itemCount; k++) {
+        for (int k = 0; k < itemCount / 2; k++) {
             int j = random.nextInt(farm.getType().getHeight());           // ردیف رندم
             int i = random.nextInt(farm.getType().getWidth());        // ستون رندم
             if (farm.getType().getTiles()[j][i] == TileType.Ground) {
                 farm.getType().getTiles()[j][i] = TileType.Forage;
+            }
+            if (farm.getType().getTiles()[j][i].equals(TileType.Quarry)) {
+                farm.getType().getTiles()[j][i] = TileType.MineralForage;
             }
         }
     }
@@ -119,12 +119,6 @@ public class GameMenuController {
         }
         Game game = App.getActiveGame();
         game.setLoader(game.getCurrentPlayer());
-
-        GameData loaded = LoadManager.load("savefile.json");
-        if (loaded != null) {
-            System.out.println("Welcome back, " + loaded.user.getUsername());
-        }
-
         return new Result(true, game.getCurrentPlayer().getUser().getUsername() + " loaded the game successfully!");
 
     }
@@ -132,19 +126,13 @@ public class GameMenuController {
     public Result exit(){
         Game game = App.getActiveGame();
         if(game.getLoader() != null && game.getCurrentPlayer() == game.getLoader()){
-            // save game
-            GameData data = new GameData(App.getActiveGame().getCurrentPlayer().getUser(), App.getActiveGame().getCurrentPlayer(), App.getActiveGame());
-            SaveManager.save(data, "savefile.json");
-
+            //TODO save game
             App.setCurrentMenu(Menu.ExitMenu);
             return new Result(true, "bye bye");
 
         }
         if(game.getCurrentPlayer() == game.getCreator()){
-            // save game
-            GameData data = new GameData(App.getActiveGame().getCurrentPlayer().getUser(), App.getActiveGame().getCurrentPlayer(), App.getActiveGame());
-            SaveManager.save(data, "savefile.json");
-
+            //TODO save game
             App.setCurrentMenu(Menu.ExitMenu);
             return new Result(true, "bye bye");
         }

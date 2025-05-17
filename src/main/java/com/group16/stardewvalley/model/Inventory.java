@@ -2,28 +2,68 @@ package com.group16.stardewvalley.model;
 
 
 import com.group16.stardewvalley.model.items.Item;
+import com.group16.stardewvalley.model.agriculture.*;
 import com.group16.stardewvalley.model.items.Seed;
-import com.group16.stardewvalley.model.Tools.Gadget;
-import com.group16.stardewvalley.model.agriculture.SeedType;
+import com.group16.stardewvalley.model.items.Wood;
+import com.group16.stardewvalley.model.tools.Gadget;
 import com.group16.stardewvalley.model.crafting.CraftingRecipes;
+import com.group16.stardewvalley.model.tools.FishingPole;
 import com.group16.stardewvalley.model.user.BackPackType;
+import com.group16.stardewvalley.model.food.Food;
+import com.group16.stardewvalley.model.food.FoodIngredient;
+import com.group16.stardewvalley.model.food.Ingredient;
+import com.group16.stardewvalley.model.agriculture.Crop;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 
 public class Inventory {
     private Map<Gadget, Integer> tools;
     private Map<Item, Integer> items;
     private int capacity;
     private ArrayList<CraftingRecipes> craftingRecipes;
+    private Map<Crop, Integer> crops;
     private BackPackType backPackType;
 
     public Inventory() {
         this.tools = new HashMap<>();
         this.items = new HashMap<>();
+        this.crops = new HashMap<>();
         this.backPackType = BackPackType.Base_Pack;
+    }
 
+    public Map<Crop, Integer> getCrops() {
+        return crops;
+    }
+
+    public void setCrops(Map<Crop, Integer> crops) {
+        this.crops = crops;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public void setTools(Map<Gadget, Integer> tools) {
+        this.tools = tools;
+    }
+
+    public void setBackPackType(BackPackType backPackType) {
+        this.backPackType = backPackType;
+    }
+
+    public Map<Item, Integer> getItems() {
+        return items;
+    }
+
+    public void setItems(Map<Item, Integer> items) {
+        this.items = items;
     }
 
     public Result addTool(Gadget gadget, int count) {
@@ -56,13 +96,14 @@ public class Inventory {
         this.craftingRecipes.add(craftingRecipes);
     }
 
-    public Map<Item, Integer> getItems() {
-        return items;
-    }
 
     public BackPackType getBackPackType() {
         return backPackType;
     }
+    public void addCrop(Crop crop, int count) {
+        crops.put(crop, crops.getOrDefault(crop, 0));
+    }
+
 
     public Gadget findToolByName(String name) {
         for (Map.Entry<Gadget, Integer> entry : tools.entrySet()) {
@@ -82,11 +123,16 @@ public class Inventory {
         return getTotalItemsCount() >= backPackType.getCapacity();
     }
 
+    private int getTotalItemsCount() {
+        int toolCount = tools.values().stream().mapToInt(Integer::intValue).sum();
+        int itemCount = items.values().stream().mapToInt(Integer::intValue).sum();
+        return toolCount+ itemCount;
+    }
+
     public boolean isSeedInInventory(SeedType seedType) {
         for (Item item : items.keySet()) {
-            if (item instanceof Seed) {
-                Seed seed = (Seed) item;
-                if (items.get(item) > 0) {
+            if (item instanceof Seed seed) {
+                if (seed.getType().equals(seedType) && items.get(item) > 0) {
                     return true;
                 }
             }
@@ -94,9 +140,79 @@ public class Inventory {
         return false;
     }
 
-    private int getTotalItemsCount() {
-        int toolCount = tools.values().stream().mapToInt(Integer::intValue).sum();
-        int itemCount = items.values().stream().mapToInt(Integer::intValue).sum();
-        return toolCount+ itemCount;
+    public Seed findSeedByType(SeedType seedType) {
+        for (Item item : items.keySet()) {
+            if (item instanceof Seed seed) {
+                if (seed.getType().equals(seedType) && items.get(item) > 0) {
+                    return seed;
+                }
+            }
+        }
+        return null;
+    }
+
+    public Food getFood(String foodName) {
+        for (Item item : items.keySet()) {
+            if (item instanceof Food food) {
+                if (food.getName().equalsIgnoreCase(foodName) && items.get(item) > 0) {
+                    return food;
+                }
+            }
+        }
+        return null;
+    }
+
+    public Fertilizer getFertilizer(String name) {
+        for (Item item : items.keySet()) {
+            if (item instanceof Fertilizer fertilizer) {
+                if (fertilizer.getName().equalsIgnoreCase(name) && items.get(item) > 0) {
+                    return fertilizer;
+                }
+            }
+        }
+        return null;
+    }
+
+    public FoodIngredient getFoodIngredient(Ingredient ingredient) {
+        for (Item item : items.keySet()) {
+            if (item instanceof FoodIngredient foodIngredient) {
+                if (foodIngredient.getType().equals(ingredient) && items.get(item) > 0) {
+                    return foodIngredient;
+                }
+            }
+        }
+        return null;
+    }
+
+    public FishingPole getFishingPole(String name) {
+        for (Gadget gadget : tools.keySet()) {
+            if (gadget instanceof FishingPole fishingPole) {
+                if (fishingPole.getName().equalsIgnoreCase(name) && tools.get(gadget) > 0) {
+                    return fishingPole;
+                }
+            }
+        }
+        return null;
+    }
+
+    public Wood findWood(String woodName) {
+        for (Item item : items.keySet()) {
+            if (item instanceof Wood wood) {
+                if (wood.getName().equalsIgnoreCase(woodName) && items.get(item) > 0) {
+                    return wood;
+                }
+            }
+        }
+        return null;
+    }
+
+    public int countWood() {
+        int count = 0;
+        for (Item item : items.keySet()) {
+            if (item instanceof Wood) {
+                count++;
+            }
+        }
+        return count;
     }
 }

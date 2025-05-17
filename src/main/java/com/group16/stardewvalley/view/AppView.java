@@ -17,6 +17,7 @@ public class AppView {
             if(App.getActiveGame() != null){
                 App.getActiveGame().nextTurn();
             }
+
         } while (App.getCurrentMenu() != Menu.ExitMenu);
     }
 

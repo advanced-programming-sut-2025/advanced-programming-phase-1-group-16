@@ -1,5 +1,6 @@
 package com.group16.stardewvalley.model.app;
 
+import com.group16.stardewvalley.model.menu.Menu;
 import com.group16.stardewvalley.model.user.User;
 import com.group16.stardewvalley.model.menu.Menu;
 
@@ -61,5 +62,5 @@ public class App {
     public static void setActiveGame(Game activeGame) {
         App.activeGame = activeGame;
     }
-    
+
 }

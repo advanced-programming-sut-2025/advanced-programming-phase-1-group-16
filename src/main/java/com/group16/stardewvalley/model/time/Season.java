@@ -8,7 +8,7 @@ public enum Season {
     Special(4, "Special");
 
 
-    private int index;
+    private final int index;
     private final String name;
 
     Season(int index, String name) {

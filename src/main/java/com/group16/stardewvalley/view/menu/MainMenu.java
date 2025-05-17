@@ -8,7 +8,7 @@ import com.group16.stardewvalley.model.menu.GameMenuCommands;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
-public class MainMenu implements GameMenuInterface {
+public class MainMenu implements MenuInterface {
     private final MainMenuController controller = new MainMenuController();
 
     @Override

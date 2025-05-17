@@ -1,7 +1,8 @@
 package com.group16.stardewvalley.model.animal;
 
 import com.group16.stardewvalley.model.Result;
-import com.group16.stardewvalley.model.Shops.MarniesRanchAnimals;
+import com.group16.stardewvalley.model.shops.MarniesRanch;
+import com.group16.stardewvalley.model.shops.MarniesRanchAnimals;
 import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.user.Player;
 

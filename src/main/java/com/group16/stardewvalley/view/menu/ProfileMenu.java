@@ -9,7 +9,7 @@ import com.group16.stardewvalley.model.menu.ProfileMenuCommands;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
-public class ProfileMenu implements GameMenuInterface {
+public class ProfileMenu implements MenuInterface {
     private final ProfileMenuController controller = new ProfileMenuController();
 
     @Override

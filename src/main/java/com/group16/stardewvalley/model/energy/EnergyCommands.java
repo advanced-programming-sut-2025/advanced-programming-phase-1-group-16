@@ -1,9 +1,9 @@
 package com.group16.stardewvalley.model.energy;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.group16.stardewvalley.model.menu.CommandsInterface;
 
-public enum EnergyCommands {
+
+public enum EnergyCommands implements CommandsInterface {
     SHOW_ENERGY("^\\s*energy\\s*show\\s*$"),
     SET_ENERGY("^\\s*energy\\s*set\\s*-v\\s*(?<value>-?\\d+)\\s*$"),
     ENERGY_UNLIMITED("^\\s*energy\\s*unlimited\\s*$"),
@@ -19,7 +19,8 @@ public enum EnergyCommands {
         this.pattern = pattern;
     }
 
-    public Matcher getMAtcher(String input) {
-        return Pattern.compile(this.pattern).matcher(input);
+    @Override
+    public String getPattern() {
+        return pattern;
     }
 }

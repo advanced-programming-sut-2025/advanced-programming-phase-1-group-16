@@ -1,7 +1,8 @@
 package com.group16.stardewvalley.model.map;
 
-
+import com.group16.stardewvalley.model.*;
 import com.group16.stardewvalley.model.app.Game;
+import com.group16.stardewvalley.model.map.*;
 
 public enum Direction {
     N("n", 0, -1),
@@ -23,6 +24,14 @@ public enum Direction {
         this.yDelta = yDelta;
     }
 
+    public int getxDelta() {
+        return xDelta;
+    }
+
+    public int getyDelta() {
+        return yDelta;
+    }
+
     public static Direction fromString(String input) {
         String normalized = input.toLowerCase().trim();
         for (Direction dir : values()) {
@@ -30,8 +39,34 @@ public enum Direction {
                 return dir;
             }
         }
-        throw new IllegalArgumentException("invalid direction");
+        return null;
     }
 
+    public Tile applyPosition(Game game) {
+        int x =game.getCurrentPlayer().getX() + xDelta;
+        int y = game.getCurrentPlayer().getY() + yDelta;
+        if (game.getMap() != null && isValidPos(new Pos(x, y), game.getMapWidth(), game.getMapHeight())) {
+            return game.getMap()[y][x];
+        }
+    return null;
+    }
 
+    private boolean isValidPos(Pos pos, int width, int height) {
+        int x = pos.getX(), y = pos.getY();
+        return x >= 0 && y >= 0 && x < width && y < height;
+    }
+
+    public static Pos getDirectionOffset(String direction) {
+        return switch (direction.toLowerCase()) {
+            case "up" -> new Pos(0, -1);
+            case "down" -> new Pos(0, 1);
+            case "left" -> new Pos(-1, 0);
+            case "right" -> new Pos(1, 0);
+            case "up left" -> new Pos(-1, -1);
+            case "up right" -> new Pos(1, -1);
+            case "down left" -> new Pos(-1, 1);
+            case "down right" -> new Pos(1, 1);
+            default -> null;
+        };
+    }
 }

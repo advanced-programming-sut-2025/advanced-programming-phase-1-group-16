@@ -1,14 +1,14 @@
 {
   "tools": {
-    "hoes": {
+    "hoe": {
       "name": "hoe",
       "actions": ["Plow"],
       "material": {
         "base": {"consumption energy": 5},
-        "copper": {"consumption energy": 4},
-        "iron": {"consumption energy": 3},
-        "gold": {"consumption energy": 2},
-        "iridium": {"consumption energy": 1}
+        "copper": {"consumption energy": 4, "Cost": 2000, "Upgrade Cost": 2000},
+        "iron": {"consumption energy": 3, "Cost": 5000, "Upgrade Cost": 5000},
+        "gold": {"consumption energy": 2, "Cost": 10000, "Upgrade Cost": 10000},
+        "iridium": {"consumption energy": 1, "Cost": 25000, "Upgrade Cost": 25000}
       }
     },
 
@@ -17,10 +17,10 @@
       "actions": ["BreakStone", "RemoveHoeMarks", "ClearDroppedItems"],
       "material": {
         "base": {"consumption energy": 5},
-        "copper": {"consumption energy": 4},
-        "iron": {"consumption energy": 3},
-        "gold": {"consumption energy": 2},
-        "iridium": {"consumption energy": 1}
+        "copper": {"consumption energy": 4, "Cost": 2000, "Upgrade Cost": 2000},
+        "iron": {"consumption energy": 3, "Cost": 5000, "Upgrade Cost": 5000},
+        "gold": {"consumption energy": 2, "Cost": 10000, "Upgrade Cost": 10000},
+        "iridium": {"consumption energy": 1, "Cost": 25000, "Upgrade Cost": 25000}
       }
     },
     "axe": {
@@ -28,10 +28,10 @@
       "actions": ["ChopTrees", "ClearBranches"],
       "material":{
         "base": {"consumption energy": 5},
-        "copper": {"consumption energy": 4},
-        "iron": {"consumption energy": 3},
-        "gold": {"consumption energy": 2},
-        "iridium": {"consumption energy": 1}
+        "copper": {"consumption energy": 4, "Cost": 2000, "Upgrade Cost": 2000},
+        "iron": {"consumption energy": 3, "Cost": 5000, "Upgrade Cost": 5000},
+        "gold": {"consumption energy": 2, "Cost": 10000, "Upgrade Cost": 10000},
+        "iridium": {"consumption energy": 1, "Cost": 25000, "Upgrade Cost": 25000}
       }
     },
 
@@ -39,11 +39,11 @@
       "name": "watering can",
       "actions": ["WaterCrops", "FillWaterContainer"],
       "material": {
-        "base": {"num of tiles": 40},
-        "copper": {"num of tiles": 55},
-        "iron": {"num of tiles": 70},
-        "gold": {"num of tiles": 85},
-        "iridium": {"num of tiles": 100}
+        "base": {"capacity": 40, "Upgrade Cost": 2000},
+        "copper": {"capacity": 55, "Upgrade Cost": 5000},
+        "iron": {"capacity": 70, "Upgrade Cost": 10000},
+        "gold": {"capacity": 85, "Upgrade Cost": 25000},
+        "iridium": {"capacity": 100}
       }
 
     },
@@ -51,7 +51,7 @@
     "fishing pole": {
       "name": "fishing pole",
       "actions": ["Fishing"],
-      "type": {
+      "material": {
         "training": {"price": 25, "consumption energy": 8, "enough level": 0},
         "bamboo": {"price": 500, "consumption energy": 8, "enough level": 0},
         "fiberglass": {"price": 1800, "consumption energy": 6, "enough level": 2},
@@ -65,14 +65,6 @@
       "consumption energy": 2
     },
 
-    "milk pail": {
-      "name": "milk pail",
-      "actions": ["MildAnimals"],
-      "consumption energy": 4,
-      "price": 1000
-    },
-
-
     "shear": {
       "name": "shear",
       "actions": ["ShearSheep"],
@@ -84,11 +76,11 @@
     "trash can": {
       "name": "trash can",
       "actions": ["RemoveFromInventory"],
-      "type": {
-        "basic":{"Recovery percentage": 0},
-        "copper": {"Recovery percentage": 15},
-        "iron": {"Recovery percentage": 39},
-        "gold": {"Recovery percentage": 45},
+      "material": {
+        "basic":{"Recovery percentage": 0, "Upgrade Cost": 1000},
+        "copper": {"Recovery percentage": 15, "Upgrade Cost": 2500},
+        "iron": {"Recovery percentage": 39, "Upgrade Cost": 5000},
+        "gold": {"Recovery percentage": 45, "Upgrade Cost": 12500},
         "iridium": {"Recovery percentage": 60}
       }
     }

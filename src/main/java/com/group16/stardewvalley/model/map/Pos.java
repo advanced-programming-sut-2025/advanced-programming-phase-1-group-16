@@ -25,8 +25,6 @@ public class Pos {
         this.y = y;
     }
 
-
-
     //To check whether Pos1 is in the 8 neighboring tiles of Pos2.
     public static boolean isNear(Pos pos1, Pos pos2) {
         for (int dy = -1; dy <= 1; dy++) {
@@ -40,5 +38,13 @@ public class Pos {
             }
         }
         return false;
+    }
+
+    public boolean isEqual(Pos pos) {
+        return pos.getY() == this.y && pos.getX() == this.x;
+    }
+
+    public String toString() {
+        return "(" + x + ", " + y + ")";
     }
 }

@@ -26,7 +26,6 @@ game new -u gholi Atena
 game map 1
 game map 2
 game map 2
-print map -l 0,0 -s 300
 
 //time date test
 time
@@ -42,3 +41,112 @@ date
 season
 
 //map test
+print map -l 0,0 -s 300
+walk -l 40, 50
+help reading map
+
+
+//craft info
+craft info -n Blue Jazz
+craft info -n Blueberry
+craft info -n Starfruit
+craft info -n Tomato
+craft info -n Fairy Rose
+craft info -n Sweet Gem Berry
+tree info -n Apple Tree
+tree info -n Mahogany Tree
+tree info -n Mystic Tree
+craft info -n Spice Berry
+craft info -n Snow Yam
+craft info -n Acorns
+tree info -n Pine Cones
+tree info -n Acorns
+
+//planting
+cheat add seed Jazz Seeds
+cheat add tool hoe
+tools equip hoe
+tools equip hoe
+tools equip hoe
+tools use -d n
+plant -s Jazz Seeds -d down
+show position
+show plant -l 91, 150
+cheat add tool watering can
+tools equip watering can
+how much water
+tools use -d n
+tools use -d s
+show plant -l 91, 150
+fertilize -f speed gro -d down
+add fertilizer speed
+add fertilizer deluxe
+fertilize -f deluxe retaining soil -d down
+cheat add seed Cherry Sapling
+plant -s Cherry Sapling -d up
+tools equip scythe
+cheat add tool scythe
+cheat advance date 1 d
+
+//غول پیکر
+cheat add tool hoe
+cheat add seed Cauliflower Seeds
+tools equip hoe
+tools use -d n
+plant -s Cauliflower Seeds -d down
+show position
+cheat advance date 1 d
+plant -s Cauliflower Seeds -d up
+cheat advance date 1 d
+tools use -d nw
+plant -s Cauliflower Seeds -d down left
+walk -l 32, 12
+yes
+cheat advance date 1 d
+tools use -d w
+plant -s Cauliflower Seeds -d left
+show plant -l 31, 12
+
+//foods
+walk -l 34, 3
+yes
+cooking show recipes
+cheat learn recipe Pizza
+cooking show recipes
+cheat learn recipe Cookie
+cooking show recipes
+cooking prepare hash browns
+cooking prepare Pizza
+add ingredient TOMATO
+cooking prepare Pizza
+add ingredient WHEAT_FLOUR
+add ingredient CHEESE
+cooking prepare Pizza
+energy show
+cheat advance date 1 d
+cooking prepare Pizza
+cooking refrigerator pick TOMATO
+cooking refrigerator put TOMATO
+add ingredient TOMATO
+cooking refrigerator put TOMATO
+cooking refrigerator pick TOMATO
+cooking refrigerator put TOMATO
+energy show
+eat Pizza
+energy show
+eat Triple Shot Espresso
+cooking prepare Triple Shot Espresso
+cheat learn recipe Triple Shot Espresso
+cooking prepare Triple Shot Espresso
+add ingredient COFFEE
+cooking prepare Triple Shot Espresso
+energy show
+eat Triple Shot Espresso
+energy show
+
+//fishing
+cheat add tool fishing pole
+fishing -p fishing pole
+print map -l 0,0 -s 80
+walk -l 62, 32
+yes
