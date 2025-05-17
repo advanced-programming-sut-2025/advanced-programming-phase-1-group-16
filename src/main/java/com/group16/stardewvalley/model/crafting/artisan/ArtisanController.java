@@ -4,5 +4,11 @@ import com.group16.stardewvalley.model.Result;
 
 public class ArtisanController {
 
-    public Result use()
+    public Result use(String artisanName, String itemsName) {
+
+    }
+
+    public Result get (String artisanName) {
+
+    }
 }

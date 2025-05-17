@@ -13,6 +13,7 @@ import com.group16.stardewvalley.controller.tools.GadgetController;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.crafting.Crafting;
+import com.group16.stardewvalley.model.crafting.artisan.ArtisanController;
 import com.group16.stardewvalley.model.energy.EnergyCommands;
 import com.group16.stardewvalley.model.menu.GameMenuCheatCodeCommands;
 import com.group16.stardewvalley.model.menu.GameMenuCommands;
@@ -39,7 +40,7 @@ public class GameMenu implements MenuInterface {
     private final EnergyController energyController = new EnergyController();
     private final GadgetController gadgetController = new GadgetController();
     private final ShopController shopController = new ShopController();
-
+    private final ArtisanController artisanController = new ArtisanController();
 
     @Override
     public void check(Scanner scanner) {
@@ -242,10 +243,10 @@ public class GameMenu implements MenuInterface {
 
     //Artisan commands
     else if((matcher = GameMenuCommands.ArtisanUse.getMatcher(input)) != null ){
-        System.out.println();
+        System.out.println(artisanController.use(matcher.group("artisanName"), matcher.group("itemsName")));
     }
     else if((matcher = GameMenuCommands.ArtisanGet.getMatcher(input)) != null){
-        System.out.println();
+        System.out.println(artisanController.get(matcher.group("artisanName")));
     }
 
 
