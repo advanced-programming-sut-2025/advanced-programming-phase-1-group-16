@@ -1,17 +1,25 @@
 package com.group16.stardewvalley.model.agriculture;
 
 
+import com.group16.stardewvalley.model.map.Pos;
+
 public class Crop {
-    CropType cropType;
+    private CropType cropType;
     private int sellPrice;
     private int energy;
     private int stage;
     private final int finalStage;
     private int dayPastFromLastStage;
     private int daysSinceLastHarvest;
+    private int daySinceLastWater;
+    private int daysSincePlanting;
+    private boolean isHarvested;
     private boolean isWatered;
+    private boolean isWateredYesterday;
     private boolean isMature;
     private boolean isColossal;
+    private boolean isFertilized;
+    private Pos position;
 
     public Crop(CropType cropType) {
         this.cropType = cropType;
@@ -23,12 +31,70 @@ public class Crop {
         this.stage = 0;
         this.dayPastFromLastStage = 0;
         this.daysSinceLastHarvest = 0;
+        this.daySinceLastWater = 0;
+        this.daysSincePlanting = 0;
         this.isWatered = false;
         this.isMature = false;
+        this.isHarvested = false;
+        this.isColossal = false;
+        this.isFertilized = false;
+        this.isWateredYesterday = true;
+    }
+
+    public Pos getPosition() {
+        return position;
+    }
+
+    public void setPosition(Pos position) {
+        this.position = position;
+    }
+
+    public boolean isWateredYesterday() {
+        return isWateredYesterday;
+    }
+
+    public void setWateredYesterday(boolean wateredYesterday) {
+        isWateredYesterday = wateredYesterday;
+    }
+
+    public void setColossal(boolean colossal) {
+        isColossal = colossal;
+    }
+
+    public boolean isFertilized() {
+        return isFertilized;
+    }
+
+    public void setFertilized(boolean fertilized) {
+        isFertilized = fertilized;
+    }
+
+    public boolean isHarvested() {
+        return isHarvested;
+    }
+
+    public void setHarvested(boolean harvested) {
+        isHarvested = harvested;
+    }
+
+    public int getDaySinceLastWater() {
+        return daySinceLastWater;
+    }
+
+    public void setDaySinceLastWater(int daySinceLastWater) {
+        this.daySinceLastWater = daySinceLastWater;
+    }
+
+    public void setDaysSincePlanting(int daysSincePlanting) {
+        this.daysSincePlanting = daysSincePlanting;
     }
 
     public boolean isColossal() {
         return isColossal;
+    }
+
+    public int getDaysSincePlanting() {
+        return daysSincePlanting;
     }
 
     public CropType getCropType() {
@@ -102,6 +168,7 @@ public class Crop {
     public void advanceStage() {
         if (!isMature) {
             dayPastFromLastStage++;
+            daysSincePlanting++;
             if (dayPastFromLastStage >= cropType.getStages()[stage]) {
                 stage++;
                 if (stage == finalStage) {
@@ -110,8 +177,20 @@ public class Crop {
                 dayPastFromLastStage = 0;
             }
         }
+        if (!cropType.isOneTime()) {
+            if (isHarvested) {
+                daysSinceLastHarvest++;
+                if (daysSinceLastHarvest > getCropType().getRegrowthTime()) {
+                    isMature = true;
+                    isHarvested = false;
+                    daysSinceLastHarvest = 0;
+                }
+            }
+        }
 
     }
+
+
 
 
 }

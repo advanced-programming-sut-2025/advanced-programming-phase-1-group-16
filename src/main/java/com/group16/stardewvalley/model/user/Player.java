@@ -3,6 +3,7 @@ package com.group16.stardewvalley.model.user;
 import com.group16.stardewvalley.model.Inventory;
 import com.group16.stardewvalley.model.NPC.NPC;
 import com.group16.stardewvalley.model.NPC.NPCInteraction;
+import com.group16.stardewvalley.model.Request;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.tools.Gadget;
 import com.group16.stardewvalley.model.app.App;
@@ -36,10 +37,11 @@ public class Player {
     private int rejectionCooldown;
     private final Map<NPC, NPCInteraction> dailyNPCInteraction;
     private final Map<Player, PlayerInteraction> dailyPlayerInteraction;
-    private final List<String> quests;
-    private final List<String> notifications;
+    private final List<Request> quests;
+    private final List<Request> notifications;
     private int todayIncome;
-    private final List<String> requestHistory;
+    private final List<Request> requestHistory;
+    private Player spouse;
 
     public Player(User user) {
         this.user = user;
@@ -59,8 +61,9 @@ public class Player {
         this.dailyNPCInteraction = new HashMap<>();
         this.dailyPlayerInteraction = new HashMap<>();
         this.quests = new ArrayList<>();
+        this.spouse = null;
         for (NPC npc : App.getActiveGame().getNPCs()) {
-            quests.add(npc.getNpcType().getRequests().get(0));   // اد کردن درخواست های اولیه
+            quests.add(npc.getNpcType().getQuests().get(0));   // اد کردن درخواست های اولیه
         }
         this.notifications = new ArrayList<>();
         todayIncome = 0;
@@ -68,12 +71,12 @@ public class Player {
         initializeInteractions();
     }
 
-    public List<String> getRequestHistory() {
+    public List<Request> getRequestHistory() {
         return requestHistory;
     }
 
-    public void addToRequestHistory(String line) {
-        requestHistory.add(line);
+    public void addToRequestHistory(Request request) {
+        requestHistory.add(request);
     }
 
     public void initializeInteractions() {
@@ -87,33 +90,33 @@ public class Player {
         }
     }
 
-    public List<String> getQuests() {
+    public List<Request> getQuests() {
         return quests;
     }
 
-    public void addQuest(String line) {
-        quests.add(line);
+    public void addQuest(Request request) {
+        quests.add(request);
     }
 
-    public void removeQuest(String line) {
-        for (String target : quests) {
-            if (target.equalsIgnoreCase(line)) {
+    public void removeQuest(Request request) {
+        for (Request target : quests) {
+            if (target.equals(request)) {
                 quests.remove(target);
             }
         }
     }
 
-    public List<String> getNotifications() {
+    public List<Request> getNotifications() {
         return notifications;
     }
 
-    public void addNotification(String line) {
-        notifications.add(line);
+    public void addNotification(Request request) {
+        notifications.add(request);
     }
 
-    public void removeNotification(String line) {
-        for (String target : notifications) {
-            if (target.equalsIgnoreCase(line)) {
+    public void removeNotification(Request request) {
+        for (Request target : notifications) {
+            if (target.equals(request)) {
                 notifications.remove(target);
             }
         }
@@ -160,10 +163,21 @@ public class Player {
     }
 
     public int getCoin() {
+        if (spouse != null) {
+            return getTotalCoin();
+        }
         return coin;
     }
 
+    public int getTotalCoin() {
+        return coin + spouse.getCoin();
+    }
+
     public void increaseCoin(int amount) {
+        if (spouse != null) {
+            spouse.increaseCoin(amount / 2);
+            this.increaseCoin(amount / 2);
+        }
         coin += amount;
     }
 

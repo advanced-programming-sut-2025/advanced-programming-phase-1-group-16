@@ -17,7 +17,4 @@ public enum CraftingIngredientsTypes {
     MapleSeed,
     PineCone,
     MahoganySeed;
-
-
-
 }

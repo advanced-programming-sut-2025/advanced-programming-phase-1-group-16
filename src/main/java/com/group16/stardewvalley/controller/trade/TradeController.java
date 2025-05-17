@@ -79,12 +79,7 @@ public class TradeController {
         }
 
         Player targetPlayer = game.getPlayerByUsername(username);
-        StringBuilder sb = new StringBuilder();
-        sb.append("Request from ");
-        sb.append(currentPlayer.getName());
-        sb.append(input);
-        targetPlayer.addToRequestHistory(sb.toString());
-        targetPlayer.addNotification(input);
+
         // هیچ خطایی نیست
         return new Result(true, "Your " + type + " sent to " + username + " successfully");
     }
