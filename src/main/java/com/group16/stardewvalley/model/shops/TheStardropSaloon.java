@@ -24,14 +24,14 @@ public class TheStardropSaloon extends Shop{
         addItem(FoodFactory.spaghetti(), Integer.MAX_VALUE);
         addItem(FoodFactory.pizza(), Integer.MAX_VALUE);
         addItem(FoodFactory.tripleShotEspresso(), Integer.MAX_VALUE);
-        addItem(new FoodRecipe(new Food("Hashbrowns"), "Hashbrowns Recipe"));
-        addItem(new FoodRecipe(new Food("Omelet"), "Omelet"));
-        addItem(new FoodRecipe(new Food("Pancakes"), "Pancakes"));
-        addItem(new FoodRecipe(new Food("Bread"), "Bread Recipe"));
-        addItem(new FoodRecipe(new Food("Tortilla"), "Tortilla Recipe"));
-        addItem(new FoodRecipe(new Food("Pizza"), "Pizza Recipe"));
-        addItem(new FoodRecipe(new Food("Maki Roll"), "Maki Roll Recipe"));
-        addItem(new FoodRecipe(new Food("Triple Shot Espresso"), "Triple Shot Espresso Recipe"));
-        addItem(new FoodRecipe(new Food("Cookie"), "Cookie Recipe"));
+        addItem(new FoodRecipe("Hashbrowns Recipe", FoodFactory.hashBrowns()), 1);
+        addItem(new FoodRecipe("Omelet Recipe", FoodFactory.omelet()), 1);
+        addItem(new FoodRecipe("Pancakes Recipe", FoodFactory.pancakes()), 1);
+        addItem(new FoodRecipe("Bread Recipe", FoodFactory.bread()), 1);
+        addItem(new FoodRecipe("Tortilla Recipe", FoodFactory.tortilla()), 1);
+        addItem(new FoodRecipe("Pizza Recipe", FoodFactory.pizza()), 1);
+        addItem(new FoodRecipe("Maki Roll Recipe", FoodFactory.makiRoll()), 1);
+        addItem(new FoodRecipe("Triple Shot Espresso Recipe", FoodFactory.tripleShotEspresso()), 1);
+        addItem(new FoodRecipe("Cookie Recipe", FoodFactory.cookie()), 1);
     }
 }
