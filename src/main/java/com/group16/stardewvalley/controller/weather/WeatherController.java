@@ -10,14 +10,8 @@ import java.security.SecureRandom;
 
 public class WeatherController {
 
-    private final Game game;
-
-    public WeatherController(Game game) {
-        this.game = game;
-    }
-
     public Result showWeather() {
-        return new Result(true, game.getWeatherCondition().name());
+        return new Result(true, App.getActiveGame().getWeatherCondition().name());
     }
 
     public Result weatherForecast() {
@@ -28,7 +22,7 @@ public class WeatherController {
         if (weatherCondition == null) {
             return new Result(false, "Invalid weather condition");
         }
-        game.setTomorrowWeatherCondition(weatherCondition);
+        App.getActiveGame().setTomorrowWeatherCondition(weatherCondition);
         return new Result(true, "Tomorrow's weather : " + weatherCondition.getWeatherName());
     }
 

@@ -50,6 +50,7 @@ public class Game {
         this.shops.add(new FishShop());
         this.shops.add(new MarniesRanch());
         this.shops.add(new TheStardropSaloon());
+        this.weatherCondition = WeatherCondition.SUNNY;
         this.NPCs = new ArrayList<>();
         NPCs.add(new NPC(NPCType.Sebastian));
         NPCs.add(new NPC(NPCType.Abigail));

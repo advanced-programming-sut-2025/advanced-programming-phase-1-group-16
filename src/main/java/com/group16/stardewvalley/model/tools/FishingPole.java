@@ -53,7 +53,6 @@ public class FishingPole extends Gadget{
             return new Result(false, "There is no lake here!");
         }
 
-        // بتواند ماهی گیری کند ---> نیلی
         player.decreaseEnergy(requiredEnergy);
         List<FishType> fishes = new ArrayList<>(Arrays.stream(FishType.values())
                 .filter(fish -> fish.getSeason().equals(game.getTimeDate().getCurrentSeason()))
@@ -74,12 +73,23 @@ public class FishingPole extends Gadget{
         } else {
             quality = ProductQuality.NORMAL;
         }
+        ArrayList<FishType> fishesToUse = new ArrayList<>();
 
+        int index;
         for (int i = 0; i < fishNumber; i++) {
-            game.getCurrentPlayer().getInventory().addItem(new Fish(fishes.get(random.nextInt(fishes.size())), quality), 1);
+            index = random.nextInt(fishes.size());
+            fishesToUse.add(fishes.get(index));
+            game.getCurrentPlayer().getInventory().addItem(new Fish(fishes.get(index), quality), 1);
         }
         game.getCurrentPlayer().addFishingAbilityScore(5);
-        return new Result(true, "you earned " + fishNumber + " fishes!");
+        StringBuilder result = new StringBuilder();
+        result.append("you earned ").append(fishNumber).append(" fishes!\n");
+        int number = 1;
+        for (FishType fish : fishesToUse) {
+            result.append(number).append("_ ").append(fish.toString()).append("\n");
+            number++;
+        }
+        return new Result(true, result.toString());
 
 
     }

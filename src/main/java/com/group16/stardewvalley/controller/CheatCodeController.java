@@ -19,6 +19,9 @@ public class CheatCodeController {
             case "axe":
                 App.getActiveGame().getCurrentPlayer().getInventory().addTool(new Axe("axe", "base"), 1);
                 break;
+            case "fishing pole":
+                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new FishingPole("fishing pole", "training"), 1);
+                break;
             case "hoe":
                 App.getActiveGame().getCurrentPlayer().getInventory().addTool(new Hoe("hoe", "base"), 1);
                 break;

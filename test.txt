@@ -144,3 +144,9 @@ energy show
 eat Triple Shot Espresso
 energy show
 
+//fishing
+cheat add tool fishing pole
+fishing -p fishing pole
+print map -l 0,0 -s 80
+walk -l 62, 32
+yes

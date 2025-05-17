@@ -112,8 +112,8 @@ public class GadgetController {
             int newX = position.getX() + dx[i];
             int newY = position.getY() + dy[i];
 
-            if (newX >= 0 && newX < rows && newY >= 0 && newY < cols) {
-                Tile neighbor = map[newX][newY];
+            if (newX >= 0 && newX < cols && newY >= 0 && newY < rows) {
+                Tile neighbor = map[newY][newX];
                 if (neighbor.getType() == TileType.Lake) {
                     return neighbor; // اولین تایل با نوع دریاچه
                 }

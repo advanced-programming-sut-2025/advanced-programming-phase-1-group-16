@@ -185,9 +185,9 @@ public class Inventory {
     }
 
     public FishingPole getFishingPole(String name) {
-        for (Item item : items.keySet()) {
-            if (item instanceof FishingPole fishingPole) {
-                if (fishingPole.getName().equalsIgnoreCase(name) && items.get(item) > 0) {
+        for (Gadget gadget : tools.keySet()) {
+            if (gadget instanceof FishingPole fishingPole) {
+                if (fishingPole.getName().equalsIgnoreCase(name) && tools.get(gadget) > 0) {
                     return fishingPole;
                 }
             }
