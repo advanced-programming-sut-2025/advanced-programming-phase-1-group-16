@@ -81,6 +81,10 @@ public enum NPCType {
         return name;
     }
 
+    public List<String> getRequests() {
+        return requests;
+    }
+
     public String getDialogueForSebastian(int friendshipLevel, Season season,
                                           WeatherCondition weatherCondition, int timeOfDay) {
         switch (friendshipLevel) {

@@ -15,6 +15,8 @@ public class TradeView {
 
         if ((matcher = GameMenuCommands.Start_Trade.getMatcher(input)).matches()) {
             System.out.println(controller.startTrade());
+        } else if ((matcher = GameMenuCommands.Trade.getMatcher(input)).matches()) {
+            System.out.println(controller.trade(matcher, input));
         }
     }
 }

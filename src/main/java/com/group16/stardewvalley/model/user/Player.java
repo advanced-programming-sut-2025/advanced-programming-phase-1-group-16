@@ -39,6 +39,7 @@ public class Player {
     private final List<String> quests;
     private final List<String> notifications;
     private int todayIncome;
+    private final List<String> requestHistory;
 
     public Player(User user) {
         this.user = user;
@@ -58,11 +59,22 @@ public class Player {
         this.dailyNPCInteraction = new HashMap<>();
         this.dailyPlayerInteraction = new HashMap<>();
         this.quests = new ArrayList<>();
+        for (NPC npc : App.getActiveGame().getNPCs()) {
+            quests.add(npc.getNpcType().getRequests().get(0));   // اد کردن درخواست های اولیه
+        }
         this.notifications = new ArrayList<>();
         todayIncome = 0;
+        this.requestHistory = new ArrayList<>();
         initializeInteractions();
     }
 
+    public List<String> getRequestHistory() {
+        return requestHistory;
+    }
+
+    public void addToRequestHistory(String line) {
+        requestHistory.add(line);
+    }
 
     public void initializeInteractions() {
         dailyNPCInteraction.put(App.getActiveGame().getNPCByName("Sebastian"), new NPCInteraction());

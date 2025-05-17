@@ -27,12 +27,15 @@ public class TradeController {
         return new Result(true, sb.toString());
     }
 
-    public Result trade(Matcher matcher) {
+    public Result trade(Matcher matcher, String input) {
         Player currentPlayer = game.getCurrentPlayer();
         String username = matcher.group("username");
         String type = matcher.group("type");
         String itemName = matcher.group("item");
         String amountStr = matcher.group("amount");
+        String priceStr = null;
+        String targetItemName = null;
+        String targetAmountStr = null;
         int amount;
         try {
             amount = Integer.parseInt(amountStr);
@@ -40,25 +43,11 @@ public class TradeController {
             return new Result(false, "amount is invalid");
         }
 
-        // بازیکن مورد نظر وجود نداشت
-        if (game.getPlayerByUsername(username) == null) {
-            return new Result(false, "")
-        }
-
-        // اصلا این کالا را نداشته باشد
-        if (currentPlayer.getInventory().getItemByName(itemName) == null) {
-            return new Result(false, "")
-        }
-        Item targetItem = currentPlayer.getInventory().getItemByName(itemName);
-
-        // تعداد کافی از این کالا نداشته باشد
-        if ()
-
         if (type.equalsIgnoreCase("offer")) {
-            String priceStr = matcher.group("price");
+            priceStr = matcher.group("price");
             int price;
-            String targetItemName = matcher.group("targetItemName");
-            String targetAmountStr = matcher.group("targetAmount");
+            targetItemName = matcher.group("targetItemName");
+            targetAmountStr = matcher.group("targetAmount");
             int targetAmount;
             try {
                 price = Integer.parseInt(priceStr);
@@ -66,9 +55,38 @@ public class TradeController {
             } catch (NumberFormatException e) {
                 return new Result(false, "price or targetAmount is invalid ");
             }
-        } else {
-
         }
+
+        // بازیکن مورد نظر وجود نداشت
+        if (game.getPlayerByUsername(username) == null) {
+            return new Result(false, "Player not found!");
+        }
+
+        // اصلا این کالا را نداشته باشد
+        if (currentPlayer.getInventory().getItemByName(itemName) == null) {
+            return new Result(false, "You don't have it in your inventory");
+        }
+        Item itemForTrade = currentPlayer.getInventory().getItemByName(itemName);
+
+        // تعداد کافی از این کالا نداشته باشد
+        if (currentPlayer.getInventory().getNumberOfItem(itemForTrade) < amount) {
+            return new Result(false, "You don't have enough number of this item");
+        }
+
+        // هر دو روش را انتخاب کرده است
+        if (type.equalsIgnoreCase("request") && (priceStr != null || targetItemName != null || targetAmountStr != null)) {
+            return new Result(false, "Request type cannot have offer parameters!");
+        }
+
+        Player targetPlayer = game.getPlayerByUsername(username);
+        StringBuilder sb = new StringBuilder();
+        sb.append("Request from ");
+        sb.append(currentPlayer.getName());
+        sb.append(input);
+        targetPlayer.addToRequestHistory(sb.toString());
+        targetPlayer.addNotification(input);
+        // هیچ خطایی نیست
+        return new Result(true, "Your " + type + " sent to " + username + " successfully");
     }
 
 

@@ -77,6 +77,10 @@ public class Game {
         return null;
     }
 
+    public List<NPC> getNPCs() {
+        return NPCs;
+    }
+
     public TimeDate getTimeDate() {
         return timeDate;
     }
