@@ -8,6 +8,8 @@ import com.group16.stardewvalley.model.app.Game;
 import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.user.Player;
 
+import static com.group16.stardewvalley.controller.agriculture.AgricultureController.attackOfCrow;
+
 
 //عملا ماه نداریم. هر فصل 28 روز است و 4 فصل داریم
 
@@ -83,6 +85,7 @@ public class TimeDate {
                 Tile tile = App.getActiveGame().getMap()[i][j];
                 if (tile.getCrop() != null && !tile.getCrop().isMature()) {
                     tile.getCrop().advanceStage();
+                    attackOfCrow();
                     /*
                     if (tile.getCrop().isWatered()) {
                         tile.getCrop().setWateredYesterday(true);

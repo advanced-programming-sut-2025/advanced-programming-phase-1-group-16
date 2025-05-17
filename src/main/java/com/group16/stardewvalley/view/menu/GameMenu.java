@@ -4,6 +4,7 @@ package com.group16.stardewvalley.view.menu;
 import com.group16.stardewvalley.controller.CheatCodeController;
 import com.group16.stardewvalley.controller.agriculture.AgricultureController;
 import com.group16.stardewvalley.controller.AnimalController;
+import com.group16.stardewvalley.controller.energy.EnergyController;
 import com.group16.stardewvalley.controller.map.MapController;
 import com.group16.stardewvalley.controller.menu.GameMenuController;
 import com.group16.stardewvalley.controller.menu.HomeMenuController;
@@ -11,6 +12,7 @@ import com.group16.stardewvalley.controller.shops.ShopController;
 import com.group16.stardewvalley.controller.tools.GadgetController;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.energy.EnergyCommands;
 import com.group16.stardewvalley.model.menu.GameMenuCheatCodeCommands;
 import com.group16.stardewvalley.model.menu.GameMenuCommands;
 import com.group16.stardewvalley.model.menu.LoginMenuCommands;
@@ -33,6 +35,7 @@ public class GameMenu implements MenuInterface {
     private final AgricultureController agricultureController = new AgricultureController();
     private final CheatCodeController cheatCodeController = new CheatCodeController();
     private final HomeMenuController homeMenuController = new HomeMenuController();
+    private final EnergyController energyController = new EnergyController();
     private final GadgetController gadgetController = new GadgetController();
     private final ShopController shopController = new ShopController();
 
@@ -240,7 +243,13 @@ public class GameMenu implements MenuInterface {
         }
 
         //ENERGY
-
+        else if ((matcher = EnergyCommands.SHOW_ENERGY.getMatcher(input)) != null){
+            System.out.println(energyController.show());
+        } else if ((matcher = EnergyCommands.SET_ENERGY.getMatcher(input)) != null){
+            System.out.println(energyController.setEnergy(matcher));
+        } else if ((matcher = EnergyCommands.INVENTORY_SHOW.getMatcher(input)) != null){
+            System.out.println(energyController.inventoryShow());
+        }
 
 
 

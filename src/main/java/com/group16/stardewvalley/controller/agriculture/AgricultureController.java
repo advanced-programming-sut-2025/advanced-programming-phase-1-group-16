@@ -8,6 +8,8 @@ import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.map.TileType;
 import com.group16.stardewvalley.model.time.Season;
+import com.group16.stardewvalley.model.tools.WateringCan;
+import com.group16.stardewvalley.model.user.Player;
 
 import java.rmi.server.RemoteRef;
 import java.util.Random;
@@ -173,6 +175,7 @@ public class AgricultureController {
                     }
                 }
                 targetTile.setCrop(crop);
+                crop.setPosition(new Pos(x, y));
                 break;
             default:
                 return new Result(false, "Invalid seed");
@@ -270,6 +273,7 @@ public class AgricultureController {
                     .append("Is Fertilized: ").append(crop.isFertilized() ? "Yes" : "No").append("\n")
                     .append("Base Sell Price: ").append(type.getBaseSellPrice()).append("\n")
                     .append("Is Edible: ").append(type.isEdible() ? "Yes" : "No").append("\n")
+                    .append("Is colossal: ").append(crop.isColossal() ? "Yes" : "No").append("\n")
                     .append("Energy: ").append(type.getEnergy()).append("\n")
                     .append("Health: ").append(type.getBaseHealth()).append("\n");
         }
@@ -318,28 +322,13 @@ public class AgricultureController {
 
     //TODO complete this func
     public Result howMuchWater() {
-        return new Result(true, "how much water");
+        if (!(App.getActiveGame().getCurrentPlayer().getCurrentEquipment() instanceof WateringCan wateringCan) ){
+            return new Result(false, "You are equipped watering can.");
+        }
+        int amount = wateringCan.getCapacity() - wateringCan.getUsedWaterCapacity();
+        return new Result(true, amount + " units left out of " + wateringCan.getCapacity());
     }
 
-    /*
-    public Result water(String direction) {
-        Pos offset = getDirectionOffset(direction);
-        if (offset == null) {
-            return new Result(false, "Invalid direction");
-        }
-        int dirX = offset.getX();
-        int dirY = offset.getY();
-        Pos playerPos = App.getActiveGame().getCurrentPlayer().getPosition();
-        if (playerPos.getX() + dirX < 0 || playerPos.getY() + dirY < 0 || playerPos.getX() + dirX > App.getActiveGame().getMapWidth() || playerPos.getY() + dirY > App.getActiveGame().getMapHeight()) {
-            return new Result(false, "Invalid tile");
-        }
-        Tile targetTile = App.getActiveGame().getMap()[playerPos.getY() + dirY][playerPos.getX() + dirX];
-        if (targetTile.getTree() == null || targetTile.getCrop() == null) {
-            return new Result(false, "No plant here");
-        }
-        App.getActiveGame().getCurrentPlayer().
-    }
-     */
 
 
     private FertilizerType findFertilizerType(String fertilizerName) {
@@ -395,6 +384,23 @@ public class AgricultureController {
             }
         }
         return null;
+    }
+
+    public static void attackOfCrow() {
+        Random rand = new Random();
+        for (Player player : App.getActiveGame().getPlayers()) {
+            if (player.getFarm().getPlantedCrops().size() > 16) {
+                int index = rand.nextInt(player.getFarm().getPlantedCrops().size());
+                if (player.getFarm().getPlantedCrops().get(index).getCropType().isOneTime()) {
+                    Crop crop = player.getFarm().getPlantedCrops().get(index);
+                    App.getActiveGame().getMap()[crop.getPosition().getY()][crop.getPosition().getX()].setCrop(null);
+                    player.getFarm().getPlantedCrops().remove(index);
+                }
+                else {
+                    player.getFarm().getPlantedCrops().get(index).setHarvested(true);
+                }
+            }
+        }
     }
 
 

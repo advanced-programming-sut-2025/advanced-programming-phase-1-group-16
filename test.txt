@@ -86,4 +86,24 @@ cheat add seed Cherry Sapling
 plant -s Cherry Sapling -d up
 tools equip scythe
 cheat add tool scythe
+cheat advance date 1 d
+
+//غول پیکر
+cheat add tool hoe
+cheat add seed Cauliflower Seeds
+tools equip hoe
+tools use -d n
+plant -s Cauliflower Seeds -d down
+show position
+cheat advance date 1 d
+plant -s Cauliflower Seeds -d up
+cheat advance date 1 d
+tools use -d nw
+plant -s Cauliflower Seeds -d down left
+walk -l 32, 12
+yes
+cheat advance date 1 d
+tools use -d w
+plant -s Cauliflower Seeds -d left
+show plant -l 31, 12
 

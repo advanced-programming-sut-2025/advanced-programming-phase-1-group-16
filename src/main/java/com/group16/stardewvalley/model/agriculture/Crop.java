@@ -1,6 +1,8 @@
 package com.group16.stardewvalley.model.agriculture;
 
 
+import com.group16.stardewvalley.model.map.Pos;
+
 public class Crop {
     private CropType cropType;
     private int sellPrice;
@@ -17,6 +19,7 @@ public class Crop {
     private boolean isMature;
     private boolean isColossal;
     private boolean isFertilized;
+    private Pos position;
 
     public Crop(CropType cropType) {
         this.cropType = cropType;
@@ -36,6 +39,14 @@ public class Crop {
         this.isColossal = false;
         this.isFertilized = false;
         this.isWateredYesterday = true;
+    }
+
+    public Pos getPosition() {
+        return position;
+    }
+
+    public void setPosition(Pos position) {
+        this.position = position;
     }
 
     public boolean isWateredYesterday() {
@@ -171,6 +182,7 @@ public class Crop {
                 daysSinceLastHarvest++;
                 if (daysSinceLastHarvest > getCropType().getRegrowthTime()) {
                     isMature = true;
+                    isHarvested = false;
                     daysSinceLastHarvest = 0;
                 }
             }

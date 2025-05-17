@@ -15,6 +15,10 @@ public class WateringCan extends Gadget{
         this.usedWaterCapacity = 0;
     }
 
+    public int getUsedWaterCapacity() {
+        return usedWaterCapacity;
+    }
+
     @Override
     public int getPrice() {
        return ToolDataManager.getToolPrice("Watering Can", this.material);

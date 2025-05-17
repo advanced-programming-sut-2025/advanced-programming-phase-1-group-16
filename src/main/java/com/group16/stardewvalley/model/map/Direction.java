@@ -58,14 +58,14 @@ public enum Direction {
 
     public static Pos getDirectionOffset(String direction) {
         return switch (direction.toLowerCase()) {
-            case "up" -> new Pos(0, 1);
-            case "down" -> new Pos(0, -1);
+            case "up" -> new Pos(0, -1);
+            case "down" -> new Pos(0, 1);
             case "left" -> new Pos(-1, 0);
             case "right" -> new Pos(1, 0);
-            case "up left" -> new Pos(-1, 1);
-            case "up right" -> new Pos(1, 1);
-            case "down left" -> new Pos(-1, -1);
-            case "down right" -> new Pos(1, -1);
+            case "up left" -> new Pos(-1, -1);
+            case "up right" -> new Pos(1, -1);
+            case "down left" -> new Pos(-1, 1);
+            case "down right" -> new Pos(1, 1);
             default -> null;
         };
     }

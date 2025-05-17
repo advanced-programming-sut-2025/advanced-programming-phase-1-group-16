@@ -19,7 +19,7 @@ public enum EnergyCommands {
         this.pattern = pattern;
     }
 
-    public Matcher getMAtcher(String input) {
+    public Matcher getMatcher(String input) {
         return Pattern.compile(this.pattern).matcher(input);
     }
 }
