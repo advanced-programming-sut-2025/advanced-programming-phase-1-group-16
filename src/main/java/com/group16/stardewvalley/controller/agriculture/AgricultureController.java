@@ -111,6 +111,10 @@ public class AgricultureController {
         if (targetTile.getType().equals(TileType.GreenHouse) && App.getActiveGame().getCurrentPlayer().getFarm().getGreenhouse() == null) {
             return new Result(false, "Greenhouse is inactive");
         }
+        if (!seedType.getAvailableSeasons().contains(App.getActiveGame().getTimeDate().getCurrentSeason()) &&
+                !targetTile.getType().equals(TileType.GreenHouse)) {
+            return new Result(false, "This seed is not available in this season");
+        }
         switch (seedType.getType()) {
             case "TREE":
                 TreeType treeType = findTreeTypeBySeed(seedType);
