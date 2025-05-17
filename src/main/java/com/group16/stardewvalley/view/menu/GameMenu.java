@@ -10,6 +10,7 @@ import com.group16.stardewvalley.controller.menu.GameMenuController;
 import com.group16.stardewvalley.controller.menu.HomeMenuController;
 import com.group16.stardewvalley.controller.shops.ShopController;
 import com.group16.stardewvalley.controller.tools.GadgetController;
+import com.group16.stardewvalley.controller.weather.WeatherController;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.energy.EnergyCommands;
@@ -38,6 +39,7 @@ public class GameMenu implements MenuInterface {
     private final EnergyController energyController = new EnergyController();
     private final GadgetController gadgetController = new GadgetController();
     private final ShopController shopController = new ShopController();
+    private final WeatherController weatherController = new WeatherController();
 
 
     @Override
@@ -256,6 +258,19 @@ public class GameMenu implements MenuInterface {
             System.out.println(energyController.setEnergy(matcher));
         } else if ((matcher = EnergyCommands.INVENTORY_SHOW.getMatcher(input)) != null){
             System.out.println(energyController.inventoryShow());
+        }
+
+        //weather
+       else if ((matcher = GameMenuCommands.Weather.getMatcher(input)) != null) {
+            System.out.println(weatherController.showWeather());
+        } else if ((matcher = GameMenuCommands.ChangeWeather.getMatcher(input)) != null) {
+            System.out.println(weatherController.changeWeather(matcher));
+        } else if ((matcher = GameMenuCommands.BuildGreenHouse.getMatcher(input)) != null) {
+            System.out.println(weatherController.buildGreenhouse());
+        } else if ((matcher = GameMenuCommands.Thor.getMatcher(input)) != null) {
+            System.out.println(weatherController.applyFirelight(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
+        } else if ((matcher = GameMenuCommands.WeatherForecast.getMatcher(input)) != null) {
+            System.out.println(weatherController.weatherForecast());
         }
 
 

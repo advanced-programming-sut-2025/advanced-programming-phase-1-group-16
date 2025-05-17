@@ -23,6 +23,10 @@ public class NPC {
 
     }
 
+    public void setNPCPosition(Pos NPCPosition) {
+        this.NPCPosition = NPCPosition;
+    }
+
     public NPCType getNpcType() {
         return npcType;
     }

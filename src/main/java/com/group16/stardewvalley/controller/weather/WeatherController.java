@@ -2,11 +2,13 @@ package com.group16.stardewvalley.controller.weather;
 
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.weather.Greenhouse;
 import com.group16.stardewvalley.model.weather.WeatherCondition;
 import com.group16.stardewvalley.model.app.Game;
 
 import java.security.SecureRandom;
+import java.util.regex.Matcher;
 
 public class WeatherController {
 
@@ -40,4 +42,32 @@ public class WeatherController {
         return new Result(true, "Greenhouse is built!\n500 woods and 1000 coins are used!");
     }
 
-}
+    public Result applyFirelight(int x, int y) {
+        if (x < 0 || y < 0 || x >= App.getActiveGame().getMapWidth() || y >= App.getActiveGame().getMapHeight()) {
+            return new Result(false, "Invalid coordinates");
+        }
+        else {
+            Tile tile = App.getActiveGame().getMap()[y][x];
+            tile.setBurned(true);
+            if (tile.getCrop() != null) {
+                tile.setCrop(null);
+            }
+            if (tile.getTree() != null) {
+                tile.getTree().setBurned(true);
+            }
+            if (tile.getItem() != null) {
+                tile.setItem(null);
+            }
+        }
+        return new Result(true, "Firelight applied");
+    }
+
+    public Result changeWeather(Matcher matcher) {
+        String weatherName = matcher.group("Type");
+        WeatherCondition targetWeather = WeatherCondition.getByName(weatherName);
+        App.getActiveGame().setWeatherCondition(targetWeather);
+        return new Result(false, "Weather changed successfully  ^.^");
+    }
+
+
+    }

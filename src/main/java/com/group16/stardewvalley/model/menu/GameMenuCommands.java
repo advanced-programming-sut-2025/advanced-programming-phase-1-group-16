@@ -59,6 +59,15 @@ public enum GameMenuCommands implements CommandsInterface{
     SellAnimal("\\s*sell\\s+animal\\s+-n\\s+(?<name>\\S+)\\s*"),
     Fishing("fishing -p (?<fishingPole>.+?)"),
 
+
+    //weather
+    Thor("cheat Thor -l (?<x>\\d+)\\s*,\\s*(?<y>\\d+)"),
+    Weather("weather"),
+    WeatherForecast("weather forecast"),
+    ChangeWeather("cheat weather set (?<Type>.+?)"),
+    BuildGreenHouse("greenhouse build"),
+
+
     // relationship commands
     Friendship("^\\s*friendship\\s*$"),
     Talk("^\\s*talk\\s*-u\\s*(?<username>\\S+)\\s*-m\\s*(?<message>.+?)$"),
@@ -70,6 +79,8 @@ public enum GameMenuCommands implements CommandsInterface{
     Hug("^\\s*hug\\s*-u\\s*(?<username>\\S+)\\s*$"),
     Flower("^\\s*flower\\s*-u\\s*(?<username>\\S+)\\s*$"),
     AskMarriage("^\\s*ask\\s*marriage\\s*-u\\s*(?<username>\\S+)\\s*-r\\s*(?<ring>\\S+)\\s*$");
+
+
 
 
     private final String pattern;

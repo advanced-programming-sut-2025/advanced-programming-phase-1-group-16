@@ -27,6 +27,16 @@ game map 1
 game map 2
 game map 2
 
+//weather
+weather
+weather forecast
+cheat weather set sunny
+cheat weather set storm
+weather
+print map -l 0,0 -s 50
+cheat Thor -l 10, 40
+print map -l 0,0 -s 50
+
 //time date test
 time
 date

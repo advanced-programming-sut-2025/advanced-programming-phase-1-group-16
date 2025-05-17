@@ -283,6 +283,11 @@ public class MapController {
 
                 if (playerDrawn) continue; // اگر پلیر چاپ شد، بقیه‌ی شرط‌ها رو چک نکن
 
+                if (map[i][j].isBurned()) {
+                    builder.append("B");
+                    continue;
+                }
+
                 if (map[i][j].getLocation().equals(Location.Farm)){
                     if (map[i][j].getTree() != null) {
                         builder.append(TileType.Tree.getColorCode()).append(TileType.Tree.getSymbol()).append("\033[0m");

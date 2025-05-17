@@ -19,9 +19,11 @@ public class Tile {
     private boolean isFertilized;
     private FertilizerType fertilizerType;
     private boolean hasWater;
+    private boolean isBurned;
 
     public Tile(TileType tileType) {
         location = Location.Game;
+        isBurned = false;
         isFertilized = false;
         if (tileType == TileType.Tree) {
             this.type = TileType.Ground;
@@ -56,6 +58,14 @@ public class Tile {
         else {
             this.type = tileType;
         }
+    }
+
+    public boolean isBurned() {
+        return isBurned;
+    }
+
+    public void setBurned(boolean burned) {
+        isBurned = burned;
     }
 
     public boolean isHasWater() {
