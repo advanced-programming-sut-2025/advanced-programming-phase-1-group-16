@@ -51,8 +51,6 @@ public class Game {
     public WeatherCondition getWeatherCondition() {
         return weatherCondition;
     }
-    public ArrayList<Animal> gameAnimals = new ArrayList<>();
-    public ArrayList<Building> buildings = new ArrayList<>();
 
     public Game(Player creator, ArrayList<Player> players) {
         this.creator = creator;
@@ -66,11 +64,12 @@ public class Game {
         this.marniesRanch = MarniesRanch.getInstance();
         this.theStardropSaloon = TheStardropSaloon.getInstance();
         this.NPCs = new ArrayList<>();
-        NPCs.add(new NPC(NPCType.Sebastian, new Pos())); //---> TODO اتنا
-        NPCs.add(new NPC(NPCType.Abigail, new Pos()));
-        NPCs.add(new NPC(NPCType.Harvey, new Pos()));
-        NPCs.add(new NPC(NPCType.Leah, new Pos()));
-        NPCs.add(new NPC(NPCType.Robin, new Pos()));
+        this.timeDate = TimeDate.getInstance(App.getActiveGame());
+        NPCs.add(new NPC(NPCType.Sebastian));
+        NPCs.add(new NPC(NPCType.Abigail));
+        NPCs.add(new NPC(NPCType.Harvey));
+        NPCs.add(new NPC(NPCType.Leah));
+        NPCs.add(new NPC(NPCType.Robin));
     }
 
     public NPC getNPCByName(String NPCName) {
@@ -221,19 +220,4 @@ public class Game {
     }
 
 
-    public ArrayList<Animal> getGameAnimals() {
-        return gameAnimals;
-    }
-
-    public ArrayList<Building> getBuildings() {
-        return buildings;
-    }
-
-    public ArrayList<Animal> getGameAnimals() {
-        return gameAnimals;
-    }
-
-    public ArrayList<Building> getBuildings() {
-        return buildings;
-    }
 }

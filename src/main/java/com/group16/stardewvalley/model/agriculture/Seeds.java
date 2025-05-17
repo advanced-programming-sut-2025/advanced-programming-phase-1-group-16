@@ -194,9 +194,6 @@ public final class Seeds {
     public static final Seed MYSTIC_TREE_SEEDS = new Seed("Mystic Tree", 50, 5,
             -1, List.of(Season.Spring), "TREE");
 
-    public static final Seed MIXED_SEED = new Seed("Mixed Seed", 50, 5,
-            List.of(Season.Special), "TREE");
-
     // متد کمکی برای گرفتن همه دانه‌ها
     public static List<Seed> getAllSeeds() {
         return List.of(
@@ -212,7 +209,7 @@ public final class Seeds {
                 PINEAPPLE_SEEDS, ARTICHOKE_SEEDS, APRICOT_SAPLING, CHERRY_SAPLING,
                 BANANA_SAPLING, MANGO_SAPLING, ORANGE_SAPLING, PEACH_SAPLING, APPLE_SAPLING,
                 POMEGRANATE_SAPLING, ACORNS, MAPLE_SEEDS, PINE_CONES, MAHOGANY_SEEDS,
-                MUSHROOM_TREE_SEEDS, MYSTIC_TREE_SEEDS, MIXED_SEED
+                MUSHROOM_TREE_SEEDS, MYSTIC_TREE_SEEDS
         );
     }
 }

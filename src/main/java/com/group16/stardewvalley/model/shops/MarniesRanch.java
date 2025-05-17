@@ -94,4 +94,4 @@ public class MarniesRanch extends Shop{
 
 
 }
-}
+

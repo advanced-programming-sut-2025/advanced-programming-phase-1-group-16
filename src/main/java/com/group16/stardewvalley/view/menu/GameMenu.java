@@ -8,7 +8,7 @@ import com.group16.stardewvalley.controller.energy.EnergyController;
 import com.group16.stardewvalley.controller.map.MapController;
 import com.group16.stardewvalley.controller.menu.GameMenuController;
 import com.group16.stardewvalley.controller.menu.HomeMenuController;
-import com.group16.stardewvalley.controller.shops.ShopControlle;
+import com.group16.stardewvalley.controller.shops.ShopController;
 import com.group16.stardewvalley.controller.shops.ShopController;
 import com.group16.stardewvalley.controller.tools.GadgetController;
 import com.group16.stardewvalley.model.Result;
@@ -31,8 +31,7 @@ import java.util.regex.Matcher;
 public class GameMenu implements MenuInterface {
     private final GameMenuController controller = new GameMenuController();
     private final MapController mapController = new MapController();
-    private final TimeDate timeDate = new TimeDate(App.getActiveGame());
-    private final TimeDate timeDate = new TimeDate();
+    private final TimeDate timeDate = TimeDate.getInstance(App.getActiveGame());
     private final AnimalController animalController = new AnimalController();
     private final AgricultureController agricultureController = new AgricultureController();
     private final CheatCodeController cheatCodeController = new CheatCodeController();

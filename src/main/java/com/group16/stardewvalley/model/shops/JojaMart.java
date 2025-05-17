@@ -5,6 +5,7 @@ import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.food.FoodIngredient;
 import com.group16.stardewvalley.model.food.Ingredient;
 import com.group16.stardewvalley.model.items.Item;
+import com.group16.stardewvalley.model.map.PlaceType;
 import com.group16.stardewvalley.model.time.Season;
 import com.group16.stardewvalley.model.agriculture.*;
 import java.util.Set;
@@ -14,7 +15,7 @@ public class JojaMart extends Shop {
     private static JojaMart instance;
 
     private JojaMart() {
-        super("JojaMart", "Morris", 9, 23);
+        super("JojaMart", "Morris", 9, 23, PlaceType.JojaMart);
         initializeItems();
     }
 

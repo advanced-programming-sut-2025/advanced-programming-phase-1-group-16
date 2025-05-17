@@ -17,6 +17,7 @@ import static com.group16.stardewvalley.controller.agriculture.AgricultureContro
 
 public class TimeDate {
     private static TimeDate instance;
+    private final Game game = App.getActiveGame();
     private int hour;
     private int minute;
     private int day; // روز ماه
@@ -54,7 +55,7 @@ public class TimeDate {
             if (App.getActiveGame().getCurrentPlayer().getHourPastForBuff() >= App.getActiveGame().getCurrentPlayer().getFinalHourBuff()) {
                 App.getActiveGame().getCurrentPlayer().setBuffActive(false);
                 if (App.getActiveGame().getCurrentPlayer().getBuffer().equals("Max Energy")) {
-                    App.getActiveGame().getCurrentPlayer().setEnergyCeiling(App.getActiveGame().getCurrentPlayer().getBaseEnergyCeiling());
+                    App.getActiveGame().getCurrentPlayer().setEnergyCeiling(App.getActiveGame().getCurrentPlayer().getEnergyCeiling());
                 }
             }
         }

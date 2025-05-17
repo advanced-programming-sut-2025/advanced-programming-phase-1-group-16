@@ -6,6 +6,7 @@ import com.group16.stardewvalley.model.food.*;
 import com.group16.stardewvalley.model.items.*;
 import com.group16.stardewvalley.model.map.Farm;
 import com.group16.stardewvalley.model.map.FarmType;
+import com.group16.stardewvalley.model.map.PlaceType;
 import com.group16.stardewvalley.model.time.Season;
 import com.group16.stardewvalley.model.weather.WeatherCondition;
 
@@ -17,24 +18,24 @@ public enum NPCType {
     Sebastian("Sebastian",
             List.of("wool", "pumpkin pie", "pizza"),
             List.of(new Request("Sebastian",
-                        new Iron("Iron"),
-                        50,
-                        new Diamond("Diamond"),
-                        2,
-                        0),
+                            new Iron("Iron"),
+                            50,
+                            new Diamond("Diamond"),
+                            2,
+                            0),
                     new Request("Sebastian",
-                        FoodFactory.pumpkinPie(),
-                        1,
-                        null,
-                        0,
-                        5000),
+                            FoodFactory.pumpkinPie(),
+                            1,
+                            null,
+                            0,
+                            5000),
                     new Request("Sebastian",
-                        new Stone("Stone"),
-                        150,
-                        new Quartz("Quartz"),
-                        50,
-                        0)),
-            new Farm(FarmType.small, "SebastianFarm")),
+                            new Stone("Stone"),
+                            150,
+                            new Quartz("Quartz"),
+                            50,
+                            0)),
+            PlaceType.Sebastian),
     Abigail("Abigail",
             List.of("stone", "iron ore", "coffee"),
             List.of(new Request("Abigail",
@@ -44,7 +45,7 @@ public enum NPCType {
                             0,
                             0),
                     new Request("Abigail",
-                             FoodFactory.pumpkinPie(),
+                            FoodFactory.pumpkinPie(),
                             1,
                             null,
                             0,
@@ -55,7 +56,7 @@ public enum NPCType {
                             FoodFactory.bread(),
                             1,
                             0)),
-            new Farm(FarmType.small, "AbigailFarm")),
+            PlaceType.Abigail),
 
     Harvey("Harvey",
             List.of("coffee", "pickle", "liquor"),
@@ -75,36 +76,66 @@ public enum NPCType {
                             FoodFactory.salad(),
                             5,
                             0)),
-            new Farm(FarmType.small, "HarveyFarm")),
+            PlaceType.Harvey),
 
     Leah("Leah",
             List.of("salad", "grape", "liquor"),
-            List.of("Delivery of 10 hardwoods", "Delivery of a salmon", "Delivery of a bottle of liquor"),
-            List.of("500 coin", "dinner salmoon recipe", "3 deluxe scarecrow"),
-            List.of(""),
-            new Farm(FarmType.small, "LeahFarm")),
+            List.of(new Request("Leah",
+                            new Wood("hard wood"),
+                            10,
+                            null,
+                            0,
+                            500),
+                    new Request("Leah", FoodFactory.salmonDinner(),
+                            1,
+                            new FoodRecipe("salmoon dinner recipe", FoodFactory.salmonDinner()),
+                            1,
+                            0),
+                    new Request("Leah",
+                            FoodFactory.cookie(),
+                            1,
+                            FoodFactory.pancakes(),
+                            1,
+                            0)),
+                            PlaceType.Leah),
+
     Robin("Robin",
             List.of("spaghetti", "wood", "iron ingot"),
-            List.of("Delivery 80 wood", "Delivery 10 iron ingot", "Delivery 1000 wood"),
-            List.of("1000 coin", "3 beeHouse", "25000 coin"),
-            List.of(""),
-            new Farm(FarmType.small, "RobinFarm"));
+            List.of(new Request("Robin",
+                            new Wood("wood"),
+                            80,
+                            null,
+                            0,
+                            1000),
+                    new Request("Robin",
+                            new Stone("stone"),
+                            100,
+                            FoodFactory.friedEgg(),
+                            3,
+                            0),
+                    new Request("Robin",
+                            new Wood("wood"),
+                            1000,
+                            null,
+                            0,
+                            0)),
+            PlaceType.Robin);
 
 
 
     private String name;
     private final List<String> favoriteItems;
     private final List<Request> quests;
-    private final Farm farm;
+    private final PlaceType placeType;
 
     NPCType(String name,
             List<String> favoriteItems,
             List<Request> requests,
-            Farm farm) {
+            PlaceType placeType) {
         this.name = name;
         this.favoriteItems = favoriteItems;
         this.quests = requests;
-        this.farm = farm;
+        this.placeType = placeType;
     }
 
     public boolean isFavorite(String name) {
@@ -321,6 +352,10 @@ public enum NPCType {
             default:
                 return "Invalid relationship level";
         }
+    }
+
+    public PlaceType getPlaceType() {
+        return placeType;
     }
 
 

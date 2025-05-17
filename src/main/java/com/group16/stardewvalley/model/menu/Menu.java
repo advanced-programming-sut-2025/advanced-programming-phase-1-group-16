@@ -3,7 +3,7 @@ package com.group16.stardewvalley.model.menu;
 
 
 import com.group16.stardewvalley.view.menu.MenuInterface;
-import com.group16.stardewvalley.view.menu.GameMenuInterface;
+import com.group16.stardewvalley.view.menu.MenuInterface;
 import com.group16.stardewvalley.view.menu.*;
 
 import java.util.Scanner;
@@ -17,7 +17,6 @@ public enum Menu {
     ExitMenu(new ExitMenu(), "Exit Menu"),;
 
     private final MenuInterface menu;
-    private final GameMenuInterface menu;
     private final String name;
 
     Menu(MenuInterface menu, String name) {

@@ -3,7 +3,7 @@ package com.group16.stardewvalley.model;
 
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.agriculture.*;
-import com.group16.stardewvalley.model.items.Seed;
+import com.group16.stardewvalley.model.agriculture.Seed;
 import com.group16.stardewvalley.model.items.Wood;
 import com.group16.stardewvalley.model.tools.Gadget;
 import com.group16.stardewvalley.model.crafting.CraftingRecipes;
@@ -72,15 +72,6 @@ public class Inventory {
         }
         tools.put(gadget, tools.getOrDefault(gadget, 0) + count);
         return new Result(true, gadget.getName() + " added to inventory successfully");
-    }
-
-    public Result addItem(Item item, int count) {
-        if (isFull()) {
-            return new Result(false, "Oops! Your backpack is completely full ");
-        }
-        String name = item.getName();
-        items.put(item, items.getOrDefault(item, 0) + count);
-        return new Result(true, item.getName() + " added to inventory successfully");
     }
 
     public ArrayList<CraftingRecipes> getCraftingRecipes() {

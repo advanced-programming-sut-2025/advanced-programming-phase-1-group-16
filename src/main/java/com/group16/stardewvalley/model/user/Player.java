@@ -55,6 +55,10 @@ public class Player {
     private int todayIncome;
     private final List<Request> requestHistory;
     private Player spouse;
+    private boolean isBuffActive;
+    private int hourPastForBuff;
+    private int finalHourBuff;
+    private String buffer;
 
     // مقدار های ماکسیمم هر توانایی رو هم در گیم ذخیره کردم سر جمع شه
     // تابعی برای بالا بردن لول شخص در این موارد نوشته نشده است
@@ -73,19 +77,21 @@ public class Player {
         energy = 200;
         isFainted = false;
         this.rejectionCooldown = 0;
-        this.interactionsLevel = new HashMap<>();
-        this.interactionScore = new HashMap<>();
-        this.interactionTodayStatus = new HashMap<>();
-        this.friendshipNPCScore = new HashMap<>();
-        this.friendshipNPCLevel = new HashMap<>();
+        this.dailyPlayerInteraction = new HashMap<>();
+        this.dailyNPCInteraction = new HashMap<>();
+        this.quests = new ArrayList<>();
+        this.notifications = new ArrayList<>();
+        this.requestHistory = new ArrayList<>();
         this.isBuffActive = false;
         hourPastForBuff = 0;
         finalHourBuff = 0;
         this.buffer = "";
-    }
-
-    public int getBaseEnergyCeiling() {
-        return baseEnergyCeiling;
+        this.spouse = null;
+        for (NPC npc : App.getActiveGame().getNPCs()) {
+            quests.add(npc.getNpcType().getQuests().get(0));   // اد کردن درخواست های اولیه
+        }
+        todayIncome = 0;
+        initializeInteractions();
     }
 
     public void learnFood(Food food) {
@@ -102,17 +108,6 @@ public class Player {
 
     public int getEnergyCeiling() {
         return energyCeiling;
-        this.dailyNPCInteraction = new HashMap<>();
-        this.dailyPlayerInteraction = new HashMap<>();
-        this.quests = new ArrayList<>();
-        this.spouse = null;
-        for (NPC npc : App.getActiveGame().getNPCs()) {
-            quests.add(npc.getNpcType().getQuests().get(0));   // اد کردن درخواست های اولیه
-        }
-        this.notifications = new ArrayList<>();
-        todayIncome = 0;
-        this.requestHistory = new ArrayList<>();
-        initializeInteractions();
     }
 
     public void setSpouse(Player spouse) {
@@ -133,6 +128,14 @@ public class Player {
 
     public void setCoin(int amount) {
         this.coin = amount;
+    }
+
+    public boolean isFainted() {
+        return isFainted;
+    }
+
+    public Inventory getInventory(){
+        return playerInventory;
     }
 
     public void initializeInteractions() {
@@ -186,10 +189,6 @@ public class Player {
         return dailyPlayerInteraction.get(player);
     }
 
-    public User getUser() {
-        return user;
-    }
-
     public String getUsername() {
         return user.getUsername();
     }
@@ -226,19 +225,12 @@ public class Player {
         this.buffer = buffer;
     }
 
-    public Inventory getInventory() {
-        return inventory;
-    }
-
     public void learnRecipe(Food food) {
         knownRecipes.add(food);
     }
 
     public Set<Food> getKnownRecipes() {
         return knownRecipes;
-    }
-    public void setInventory(Inventory inventory) {
-        this.inventory = inventory;
     }
 
     public int getEnergy() {
@@ -388,10 +380,6 @@ public class Player {
         }
     }
 
-    public int getEnergy() {
-        return energy;
-    }
-
     public int getX() {
         return position.getX();
     }
@@ -404,20 +392,12 @@ public class Player {
         return energy > amount;
     }
 
-    public Inventory getInventory() {
-        return playerInventory;
-    }
-
     public void equip(Gadget gadget) {
         this.currentEquipment = gadget;
     }
 
     public Gadget getCurrentEquipment() {
         return currentEquipment;
-    }
-
-    public Pos getPosition() {
-        return position;
     }
 
     public void decreaseEnergy(int amount) {
@@ -446,9 +426,6 @@ public class Player {
         return x >= 0 && x < map.length && y >= 0 && y < map[0].length;
     }
 
-    public void setEnergy(int energy) {
-        this.energy = energy;
-    }
 
     public void faint() {
         this.isFainted = true;

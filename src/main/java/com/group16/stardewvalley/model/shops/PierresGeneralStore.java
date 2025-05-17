@@ -8,13 +8,14 @@ import com.group16.stardewvalley.model.crafting.CraftingRecipes;
 import com.group16.stardewvalley.model.food.*;
 import com.group16.stardewvalley.model.items.Flower;
 import com.group16.stardewvalley.model.items.MarriageRing;
+import com.group16.stardewvalley.model.map.PlaceType;
 import com.group16.stardewvalley.model.time.Season;
 
 public class PierresGeneralStore extends Shop{
     private static PierresGeneralStore instance;
 
     public PierresGeneralStore() {
-        super("Pierr's General Store", "Pierre", 9, 17);
+        super("Pierr's General Store", "Pierre", 9, 17, PlaceType.PierresGeneralStore);
         initializeItems();
     }
 

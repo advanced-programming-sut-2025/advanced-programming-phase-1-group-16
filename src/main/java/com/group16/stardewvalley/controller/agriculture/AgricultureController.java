@@ -3,7 +3,7 @@ package com.group16.stardewvalley.controller.agriculture;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.agriculture.*;
 import com.group16.stardewvalley.model.app.App;
-import com.group16.stardewvalley.model.items.Seed;
+import com.group16.stardewvalley.model.agriculture.Seed;
 import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.map.TileType;
@@ -427,13 +427,13 @@ public class AgricultureController {
 
 
     //cheat code
-    public Result cheatAdd(String input) {
-        SeedType seedType = findSeedTypeByName(input);
-        if (seedType == null) {
-            return new Result(false, "Seed type not found");
-        }
-        Seed seed = new Seed(input, seedType);
-        App.getActiveGame().getCurrentPlayer().getInventory().addItem(seed, 1);
-        return new Result(true, "seed added");
-    }
+//    public Result cheatAdd(String input) {
+//        SeedType seedType = findSeedTypeByName(input);
+//        if (seedType == null) {
+//            return new Result(false, "Seed type not found");
+//        }
+//        Seed seed = new Seed(input, seedType);
+//        App.getActiveGame().getCurrentPlayer().getInventory().addItem(seed, 1);
+//        return new Result(true, "seed added");
+//    }
 }
