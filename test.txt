@@ -107,3 +107,40 @@ tools use -d w
 plant -s Cauliflower Seeds -d left
 show plant -l 31, 12
 
+//foods
+walk -l 34, 3
+yes
+cooking show recipes
+cheat learn recipe Pizza
+cooking show recipes
+cheat learn recipe Cookie
+cooking show recipes
+cooking prepare hash browns
+cooking prepare Pizza
+add ingredient TOMATO
+cooking prepare Pizza
+add ingredient WHEAT_FLOUR
+add ingredient CHEESE
+cooking prepare Pizza
+energy show
+cheat advance date 1 d
+cooking prepare Pizza
+cooking refrigerator pick TOMATO
+cooking refrigerator put TOMATO
+add ingredient TOMATO
+cooking refrigerator put TOMATO
+cooking refrigerator pick TOMATO
+cooking refrigerator put TOMATO
+energy show
+eat Pizza
+energy show
+eat Triple Shot Espresso
+cooking prepare Triple Shot Espresso
+cheat learn recipe Triple Shot Espresso
+cooking prepare Triple Shot Espresso
+add ingredient COFFEE
+cooking prepare Triple Shot Espresso
+energy show
+eat Triple Shot Espresso
+energy show
+

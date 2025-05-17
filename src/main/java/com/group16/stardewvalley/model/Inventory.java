@@ -154,7 +154,7 @@ public class Inventory {
     public Food getFood(String foodName) {
         for (Item item : items.keySet()) {
             if (item instanceof Food food) {
-                if (food.getName().equalsIgnoreCase(foodName)) {
+                if (food.getName().equalsIgnoreCase(foodName) && items.get(item) > 0) {
                     return food;
                 }
             }
@@ -165,7 +165,7 @@ public class Inventory {
     public Fertilizer getFertilizer(String name) {
         for (Item item : items.keySet()) {
             if (item instanceof Fertilizer fertilizer) {
-                if (fertilizer.getName().equalsIgnoreCase(name)) {
+                if (fertilizer.getName().equalsIgnoreCase(name) && items.get(item) > 0) {
                     return fertilizer;
                 }
             }
@@ -187,7 +187,7 @@ public class Inventory {
     public FishingPole getFishingPole(String name) {
         for (Item item : items.keySet()) {
             if (item instanceof FishingPole fishingPole) {
-                if (fishingPole.getName().equalsIgnoreCase(name)) {
+                if (fishingPole.getName().equalsIgnoreCase(name) && items.get(item) > 0) {
                     return fishingPole;
                 }
             }
@@ -198,7 +198,7 @@ public class Inventory {
     public Wood findWood(String woodName) {
         for (Item item : items.keySet()) {
             if (item instanceof Wood wood) {
-                if (wood.getName().equalsIgnoreCase(woodName)) {
+                if (wood.getName().equalsIgnoreCase(woodName) && items.get(item) > 0) {
                     return wood;
                 }
             }

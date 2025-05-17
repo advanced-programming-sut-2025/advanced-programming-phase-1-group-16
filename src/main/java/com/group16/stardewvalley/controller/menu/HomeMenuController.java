@@ -34,7 +34,7 @@ public class HomeMenuController {
         }
         Ingredient ingredient = findIngredient(input);
         if(ingredient == null){
-            return new Result(false, "You can't put an uneatable item in refrigerator!");
+            return new Result(false, "You can't pick an uneatable item from refrigerator!");
         }
         FoodIngredient foodIngredient = App.getActiveGame().getCurrentPlayer().getFarm().getIngredientInRef(ingredient);
         if (foodIngredient == null) {
@@ -52,7 +52,7 @@ public class HomeMenuController {
         }
         StringBuilder output = new StringBuilder();
         for (Food food : foods) {
-            output.append(food.getName()).append(" Recipe: ").append(food.getFormattedRecipe());
+            output.append(food.getName()).append(" Recipe: ").append(food.getFormattedRecipe()).append("\n");
         }
         return new Result(true, output.toString());
     }
@@ -66,7 +66,8 @@ public class HomeMenuController {
             return new Result(false, "You don't have this food Ingredients!");
         }
         if (!App.getActiveGame().getCurrentPlayer().hasEnoughEnergy(3)) {
-            return new Result(false, "You don't have enough energy!");
+            App.getActiveGame().getCurrentPlayer().faint();
+            return new Result(false, "You don't have enough energy!\nYou fainted");
         }
         reduceIngredient(food);
         App.getActiveGame().getCurrentPlayer().decreaseEnergy(3);
@@ -80,9 +81,10 @@ public class HomeMenuController {
         }
         Player player = App.getActiveGame().getCurrentPlayer();
         player.getInventory().getItems().remove(foodName);
-        player.increaseEnergy(food.getEnergy());
         doBuffer(food.getBuff());
-        return App.getActiveGame().getCurrentPlayer().getInventory().addItem(new Food(food), 1);
+        player.increaseEnergy(food.getEnergy());
+        App.getActiveGame().getCurrentPlayer().getInventory().getItems().put(food, -1);
+        return new Result(true, "You have eaten " + foodName + "!");
     }
 
     public void doBuffer(String name) {
@@ -95,11 +97,13 @@ public class HomeMenuController {
                 player.setBuffActive(true);
                 break;
             case "Farming (5 hours)":
+                player.addFarmingAbilityScore(2);
                 player.setBuffer("Farming");
                 player.setFinalHourBuff(5);
                 player.setBuffActive(true);
                 break;
             case "Foraging (11 hours)":
+                player.addFarmingAbilityScore(11);
                 player.setBuffer("Foraging");
                 player.setFinalHourBuff(11);
                 player.setBuffActive(true);
@@ -116,11 +120,13 @@ public class HomeMenuController {
                 player.setBuffActive(true);
                 break;
             case "Fishing (5 hours)":
+                player.addFishingAbilityScore(5);
                 player.setBuffer("Fishing");
                 player.setFinalHourBuff(5);
                 player.setBuffActive(true);
                 break;
             case "Fishing (10 hours)":
+                player.addFishingAbilityScore(5);
                 player.setBuffer("Fishing");
                 player.setFinalHourBuff(10);
                 player.setBuffActive(true);

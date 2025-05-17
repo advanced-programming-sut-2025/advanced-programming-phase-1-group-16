@@ -1,9 +1,11 @@
 package com.group16.stardewvalley.model.tools;
 
+import com.group16.stardewvalley.model.menu.CommandsInterface;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public enum GadgetsCommands {
+public enum GadgetsCommands implements CommandsInterface {
    EQUIP("^\\s*tools\\s*equip (?<toolName>.+?)\\s*$"),
    AVAILABLE_TOOLS("^\\s*tools\\s*show\\s*available\\s*$"),
    UPGRADE_TOOLS("^\\s*tools\\s*upgrade\\s*(?<toolName>.+?>)\\s*$"),
@@ -15,8 +17,9 @@ public enum GadgetsCommands {
        this.pattern = pattern;
    }
 
-   public Matcher getMatcher(String input) {
-       return Pattern.compile(this.pattern).matcher(input);
+   @Override
+   public String getPattern() {
+      return pattern;
    }
 
 

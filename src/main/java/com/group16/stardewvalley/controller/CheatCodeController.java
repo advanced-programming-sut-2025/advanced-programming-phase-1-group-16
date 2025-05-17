@@ -4,6 +4,8 @@ import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.agriculture.Fertilizer;
 import com.group16.stardewvalley.model.agriculture.FertilizerType;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.food.Food;
+import com.group16.stardewvalley.model.food.FoodFactory;
 import com.group16.stardewvalley.model.food.FoodIngredient;
 import com.group16.stardewvalley.model.food.Ingredient;
 import com.group16.stardewvalley.model.map.Pos;
@@ -68,6 +70,33 @@ public class CheatCodeController {
         FoodIngredient foodIngredient = new FoodIngredient(name, ingredient);
         App.getActiveGame().getCurrentPlayer().getInventory().addItem(foodIngredient, 1);
         return new Result(true, "added ingredient");
+    }
+
+    public Result learnRecipe(String foodName) {
+        Food food = getFoodByName(foodName);
+        if (food == null) {
+            return new Result(false, "Food not found");
+        }
+        App.getActiveGame().getCurrentPlayer().learnRecipe(food);
+        return new Result(true, "learned recipe");
+    }
+
+    public Result cookFood(String foodName) {
+        Food food = getFoodByName(foodName);
+        if (food == null) {
+            return new Result(false, "Food not found");
+        }
+        App.getActiveGame().getCurrentPlayer().getInventory().addItem(food, 1);
+        return new Result(true, "cooked food");
+    }
+
+    private Food getFoodByName(String name) {
+        for (Food food : FoodFactory.getAllFoods()) {
+            if (food.getName().equals(name)) {
+                return food;
+            }
+        }
+        return null;
     }
 
     private Ingredient findIngredient(String input){

@@ -26,6 +26,7 @@ public class Player {
     private Pos position;
     private Inventory inventory;
     private int energyCeiling;
+    private final int baseEnergyCeiling;
     private Gadget currentEquipment;
     private Item currentThing;
     private Set<Food> knownRecipes = new HashSet<>();
@@ -70,6 +71,7 @@ public class Player {
         fishingAbilityScore = 0;
         inventory = new Inventory();
         energyCeiling = 200;// مقداردهی انرژی اولیه در ابتدای ساخت
+        baseEnergyCeiling = 200;
         energy = 200;
         isFainted = false;
         this.rejectionCooldown = 0;
@@ -81,6 +83,11 @@ public class Player {
         this.isBuffActive = false;
         hourPastForBuff = 0;
         finalHourBuff = 0;
+        this.buffer = "";
+    }
+
+    public int getBaseEnergyCeiling() {
+        return baseEnergyCeiling;
     }
 
     public void learnFood(Food food) {
@@ -296,10 +303,7 @@ public class Player {
 
 
     public void decreaseEnergy(int amount) {
-        if (energy >= amount) {
-            energy -= amount;
-        }
-        energy = 0;
+        energy = Math.max(0, energy - amount);
     }
 
     public Tile getLocation() {
@@ -314,10 +318,7 @@ public class Player {
         if (amount <= 0) {
             amount = 0;
         }
-        if (energy + amount >= energyCeiling) {
-            energy = energyCeiling;
-        }
-        energy += amount;
+        energy = Math.min(energy + amount, energyCeiling);
     }
 
     private boolean isInBound(int x, int y, TileType[][] map) {

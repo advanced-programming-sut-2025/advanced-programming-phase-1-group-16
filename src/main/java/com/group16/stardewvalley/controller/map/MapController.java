@@ -131,7 +131,7 @@ public class MapController {
         int height = map.length;
         int width = map[0].length;
 
-        if (!isValidPos(dest, width, height) || map[dest.getX()][dest.getY()].getType() != TileType.Ground) {
+        if (!isValidPos(dest, width, height) || !map[dest.getX()][dest.getY()].isTileEmpty()) {
             return PathInfo.invalid("Invalid destination.");
         }
 

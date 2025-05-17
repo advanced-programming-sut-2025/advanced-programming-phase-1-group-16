@@ -1,6 +1,5 @@
 package com.group16.stardewvalley.model.menu;
 
-import com.group16.stardewvalley.view.menu.CommandsInterface;
 
 public enum GameMenuCheatCodeCommands implements CommandsInterface {
     AddSeed("cheat add seed (?<seed>.+?)"),
@@ -8,6 +7,8 @@ public enum GameMenuCheatCodeCommands implements CommandsInterface {
     AddFertilizer("add fertilizer (?<fertilizer>.+?)"),
     ShowPosition("show position"),
     AddIngredient("add ingredient (?<ingredient>.+?)"),
+    CookFood("cheat cook food (?<food>.+?)"),
+    LearnRecipe("cheat learn recipe (?<recipe>.+?)"),
     CheatAdd("^\\s*cheat\\s*add\\s*(?<count>\\d+)\\s*dollars\\s*$");
 
 

@@ -45,6 +45,15 @@ public class TimeDate {
     // افزایش یک ساعت
     public void advanceOneHour() {
         hour++;
+        if (App.getActiveGame().getCurrentPlayer().isBuffActive()) {
+            App.getActiveGame().getCurrentPlayer().setHourPastForBuff(App.getActiveGame().getCurrentPlayer().getHourPastForBuff() + 1);
+            if (App.getActiveGame().getCurrentPlayer().getHourPastForBuff() >= App.getActiveGame().getCurrentPlayer().getFinalHourBuff()) {
+                App.getActiveGame().getCurrentPlayer().setBuffActive(false);
+                if (App.getActiveGame().getCurrentPlayer().getBuffer().equals("Max Energy")) {
+                    App.getActiveGame().getCurrentPlayer().setEnergyCeiling(App.getActiveGame().getCurrentPlayer().getBaseEnergyCeiling());
+                }
+            }
+        }
         if (hour >= 24) {
             hour = 0;
             advanceOneDay();

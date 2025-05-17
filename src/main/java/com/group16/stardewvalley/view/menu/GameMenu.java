@@ -39,11 +39,14 @@ public class GameMenu implements MenuInterface {
     private final GadgetController gadgetController = new GadgetController();
     private final ShopController shopController = new ShopController();
 
+
     @Override
     public void check(Scanner scanner) {
         String input = scanner.nextLine();
 
         Matcher matcher = null;
+        boolean isAtHome = App.getActiveGame() != null && MapController.isPlayerInCottage(App.getActiveGame().getCurrentPlayer());
+
 
         //new game
         if((matcher = GameMenuCommands.NewGame.getMatcher(input)) != null){ //after new game, player must choose farm and cant do anything else
@@ -133,20 +136,18 @@ public class GameMenu implements MenuInterface {
 
 
         //Cooking
-        //TODO shayad be khata monjar she
-        else if (App.getActiveGame() != null && mapController.isPlayerInCottage(App.getActiveGame().getCurrentPlayer())) {
-            if ((matcher = GameMenuCommands.PutFood.getMatcher(input)) != null){
-                System.out.println(homeMenuController.putItemInRefrigerator(matcher.group("food")));
-            } else if ((matcher = GameMenuCommands.PickFood.getMatcher(input)) != null){
-                System.out.println(homeMenuController.pickItemInRefrigerator(matcher.group("food")));
-            } else if ((matcher = GameMenuCommands.CookingRecipes.getMatcher(input)) != null){
-                System.out.println(homeMenuController.showRecipeOfFood());
-            } else if ((matcher = GameMenuCommands.PrepareFood.getMatcher(input)) != null){
-                System.out.println(homeMenuController.cooking(matcher.group("food")));
-            } else if ((matcher = GameMenuCommands.EatFood.getMatcher(input)) != null){
-                System.out.println(homeMenuController.eat(matcher.group("food")));
-            }
+        else if (isAtHome && (matcher = GameMenuCommands.PutFood.getMatcher(input)) != null){
+            System.out.println(homeMenuController.putItemInRefrigerator(matcher.group("food")));
+        } else if (isAtHome && (matcher = GameMenuCommands.PickFood.getMatcher(input)) != null){
+            System.out.println(homeMenuController.pickItemInRefrigerator(matcher.group("food")));
+        } else if (isAtHome && (matcher = GameMenuCommands.CookingRecipes.getMatcher(input)) != null){
+            System.out.println(homeMenuController.showRecipeOfFood());
+        } else if (isAtHome && (matcher = GameMenuCommands.PrepareFood.getMatcher(input)) != null){
+            System.out.println(homeMenuController.cooking(matcher.group("food")));
+        } else if (isAtHome && (matcher = GameMenuCommands.EatFood.getMatcher(input)) != null){
+            System.out.println(homeMenuController.eat(matcher.group("food")));
         }
+
 
     //Time and Date Commands
         else if ((matcher = GameMenuCommands.Time.getMatcher(input)) != null) {
@@ -220,13 +221,13 @@ public class GameMenu implements MenuInterface {
         }
 
         //gadget
-        else if ((matcher = GadgetsCommands.EQUIP.getMatcher(input)).matches()) {
+        else if ((matcher = GadgetsCommands.EQUIP.getMatcher(input)) != null) {
             System.out.println(gadgetController.equip(matcher));
-        } else if ((matcher = GadgetsCommands.AVAILABLE_TOOLS.getMatcher(input)).matches()) {
+        } else if ((matcher = GadgetsCommands.AVAILABLE_TOOLS.getMatcher(input)) != null) {
             System.out.println(gadgetController.showAvailableTools());
-        } else if ((matcher = GadgetsCommands.UPGRADE_TOOLS.getMatcher(input)).matches()) {
+        } else if ((matcher = GadgetsCommands.UPGRADE_TOOLS.getMatcher(input)) != null) {
             System.out.println(shopController.upgradeTool(matcher));
-        } else if ((matcher = GadgetsCommands.USE_TOOL.getMatcher(input)).matches()) {
+        } else if ((matcher = GadgetsCommands.USE_TOOL.getMatcher(input)) != null) {
             System.out.println(gadgetController.useTool(matcher));
         }
 
@@ -240,6 +241,12 @@ public class GameMenu implements MenuInterface {
             System.out.println(cheatCodeController.addFertilizer(matcher.group("fertilizer")));
         } else if ((matcher = GameMenuCheatCodeCommands.ShowPosition.getMatcher(input)) != null){
             System.out.println(cheatCodeController.showPosition());
+        } else if ((matcher = GameMenuCheatCodeCommands.AddIngredient.getMatcher(input)) != null){
+            System.out.println(cheatCodeController.addIngredient(matcher.group("ingredient")));
+        } else if ((matcher = GameMenuCheatCodeCommands.LearnRecipe.getMatcher(input)) != null){
+            System.out.println(cheatCodeController.learnRecipe(matcher.group("recipe")));
+        } else if ((matcher = GameMenuCheatCodeCommands.CookFood.getMatcher(input)) != null){
+            System.out.println(cheatCodeController.cookFood(matcher.group("food")));
         }
 
         //ENERGY
