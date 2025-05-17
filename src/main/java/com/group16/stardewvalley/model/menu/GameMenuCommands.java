@@ -6,6 +6,7 @@ public enum GameMenuCommands implements CommandsInterface{
     ChooseMap("\\s*game\\s+map\\s+(?<mapNumber>\\d+)\\s*"),
     LoadGame("\\s*load\\s+game\\s*" ),
     Exit("\\s*exit\\s+game\\s*" ),
+    CurrentTurn("\\s*current\\s+turn\\s*" ),
     NextTurn("\\s*next\\s+turn\\s*" ),
     ForceTerminateVote("\\s*force-terminate\\s+vote\\s*"),
     ShowCurrentMenu("\\s*show\\s+current\\s+menu\\s*"),
@@ -67,6 +68,13 @@ public enum GameMenuCommands implements CommandsInterface{
     ChangeWeather("cheat weather set (?<Type>.+?)"),
     BuildGreenHouse("greenhouse build"),
 
+
+    //Crafting commands
+    ShowRecipes("\\s*crafting\\s+show\\s+recipes\\s*"),
+    Craft("\\s*crafting\\s+craft\\s+(?<itemName>.+)\\s*"),
+    PlaceItem("\\s*place\\s+item\\s+-n\\s+(?<itemName>.+)\\s+-d\\s+(?<direction>\\S+)\\s*"),
+    CheatAddItem("\\s*cheat\\s+add\\s+item\\s+-n\\s+(?<itemName>.+)\\s+-c\\s+(?<count>\\d+)\\s*"),
+    LearnCraftingRecipe("\\s*learn\\s+crafting\\s+recipe\\s+-n\\s+(?<itemName>.+)\\s*"),
 
     //Artisan commands
     ArtisanUse("\\s*artisan\\s+use\\s+(?<artisanName>\\S+)\\s+(?<itemsName>.+)\\s*"),

@@ -1,5 +1,12 @@
+register -u Fa-nilli -p Salam Salam1234! -n fatemeh -e salam@sd.com -g female
+register -u Fa-nilli -p Salam123!! Salam1234! -n fatemeh -e salam@.com -g female
+register -u Fa-nilli -p Salam123!! Salam1234! -n fatemeh -e salam@gmail..com -g female
+register -u Fa-nilli -p Salam123!! Salam1234! -n fa -e salam@gmail.com  -g male
 register -u Fa-nilli -p Salam1234! Salam1234! -n fatemeh -e salam@sd.com -g female
 pick question -q 3 -a apple -c apple
+register -u Fa-nilli -p random random -n fatemeh -e salam@sd.com -g female
+register -u Sara -p random random -n sara -e salam@sd.com -g female
+pick question -q 5 -a pizza -c pizza
 login -u Fa-nilli -p Salam1234! -stay-logged-in
 user logout
 forget password -u Fa-nilli
@@ -8,6 +15,12 @@ Byebye1234!
 login -u Fa-nilli -p Byebye1234! -stay-logged-in
 menu enter Profile Menu
 change username -u Fa-nilli
+change username -u FatemehN
+change username -u Fa-nilli
+change password -p Salam -o Salam123!!
+change password -p Salam -o Byebye1234!
+change password -p SalamMalek1! -o Byebye1234!
+change password -p Byebye1234! -o SalamMalek1!
 user info
 menu exit
 menu enter Game Menu
@@ -26,6 +39,8 @@ game new -u gholi Atena
 game map 1
 game map 2
 game map 2
+
+walk -l 34, 3
 
 //weather
 weather
@@ -49,6 +64,20 @@ date
 cheat advance date 30 d
 date
 season
+
+//crafting test
+crafting show recipes
+crafting craft Bomb
+crafting craft Cherry Bomb
+cheat add item -n Cherry Bomb -c 2
+place item -n Cherry Bomb -d n
+learn crafting recipe -n Bomb
+
+
+//artisan
+artisan use Smoked_Fish Salmon Coal
+artisan use Honey
+artisan use Coal Wood
 
 //map test
 print map -l 0,0 -s 300

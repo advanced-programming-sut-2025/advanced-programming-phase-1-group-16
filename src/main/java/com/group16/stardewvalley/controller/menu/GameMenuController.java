@@ -1,9 +1,7 @@
 package com.group16.stardewvalley.controller.menu;
 
-import com.group16.stardewvalley.model.app.App;
-import com.group16.stardewvalley.model.app.Game;
-import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.app.*;
+import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.map.TileType;
 import com.group16.stardewvalley.model.menu.GameMenuCommands;
 import com.group16.stardewvalley.model.menu.Menu;
@@ -115,8 +113,14 @@ public class GameMenuController {
 
 
     public Result loadGame(){
-        if(App.getActiveGame() == null){
-            return new Result(false, "no active game!");
+//        if(App.getActiveGame() == null){
+//            return new Result(false, "no active game!");
+//        }
+//        Game game = App.getActiveGame();
+        GameData loaded = LoadManager.load("savefile.json");
+        if (loaded != null) {
+//            System.out.println("Welcome back, " + loaded.user.getUsername());
+            return new Result(true, "Welcome back, " + loaded.user.getUsername());
         }
         Game game = App.getActiveGame();
         game.setLoader(game.getCurrentPlayer());
@@ -132,18 +136,20 @@ public class GameMenuController {
 
     public Result exit(){
         Game game = App.getActiveGame();
-        if(game.getLoader() != null && game.getCurrentPlayer() == game.getLoader()){
-            // save game
-            GameData data = new GameData(App.getActiveGame().getCurrentPlayer().getUser(), App.getActiveGame().getCurrentPlayer(), App.getActiveGame());
+        if(game.getLoader() != null && game.getCurrentPlayer().getUser().getUsername().equals(game.getLoader().getUser().getUsername())){
+            //TODO save game : done
+            Game currentGame = App.getActiveGame();
+            GameData data = new GameData(currentGame.getCurrentPlayer().getUser(), currentGame.getCurrentPlayer(), currentGame);
             SaveManager.save(data, "savefile.json");
 
             App.setCurrentMenu(Menu.ExitMenu);
             return new Result(true, "bye bye");
 
         }
-        if(game.getCurrentPlayer() == game.getCreator()){
-            // save game
-            GameData data = new GameData(App.getActiveGame().getCurrentPlayer().getUser(), App.getActiveGame().getCurrentPlayer(), App.getActiveGame());
+        if(game.getCurrentPlayer().getUser().getUsername().equals(game.getCreator().getUser().getUsername())){
+            //TODO save game : done
+            Game currentGame = App.getActiveGame();
+            GameData data = new GameData(currentGame.getCurrentPlayer().getUser(), currentGame.getCurrentPlayer(), currentGame);
             SaveManager.save(data, "savefile.json");
 
             App.setCurrentMenu(Menu.ExitMenu);

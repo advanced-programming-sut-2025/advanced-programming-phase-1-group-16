@@ -7,6 +7,7 @@ import com.group16.stardewvalley.model.menu.Menu;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.user.SecurityQuestions;
 import com.group16.stardewvalley.model.user.User;
+import com.group16.stardewvalley.model.user.UserSaveManager;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -24,6 +25,10 @@ public class LoginMenuController  {
         if (LoginMenuCommands.Username.getMatcher(username) == null) {
             return new Result(false, "username format is invalid!");
         }
+        if (UserSaveManager.isUsernameTaken(username)) {
+            return new Result(false, "username already exists! choose another one.");
+        }
+
         if (LoginMenuCommands.Email.getMatcher(email) == null) {
             return new Result(false, "email format is invalid!");
         }
@@ -31,7 +36,17 @@ public class LoginMenuController  {
 
         //how to turn back to enter password again?
         if(password.equals("random") || password.equals("Random")){
-            return new Result(false, generateRandomPassword());
+            String generatedPassword = generateRandomPassword();
+            User newUser = new User(username,generatedPassword,nickName,email,gender);
+            UserSaveManager.addUserAndSave(newUser); // Save new user to file
+
+
+            String sb = "your random password is: "+ generatedPassword  + "\nchoose a security question: \n" +
+                    "1- " + SecurityQuestions.q1.getQuestion() + "\n" +
+                    "2- " + SecurityQuestions.q2.getQuestion() + "\n" + "3- " + SecurityQuestions.q3.getQuestion() + "\n"+
+                    "4- " + SecurityQuestions.q4.getQuestion() + "\n" + "5- " + SecurityQuestions.q5.getQuestion() + "\n";
+
+            return new Result(true, sb);
         }
 
 
@@ -60,8 +75,8 @@ public class LoginMenuController  {
 
         //successful
         User newUser = new User(username,password,nickName,email,gender);
-        App.users.add(newUser);
-//        App.setLoggedInUser(newUser);
+        UserSaveManager.addUserAndSave(newUser); // Save new user to file
+
 
 
         //make a list of security questions and show to user
@@ -72,6 +87,8 @@ public class LoginMenuController  {
 
         return new Result(true, securityQuestionList);
     }
+
+
 
     private String generateRandomPassword() {
 

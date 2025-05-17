@@ -16,6 +16,7 @@ import com.group16.stardewvalley.model.agriculture.Crop;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -32,6 +33,9 @@ public class Inventory {
         this.items = new HashMap<>();
         this.crops = new HashMap<>();
         this.backPackType = BackPackType.Base_Pack;
+        this.craftingRecipes = new ArrayList<>(
+                List.of(CraftingRecipes.CherryBomb, CraftingRecipes.Sprinkler, CraftingRecipes.CharcoalKlin, CraftingRecipes.Furnace,
+                        CraftingRecipes.Scarecrow, CraftingRecipes.BeeHouse, CraftingRecipes.MayonnaiseMachine));
     }
 
     public Map<Crop, Integer> getCrops() {
