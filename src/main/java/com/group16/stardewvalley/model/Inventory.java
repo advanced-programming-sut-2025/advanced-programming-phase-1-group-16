@@ -4,6 +4,7 @@ package com.group16.stardewvalley.model;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.agriculture.*;
 import com.group16.stardewvalley.model.items.Seed;
+import com.group16.stardewvalley.model.items.Wood;
 import com.group16.stardewvalley.model.tools.Gadget;
 import com.group16.stardewvalley.model.crafting.CraftingRecipes;
 import com.group16.stardewvalley.model.tools.FishingPole;
@@ -139,6 +140,17 @@ public class Inventory {
         return false;
     }
 
+    public Seed findSeedByType(SeedType seedType) {
+        for (Item item : items.keySet()) {
+            if (item instanceof Seed seed) {
+                if (seed.getType().equals(seedType) && items.get(item) > 0) {
+                    return seed;
+                }
+            }
+        }
+        return null;
+    }
+
     public Food getFood(String foodName) {
         for (Item item : items.keySet()) {
             if (item instanceof Food food) {
@@ -181,5 +193,26 @@ public class Inventory {
             }
         }
         return null;
+    }
+
+    public Wood findWood(String woodName) {
+        for (Item item : items.keySet()) {
+            if (item instanceof Wood wood) {
+                if (wood.getName().equalsIgnoreCase(woodName)) {
+                    return wood;
+                }
+            }
+        }
+        return null;
+    }
+
+    public int countWood() {
+        int count = 0;
+        for (Item item : items.keySet()) {
+            if (item instanceof Wood) {
+                count++;
+            }
+        }
+        return count;
     }
 }

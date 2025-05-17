@@ -7,6 +7,7 @@ public enum GameMenuCheatCodeCommands implements CommandsInterface {
     AddTool("cheat add tool (?<tool>.+?)"),
     AddFertilizer("add fertilizer (?<fertilizer>.+?)"),
     ShowPosition("show position"),
+    AddIngredient("add ingredient (?<ingredient>.+?)"),
     CheatAdd("^\\s*cheat\\s*add\\s*(?<count>\\d+)\\s*dollars\\s*$");
 
 

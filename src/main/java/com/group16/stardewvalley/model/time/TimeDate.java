@@ -6,7 +6,9 @@ import com.group16.stardewvalley.model.agriculture.Tree;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
 import com.group16.stardewvalley.model.map.Tile;
+import com.group16.stardewvalley.model.map.TileType;
 import com.group16.stardewvalley.model.user.Player;
+import com.group16.stardewvalley.model.weather.WeatherCondition;
 
 import static com.group16.stardewvalley.controller.agriculture.AgricultureController.attackOfCrow;
 
@@ -84,9 +86,11 @@ public class TimeDate {
             for (int j = 0; j < App.getActiveGame().getMapWidth(); j++) {
                 Tile tile = App.getActiveGame().getMap()[i][j];
                 if (tile.getCrop() != null && !tile.getCrop().isMature()) {
+                    if (App.getActiveGame().getWeatherCondition() == WeatherCondition.RAINY && tile.getType() != TileType.GreenHouse) {
+                        tile.getCrop().setWatered(true);
+                    }
                     tile.getCrop().advanceStage();
                     attackOfCrow();
-                    /*
                     if (tile.getCrop().isWatered()) {
                         tile.getCrop().setWateredYesterday(true);
                         tile.getCrop().setWatered(false);
@@ -98,12 +102,13 @@ public class TimeDate {
                     if (!tile.getCrop().isWateredYesterday() && !tile.getCrop().isWatered()) {
                         tile.setCrop(null);
                     }
-                     */
                 }
 
                 if (tile.getTree() != null && !tile.getTree().isMature()) {
                     tile.getTree().advanceStage();
-                    /*
+                    if (App.getActiveGame().getWeatherCondition() == WeatherCondition.RAINY && tile.getType() != TileType.GreenHouse) {
+                        tile.getTree().setWatered(true);
+                    }
                     if (tile.getTree().isWatered()) {
                         tile.getTree().setWateredYesterday(true);
                         tile.getTree().setWatered(false);
@@ -113,8 +118,6 @@ public class TimeDate {
                     if (!tile.getTree().isWateredYesterday() && !tile.getTree().isWatered()) {
                         tile.setTree(null);
                     }
-
-                     */
                 }
             }
         }

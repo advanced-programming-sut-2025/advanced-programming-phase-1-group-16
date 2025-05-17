@@ -14,6 +14,7 @@ public class AppView {
         String input = "";
         do {
             App.getCurrentMenu().checkCommand(scanner);
+            //TODO
             /*
             if(App.getActiveGame() != null){
                 App.getActiveGame().nextTurn();

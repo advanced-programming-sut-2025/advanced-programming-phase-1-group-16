@@ -11,7 +11,6 @@ import com.group16.stardewvalley.model.time.Season;
 import com.group16.stardewvalley.model.tools.WateringCan;
 import com.group16.stardewvalley.model.user.Player;
 
-import java.rmi.server.RemoteRef;
 import java.util.Random;
 
 import static com.group16.stardewvalley.model.map.Direction.getDirectionOffset;
@@ -109,6 +108,9 @@ public class AgricultureController {
         if (seedType.equals(SeedType.MIXED_SEED)){
             seedType = getRandomSeed(App.getActiveGame().getTimeDate().getCurrentSeason());
         }
+        if (targetTile.getType().equals(TileType.GreenHouse) && App.getActiveGame().getCurrentPlayer().getFarm().getGreenhouse() == null) {
+            return new Result(false, "Greenhouse is inactive");
+        }
         switch (seedType.getType()) {
             case "TREE":
                 TreeType treeType = findTreeTypeBySeed(seedType);
@@ -120,6 +122,12 @@ public class AgricultureController {
                     tree.setFertilized(true);
                 }
                 targetTile.setTree(tree);
+                if (targetTile.getType().equals(TileType.GreenHouse)) {
+                    App.getActiveGame().getCurrentPlayer().getFarm().getGreenhouse().addGreenHouseTree(tree);
+                } else App.getActiveGame().getCurrentPlayer().getFarm().addPlantedTree(tree);
+                App.getActiveGame().getCurrentPlayer().getFarm().addPlantedTree(tree);
+                Seed seed3 = App.getActiveGame().getCurrentPlayer().getInventory().findSeedByType(seedType);
+                App.getActiveGame().getCurrentPlayer().getInventory().getItems().put(seed3, -1);
                 break;
             case "CROP":
                 CropType cropType = findCropTypeBySeed(seedType);
@@ -130,45 +138,8 @@ public class AgricultureController {
                 if (targetTile.isFertilized()) {
                     crop.setFertilized(true);
                 }
-                if (cropType.isCanBecomeGiant()) {
-                    boolean sameTypeAround = true;
-                    Tile[][] map = App.getActiveGame().getMap();
-                    // فرض بر این است که Tile مختصات دارد
-
-                    int height = App.getActiveGame().getMapHeight();
-                    int width = App.getActiveGame().getMapWidth();
-
-// بالا
-                    if (x > 0) {
-                        Crop upCrop = map[x - 1][y].getCrop();
-                        if (upCrop == null || !upCrop.getCropType().equals(cropType)) {
-                            sameTypeAround = false;
-                        }
-                    } else sameTypeAround = false;
-
-// پایین
-                    if (x < height - 1) {
-                        Crop downCrop = map[x + 1][y].getCrop();
-                        if (downCrop == null || !downCrop.getCropType().equals(cropType)) {
-                            sameTypeAround = false;
-                        }
-                    } else sameTypeAround = false;
-
-// چپ
-                    if (y > 0) {
-                        Crop leftCrop = map[x][y - 1].getCrop();
-                        if (leftCrop == null || !leftCrop.getCropType().equals(cropType)) {
-                            sameTypeAround = false;
-                        }
-                    } else sameTypeAround = false;
-
-// راست
-                    if (y < width - 1) {
-                        Crop rightCrop = map[x][y + 1].getCrop();
-                        if (rightCrop == null || !rightCrop.getCropType().equals(cropType)) {
-                            sameTypeAround = false;
-                        }
-                    } else sameTypeAround = false;
+                if (cropType.isCanBecomeGiant() && !targetTile.getType().equals(TileType.GreenHouse)) {
+                    boolean sameTypeAround = isSameTypeAround(x, y, cropType);
 
                     if (sameTypeAround) {
                         crop.setColossal(true);
@@ -176,11 +147,58 @@ public class AgricultureController {
                 }
                 targetTile.setCrop(crop);
                 crop.setPosition(new Pos(x, y));
+                if (targetTile.getType().equals(TileType.GreenHouse)) {
+                    App.getActiveGame().getCurrentPlayer().getFarm().getGreenhouse().addGreenHouseCrop(crop);
+                } else App.getActiveGame().getCurrentPlayer().getFarm().addPlantedCrop(crop);
+                Seed seed4 = App.getActiveGame().getCurrentPlayer().getInventory().findSeedByType(seedType);
+                App.getActiveGame().getCurrentPlayer().getInventory().getItems().put(seed4, -1);
                 break;
             default:
                 return new Result(false, "Invalid seed");
         }
         return new Result(true, seedName + " is planted successfully");
+    }
+
+    private static boolean isSameTypeAround(int x, int y, CropType cropType) {
+        boolean sameTypeAround = true;
+        Tile[][] map = App.getActiveGame().getMap();
+        // فرض بر این است که Tile مختصات دارد
+
+        int height = App.getActiveGame().getMapHeight();
+        int width = App.getActiveGame().getMapWidth();
+
+// بالا
+        if (x > 0) {
+            Crop upCrop = map[x - 1][y].getCrop();
+            if (upCrop == null || !upCrop.getCropType().equals(cropType)) {
+                sameTypeAround = false;
+            }
+        } else sameTypeAround = false;
+
+// پایین
+        if (x < height - 1) {
+            Crop downCrop = map[x + 1][y].getCrop();
+            if (downCrop == null || !downCrop.getCropType().equals(cropType)) {
+                sameTypeAround = false;
+            }
+        } else sameTypeAround = false;
+
+// چپ
+        if (y > 0) {
+            Crop leftCrop = map[x][y - 1].getCrop();
+            if (leftCrop == null || !leftCrop.getCropType().equals(cropType)) {
+                sameTypeAround = false;
+            }
+        } else sameTypeAround = false;
+
+// راست
+        if (y < width - 1) {
+            Crop rightCrop = map[x][y + 1].getCrop();
+            if (rightCrop == null || !rightCrop.getCropType().equals(cropType)) {
+                sameTypeAround = false;
+            }
+        } else sameTypeAround = false;
+        return sameTypeAround;
     }
 
     public SeedType getRandomSeed(Season season) {

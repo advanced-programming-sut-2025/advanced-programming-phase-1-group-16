@@ -4,6 +4,8 @@ import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.agriculture.Fertilizer;
 import com.group16.stardewvalley.model.agriculture.FertilizerType;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.food.FoodIngredient;
+import com.group16.stardewvalley.model.food.Ingredient;
 import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.tools.*;
 
@@ -56,5 +58,24 @@ public class CheatCodeController {
     public Result showPosition() {
         Pos position = App.getActiveGame().getCurrentPlayer().getPosition();
         return new Result(true, position.toString());
+    }
+
+    public Result addIngredient(String name) {
+        Ingredient ingredient = findIngredient(name);
+        if (ingredient == null) {
+            return new Result(false, "Ingredient not found");
+        }
+        FoodIngredient foodIngredient = new FoodIngredient(name, ingredient);
+        App.getActiveGame().getCurrentPlayer().getInventory().addItem(foodIngredient, 1);
+        return new Result(true, "added ingredient");
+    }
+
+    private Ingredient findIngredient(String input){
+        for (Ingredient ingredient : Ingredient.values()) {
+            if (ingredient.getName().equals(input)) {
+                return ingredient;
+            }
+        }
+        return null;
     }
 }
