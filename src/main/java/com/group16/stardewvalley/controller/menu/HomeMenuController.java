@@ -176,6 +176,11 @@ public class HomeMenuController {
         return null;
     }
 
+    public Result showCurrentMenu(){
+        return new Result(true, App.getCurrentMenu().getName());
+    }
+
+
 
     public Result exitMenu(){
         App.setCurrentMenu(Menu.GameMenu);

@@ -182,6 +182,7 @@ public class Game {
             timeDate.advanceOneDay();
             return;
         }
+        timeDate.advanceOneHour();
         int index = (currentPlayerIndex + 1) % players.size();
         int passTurn = 1;
         while (getPlayers().get(index).isFainted()) {

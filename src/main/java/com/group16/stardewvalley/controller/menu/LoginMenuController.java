@@ -36,7 +36,17 @@ public class LoginMenuController  {
 
         //how to turn back to enter password again?
         if(password.equals("random") || password.equals("Random")){
-            return new Result(false, generateRandomPassword());
+            String generatedPassword = generateRandomPassword();
+            User newUser = new User(username,generatedPassword,nickName,email,gender);
+            UserSaveManager.addUserAndSave(newUser); // Save new user to file
+
+
+            String sb = "your random password is: "+ generatedPassword  + "\nchoose a security question: \n" +
+                    "1- " + SecurityQuestions.q1.getQuestion() + "\n" +
+                    "2- " + SecurityQuestions.q2.getQuestion() + "\n" + "3- " + SecurityQuestions.q3.getQuestion() + "\n"+
+                    "4- " + SecurityQuestions.q4.getQuestion() + "\n" + "5- " + SecurityQuestions.q5.getQuestion() + "\n";
+
+            return new Result(true, sb);
         }
 
 
@@ -67,7 +77,6 @@ public class LoginMenuController  {
         User newUser = new User(username,password,nickName,email,gender);
         UserSaveManager.addUserAndSave(newUser); // Save new user to file
 
-//        App.setLoggedInUser(newUser);
 
 
         //make a list of security questions and show to user

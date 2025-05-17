@@ -9,13 +9,10 @@ public class CraftItem extends Item {
         super(name);
     }
 
-    private Map<CraftingIngredientsTypes, Integer> ingredients;
+    private CraftingRecipes recipe;
 
-    public CraftItem(String name, Map<CraftingIngredientsTypes, Integer> ingredients) {
+    public CraftItem(String name, CraftingRecipes recipe) {
         super(name);
-        this.ingredients = ingredients;
+        this.recipe = recipe;
     }
-
-
-
 }

@@ -54,8 +54,20 @@ public class ProfileMenuController {
         if(!user.getPassword().equals(oldPassword)){
             return new Result(false, "enter your old password correctly!");
         }
-        if(ProfileMenuCommands.Password.getMatcher(newPassword) == null) {
-            return new Result(false, "password format is invalid!");
+        if (newPassword.length() < 8) {
+            return new Result(false, "weak password! password must be at least 8 characters.");
+        }
+        if (!newPassword.matches(".*[a-z].*")){
+            return new Result(false, "weak password! password should contains at least one lowercase letter.");
+        }
+        if (!newPassword.matches(".*[A-Z].*")){
+            return new Result(false, "weak password! password should contains at least one uppercase letter.");
+        }
+        if (!newPassword.matches(".*[0-9].*")){
+            return new Result(false, "weak password! password should contains at least one number.");
+        }
+        if (!newPassword.matches(".*[!#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*")){
+            return new Result(false, "weak password! password should contains at least one special character.");
         }
         if(user.getPassword().equals(newPassword)){
             return new Result(false, "enter a new password!");

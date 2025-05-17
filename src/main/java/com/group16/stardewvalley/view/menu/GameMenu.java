@@ -12,12 +12,12 @@ import com.group16.stardewvalley.controller.shops.ShopController;
 import com.group16.stardewvalley.controller.tools.GadgetController;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.crafting.Crafting;
 import com.group16.stardewvalley.model.energy.EnergyCommands;
 import com.group16.stardewvalley.model.menu.GameMenuCheatCodeCommands;
 import com.group16.stardewvalley.model.menu.GameMenuCommands;
 import com.group16.stardewvalley.model.menu.LoginMenuCommands;
 import com.group16.stardewvalley.model.menu.ProfileMenuCommands;
-import com.group16.stardewvalley.model.shops.CarpentersShop;
 import com.group16.stardewvalley.model.time.TimeDate;
 import com.group16.stardewvalley.model.tools.GadgetsCommands;
 import com.group16.stardewvalley.model.user.Player;
@@ -30,6 +30,7 @@ import java.util.regex.Matcher;
 public class GameMenu implements MenuInterface {
     private final GameMenuController controller = new GameMenuController();
     private final MapController mapController = new MapController();
+    private final Crafting craft = new Crafting();
     private final TimeDate timeDate = new TimeDate();
     private final AnimalController animalController = new AnimalController();
     private final AgricultureController agricultureController = new AgricultureController();
@@ -93,7 +94,15 @@ public class GameMenu implements MenuInterface {
 
         }
         else if((matcher = GameMenuCommands.NextTurn.getMatcher(input)) != null){
-            App.getActiveGame().nextTurn();
+//            App.getActiveGame().nextTurn();
+
+        }else if((matcher = GameMenuCommands.CurrentTurn.getMatcher(input)) != null){
+            if(App.getActiveGame() != null){
+                System.out.println(App.getActiveGame().getCurrentPlayer().getUser().getUsername());
+            }
+            else{
+                System.out.println("game hasn't started yet");
+            }
 
         } else if ((matcher = GameMenuCommands.ChangeMenu.getMatcher(input)) != null) {
             System.out.println(controller.changeMenu(matcher.group("MenuName")));
@@ -148,6 +157,23 @@ public class GameMenu implements MenuInterface {
             System.out.println(homeMenuController.eat(matcher.group("food")));
         }
 
+        //crafting
+        else if ((matcher = GameMenuCommands.ShowRecipes.getMatcher(input)) != null) {
+            System.out.println(craft.showRecipes());
+
+        } else if ((matcher = GameMenuCommands.Craft.getMatcher(input)) != null) {
+            System.out.println("your available recipes:\n" + craft.showRecipes());
+            System.out.println(craft.craft(matcher.group("itemName")));
+
+        }else if((matcher = GameMenuCommands.PlaceItem.getMatcher(input)) != null) {
+            System.out.println(craft.placeItems(matcher.group("itemName"), matcher.group("direction")));
+
+        }else if((matcher = GameMenuCommands.CheatAddItem.getMatcher(input)) != null) {
+            System.out.println(craft.cheatAddItem(matcher.group("itemName"), Integer.parseInt(matcher.group("count"))));
+
+        }else if((matcher = GameMenuCommands.LearnCraftingRecipe.getMatcher(input)) != null) {
+            System.out.println(craft.learnCraftingRecipes(matcher.group("itemName")));
+        }
 
     //Time and Date Commands
         else if ((matcher = GameMenuCommands.Time.getMatcher(input)) != null) {

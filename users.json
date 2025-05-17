@@ -1,0 +1,49 @@
+[ {
+  "username" : "Fa-nilli",
+  "password" : "Byebye1234!",
+  "nickName" : "fatemeh",
+  "email" : "salam@sd.com",
+  "gender" : "female",
+  "gamePlayed" : 0,
+  "logged_in_flag" : true,
+  "userSecurityQuestion" : "q3",
+  "securityAnswer" : "apple",
+  "hasActiveGame" : false,
+  "currentGame" : null
+}, {
+  "username" : "Sara",
+  "password" : "}%I5tj()6R*",
+  "nickName" : "sara",
+  "email" : "salam@sd.com",
+  "gender" : "female",
+  "gamePlayed" : 0,
+  "logged_in_flag" : false,
+  "userSecurityQuestion" : "q5",
+  "securityAnswer" : "pizza",
+  "hasActiveGame" : false,
+  "currentGame" : null
+}, {
+  "username" : "Atena",
+  "password" : "Salam12!",
+  "nickName" : "atena",
+  "email" : "salam@sd.com",
+  "gender" : "female",
+  "gamePlayed" : 0,
+  "logged_in_flag" : false,
+  "userSecurityQuestion" : "q2",
+  "securityAnswer" : "garfild",
+  "hasActiveGame" : false,
+  "currentGame" : null
+}, {
+  "username" : "gholi",
+  "password" : "Salam34!",
+  "nickName" : "gholi",
+  "email" : "salam@sd.com",
+  "gender" : "male",
+  "gamePlayed" : 0,
+  "logged_in_flag" : false,
+  "userSecurityQuestion" : null,
+  "securityAnswer" : null,
+  "hasActiveGame" : false,
+  "currentGame" : null
+} ]
