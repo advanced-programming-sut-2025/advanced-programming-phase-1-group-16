@@ -12,7 +12,7 @@ public class Scythe extends Gadget{
     }
 
     public int getPrice() {
-        return ToolDataManager.getToolPrice("Scythe", this.material)
+        return ToolDataManager.getToolPrice("Scythe", this.material);
     }
 
     public int getConsumptionEnergy() {

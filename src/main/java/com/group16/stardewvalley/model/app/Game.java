@@ -35,26 +35,26 @@ public class Game {
     private final int MAX_NATURETOURISMABILITY_LEVEL = 4;
     private final int MAX_FISHINGABILITY_LEVEL = 4;
     private final ArrayList<Shop> shops = new ArrayList<>();
-    private final List<NPC> NPCs;
+//    private final List<NPC> NPCs;
 
     public Game(Player creator, ArrayList<Player> players) {
         this.creator = creator;
         this.players = players;
         this.turnsPassed = 0;
-        this.timeDate = new TimeDate(App.getActiveGame());
-        this.shops.add(new Blacksmith());
-        this.shops.add(new JojaMart());
-        this.shops.add(new PierresGeneralStore());
-        this.shops.add(new CarpentersShop());
-        this.shops.add(new FishShop());
-        this.shops.add(new MarniesRanch());
-        this.shops.add(new TheStardropSaloon());
-        this.NPCs = new ArrayList<>();
-        NPCs.add(new NPC(NPCType.Sebastian));
-        NPCs.add(new NPC(NPCType.Abigail));
-        NPCs.add(new NPC(NPCType.Harvey));
-        NPCs.add(new NPC(NPCType.Leah));
-        NPCs.add(new NPC(NPCType.Robin));
+        this.timeDate = new TimeDate(x);
+//        this.shops.add(new Blacksmith());
+//        this.shops.add(new JojaMart());
+//        this.shops.add(new PierresGeneralStore());
+//        this.shops.add(new CarpentersShop());
+//        this.shops.add(new FishShop());
+//        this.shops.add(new MarniesRanch());
+//        this.shops.add(new TheStardropSaloon());
+//        this.NPCs = new ArrayList<>();
+//        NPCs.add(new NPC(NPCType.Sebastian));
+//        NPCs.add(new NPC(NPCType.Abigail));
+//        NPCs.add(new NPC(NPCType.Harvey));
+//        NPCs.add(new NPC(NPCType.Leah));
+//        NPCs.add(new NPC(NPCType.Robin));
     }
 
     public TimeDate getTimeDate() {

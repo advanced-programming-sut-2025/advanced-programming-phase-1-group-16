@@ -7,7 +7,7 @@ public class Fish  {
 	private ProductQuality productQuality;
 
 	public int getSellPrice() {
-		return (int) (this.fishType.getPrice() * productQuality.());
+		return (int) (this.fishType.getPrice() * productQuality());
 	}
 
 	public Fish(FishType fishType) {

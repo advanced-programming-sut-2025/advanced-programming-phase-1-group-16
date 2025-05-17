@@ -45,11 +45,9 @@ public class Player {
     private Set<Food> knownRecipes = new HashSet<>();
 
     private int rejectionCooldown;
-    private Map<Player, Integer> interactionsLevel;
-    private Map<Player, Integer> interactionScore;
     private Map<Player, Boolean> interactionTodayStatus;
-    private Map<NPC, Integer> friendshipNPCScore;
-    private Map<NPC, Integer> friendshipNPCLevel;
+//    private Map<NPC, Integer> friendshipNPCScore;
+//    private Map<NPC, Integer> friendshipNPCLevel;
     private final int[] relationshipRanks = {100, 200, 300, 400};
     private final int[] NPCRelationshipRanks = {200, 400, 600, 800};
     private String buffer;
@@ -156,9 +154,7 @@ public class Player {
         return energy > amount;
     }
 
-    public Inventory getPlayerInventory() {
-        return playerInventory;
-    }
+
 
     public void equip(Gadget gadget) {
         this.currentEquipment = gadget;

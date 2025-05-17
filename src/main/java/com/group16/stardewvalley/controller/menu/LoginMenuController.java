@@ -7,6 +7,7 @@ import com.group16.stardewvalley.model.menu.Menu;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.user.SecurityQuestions;
 import com.group16.stardewvalley.model.user.User;
+import com.group16.stardewvalley.model.user.UserSaveManager;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -24,6 +25,10 @@ public class LoginMenuController  {
         if (LoginMenuCommands.Username.getMatcher(username) == null) {
             return new Result(false, "username format is invalid!");
         }
+        if (UserSaveManager.isUsernameTaken(username)) {
+            return new Result(false, "username already exists! choose another one.");
+        }
+
         if (LoginMenuCommands.Email.getMatcher(email) == null) {
             return new Result(false, "email format is invalid!");
         }
@@ -60,7 +65,8 @@ public class LoginMenuController  {
 
         //successful
         User newUser = new User(username,password,nickName,email,gender);
-        App.users.add(newUser);
+        UserSaveManager.addUserAndSave(newUser); // Save new user to file
+
 //        App.setLoggedInUser(newUser);
 
 
@@ -72,6 +78,8 @@ public class LoginMenuController  {
 
         return new Result(true, securityQuestionList);
     }
+
+
 
     private String generateRandomPassword() {
 
