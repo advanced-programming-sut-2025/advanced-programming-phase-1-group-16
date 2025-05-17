@@ -216,6 +216,14 @@ public class GameMenu implements MenuInterface {
             System.out.println(animalController.sellAnimal(matcher.group("name")));
         }
 
+    //Artisan commands
+    else if((matcher = GameMenuCommands.ArtisanUse.getMatcher(input)) != null ){
+        System.out.println();
+    }
+    else if((matcher = GameMenuCommands.ArtisanGet.getMatcher(input)) != null){
+        System.out.println();
+    }
+
 
         //fishing
         else if ((matcher = GameMenuCommands.Fishing.getMatcher(input)) != null){

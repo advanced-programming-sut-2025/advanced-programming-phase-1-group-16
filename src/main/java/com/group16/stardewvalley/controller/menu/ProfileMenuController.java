@@ -2,9 +2,11 @@ package com.group16.stardewvalley.controller.menu;
 
 
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.app.Game;
 import com.group16.stardewvalley.model.menu.Menu;
 import com.group16.stardewvalley.model.menu.ProfileMenuCommands;
 import com.group16.stardewvalley.model.Result;
+import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.model.user.User;
 
 public class ProfileMenuController {
@@ -66,10 +68,24 @@ public class ProfileMenuController {
 
     public Result showUserInfo(){
         User user = App.getLoggedInUser();
+        Player player1 = null;
+        for(Game game: App.getGames()){
+            for (Player player : game.getPlayers()) {
+                if(player.getUser().equals(user)){
+                    player1 = player;
+                }
+            }
+        }
+
+        int money = 0;
+        if (player1 != null) {
+            money = player1.getCoin();
+        }
+
 
         String output =
                 "username: " + user.getUsername() + "\nnickname: " + user.getNickName() +
-                "\nmost money reached: " + user.getMoney() + "\ngame played: " + user.getGamePlayed();
+                "\nmost money reached: " + money + "\ngame played: " + user.getGamePlayed();
 
         return new Result(true, output);
     }
