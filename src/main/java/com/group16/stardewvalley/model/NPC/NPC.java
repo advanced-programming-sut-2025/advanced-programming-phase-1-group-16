@@ -6,7 +6,7 @@ import com.group16.stardewvalley.model.user.Player;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NPC {
+public abstract class NPC {
     private NPCType npcType;
     private final Map<String, Integer> favoriteItems;
     private final Map<Player, Integer> friendshipNPCLevel;
@@ -19,7 +19,7 @@ public class NPC {
         this.friendshipNPCLevel = new HashMap<>();
         this.favoriteItems = new HashMap<>();
         this.friendshipNPCScore = new HashMap<>();
-        this.NPCPosition = pos;
+        this.NPCPosition = npcType.getPlaceType().getStartPosition();
 
     }
 

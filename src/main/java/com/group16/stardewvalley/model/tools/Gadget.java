@@ -12,6 +12,7 @@ public abstract class Gadget extends Item {
 
    public Gadget(String name) {
       super(name);
+      this.name = name;
    }
 
    public String getName() {

@@ -1,0 +1,29 @@
+1- comment as much as possible
+2- make smaller packages inside mvc
+
+
+TODO
+- random password handling
+
+- implementing foraging and plants stage for TimeDate s=cheat codes!!
+- every full turn advances time for 1 hour
+
+
+- load game ??!
+
+- whats the point of exit command which can be entered anytime in the game? (now i just have in the game menu)
+
+- do singleton pattern for time date, add this in main or somewhere global:
+TimeDate globalTime = new TimeDate();
+
+
+to fatemeh:
+pls updatte these classes regarding to the new Player class:
+GadgetController -> upgradeTool
+GadgetController -> useTool
+(gadget controller class need to complete)
+Hoe -> getPrice
+
+- how to do next turn
+
+- in building coop and barn check if coordination is inside the farm

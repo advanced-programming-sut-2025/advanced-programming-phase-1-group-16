@@ -1,15 +1,22 @@
 package com.group16.stardewvalley.model.time;
 
 import com.group16.stardewvalley.model.Result;
+import com.group16.stardewvalley.model.agriculture.Crop;
+import com.group16.stardewvalley.model.agriculture.Tree;
+import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
+import com.group16.stardewvalley.model.map.Tile;
+import com.group16.stardewvalley.model.map.TileType;
 import com.group16.stardewvalley.model.user.Player;
+import com.group16.stardewvalley.model.weather.WeatherCondition;
+
+import static com.group16.stardewvalley.controller.agriculture.AgricultureController.attackOfCrow;
 
 
 //عملا ماه نداریم. هر فصل 28 روز است و 4 فصل داریم
 
 public class TimeDate {
     private static TimeDate instance;
-    private final Game game;  // اینم اضافه کردم
     private int hour;
     private int minute;
     private int day; // روز ماه
@@ -18,8 +25,7 @@ public class TimeDate {
     private Season currentSeason;
     private DaysOfWeek currentDayOfWeek;
 
-    private TimeDate(Game game) {
-        this.game = game;
+    public TimeDate() {
         //initialize
         this.hour = 9;
         this.minute = 0;
@@ -31,7 +37,7 @@ public class TimeDate {
 
     public static TimeDate getInstance(Game game) {
         if (instance == null) {
-            instance = new TimeDate(game);
+            instance = new TimeDate();
         }
         return instance;
     }
@@ -43,6 +49,15 @@ public class TimeDate {
     // افزایش یک ساعت
     public void advanceOneHour() {
         hour++;
+        if (App.getActiveGame().getCurrentPlayer().isBuffActive()) {
+            App.getActiveGame().getCurrentPlayer().setHourPastForBuff(App.getActiveGame().getCurrentPlayer().getHourPastForBuff() + 1);
+            if (App.getActiveGame().getCurrentPlayer().getHourPastForBuff() >= App.getActiveGame().getCurrentPlayer().getFinalHourBuff()) {
+                App.getActiveGame().getCurrentPlayer().setBuffActive(false);
+                if (App.getActiveGame().getCurrentPlayer().getBuffer().equals("Max Energy")) {
+                    App.getActiveGame().getCurrentPlayer().setEnergyCeiling(App.getActiveGame().getCurrentPlayer().getBaseEnergyCeiling());
+                }
+            }
+        }
         if (hour >= 24) {
             hour = 0;
             advanceOneDay();
@@ -54,29 +69,74 @@ public class TimeDate {
     }
 
     // افزایش یک روز
-    private void advanceOneDay() {
+    public void advanceOneDay() {
         // برای سیتسم پیش بینی هوای فردا باید این ها تنظیم بشود
-        game.setWeatherCondition(game.getTomorrowWeatherCondition());
-        game.setTomorrowWeatherCondition(null);
+        App.getActiveGame().setWeatherCondition(App.getActiveGame().getTomorrowWeatherCondition());
+        App.getActiveGame().setTomorrowWeatherCondition(null);
         day++;
 
         // تغییر روز هفته
         int nextDayIndex = (currentDayOfWeek.getIndex() + 1) % 7;
-        currentDayOfWeek = getDayOfWeekByIndex(nextDayIndex);
+        if (getDayOfWeekByIndex(nextDayIndex) != null) {
+            currentDayOfWeek = getDayOfWeekByIndex(nextDayIndex);
+        }
 
         // بررسی تغییر فصل
         if (day > seasonLength) {
             day = 1;
             int nextSeasonIndex = (currentSeason.getIndex() + 1) % 4;
-            currentSeason = getSeasonByIndex(nextSeasonIndex);
+            if (getSeasonByIndex(nextSeasonIndex) != null) {
+                currentSeason = getSeasonByIndex(nextSeasonIndex);
+            }
 
             if (nextSeasonIndex == 0) { // اگر از زمستان به بهار برگشتیم
                 year++;
             }
         }
 
+        //رشد دادن گیاهان کاشته شده
+        for (int i = 0; i < App.getActiveGame().getMapHeight(); i++) {
+            for (int j = 0; j < App.getActiveGame().getMapWidth(); j++) {
+                Tile tile = App.getActiveGame().getMap()[i][j];
+                if (tile.getCrop() != null && !tile.getCrop().isMature()) {
+                    if (App.getActiveGame().getWeatherCondition() == WeatherCondition.RAINY && tile.getType() != TileType.GreenHouse) {
+                        tile.getCrop().setWatered(true);
+                    }
+                    tile.getCrop().advanceStage();
+                    attackOfCrow();
+                    if (tile.getCrop().isWatered()) {
+                        tile.getCrop().setWateredYesterday(true);
+                        tile.getCrop().setWatered(false);
+                    } else {
+                        tile.getCrop().setWateredYesterday(false);
+                    }
+
+
+                    if (!tile.getCrop().isWateredYesterday() && !tile.getCrop().isWatered()) {
+                        tile.setCrop(null);
+                    }
+                }
+
+                if (tile.getTree() != null && !tile.getTree().isMature()) {
+                    tile.getTree().advanceStage();
+                    if (App.getActiveGame().getWeatherCondition() == WeatherCondition.RAINY && tile.getType() != TileType.GreenHouse) {
+                        tile.getTree().setWatered(true);
+                    }
+                    if (tile.getTree().isWatered()) {
+                        tile.getTree().setWateredYesterday(true);
+                        tile.getTree().setWatered(false);
+                    } else {
+                        tile.getTree().setWateredYesterday(false);
+                    }
+                    if (!tile.getTree().isWateredYesterday() && !tile.getTree().isWatered()) {
+                        tile.setTree(null);
+                    }
+                }
+            }
+        }
+
         //  همه ی فروشگاه ها هم داشته باشند این تابع رو باید =)
-        for (Player player : game.getPlayers()) {
+        for (Player player : App.getActiveGame().getPlayers()) {
             player.resetForNewDay();
         }
         game.getBlacksmith().resetDailyUpgrades();
@@ -90,7 +150,7 @@ public class TimeDate {
                 return day;
             }
         }
-        throw new IllegalArgumentException("Invalid day of week index: " + index);
+        return null;
     }
 
     private Season getSeasonByIndex(int index) {
@@ -99,7 +159,7 @@ public class TimeDate {
                 return season;
             }
         }
-        throw new IllegalArgumentException("Invalid season index: " + index);
+        return null;
     }
 
     // current state methods
@@ -149,6 +209,9 @@ public class TimeDate {
             advanceOneDay();
         }
         return new Result(true,  "cheated successfully!");
+    }
+    public Season getCurrentSeason() {
+        return this.currentSeason;
     }
 
 }

@@ -1,6 +1,6 @@
 {
   "tools": {
-    "hoes": {
+    "hoe": {
       "name": "hoe",
       "actions": ["Plow"],
       "material": {

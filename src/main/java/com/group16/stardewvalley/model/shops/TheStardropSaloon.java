@@ -1,14 +1,15 @@
 package com.group16.stardewvalley.model.shops;
 
 import com.group16.stardewvalley.model.food.Food;
-import com.group16.stardewvalley.model.food.FoodFactory;
-import com.group16.stardewvalley.model.food.FoodRecipe;
+import com.group16.stardewvalley.model.map.PlaceType;
+
+import java.util.ArrayList;
 
 public class TheStardropSaloon extends Shop{
     private static TheStardropSaloon instance;
 
     public TheStardropSaloon() {
-        super("The Stardrop Saloon", "Gus", 12, 24);
+        super("The Stardrop Saloon", "Gus", 12, 24, PlaceType.TheStardropSaloon);
     }
 
     public static TheStardropSaloon getInstance() {

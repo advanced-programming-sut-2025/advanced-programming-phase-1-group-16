@@ -1,11 +1,6 @@
 package com.group16.stardewvalley.model.shops;
 
-import com.group16.stardewvalley.model.crafting.CraftItem;
-import com.group16.stardewvalley.model.crafting.CraftingRecipes;
-import com.group16.stardewvalley.model.food.Food;
-import com.group16.stardewvalley.model.food.FoodFactory;
-import com.group16.stardewvalley.model.food.FoodRecipe;
-import com.group16.stardewvalley.model.tools.FishingPole;
+import com.group16.stardewvalley.model.map.PlaceType;
 
 public class FishShop extends Shop{
 

@@ -74,5 +74,4 @@ public class Building extends Item {
 
         return isLeft || isRight || isTop || isBottom;
     }
-
 }

@@ -5,15 +5,19 @@ import com.group16.stardewvalley.model.NPC.NPCType;
 import com.group16.stardewvalley.model.animal.Animal;
 import com.group16.stardewvalley.model.map.Direction;
 import com.group16.stardewvalley.model.map.Pos;
+import com.group16.stardewvalley.model.NPC.NPC;
+import com.group16.stardewvalley.model.NPC.NPCType;
+import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.shops.*;
 import com.group16.stardewvalley.model.weather.WeatherCondition;
+import com.group16.stardewvalley.model.animal.Animal;
 import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.user.Player;
-
 import com.group16.stardewvalley.model.time.TimeDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.List;
 
 public class Game {
     private ArrayList<Player> players = new ArrayList<>();
@@ -40,16 +44,17 @@ public class Game {
     private final int mapWidth = 300;
     public ArrayList<Animal> gameAnimals = new ArrayList<>();
     public ArrayList<Building> buildings = new ArrayList<>();
+    private final ArrayList<Shop> shops = new ArrayList<>();
     private WeatherCondition weatherCondition;
     private WeatherCondition tomorrowWeatherCondition;
 
     public WeatherCondition getWeatherCondition() {
         return weatherCondition;
     }
-
+    public ArrayList<Animal> gameAnimals = new ArrayList<>();
+    public ArrayList<Building> buildings = new ArrayList<>();
 
     public Game(Player creator, ArrayList<Player> players) {
-        this.timeDate = TimeDate.getInstance(this);
         this.creator = creator;
         this.players = players;
         this.turnsPassed = 0;
@@ -118,8 +123,7 @@ public class Game {
     }
 
     public Player getCurrentPlayer() {
-        return players.get(currentPlayerIndex);
-    }
+        return players.get(currentPlayerIndex);    }
 
     public Player getPlayerByUsername(String username) {
         for (Player player : players) {
@@ -166,9 +170,19 @@ public class Game {
 
 
     public void nextTurn() {
-        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+        if (players.stream().allMatch(Player::isFainted)) {
+            timeDate.advanceOneDay();
+            return;
+        }
+        int index = (currentPlayerIndex + 1) % players.size();
+        int passTurn = 1;
+        while (getPlayers().get(index).isFainted()) {
+            index = (index + 1) % players.size();
+            passTurn++;
+        }
+        currentPlayerIndex = index;
 
-        turnsPassedInRound++;
+        turnsPassedInRound += passTurn;
 
         // After all players have played → pass 1 hour
         if (turnsPassedInRound >= players.size()) {
@@ -179,6 +193,7 @@ public class Game {
 //            onEightAM();
 //        }
 
+        // اینجا چرا چیزی پرینت شده ؟؟ اصلا توی پلیر مگه یوزر هست به چه دردی میخوره ؟
         System.out.println("its " + getCurrentPlayer().getUser().getUsername() + "  turn now.");
     }
 
@@ -205,6 +220,14 @@ public class Game {
         return false;
     }
 
+
+    public ArrayList<Animal> getGameAnimals() {
+        return gameAnimals;
+    }
+
+    public ArrayList<Building> getBuildings() {
+        return buildings;
+    }
 
     public ArrayList<Animal> getGameAnimals() {
         return gameAnimals;

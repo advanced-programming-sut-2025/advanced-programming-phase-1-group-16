@@ -1,6 +1,6 @@
 package com.group16.stardewvalley.model.crafting;
 
-import com.group16.stardewvalley.view.menu.CommandsInterface;
+import com.group16.stardewvalley.model.menu.CommandsInterface;
 
 import java.util.regex.Matcher;
 

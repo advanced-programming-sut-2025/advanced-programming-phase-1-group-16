@@ -2,6 +2,7 @@ package com.group16.stardewvalley.model.shops;
 
 import com.group16.stardewvalley.model.items.Ore;
 import com.group16.stardewvalley.model.items.OreType;
+import com.group16.stardewvalley.model.map.PlaceType;
 
 import java.util.EnumMap;
 
@@ -10,7 +11,7 @@ public class Blacksmith extends Shop{
     private final EnumMap<UpgradeType, Integer> upgrades = new EnumMap<>(UpgradeType.class);
 
     public Blacksmith() {
-        super("Blacksmith", "Clint", 9, 16);
+        super("Blacksmith", "Clint", 9, 16, PlaceType.Blacksmith);
         initializeUpgrades();
         initializeItems();
     }

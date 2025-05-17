@@ -28,6 +28,7 @@ public class ShopController {
 
 
     public Result handleCommand(String command, Matcher matcher) {
+        Player currentPlayer = App.getActiveGame().getCurrentPlayer();
         String[] parts = command.split(" ");
         Location l = game.getCurrentPlayer().getLocation().getLocation();
         // در اینجا باید اگر در این مغازه نبود ارور بدیم

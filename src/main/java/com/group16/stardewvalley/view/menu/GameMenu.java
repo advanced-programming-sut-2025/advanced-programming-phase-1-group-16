@@ -4,17 +4,21 @@ package com.group16.stardewvalley.view.menu;
 import com.group16.stardewvalley.controller.CheatCodeController;
 import com.group16.stardewvalley.controller.agriculture.AgricultureController;
 import com.group16.stardewvalley.controller.AnimalController;
+import com.group16.stardewvalley.controller.energy.EnergyController;
 import com.group16.stardewvalley.controller.map.MapController;
 import com.group16.stardewvalley.controller.menu.GameMenuController;
 import com.group16.stardewvalley.controller.menu.HomeMenuController;
 import com.group16.stardewvalley.controller.shops.ShopControlle;
+import com.group16.stardewvalley.controller.shops.ShopController;
 import com.group16.stardewvalley.controller.tools.GadgetController;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.energy.EnergyCommands;
 import com.group16.stardewvalley.model.menu.GameMenuCheatCodeCommands;
 import com.group16.stardewvalley.model.menu.GameMenuCommands;
 import com.group16.stardewvalley.model.menu.LoginMenuCommands;
 import com.group16.stardewvalley.model.menu.ProfileMenuCommands;
+import com.group16.stardewvalley.model.shops.CarpentersShop;
 import com.group16.stardewvalley.model.time.TimeDate;
 import com.group16.stardewvalley.model.tools.GadgetsCommands;
 import com.group16.stardewvalley.model.user.Player;
@@ -28,18 +32,23 @@ public class GameMenu implements MenuInterface {
     private final GameMenuController controller = new GameMenuController();
     private final MapController mapController = new MapController();
     private final TimeDate timeDate = new TimeDate(App.getActiveGame());
+    private final TimeDate timeDate = new TimeDate();
     private final AnimalController animalController = new AnimalController();
     private final AgricultureController agricultureController = new AgricultureController();
     private final CheatCodeController cheatCodeController = new CheatCodeController();
     private final HomeMenuController homeMenuController = new HomeMenuController();
+    private final EnergyController energyController = new EnergyController();
     private final GadgetController gadgetController = new GadgetController();
     private final ShopController shopController = new ShopController();
+
 
     @Override
     public void check(Scanner scanner) {
         String input = scanner.nextLine();
 
         Matcher matcher = null;
+        boolean isAtHome = App.getActiveGame() != null && MapController.isPlayerInCottage(App.getActiveGame().getCurrentPlayer());
+
 
         //new game
         if((matcher = GameMenuCommands.NewGame.getMatcher(input)) != null){ //after new game, player must choose farm and cant do anything else
@@ -99,17 +108,17 @@ public class GameMenu implements MenuInterface {
             System.out.println(controller.showCurrentMenu());
 
         } else if ((matcher = GameMenuCommands.Walk.getMatcher(input)) != null){
-            Result result = mapController.askWalking(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
-            System.out.println(result);
-            if (result.isSuccessful()){
-                String answer = scanner.nextLine();
-                if (answer.equals("yes")) {
-                    System.out.println(mapController.walk(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
-                }
+        Result result = mapController.askWalking(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
+        System.out.println(result);
+        if (result.isSuccessful()){
+            String answer = scanner.nextLine();
+            if (answer.equals("yes")) {
+                System.out.println(mapController.walk(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
             }
+        }
         } else if ((matcher = GameMenuCommands.PrintMap.getMatcher(input)) != null){
-            System.out.println(mapController.printMap(Integer.parseInt(matcher.group("x")),
-                    Integer.parseInt(matcher.group("y")), Integer.parseInt(matcher.group("size"))));
+                System.out.println(mapController.printMap(Integer.parseInt(matcher.group("x")),
+                        Integer.parseInt(matcher.group("y")), Integer.parseInt(matcher.group("size"))));
         } else if ((matcher = GameMenuCommands.HelpReadingMap.getMatcher(input)) != null){
             System.out.println(mapController.helpReadingMap());
         } else if ((matcher = GameMenuCommands.CraftInfo.getMatcher(input)) != null){
@@ -144,7 +153,8 @@ public class GameMenu implements MenuInterface {
             }
         }
 
-        //Time and Date Commands
+
+    //Time and Date Commands
         else if ((matcher = GameMenuCommands.Time.getMatcher(input)) != null) {
             System.out.println(timeDate.getTime());
 
@@ -172,7 +182,7 @@ public class GameMenu implements MenuInterface {
 
         //Shop
         else if ((matcher = GameMenuCommands.ShopBuildCoopBarn.getMatcher(input)) != null ){
-            System.out.println(App.getActiveGame().getCarpentersShop().buildCoop_Barn(matcher.group("buildingName"), Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
+                System.out.println(App.getActiveGame().getCarpentersShop().buildCoop_Barn(matcher.group("buildingName"), Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
 
         }else if ((matcher = GameMenuCommands.BuyAnimal.getMatcher(input)) != null ){
             System.out.println(App.getActiveGame().getMarniesRanch().buyAnimal(matcher.group("animal"), matcher.group("name")));
@@ -216,13 +226,13 @@ public class GameMenu implements MenuInterface {
         }
 
         //gadget
-        else if ((matcher = GadgetsCommands.EQUIP.getMatcher(input)).matches()) {
+        else if ((matcher = GadgetsCommands.EQUIP.getMatcher(input)) != null) {
             System.out.println(gadgetController.equip(matcher));
-        } else if ((matcher = GadgetsCommands.AVAILABLE_TOOLS.getMatcher(input)).matches()) {
+        } else if ((matcher = GadgetsCommands.AVAILABLE_TOOLS.getMatcher(input)) != null) {
             System.out.println(gadgetController.showAvailableTools());
-        } else if ((matcher = GadgetsCommands.UPGRADE_TOOLS.getMatcher(input)).matches()) {
+        } else if ((matcher = GadgetsCommands.UPGRADE_TOOLS.getMatcher(input)) != null) {
             System.out.println(shopController.upgradeTool(matcher));
-        } else if ((matcher = GadgetsCommands.USE_TOOL.getMatcher(input)).matches()) {
+        } else if ((matcher = GadgetsCommands.USE_TOOL.getMatcher(input)) != null) {
             System.out.println(gadgetController.useTool(matcher));
         }
 
@@ -232,9 +242,26 @@ public class GameMenu implements MenuInterface {
             System.out.println(agricultureController.cheatAdd(matcher.group("seed")));
         } else if ((matcher = GameMenuCheatCodeCommands.AddTool.getMatcher(input)) != null){
             System.out.println(cheatCodeController.addTool(matcher.group("tool")));
+        } else if ((matcher = GameMenuCheatCodeCommands.AddFertilizer.getMatcher(input)) != null){
+            System.out.println(cheatCodeController.addFertilizer(matcher.group("fertilizer")));
+        } else if ((matcher = GameMenuCheatCodeCommands.ShowPosition.getMatcher(input)) != null){
+            System.out.println(cheatCodeController.showPosition());
+        } else if ((matcher = GameMenuCheatCodeCommands.AddIngredient.getMatcher(input)) != null){
+            System.out.println(cheatCodeController.addIngredient(matcher.group("ingredient")));
+        } else if ((matcher = GameMenuCheatCodeCommands.LearnRecipe.getMatcher(input)) != null){
+            System.out.println(cheatCodeController.learnRecipe(matcher.group("recipe")));
+        } else if ((matcher = GameMenuCheatCodeCommands.CookFood.getMatcher(input)) != null){
+            System.out.println(cheatCodeController.cookFood(matcher.group("food")));
         }
 
         //ENERGY
+        else if ((matcher = EnergyCommands.SHOW_ENERGY.getMatcher(input)) != null){
+            System.out.println(energyController.show());
+        } else if ((matcher = EnergyCommands.SET_ENERGY.getMatcher(input)) != null){
+            System.out.println(energyController.setEnergy(matcher));
+        } else if ((matcher = EnergyCommands.INVENTORY_SHOW.getMatcher(input)) != null){
+            System.out.println(energyController.inventoryShow());
+        }
 
 
 

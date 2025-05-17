@@ -35,3 +35,4 @@ public enum FertilizerType {
         return this == DELUXE_RETAINING_SOIL;
     }
 }
+

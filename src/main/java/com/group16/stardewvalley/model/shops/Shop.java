@@ -2,6 +2,7 @@ package com.group16.stardewvalley.model.shops;
 
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.map.PlaceType;
 import com.group16.stardewvalley.model.time.TimeDate;
 
 import java.util.HashMap;
@@ -18,17 +19,24 @@ public abstract class Shop {
     private final int END_TIME;
     private int balance;
     private final TimeDate timeDate;
+    private final PlaceType placeType;
 
     public Shop(String shopName,
                 String shopkeeperName,
                 int START_TIME,
-                int END_TIME) {
+                int END_TIME,
+                PlaceType placeType) {
         this.shopName = shopName;
         this.shopkeeperName = shopkeeperName;
         this.START_TIME = START_TIME;
         this.END_TIME = END_TIME;
         this.balance = 0;
         timeDate = TimeDate.getInstance(App.getActiveGame());
+        this.placeType = placeType;
+    }
+
+    public PlaceType getPlaceType() {
+        return placeType;
     }
 
     public String getShopName() {

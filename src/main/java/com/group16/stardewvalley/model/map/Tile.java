@@ -1,37 +1,92 @@
 package com.group16.stardewvalley.model.map;
 
+import com.group16.stardewvalley.controller.agriculture.AgricultureController;
 import com.group16.stardewvalley.model.items.Item;
-import com.group16.stardewvalley.model.items.Stone;
 import com.group16.stardewvalley.model.agriculture.*;
+import com.group16.stardewvalley.model.items.Stone;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class Tile {
+    private final Random random = new Random();
     private TileType type;
     private Item item;
     private Crop crop;
     private Tree tree;
     private Location location;
+    private boolean isFertilized;
+    private FertilizerType fertilizerType;
+    private boolean hasWater;
 
     public Tile(TileType tileType) {
         location = Location.Game;
+        isFertilized = false;
         if (tileType == TileType.Tree) {
             this.type = TileType.Ground;
-            this.tree = new Tree(getRandomForagingTree())
+            TreeType treeType = getRandomForagingTree();
+            if (treeType != null) {
+                this.tree = new Tree(treeType);
+            }
         }
         else if (tileType == TileType.Stone) {
             this.type = TileType.Quarry;
             this.item = new Stone("stone");
-        } else if (tileType == TileType.Forage) {
+        }
+        else if (tileType == TileType.Forage) {
             this.type = TileType.Ground;
-            this.crop = new Crop(getRandomForagingCrop());
-        } else {
+            CropType cropType;
+            if (random.nextBoolean()) {
+                cropType = getRandomForagingCrop();
+                this.item = new ForagingCrop(cropType.getName(), cropType);
+            }
+            else {
+                cropType = getRandomForagingSeed();
+                if (cropType != null) {
+                    this.crop = new Crop(cropType);
+                }
+            }
+        }
+        else if (tileType == TileType.MineralForage) {
+            this.type = TileType.Quarry;
+            MineralType mineralType = getRandomForagingMineral();
+            this.item = new Mineral(mineralType.getName(), mineralType);
+        }
+        else {
             this.type = tileType;
         }
     }
 
-    public CropType getRandomForagingCrop() {
-        Random rand = new Random();
+    public boolean isHasWater() {
+        return hasWater || type == TileType.Lake;
+    }
+
+    public void setHasWater(boolean hasWater) {
+        this.hasWater = hasWater;
+    }
+
+    public FertilizerType getFertilizerType() {
+        return fertilizerType;
+    }
+
+    public void setFertilizerType(FertilizerType fertilizerType) {
+        this.fertilizerType = fertilizerType;
+    }
+
+    public boolean isFertilized() {
+        return isFertilized;
+    }
+
+    public void setFertilized(boolean fertilized) {
+        isFertilized = fertilized;
+    }
+
+    public boolean isTileEmpty() {
+        return item == null && crop == null && tree == null && type != TileType.Lake;
+    }
+
+    public CropType getRandomForagingSeed() {
         SeedType[] seeds = {
                 SeedType.JAZZ_SEEDS,
                 SeedType.CARROT_SEEDS,
@@ -56,7 +111,7 @@ public class Tile {
                 SeedType.RED_CABBAGE_SEEDS,
                 SeedType.STARFRUIT_SEEDS,
                 SeedType.SPANGLE_SEEDS,
-                SeedType.SUMMER_SQUASH_SEEDS,
+                SeedType.SQUASH_SEEDS,
                 SeedType.SUNFLOWER_SEEDS,
                 SeedType.TOMATO_SEEDS,
                 SeedType.WHEAT_SEEDS,
@@ -76,12 +131,27 @@ public class Tile {
                 SeedType.ANCIENT_SEED,
                 SeedType.MIXED_SEED
         };
-        SeedType seed = seeds[rand.nextInt(seeds.length)];
-        return AgricultureController.findCropTypeBySeed(seed);
+        SeedType seed = seeds[random.nextInt(seeds.length)];
+        return findCropTypeBySeed(seed);
+    }
+
+    public CropType getRandomForagingCrop() {
+        List<CropType> foragingCrops = Arrays.stream(CropType.values())
+                .filter(CropType::isForaging)
+                .toList();
+        return foragingCrops.get(random.nextInt(foragingCrops.size()));
+    }
+
+    private CropType findCropTypeBySeed(SeedType seed) {
+        for (CropType cropType : CropType.values()) {
+            if (cropType.getSource() == seed) {
+                return cropType;
+            }
+        }
+        return null;
     }
 
     public TreeType getRandomForagingTree() {
-        Random random = new Random();
         SeedType[] seeds = {
                 SeedType.ACORNS,
                 SeedType.MAPLE_SEEDS,
@@ -90,8 +160,19 @@ public class Tile {
                 SeedType.MUSHROOM_TREE_SEEDS
         };
         SeedType seed = seeds[random.nextInt(seeds.length)];
+        return findTreeTypeBySeed(seed);
+    }
+
+    public MineralType getRandomForagingMineral() {
+        MineralType[] mineralTypes = MineralType.values();
+        return mineralTypes[random.nextInt(mineralTypes.length)];
+    }
+
+    private TreeType findTreeTypeBySeed(SeedType seed) {
         return AgricultureController.findTreeTypeBySeed(seed);
     }
+
+
 
 
     public Location getLocation() {

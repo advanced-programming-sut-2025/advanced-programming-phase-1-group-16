@@ -1,7 +1,5 @@
 package com.group16.stardewvalley.model.tools;
 
-import com.stardewvalley.Tools.ToolDataManager;
-
 public class ToolDataTest {
     public static void main(String[] args) {
         System.out.println("Hoe (copper) energy: " +

@@ -9,7 +9,7 @@ import com.group16.stardewvalley.model.Result;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
-public class LoginMenu implements GameMenuInterface {
+public class LoginMenu implements MenuInterface {
 
     private final LoginMenuController controller = new LoginMenuController();
 
@@ -24,7 +24,7 @@ public class LoginMenu implements GameMenuInterface {
                     matcher.group("email"), matcher.group("gender"));
 
             System.out.println(result);
-            boolean success = result.isSuccess();
+            boolean success = result.isSuccessful();
 
 
             //random password handling
@@ -47,6 +47,7 @@ public class LoginMenu implements GameMenuInterface {
                 logged_in_flag = true;
             }
             System.out.println(controller.login(matcher.group("username"), matcher.group("password"), logged_in_flag));
+            System.out.println(controller.showMenus());
 
 
         }else if((matcher = LoginMenuCommands.ForgetPassword.getMatcher(input)) != null){
@@ -77,8 +78,7 @@ public class LoginMenu implements GameMenuInterface {
         }else if((matcher = LoginMenuCommands.ShowCurrentMenu.getMatcher(input)) != null ){
             System.out.println(controller.showCurrentMenu());
 
-//        }else if((matcher = LoginMenuCommands.Exit.getMatcher(input)) != null){
-//            App.setCurrentMenu(Menu.ExitMenu);
+
         }
 
         else{

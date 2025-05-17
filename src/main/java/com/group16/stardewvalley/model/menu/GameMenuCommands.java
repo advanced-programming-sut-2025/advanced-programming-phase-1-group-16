@@ -29,28 +29,34 @@ public enum GameMenuCommands implements CommandsInterface{
     Season("season"),
 
     //shop commands
-    ShopBuildCoopBarn("^\\S*build\\s+-a\\s+(?<buildingName>\\S+)\\s+-l\\s+(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*$"),
     BuyAnimal("^buy\\s+animal\\s+-a\\s+(?<animal>\\S+)\\s+-n\\s+(?<name>\\S+)\\s*$ "),
     ShowAllProducts("^\\s*show\\s*all\\s*products\\s*$"),
     ShowAllAvailableProducts("^\\s*show\\s*all*available\\s*products\\s*$"),
     Purchase("^\\s*purchase\\s*(?<productName>\\S+)(?:\\s+-n\\s+(?<count>\\d+))?\\s*$"),
 
+    CraftInfo("\\s*craft info -n (?<name>.+?)\\s*"),
+    TreeInfo("tree info -n (?<name>.+?)\\s*"),
+    ForagingInfo("foraging info -n (?<name>.+?)\\s*"),
+    PlantSeed("plant -s (?<seed>.+?) -d (?<dir>.+?)"),
+    ShowPlant("show plant -l (?<x>\\d+),\\s*(?<y>\\d+)"),
+    Fertilize("fertilize -f (?<fertilizer>.+?) -d (?<dir>.+?)"),
+    HowMuchWater("how much water"),
+    PutFood("cooking refrigerator put (?<food>.+?)"),
+    PickFood("cooking refrigerator pick (?<food>.+?)"),
+    CookingRecipes("cooking show recipes"),
+    PrepareFood("cooking prepare (?<food>.+?)"),
+    EatFood("eat (?<food>.+?)"),
 
     //Animals
     Pet("\\s*pet\\s+-n\\s+(?<name>\\S+)\\s*"),
-    CheatSetAnimalFriendship("\\s*cheat\\s+set\\s+friendship\\s+-n\\s+" +
-            "(?<name>\\S+)\\s+-c\\s+(?<count>\\d+)\\s*"),
+    CheatSetAnimalFriendship("\\s*cheat\\s+set\\s+friendship\\s+-n\\s+(?<name>\\S+)\\s+-c\\s+(?<count>\\d+)\\s*"),
     ShowAnimalInfo("\\s*animals\\s*"),
-    ShepherdAnimals("^\\s*shepherd\\s+animals\\s+-n\\s+(?<name>\\S+)\\s+-l" +
-            "\\s+(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*$"),
+    ShepherdAnimals("^\\s*shepherd\\s+animals\\s+-n\\s+(?<name>\\S+)\\s+-l\\s+(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*$"),
     FeedHay("\\s*feed\\s+hay\\s+-n\\s+(?<name>\\S+)\\s*"),
     AnimalProduces("\\s*produces\\s*"),
     CollectProduct("\\s*collect\\s+produce\\s+-n\\s+(?<name>\\S+)\\s*"),
     SellAnimal("\\s*sell\\s+animal\\s+-n\\s+(?<name>\\S+)\\s*"),
-
-    //Artisan commands
-    ArtisanUse("\\s*artisan\\s+use\\s+(?<artisanName>\\S+)\\s+(?<itemsName>.+)\\s*"),
-    ArtisanGet("\\s*artisan\\s+get\\s+(?<artisanName>\\S+)\\s*"),
+    Fishing("fishing -p (?<fishingPole>.+?)"),
 
     // relationship commands
     MeetNPC("^\\s*meet\\s*NPC\\s*(?<NPCName>\\S+)\\s*$"),

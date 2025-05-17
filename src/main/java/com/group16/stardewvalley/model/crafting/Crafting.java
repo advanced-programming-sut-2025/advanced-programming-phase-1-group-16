@@ -35,7 +35,7 @@ public class Crafting {
         Map<Item, Integer> inventoryItems = player.getInventory().getItems();  // Inventory content
 
         if (!isInsideHouse(App.getActiveGame().getCurrentPlayer())) {
-            return new Result(false, "You are not inside your house !");
+            return new Result(false, "You are not inside your house!");
         }
 
         for (CraftingRecipes recipe : CraftingRecipes.values()) {

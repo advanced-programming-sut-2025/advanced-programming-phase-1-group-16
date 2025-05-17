@@ -1,9 +1,20 @@
 package com.group16.stardewvalley.model.user;
 
 import com.group16.stardewvalley.model.Inventory;
+import com.group16.stardewvalley.model.food.Food;
+import com.group16.stardewvalley.model.map.Farm;
+import com.group16.stardewvalley.model.map.Pos;
+import com.group16.stardewvalley.model.map.Tile;
+import com.group16.stardewvalley.model.map.TileType;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import com.group16.stardewvalley.model.NPC.NPC;
 import com.group16.stardewvalley.model.NPC.NPCInteraction;
 import com.group16.stardewvalley.model.Request;
+import com.group16.stardewvalley.model.shops.Shop;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.notification;
 import com.group16.stardewvalley.model.tools.Gadget;
@@ -25,6 +36,7 @@ public class Player {
     private User user;
     private int energy;
     private int coin;
+    private Set<Food> knownRecipes = new HashSet<>();
     private final int[] levelRanks = {450, 350, 250, 150};
     private int farmingAbilityLevel;
     private int farmingAbilityScore;
@@ -44,6 +56,8 @@ public class Player {
     private final List<Request> requestHistory;
     private Player spouse;
 
+    // مقدار های ماکسیمم هر توانایی رو هم در گیم ذخیره کردم سر جمع شه
+    // تابعی برای بالا بردن لول شخص در این موارد نوشته نشده است
     public Player(User user) {
         this.user = user;
         farmingAbilityLevel = 0;
@@ -59,6 +73,35 @@ public class Player {
         energy = 200;
         isFainted = false;
         this.rejectionCooldown = 0;
+        this.interactionsLevel = new HashMap<>();
+        this.interactionScore = new HashMap<>();
+        this.interactionTodayStatus = new HashMap<>();
+        this.friendshipNPCScore = new HashMap<>();
+        this.friendshipNPCLevel = new HashMap<>();
+        this.isBuffActive = false;
+        hourPastForBuff = 0;
+        finalHourBuff = 0;
+        this.buffer = "";
+    }
+
+    public int getBaseEnergyCeiling() {
+        return baseEnergyCeiling;
+    }
+
+    public void learnFood(Food food) {
+        this.knownRecipes.add(food);
+    }
+
+    public int getFinalHourBuff() {
+        return finalHourBuff;
+    }
+
+    public void setFinalHourBuff(int finalHourBuff) {
+        this.finalHourBuff = finalHourBuff;
+    }
+
+    public int getEnergyCeiling() {
+        return energyCeiling;
         this.dailyNPCInteraction = new HashMap<>();
         this.dailyPlayerInteraction = new HashMap<>();
         this.quests = new ArrayList<>();
@@ -155,8 +198,79 @@ public class Player {
         return user.getGender();
     }
 
-    public String getName() {
-        return user.getNickName();
+    public void setEnergyCeiling(int energyCeiling) {
+        this.energyCeiling = energyCeiling;
+    }
+
+    public int getHourPastForBuff() {
+        return hourPastForBuff;
+    }
+
+    public void setHourPastForBuff(int hourPastForBuff) {
+        this.hourPastForBuff = hourPastForBuff;
+    }
+
+    public boolean isBuffActive() {
+        return isBuffActive;
+    }
+
+    public void setBuffActive(boolean buffActive) {
+        isBuffActive = buffActive;
+    }
+
+    public String getBuffer() {
+        return buffer;
+    }
+
+    public void setBuffer(String buffer) {
+        this.buffer = buffer;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public void learnRecipe(Food food) {
+        knownRecipes.add(food);
+    }
+
+    public Set<Food> getKnownRecipes() {
+        return knownRecipes;
+    }
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
+    }
+
+    public int getEnergy() {
+        return energy;
+    }
+
+    public void setEnergy(int energy) {
+        this.energy = energy;
+    }
+
+    public Pos getPosition() {
+        return position;
+    }
+
+    public void setPosition(Pos position) {
+        this.position = position;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setFarm(Farm farm) {
+        this.farm = farm;
+    }
+
+    public Farm getFarm() {
+        return farm;
     }
 
     public int getFarmingAbilityLevel() {
@@ -314,20 +428,18 @@ public class Player {
     }
 
     public Tile getLocation() {
-        // طبیعتا باید  x, y این یارو هم معتبر باشه 
+        // طبیعتا باید  x, y این یارو هم معتبر باشه
         if (this.getX() < App.getActiveGame().getMapHeight() && this.getY() < App.getActiveGame().getMapWidth()) {
             return App.getActiveGame().getMap()[this.getX()][this.getY()];
         }
         return null;
     }
+
     public void increaseEnergy(int amount) {
         if (amount <= 0) {
             amount = 0;
         }
-        if (energy + amount >= energyCeiling) {
-            energy = energyCeiling;
-        }
-        energy += amount;
+        energy = Math.min(energy + amount, energyCeiling);
     }
 
     private boolean isInBound(int x, int y, TileType[][] map) {

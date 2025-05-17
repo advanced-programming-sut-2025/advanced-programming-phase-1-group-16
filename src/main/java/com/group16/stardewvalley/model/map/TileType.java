@@ -1,16 +1,19 @@
 package com.group16.stardewvalley.model.map;
 
 public enum TileType {
-    Tree('T', "\u001B[32m"),
-    Stone('◉', "\u001B[37m"),
-    Forage('f', "\u001B[36m"),
-    Ground('.', "\u001B[33m"),
-    Lake('~', "\u001B[33m"),
-    GreenHouse('G', "\u001B[35m"),
-    Cottage('C', "\u001B[31m"),
-    Quarry('Q', "\u001B[30m"),
-    Plowed('o', ""),
-    Sale_Bucket();
+    NPCHouse('⌂', "\033[37;41m"),     // خانه‌ی شخصیت‌ها: "⌂" نماد خانه (Unicode 8962)
+    Shop('$', "\033[31;46m"),        // مغازه: "$" نماد پول و خرید
+    Tree('♣', "\033[32;40m"),        // درخت: "♣" نماد برگ و طبیعت
+    Stone('o', "\033[30;47m"),       // سنگ: "◼" نماد بلوک سنگی
+    Forage('F', "\033[32;40m"),      // گیاه خودرو: "*" سبکی ساده و برجسته
+    MineralForage('M', "\033[32;41m"),
+    Ground('◼', "\033[33;40m"),      // خاک: "." همچنان مناسب و مینیمال
+    Lake('≈', "\033[97;44m"),        // دریاچه: "≈" نماد موج آب
+    GreenHouse('+', "\033[30;106m"), // گلخانه: "▣" قاب‌دار، متمایز و ساختمانی
+    Cottage('⌂', "\033[30;45m"),     // کلبه: "⌂" مشابه NPCHouse ولی با رنگ متفاوت
+    Quarry('▓', "\033[30;107m"),     // معدن: "▓" حالت سنگ‌ریزه‌ مانند
+    Plowed('∷', "\033[33;43m");      // زمین شخم‌زده: "∷" نشانه ردیفی بودن
+
 
     private final char symbol;
     private final String colorCode;

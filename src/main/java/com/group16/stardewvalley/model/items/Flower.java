@@ -5,4 +5,7 @@ public class Flower extends Item{
         super(name);
     }
 
+    public Flower(String name) {
+        super(name);
+    }
 }

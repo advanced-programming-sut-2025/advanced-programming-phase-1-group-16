@@ -1,8 +1,10 @@
 package com.group16.stardewvalley.model.transaction;
 
+import com.group16.stardewvalley.model.menu.CommandsInterface;
+
 import java.util.regex.*;
 
-public enum TransactionCheatcodeCommands {
+public enum TransactionCheatcodeCommands implements CommandsInterface {
 
     ADD("^\\s*cheat\\s*add\\s*(?<count>\\s+)\\s*dollars\\s*$");
 
@@ -14,8 +16,9 @@ public enum TransactionCheatcodeCommands {
         this.pattern = pattern;
     }
 
-    public Matcher getMatcher(String input) {
-        return Pattern.compile(this.pattern).matcher(input);
+    @Override
+    public String getPattern() {
+        return pattern;
     }
 
 

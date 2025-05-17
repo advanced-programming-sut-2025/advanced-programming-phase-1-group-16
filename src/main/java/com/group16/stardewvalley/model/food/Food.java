@@ -12,12 +12,7 @@ public class Food extends Item {
     private final String source;
     private final int sellPrice;
 
-    public Food(String name, Map<Ingredient,
-            Integer> ingredients,
-                int energy,
-                String buff,
-                String source,
-                int sellPrice) {
+    public Food(String name, Map<Ingredient, Integer> ingredients, int energy, String buff, String source, int sellPrice) {
         super(name);
         this.name = name;
         this.ingredients = ingredients;
@@ -40,10 +35,6 @@ public class Food extends Item {
     @Override
     public String getName() {
         return name;
-    }
-
-    public int getPurchasePrice() {
-        return getPrice();
     }
 
     public Map<Ingredient, Integer> getIngredients() {

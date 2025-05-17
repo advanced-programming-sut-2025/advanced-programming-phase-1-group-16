@@ -15,6 +15,10 @@ public class WateringCan extends Gadget{
         this.usedWaterCapacity = 0;
     }
 
+    public int getUsedWaterCapacity() {
+        return usedWaterCapacity;
+    }
+
     @Override
     public int getPrice() {
        return ToolDataManager.getToolPrice("Watering Can", this.material);
@@ -52,9 +56,15 @@ public class WateringCan extends Gadget{
         }
 
         // محصولی هست پس اب میدهیم
-        if (targetTile.getCrop() != null) {
+        if (targetTile.getCrop() != null || targetTile.getTree() != null) {
             if (this.canWater()) {
                 targetTile.setHasWater(true);
+                if (targetTile.getCrop() != null) {
+                    targetTile.getCrop().setWatered(true);
+                }
+                if (targetTile.getTree() != null) {
+                    targetTile.getTree().setWatered(true);
+                }
                 player.decreaseEnergy(requiredEnergy);
                 return new Result(true, "The crop has been watered successfully! ^ ^");
             } else {
