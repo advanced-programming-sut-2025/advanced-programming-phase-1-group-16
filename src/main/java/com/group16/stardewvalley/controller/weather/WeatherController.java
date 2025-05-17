@@ -43,7 +43,7 @@ public class WeatherController {
         App.getActiveGame().getCurrentPlayer().getInventory().getItems().put(App.getActiveGame().getCurrentPlayer().getInventory().findWood("wood"), -500);
         Greenhouse greenhouse = new Greenhouse(App.getActiveGame().getCurrentPlayer().getFarm());
         App.getActiveGame().getCurrentPlayer().getFarm().setGreenhouse(greenhouse);
-        return new Result(true, "Greenhouse is built!");
+        return new Result(true, "Greenhouse is built!\n500 woods and 1000 coins are used!");
     }
 
 }
