@@ -1,6 +1,7 @@
 package com.group16.stardewvalley.model.user;
 
 import com.group16.stardewvalley.model.Inventory;
+import com.group16.stardewvalley.model.food.Food;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.Tools.Gadget;
 import com.group16.stardewvalley.model.app.App;
@@ -9,7 +10,10 @@ import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.map.TileType;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class Player {
     private User user;
@@ -18,7 +22,6 @@ public class Player {
     private Pos position;
 
 
-    private Inventory playerInventory;
     private Gadget currentEquipment;
     private Item currentThing;
     private int energyCeiling;
@@ -39,6 +42,21 @@ public class Player {
     private Map<Player, Integer> interactionsLevel;
     private Map<Player, Integer> interactionScore;
 
+    private Set<Food> knownRecipes = new HashSet<>();
+
+    private int rejectionCooldown;
+    private Map<Player, Integer> interactionsLevel;
+    private Map<Player, Integer> interactionScore;
+    private Map<Player, Boolean> interactionTodayStatus;
+    private Map<NPC, Integer> friendshipNPCScore;
+    private Map<NPC, Integer> friendshipNPCLevel;
+    private final int[] relationshipRanks = {100, 200, 300, 400};
+    private final int[] NPCRelationshipRanks = {200, 400, 600, 800};
+    private String buffer;
+    private boolean isBuffActive;
+    private int hourPastForBuff;
+    private int finalHourBuff;
+
 
     public Player(User user) {
         this.user = user;
@@ -50,10 +68,19 @@ public class Player {
         miningAbilityScore = 0;
         foragingAbilityScore = 0;
         fishingAbilityScore = 0;
-        playerInventory = new Inventory();
+        inventory = new Inventory();
         energyCeiling = 200;// مقداردهی انرژی اولیه در ابتدای ساخت
         energy = 200;
         isFainted = false;
+        this.rejectionCooldown = 0;
+        this.interactionsLevel = new HashMap<>();
+        this.interactionScore = new HashMap<>();
+        this.interactionTodayStatus = new HashMap<>();
+        this.friendshipNPCScore = new HashMap<>();
+        this.friendshipNPCLevel = new HashMap<>();
+        this.isBuffActive = false;
+        hourPastForBuff = 0;
+        finalHourBuff = 0;
     }
 
     public Inventory getInventory() {

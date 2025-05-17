@@ -1,7 +1,6 @@
 package com.group16.stardewvalley.controller.menu;
 
-import com.group16.stardewvalley.model.app.App;
-import com.group16.stardewvalley.model.app.Game;
+import com.group16.stardewvalley.model.app.*;
 import com.group16.stardewvalley.model.map.TileType;
 import com.group16.stardewvalley.model.menu.GameMenuCommands;
 import com.group16.stardewvalley.model.menu.Menu;
@@ -120,6 +119,12 @@ public class GameMenuController {
         }
         Game game = App.getActiveGame();
         game.setLoader(game.getCurrentPlayer());
+
+        GameData loaded = LoadManager.load("savefile.json");
+        if (loaded != null) {
+            System.out.println("Welcome back, " + loaded.user.getUsername());
+        }
+
         return new Result(true, game.getCurrentPlayer().getUser().getUsername() + " loaded the game successfully!");
 
     }
@@ -127,13 +132,19 @@ public class GameMenuController {
     public Result exit(){
         Game game = App.getActiveGame();
         if(game.getLoader() != null && game.getCurrentPlayer() == game.getLoader()){
-            //TODO save game
+            // save game
+            GameData data = new GameData(App.getActiveGame().getCurrentPlayer().getUser(), App.getActiveGame().getCurrentPlayer(), App.getActiveGame());
+            SaveManager.save(data, "savefile.json");
+
             App.setCurrentMenu(Menu.ExitMenu);
             return new Result(true, "bye bye");
 
         }
         if(game.getCurrentPlayer() == game.getCreator()){
-            //TODO save game
+            // save game
+            GameData data = new GameData(App.getActiveGame().getCurrentPlayer().getUser(), App.getActiveGame().getCurrentPlayer(), App.getActiveGame());
+            SaveManager.save(data, "savefile.json");
+
             App.setCurrentMenu(Menu.ExitMenu);
             return new Result(true, "bye bye");
         }

@@ -1,6 +1,7 @@
 package com.group16.stardewvalley.model.app;
 
 import com.group16.stardewvalley.model.Shops.Building;
+import com.group16.stardewvalley.model.Shops.Shop;
 import com.group16.stardewvalley.model.Weather.WeatherCondition;
 import com.group16.stardewvalley.model.animal.Animal;
 import com.group16.stardewvalley.model.map.Tile;
@@ -29,11 +30,31 @@ public class Game {
     }
     public ArrayList<Animal> gameAnimals = new ArrayList<>();
     public ArrayList<Building> buildings = new ArrayList<>();
+    private final int MAX_FARMINGABILITY_LEVE = 4;
+    private final int MAX_MININGABILITY_LEVELL = 4;
+    private final int MAX_NATURETOURISMABILITY_LEVEL = 4;
+    private final int MAX_FISHINGABILITY_LEVEL = 4;
+    private final ArrayList<Shop> shops = new ArrayList<>();
+    private final List<NPC> NPCs;
 
     public Game(Player creator, ArrayList<Player> players) {
         this.creator = creator;
         this.players = players;
         this.turnsPassed = 0;
+        this.timeDate = new TimeDate(App.getActiveGame());
+        this.shops.add(new Blacksmith());
+        this.shops.add(new JojaMart());
+        this.shops.add(new PierresGeneralStore());
+        this.shops.add(new CarpentersShop());
+        this.shops.add(new FishShop());
+        this.shops.add(new MarniesRanch());
+        this.shops.add(new TheStardropSaloon());
+        this.NPCs = new ArrayList<>();
+        NPCs.add(new NPC(NPCType.Sebastian));
+        NPCs.add(new NPC(NPCType.Abigail));
+        NPCs.add(new NPC(NPCType.Harvey));
+        NPCs.add(new NPC(NPCType.Leah));
+        NPCs.add(new NPC(NPCType.Robin));
     }
 
     public TimeDate getTimeDate() {

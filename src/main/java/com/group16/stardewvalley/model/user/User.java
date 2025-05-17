@@ -13,7 +13,6 @@ public class User {
     private String email;
     private final String gender;
 
-    private int money;
     private int gamePlayed;
 
     private boolean logged_in_flag;
@@ -22,6 +21,7 @@ public class User {
 
     boolean hasActiveGame;
     private Game currentGame;
+
 
     public User(String username, String password, String nickName, String email, String gender) {
         this.username = username;
@@ -104,13 +104,7 @@ public class User {
         this.logged_in_flag = logged_in_flag;
     }
 
-    public int getMoney() {
-        return money;
-    }
 
-    public void setMoney(int money) {
-        this.money = money;
-    }
 
     public int getGamePlayed() {
         return gamePlayed;
