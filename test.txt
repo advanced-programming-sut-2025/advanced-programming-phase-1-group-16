@@ -42,6 +42,50 @@ game map 2
 
 walk -l 34, 3
 
+
+//Animal test
+buy animal -a Cow -n RaeesMazrae
+build -a Coop -l 50, 50
+cheat add coin 10000
+build -a Coop -l 50, 50
+cheat add Wood 100
+build -a Coop -l 50, 50
+walk -l 34, 3
+build -a Coop -l 60, 50
+buy animal -a Cow -n RaeesMazrae
+build -a Barn -l 40, 60
+buy animal -a Cow -n RaeesMazrae
+animals
+buy animal -a chicken -n joojoo
+buy animal -a hen -n joojoo
+animals
+pet -n RaeesMazrae
+walk -l 39, 60
+pet -n RaeesMazrae
+animals
+shepherd animals -n RaeesMazrae -l 65, 65
+animals
+feed hay -n RaeesMazrae
+feed hay -n joojoo
+produces
+sell animal -n RaeesMazrae
+
+
+//artisan
+artisan use Smoked_Fish Salmon Coal
+artisan use Honey
+artisan use Coal Stone
+cheat add Wood 10
+artisan use Coal Wood Wood Wood Wood Wood Wood Wood Wood Wood Wood
+artisan get Honey
+cheat advance time 5 h
+artisan get Honey
+cheat advance time 3 h
+artisan get Honey
+
+
+artisan use Cloth Wool
+artisan use Mead Honey
 //weather
 weather
 weather forecast
@@ -74,10 +118,6 @@ place item -n Cherry Bomb -d n
 learn crafting recipe -n Bomb
 
 
-//artisan
-artisan use Smoked_Fish Salmon Coal
-artisan use Honey
-artisan use Coal Wood
 
 //map test
 print map -l 0,0 -s 300

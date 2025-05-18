@@ -1,14 +1,17 @@
 package com.group16.stardewvalley.model.crafting.artisan;
 
-public class ArtisanIngredients {
+import com.group16.stardewvalley.model.items.Item;
 
-    private ArtisanGoodType type;
+public class ArtisanIngredients extends Item {
 
-    public ArtisanIngredients(ArtisanGoodType type) {
+    private ArtisanIngredientType type;
+
+    public ArtisanIngredients(String name, ArtisanIngredientType type) {
+        super(name);
         this.type = type;
     }
 
-    public ArtisanGoodType getType() {
+    public ArtisanIngredientType getType() {
         return type;
     }
 }

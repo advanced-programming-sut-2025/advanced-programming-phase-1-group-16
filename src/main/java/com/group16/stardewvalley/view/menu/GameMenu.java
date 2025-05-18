@@ -243,15 +243,25 @@ public class GameMenu implements MenuInterface {
         else if((matcher = GameMenuCommands.SellAnimal.getMatcher(input)) != null){
             System.out.println(animalController.sellAnimal(matcher.group("name")));
         }
+        else if((matcher = GameMenuCommands.CheatCoin.getMatcher(input)) != null ){
+            App.getActiveGame().getCurrentPlayer().increaseCoin(Integer.parseInt(matcher.group("amount")));
+            System.out.println("coin added successfully");
+        }
 
     //Artisan commands
     else if((matcher = GameMenuCommands.ArtisanUse.getMatcher(input)) != null ){
         System.out.println(artisanController.use(matcher.group("artisanName"), matcher.group("itemsName")));
     }
     else if((matcher = GameMenuCommands.ArtisanGet.getMatcher(input)) != null){
-        System.out.println(artisanController.get(matcher.group("artisanName")));
+        System.out.println(artisanController.get(matcher.group("artisanName"), timeDate));
     }
+    else if((matcher = GameMenuCommands.CheatAddWood.getMatcher(input)) != null ){
+            System.out.println(artisanController.cheatAddWood(Integer.parseInt(matcher.group("amount"))));
+        }
 
+    else if((matcher = GameMenuCommands.CheatAddArtisanIngerdients.getMatcher(input ) ) != null){
+            System.out.println(artisanController.cheatAddIngredients(matcher.group("name"), Integer.parseInt(matcher.group("amount"))));
+        }
 
         //fishing
         else if ((matcher = GameMenuCommands.Fishing.getMatcher(input)) != null){

@@ -60,9 +60,6 @@ public class TimeDate {
         }
     }
 
-    public int getHour() {
-        return hour;
-    }
 
     // افزایش یک روز
     public void advanceOneDay() {
@@ -157,6 +154,9 @@ public class TimeDate {
     }
 
     // current state methods
+    public int getHour() {
+        return this.hour;
+    }
 
     public String getTime() {
         return String.format("%02d:%02d", hour, minute);
@@ -185,6 +185,7 @@ public class TimeDate {
 
     // متد برای جلو بردن چند ساعت
     public Result advanceTimeCheat(int hours) {
+
         if (hours < 0) {
             return new Result(false,  "cant turn back time!");
 

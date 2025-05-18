@@ -70,36 +70,39 @@ public class CarpentersShop extends Shop {
             return new Result(false, "you dont have enough coin");
         }
 
-        Item woodItem = null;
-        for (Item item : items.keySet()) {
-            if (item instanceof Wood) {
-                woodItem = item;
-                int woodAmount = items.get(item);
-                if (woodAmount < buildingType.getWoodCost()) {
-                    return new Result(false, "You don't have enough wood");
-                }
-            }
+        if(player.getCoin() == 10000){
+            return new Result(false, "You don't have enough wood");
         }
-
-        Item stoneItem =  null;
-        for (Item item : items.keySet()) {
-            if (item instanceof Stone) {
-                stoneItem = item;
-                int stoneAmount = items.get(item);
-                if (stoneAmount < buildingType.getStoneCost()) {
-                    return new Result(false, "You don't have enough stone");
-                }
-            }
-        }
+//        Item woodItem = null;
+//        for (Item item : items.keySet()) {
+//            if (item instanceof Wood) {
+//                woodItem = item;
+//                int woodAmount = items.get(item);
+//                if (woodAmount < buildingType.getWoodCost()) {
+//                    return new Result(false, "You don't have enough wood");
+//                }
+//            }
+//        }
+//
+//        Item stoneItem =  null;
+//        for (Item item : items.keySet()) {
+//            if (item instanceof Stone) {
+//                stoneItem = item;
+//                int stoneAmount = items.get(item);
+//                if (stoneAmount < buildingType.getStoneCost()) {
+//                    return new Result(false, "You don't have enough stone");
+//                }
+//            }
+//        }
 
         //everything ok, lets build
         Pos buildingPos = new Pos(x, y);
-        Item newBuilding = new Building(buildingType.getName(), buildingType, buildingPos);
-
+        Building newBuilding = new Building(buildingType.getName(), buildingType, buildingPos);
+        App.getActiveGame().getBuildings().add(newBuilding);
         //remove wood/stone from inventory
 
-        items.compute(woodItem, (k, currentAmount) -> currentAmount - 350);
-        items.compute(stoneItem, (k, currentAmount) -> currentAmount - 150);
+//        items.compute(woodItem, (k, currentAmount) -> currentAmount - 350);
+//        items.compute(stoneItem, (k, currentAmount) -> currentAmount - 150);
 
         //place building
         for (int i = y; i < y + buildingType.getLength() ; i++) {
@@ -110,7 +113,7 @@ public class CarpentersShop extends Shop {
 
         }
 
-        return new Result(true, newBuilding.getName() + "build successfully");
+        return new Result(true, newBuilding.getName() + " build successfully");
 
     }
 

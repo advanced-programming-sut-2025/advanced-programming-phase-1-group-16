@@ -327,9 +327,9 @@ public class MapController {
         Pos start = currentPlayer.getFarm().getStartPosition();
         Pos playerPos = currentPlayer.getPosition();
         return playerPos.getX() > start.getX() &&
-                playerPos.getX() > start.getX() + currentPlayer.getFarm().getType().getWidth() &&
+                playerPos.getX() < start.getX() + currentPlayer.getFarm().getType().getWidth() &&
                 playerPos.getY() > start.getY() &&
-                playerPos.getY() > start.getY() + currentPlayer.getFarm().getType().getHeight();
+                playerPos.getY() < start.getY() + currentPlayer.getFarm().getType().getHeight();
     }
 
     public static boolean isPlayerInCottage(Player currentPlayer) {

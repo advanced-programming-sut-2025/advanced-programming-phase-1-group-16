@@ -3,13 +3,12 @@ package com.group16.stardewvalley.model.shops;
 import com.group16.stardewvalley.model.animal.AnimalType;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 
 public enum MarniesRanchAnimals {
-    CHICKEN("chicken", AnimalType.HEN,800, List.of(BuildingType.Coop, BuildingType.Big_Coop, BuildingType.Deluxe_Coop),2),
+    HEN("hen", AnimalType.HEN,800, List.of(BuildingType.Coop, BuildingType.Big_Coop, BuildingType.Deluxe_Coop),2),
     COW("cow", AnimalType.COW,1500,List.of(BuildingType.Barn, BuildingType.Big_Barn, BuildingType.Deluxe_Barn),2),
     GOAT("goat", AnimalType.GOAT,4000, List.of(BuildingType.Big_Barn, BuildingType.Deluxe_Barn) ,2),
     DUCK("duck", AnimalType.DUCK,1200,List.of(BuildingType.Big_Coop, BuildingType.Deluxe_Coop),2),

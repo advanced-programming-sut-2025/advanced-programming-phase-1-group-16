@@ -113,22 +113,15 @@ public class GameMenuController {
 
 
     public Result loadGame(){
-//        if(App.getActiveGame() == null){
-//            return new Result(false, "no active game!");
-//        }
-//        Game game = App.getActiveGame();
+
         GameData loaded = LoadManager.load("savefile.json");
         if (loaded != null) {
-//            System.out.println("Welcome back, " + loaded.user.getUsername());
             return new Result(true, "Welcome back, " + loaded.user.getUsername());
         }
         Game game = App.getActiveGame();
         game.setLoader(game.getCurrentPlayer());
 
-        GameData loaded = LoadManager.load("savefile.json");
-        if (loaded != null) {
-            System.out.println("Welcome back, " + loaded.user.getUsername());
-        }
+
 
         return new Result(true, game.getCurrentPlayer().getUser().getUsername() + " loaded the game successfully!");
 

@@ -31,7 +31,7 @@ public enum GameMenuCommands implements CommandsInterface{
 
     //shop commands
     ShopBuildCoopBarn("\\S*build\\s+-a\\s+(?<buildingName>\\S+)\\s+-l\\s+(?<x>\\d+)\\s*,\\s*(?<y>\\d+)\\s*"),
-    BuyAnimal("^buy\\s+animal\\s+-a\\s+(?<animal>\\S+)\\s+-n\\s+(?<name>\\S+)\\s*$ "),
+    BuyAnimal("^buy\\s+animal\\s+-a\\s+(?<animal>\\S+)\\s+-n\\s+(?<name>\\S+)\\s*$"),
     ShowAllProducts("^\\s*show\\s*all\\s*products\\s*$"),
     ShowAllAvailableProducts("^\\s*show\\s*all*available\\s*products\\s*$"),
     Purchase("^\\s*purchase\\s*(?<productName>\\S+)(?:\\s+-n\\s+(?<count>\\d+))?\\s*$"),
@@ -59,7 +59,7 @@ public enum GameMenuCommands implements CommandsInterface{
     CollectProduct("\\s*collect\\s+produce\\s+-n\\s+(?<name>\\S+)\\s*"),
     SellAnimal("\\s*sell\\s+animal\\s+-n\\s+(?<name>\\S+)\\s*"),
     Fishing("fishing -p (?<fishingPole>.+?)"),
-
+    CheatCoin("cheat add coin (?<amount>\\d+)"),
 
     //weather
     Thor("cheat Thor -l (?<x>\\d+)\\s*,\\s*(?<y>\\d+)"),
@@ -77,8 +77,10 @@ public enum GameMenuCommands implements CommandsInterface{
     LearnCraftingRecipe("\\s*learn\\s+crafting\\s+recipe\\s+-n\\s+(?<itemName>.+)\\s*"),
 
     //Artisan commands
-    ArtisanUse("\\s*artisan\\s+use\\s+(?<artisanName>\\S+)\\s+(?<itemsName>.+)\\s*"),
+    ArtisanUse("\\s*artisan\\s+use\\s+(?<artisanName>\\S+)\\s*(?<itemsName>.*)\\s*"),
     ArtisanGet("\\s*artisan\\s+get\\s+(?<artisanName>\\S+)\\s*"),
+    CheatAddWood("cheat add Wood (?<amount>\\d+)"),
+    CheatAddArtisanIngerdients("cheat add -n (?<name>.+) -a (?<amount>\\d+)"),
 
     // relationship commands
     Friendship("^\\s*friendship\\s*$"),

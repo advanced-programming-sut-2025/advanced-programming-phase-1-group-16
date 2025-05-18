@@ -51,6 +51,7 @@ public class MarniesRanch extends Shop {
                         //set animal position as building start position
                         newAnimal.setAnimalPos(building.getStartPosition());
 
+                        return new Result(true, name + " added to " + building.getName());
                     }
 
                 }

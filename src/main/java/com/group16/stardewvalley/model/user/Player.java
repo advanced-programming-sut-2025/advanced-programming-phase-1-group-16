@@ -211,9 +211,7 @@ public class Player {
         return coin;
     }
 
-    public void increaseCoin(int amount) {
-        coin -= amount;
-    }
+
 
     public void addFarmingAbilityScore(int amount) {
         farmingAbilityScore += amount;
@@ -361,6 +359,9 @@ public class Player {
         this.isEnergyUnlimited = false;
         interactionTodayStatus.replaceAll((player, status) -> false);
 
+    }
+    public void increaseCoin(int amount) {
+        coin += amount;
     }
 
     public void decreaseCoin(int amount) {

@@ -5,7 +5,8 @@ import com.group16.stardewvalley.model.crafting.CraftingRecipes;
 import java.util.Map;
 
 public enum ArtisanGoodType {
-    HONEY("Honey", CraftingRecipes.BeeHouse, "It's a sweet syrup produced by bees.", 75, 96,
+    //TODO 96 h processing time changed to 7
+    HONEY("Honey", CraftingRecipes.BeeHouse, "It's a sweet syrup produced by bees.", 75, 7,
             Map.of(), 350),
 
     CHEESE("Cheese", CraftingRecipes.CheesePress, "It's your basic cheese.", 100, 3,

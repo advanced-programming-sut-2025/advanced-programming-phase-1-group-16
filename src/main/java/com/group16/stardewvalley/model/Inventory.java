@@ -1,6 +1,7 @@
 package com.group16.stardewvalley.model;
 
 
+import com.group16.stardewvalley.model.crafting.artisan.ArtisanGood;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.agriculture.*;
 import com.group16.stardewvalley.model.items.Seed;
@@ -27,6 +28,7 @@ public class Inventory {
     private ArrayList<CraftingRecipes> craftingRecipes;
     private Map<Crop, Integer> crops;
     private BackPackType backPackType;
+    private ArrayList<ArtisanGood> notReadyArtisans = new ArrayList<>();
 
     public Inventory() {
         this.tools = new HashMap<>();
@@ -52,6 +54,14 @@ public class Inventory {
 
     public void setCapacity(int capacity) {
         this.capacity = capacity;
+    }
+
+    public ArrayList<ArtisanGood> getNotReadyArtisans() {
+        return notReadyArtisans;
+    }
+
+    public void addNotReadyArtisan(ArtisanGood artisanGood) {
+        notReadyArtisans.add(artisanGood);
     }
 
     public void setTools(Map<Gadget, Integer> tools) {
