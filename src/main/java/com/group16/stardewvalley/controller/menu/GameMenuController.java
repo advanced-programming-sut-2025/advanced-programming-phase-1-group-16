@@ -125,7 +125,7 @@ public class GameMenuController {
         Game game = App.getActiveGame();
         game.setLoader(game.getCurrentPlayer());
 
-        GameData loaded = LoadManager.load("savefile.json");
+        loaded = LoadManager.load("savefile.json");
         if (loaded != null) {
             System.out.println("Welcome back, " + loaded.user.getUsername());
         }
@@ -169,7 +169,7 @@ public class GameMenuController {
         if(result){
             //terminating won the election
 
-            App.setActiveGame(null);
+//            App.setActiveGame(null);
             App.setCurrentMenu(Menu.GameMenu);
             return new Result(true, "terminated game!");
             //TODO; how to delete the game

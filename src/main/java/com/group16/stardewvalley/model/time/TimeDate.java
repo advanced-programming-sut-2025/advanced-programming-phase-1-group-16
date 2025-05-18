@@ -174,8 +174,8 @@ public class TimeDate {
         return currentDayOfWeek.getName();
     }
 
-    public String getSeason() {
-        return currentSeason.getName();
+    public Season getSeason() {
+        return currentSeason;
     }
 
 

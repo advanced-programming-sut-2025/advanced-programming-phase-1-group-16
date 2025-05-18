@@ -35,7 +35,7 @@ public enum GameMenuCommands implements CommandsInterface{
     ShowAllProducts("^\\s*show\\s*all\\s*products\\s*$"),
     ShowAllAvailableProducts("^\\s*show\\s*all*available\\s*products\\s*$"),
     Purchase("^\\s*purchase\\s*(?<productName>\\S+)(?:\\s+-n\\s+(?<count>\\d+))?\\s*$"),
-
+    Sell("^\\s*sell\\s*(?<productName>\\S+)\\s*-n(?<count>\\d+)\\s*$"),
     CraftInfo("\\s*craft info -n (?<name>.+?)\\s*"),
     TreeInfo("tree info -n (?<name>.+?)\\s*"),
     ForagingInfo("foraging info -n (?<name>.+?)\\s*"),
@@ -81,7 +81,7 @@ public enum GameMenuCommands implements CommandsInterface{
     ArtisanGet("\\s*artisan\\s+get\\s+(?<artisanName>\\S+)\\s*"),
 
     // relationship commands
-    Friendship("^\\s*friendship\\s*$"),
+    Friendship("^\\s*friendships\\s*$"),
     Talk("^\\s*talk\\s*-u\\s*(?<username>\\S+)\\s*-m\\s*(?<message>.+?)$"),
     TalkHistory("^\\s*talk\\s*$"),
     Gift("^\\s*gift\\s*-u\\s*(?<username>\\S+)\\s*-i\\s*(?<itemName>\\S+)\\s*-a\\s*(?<amount>\\d+)\\s*$"),
@@ -90,7 +90,8 @@ public enum GameMenuCommands implements CommandsInterface{
     GiftHistory("^\\s*gift\\s*history\\s*-u\\s*(?<username>\\S+)\\s*$"),
     Hug("^\\s*hug\\s*-u\\s*(?<username>\\S+)\\s*$"),
     Flower("^\\s*flower\\s*-u\\s*(?<username>\\S+)\\s*$"),
-    AskMarriage("^\\s*ask\\s*marriage\\s*-u\\s*(?<username>\\S+)\\s*-r\\s*(?<ring>\\S+)\\s*$");
+    AskMarriage("^\\s*ask\\s*marriage\\s*-u\\s*(?<username>\\S+)\\s*-r\\s*(?<ring>\\S+)\\s*$"),
+    Respond("^\\s*\\s*$");
 
 
 

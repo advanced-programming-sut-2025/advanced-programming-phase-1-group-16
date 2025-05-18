@@ -119,9 +119,39 @@ public class Inventory {
         return null;
     }
 
+    public int getNumberOfItem(Item item) {
+        for (Map.Entry<Item, Integer> entry : items.entrySet()) {
+            if (entry.getKey().equals(item)) {
+                return entry.getValue();
+            }
+        }
+        return 0;
+    }
+
     public Map<Gadget, Integer> getTools() {
         return tools;
     }
+
+    public Result removeItem(Item item, int count) {
+        if (!items.containsKey(item)) {
+            return new Result(false, "You don't have it");
+        }
+
+        int currentCount = items.get(item);
+        if (currentCount < count) {
+            return new Result(false, "Not enough " + item.getName() + " in inventory! (Available: " + currentCount + ")");
+        }
+
+        int newCount = currentCount - count;
+        if (newCount > 0) {
+            items.put(item, newCount);
+        } else {
+            items.remove(item);
+        }
+
+        return new Result(true, count + " " + item.getName() + "(s) removed from inventory");
+    }
+
 
     public boolean isFull() {
         return getTotalItemsCount() >= backPackType.getCapacity();
@@ -142,6 +172,15 @@ public class Inventory {
             }
         }
         return false;
+    }
+
+    public Item getItemByName(String name) {
+        for (Map.Entry<Item, Integer> entry : items.entrySet()) {
+            if (entry.getKey().getName().equalsIgnoreCase(name)) {
+                return entry.getKey();
+            }
+        }
+        return null;
     }
 
     public Seed findSeedByType(SeedType seedType) {
