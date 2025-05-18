@@ -45,6 +45,7 @@ public class Game {
         this.players = players;
         this.turnsPassed = 0;
         this.timeDate = new TimeDate();
+        App.setActiveGame(this);
         this.shops.add(Blacksmith.getInstance());
         this.shops.add(JojaMart.getInstance());
         this.shops.add(PierresGeneralStore.getInstance());
@@ -55,6 +56,7 @@ public class Game {
         this.weatherCondition = WeatherCondition.SUNNY;
         this.tomorrowWeatherCondition = WeatherCondition.SUNNY;
         this.NPCs = new ArrayList<>();
+
         NPCs.add(new NPC(NPCType.Sebastian));
         NPCs.add(new NPC(NPCType.Abigail));
         NPCs.add(new NPC(NPCType.Harvey));

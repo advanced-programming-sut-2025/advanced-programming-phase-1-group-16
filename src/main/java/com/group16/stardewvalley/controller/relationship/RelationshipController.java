@@ -7,6 +7,7 @@ import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.items.MarriageRing;
+import com.group16.stardewvalley.model.notification;
 import com.group16.stardewvalley.model.time.TimeDate;
 import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.model.user.PlayerInteraction;
@@ -159,6 +160,10 @@ public class RelationshipController {
         return new Result(true, "Hug attack successful! +1 Happiness! ʕ•ᴥ•ʔ");
 
 
+    }
+
+    public Result showNotifications() {
+      return game.getCurrentPlayer().showNotifications();
     }
 
 

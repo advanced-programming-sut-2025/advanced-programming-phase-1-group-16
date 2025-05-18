@@ -414,6 +414,10 @@ public class Player {
         this.getInteractionWith(target).setFriendshipLevel(amount);
     }
 
+    public List<notification> getNotifications() {
+        return notifications;
+    }
+
     public void setRejectionCooldown(int amount) {
         rejectionCooldown = amount;
     }

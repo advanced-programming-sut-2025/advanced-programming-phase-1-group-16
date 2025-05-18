@@ -8,6 +8,7 @@ import com.group16.stardewvalley.controller.energy.EnergyController;
 import com.group16.stardewvalley.controller.map.MapController;
 import com.group16.stardewvalley.controller.menu.GameMenuController;
 import com.group16.stardewvalley.controller.menu.HomeMenuController;
+import com.group16.stardewvalley.controller.playercontroller.PlayerController;
 import com.group16.stardewvalley.controller.shops.ShopController;
 import com.group16.stardewvalley.controller.tools.GadgetController;
 import com.group16.stardewvalley.controller.weather.WeatherController;
@@ -43,6 +44,7 @@ public class GameMenu implements MenuInterface {
     private final ShopController shopController = new ShopController();
     private final ArtisanController artisanController = new ArtisanController();
     private final WeatherController weatherController = new WeatherController();
+    private final PlayerController playerController = new PlayerController();
 
 
     @Override
@@ -146,6 +148,15 @@ public class GameMenu implements MenuInterface {
             System.out.println(agricultureController.howMuchWater());
         }
 
+        //cheat add coin
+        else if ((matcher = GameMenuCheatCodeCommands.CheatAddCoin.getMatcher(input)) != null) {
+            System.out.println(playerController.cheatAddCoin(matcher));
+        }
+
+        //player
+        else if ((matcher = GameMenuCommands.Show_Coin.getMatcher(input)) != null) {
+            System.out.println(playerController.showCoin());
+        }
 
 
         //Cooking

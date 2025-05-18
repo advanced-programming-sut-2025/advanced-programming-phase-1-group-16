@@ -9,9 +9,10 @@ public enum GameMenuCheatCodeCommands implements CommandsInterface {
     AddIngredient("add ingredient (?<ingredient>.+?)"),
     CookFood("cheat cook food (?<food>.+?)"),
     LearnRecipe("cheat learn recipe (?<recipe>.+?)"),
-    CheatAdd("^\\s*cheat\\s*add\\s*(?<count>\\d+)\\s*dollars\\s*$");
+    CheatAdd("^\\s*cheat\\s*add\\s*(?<count>\\d+)\\s*dollars\\s*$"),
 
-
+// اضافه کردن پول به بازیکن
+    CheatAddCoin("^\\s*cheat\\s*add\\s*coin\\s*(?<amount>\\d+)\\s*$");
     private final String pattern;
     GameMenuCheatCodeCommands(String pattern) {
         this.pattern = pattern;

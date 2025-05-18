@@ -76,6 +76,10 @@ public enum GameMenuCommands implements CommandsInterface{
     CheatAddItem("\\s*cheat\\s+add\\s+item\\s+-n\\s+(?<itemName>.+)\\s+-c\\s+(?<count>\\d+)\\s*"),
     LearnCraftingRecipe("\\s*learn\\s+crafting\\s+recipe\\s+-n\\s+(?<itemName>.+)\\s*"),
 
+    // player
+    Show_Coin("^\\s*show\\s*coin\\s*"),
+
+
     //Artisan commands
     ArtisanUse("\\s*artisan\\s+use\\s+(?<artisanName>\\S+)\\s+(?<itemsName>.+)\\s*"),
     ArtisanGet("\\s*artisan\\s+get\\s+(?<artisanName>\\S+)\\s*"),
@@ -91,7 +95,8 @@ public enum GameMenuCommands implements CommandsInterface{
     Hug("^\\s*hug\\s*-u\\s*(?<username>\\S+)\\s*$"),
     Flower("^\\s*flower\\s*-u\\s*(?<username>\\S+)\\s*$"),
     AskMarriage("^\\s*ask\\s*marriage\\s*-u\\s*(?<username>\\S+)\\s*-r\\s*(?<ring>\\S+)\\s*$"),
-    Respond("^\\s*\\s*$");
+    Respond("^\\s*respond\\s+(?<action>accept|reject)\\s+-u\\s+(?<username>\\S+)\\s*$"),
+    Show_Notification("^\\s*show\\s*notification\\s*");
 
 
 
