@@ -9,6 +9,8 @@ import com.group16.stardewvalley.model.user.SecurityQuestions;
 import com.group16.stardewvalley.model.user.User;
 import com.group16.stardewvalley.model.user.UserSaveManager;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,7 +39,10 @@ public class LoginMenuController  {
         //how to turn back to enter password again?
         if(password.equals("random") || password.equals("Random")){
             String generatedPassword = generateRandomPassword();
-            User newUser = new User(username,generatedPassword,nickName,email,gender);
+
+            String hashedPassword = PasswordHasher.hashPassword(generatedPassword);
+            User newUser = new User(username, hashedPassword, nickName, email, gender);
+
             UserSaveManager.addUserAndSave(newUser); // Save new user to file
 
 
@@ -74,7 +79,9 @@ public class LoginMenuController  {
         }
 
         //successful
-        User newUser = new User(username,password,nickName,email,gender);
+        String hashedPassword = PasswordHasher.hashPassword(password);
+        User newUser = new User(username, hashedPassword, nickName, email, gender);
+
         UserSaveManager.addUserAndSave(newUser); // Save new user to file
 
 
@@ -125,6 +132,29 @@ public class LoginMenuController  {
         return sb.toString();
     }
 
+
+    public class PasswordHasher {
+        public static String hashPassword(String password) {
+            try {
+                MessageDigest digest = MessageDigest.getInstance("SHA-256");
+                byte[] hash = digest.digest(password.getBytes());
+
+                // Convert byte array into signum representation
+                StringBuilder hexString = new StringBuilder();
+                for (byte b : hash) {
+                    String hex = Integer.toHexString(0xff & b);
+                    if (hex.length() == 1) hexString.append('0');
+                    hexString.append(hex);
+                }
+                return hexString.toString();
+
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException("Error hashing password", e);
+            }
+        }
+    }
+
+
     public Result setSecurityQuestion(String username, String securityQuestion, String answer, String answerConfirm) {
         if (!(securityQuestion.equals("1") || securityQuestion.equals("2") || securityQuestion.equals("3")
             || securityQuestion.equals("4") || securityQuestion.equals("5"))) {
@@ -164,9 +194,14 @@ public class LoginMenuController  {
         if(user == null) {
             return new Result(false, "username doesn't exist!");
         }
-        if(!(user.getPassword().equals(password))) {
+        String hashedInput = PasswordHasher.hashPassword(password);
+        if (!(user.getPassword().equals(hashedInput))) {
             return new Result(false, "password is incorrect!");
         }
+
+//        if(!(user.getPassword().equals(password))) {
+//            return new Result(false, "password is incorrect!");
+//        }
 
         // log in and set user as logged in
         App.setLoggedInUser(user);
@@ -223,8 +258,11 @@ public class LoginMenuController  {
         }
 
         //Strong password -> set as new password
+
         User user = getUserByUsername(username);
-        user.setPassword(password);
+        String hashedPassword = PasswordHasher.hashPassword(password);
+        user.setPassword(hashedPassword);
+
 
         return new Result(true, "password changed successfully!");
 
