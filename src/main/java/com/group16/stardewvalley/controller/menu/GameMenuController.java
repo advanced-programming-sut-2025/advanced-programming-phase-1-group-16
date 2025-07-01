@@ -125,7 +125,7 @@ public class GameMenuController {
         Game game = App.getActiveGame();
         game.setLoader(game.getCurrentPlayer());
 
-        GameData loaded = LoadManager.load("savefile.json");
+        loaded = LoadManager.load("savefile.json");
         if (loaded != null) {
             System.out.println("Welcome back, " + loaded.user.getUsername());
         }
