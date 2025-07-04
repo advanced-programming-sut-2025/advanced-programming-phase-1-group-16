@@ -2,12 +2,79 @@ package com.group16.stardewvalley;
 
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.group16.stardewvalley.controller.map.MapController;
+import com.group16.stardewvalley.controller.menu.GameMenuController;
+import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.menu.GameMenuCommands;
+import com.group16.stardewvalley.model.user.Player;
+import com.group16.stardewvalley.model.user.User;
 import com.group16.stardewvalley.view.AppView;
+import com.group16.stardewvalley.view.graphics.GameScreen;
+
+import java.util.ArrayList;
+
+import static com.group16.stardewvalley.model.user.User.getUserByUsername;
 
 public class Main extends Game {
+    GameMenuController controller = new GameMenuController();
+    private final MapController mapController = new MapController();
+    private static Main main;
+    private static SpriteBatch batch;
 
     @Override
     public void create() {
-        setScreen(new AppView(this));
+        main = this;
+        batch = new SpriteBatch();
+        String[] users = new String[3];
+        users[0] = "atena";
+        users[1] = "david";
+        users[2] = "daniel";
+
+        App.setLoggedInUser(new User("Boss", "ee", "h", "a@gmail", "woman"));
+
+        ArrayList<Player> gamePlayers = new ArrayList<>();
+        gamePlayers.add(new Player(App.getLoggedInUser()));
+        for (String user : users) {
+            gamePlayers.add(new Player(new User(user, "ee", "ff", "a@gmail", "woman")));
+
+        }
+
+        com.group16.stardewvalley.model.app.Game newGame = new com.group16.stardewvalley.model.app.Game(new Player(App.getLoggedInUser()), gamePlayers);
+        App.setActiveGame(newGame);
+        App.games.add(newGame);
+        for (Player player : App.getActiveGame().getPlayers()) {
+            controller.chooseFarm(player, "1");
+
+        }
+        mapController.createMap();
+        setScreen(new GameScreen());
+    }
+
+    @Override
+    public void render() {
+        super.render();
+    }
+
+    @Override
+    public void dispose() {
+        batch.dispose();
+    }
+
+    public static Main getMain() {
+        return main;
+    }
+
+
+    public static void setMain(Main main) {
+        Main.main = main;
+    }
+
+    public static SpriteBatch getBatch() {
+        return batch;
+    }
+
+    public static void setBatch(SpriteBatch batch) {
+        Main.batch = batch;
     }
 }

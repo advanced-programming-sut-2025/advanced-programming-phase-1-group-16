@@ -3,46 +3,46 @@ package com.group16.stardewvalley.model.agriculture;
 import com.group16.stardewvalley.model.time.Season;
 
 public enum TreeType {
-    APRICOT("Apricot Tree", SeedType.APRICOT_SAPLING, new int[]{7, 7, 7, 7}, 28,
+    APRICOT("Apricot_Sapling", SeedType.APRICOT_SAPLING, new int[]{7, 7, 7, 7}, 28,
             "Apricot", 1, 59, true, 38, 17, Season.Spring),
 
-    CHERRY("Cherry Tree", SeedType.CHERRY_SAPLING, new int[]{7, 7, 7, 7}, 28,
+    CHERRY("Cherry", SeedType.CHERRY_SAPLING, new int[]{7, 7, 7, 7}, 28,
             "Cherry", 1, 80, true, 38, 17, Season.Spring),
 
-    BANANA("Banana Tree", SeedType.BANANA_SAPLING, new int[]{7, 7, 7, 7}, 28,
+    BANANA("Banana", SeedType.BANANA_SAPLING, new int[]{7, 7, 7, 7}, 28,
             "Banana", 1, 150, true, 75, 33, Season.Summer),
 
-    MANGO("Mango Tree", SeedType.MANGO_SAPLING, new int[]{7, 7, 7, 7}, 28,
+    MANGO("Mango", SeedType.MANGO_SAPLING, new int[]{7, 7, 7, 7}, 28,
             "Mango", 1, 130, true, 100, 45, Season.Summer),
 
-    ORANGE("Orange Tree", SeedType.ORANGE_SAPLING, new int[]{7, 7, 7, 7}, 28,
+    ORANGE("Orange", SeedType.ORANGE_SAPLING, new int[]{7, 7, 7, 7}, 28,
             "Orange", 1, 100, true, 38, 17, Season.Summer),
 
-    PEACH("Peach Tree", SeedType.PEACH_SAPLING, new int[]{7, 7, 7, 7}, 28,
+    PEACH("Peach", SeedType.PEACH_SAPLING, new int[]{7, 7, 7, 7}, 28,
             "Peach", 1, 140, true, 38, 17, Season.Summer),
 
-    APPLE("Apple Tree", SeedType.APPLE_SAPLING, new int[]{7, 7, 7, 7}, 28,
+    APPLE("Apple", SeedType.APPLE_SAPLING, new int[]{7, 7, 7, 7}, 28,
             "Apple", 1, 100, true, 38, 17, Season.Fall),
 
-    POMEGRANATE("Pomegranate Tree", SeedType.POMEGRANATE_SAPLING, new int[]{7, 7, 7, 7}, 28,
+    POMEGRANATE("Pomegranate", SeedType.POMEGRANATE_SAPLING, new int[]{7, 7, 7, 7}, 28,
             "Pomegranate", 1, 140, true, 38, 17, Season.Fall),
 
-    OAK("Oak Tree", SeedType.ACORNS, new int[]{7, 7, 7, 7}, 28,
+    OAK("Oak", SeedType.ACORNS, new int[]{7, 7, 7, 7}, 28,
             "Oak Resin", 7, 150, false, -1, -1, Season.Special),
 
-    MAPLE("Maple Tree", SeedType.MAPLE_SEEDS, new int[]{7, 7, 7, 7}, 28,
+    MAPLE("Maple", SeedType.MAPLE_SEEDS, new int[]{7, 7, 7, 7}, 28,
             "Maple Syrup", 9, 200, false, -1, -1, Season.Special),
 
-    PINE("Pine Tree", SeedType.PINE_CONES, new int[]{7, 7, 7, 7}, 28,
+    PINE("Pine", SeedType.PINE_CONES, new int[]{7, 7, 7, 7}, 28,
             "Pine Tar", 5, 100, false, -1, -1, Season.Special),
 
-    MAHOGANY("Mahogany Tree", SeedType.MAHOGANY_SEEDS, new int[]{7, 7, 7, 7}, 28,
+    MAHOGANY("Mahogany", SeedType.MAHOGANY_SEEDS, new int[]{7, 7, 7, 7}, 28,
             "Sap", 1, 2, true, -2, 0, Season.Special),
 
-    MUSHROOM("Mushroom Tree", SeedType.MUSHROOM_TREE_SEEDS, new int[]{7, 7, 7, 7}, 28,
+    MUSHROOM("Mushroom", SeedType.MUSHROOM_TREE_SEEDS, new int[]{7, 7, 7, 7}, 28,
             "Common Mushroom", 1, 40, true, 38, 17, Season.Special),
 
-    MYSTIC("Mystic Tree", SeedType.MYSTIC_TREE_SEEDS, new int[]{7, 7, 7, 7}, 28,
+    MYSTIC("Mystic", SeedType.MYSTIC_TREE_SEEDS, new int[]{7, 7, 7, 7}, 28,
             "Mystic Syrup", 7, 1000, true, 500, 225, Season.Special);
 
     private final String name;

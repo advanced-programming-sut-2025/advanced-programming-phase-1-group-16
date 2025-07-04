@@ -4,6 +4,9 @@ import com.badlogic.gdx.Screen;
 import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.menu.Menu;
+import com.group16.stardewvalley.view.graphics.GameScreen;
+
+import java.util.Scanner;
 
 public class AppView implements Screen {
 
@@ -20,10 +23,13 @@ public class AppView implements Screen {
 
     @Override
     public void render(float delta) {
+        Scanner scanner = new Scanner(System.in);
         // معادل حلقه‌ی do-while قبلی
-        App.getCurrentMenu().checkCommand(null); // اگر هنوز Scanner استفاده می‌کنی، باید UI بشه
+        App.getCurrentMenu().checkCommand(scanner); // اگر هنوز Scanner استفاده می‌کنی، باید UI بشه
         if (App.getActiveGame() != null) {
-            App.getActiveGame().nextTurn();
+
+            game.setScreen(new GameScreen());
+
         }
 
         if (App.getCurrentMenu() == Menu.ExitMenu) {
