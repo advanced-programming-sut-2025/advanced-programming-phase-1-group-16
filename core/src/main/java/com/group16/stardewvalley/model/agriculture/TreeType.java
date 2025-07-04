@@ -39,7 +39,7 @@ public enum TreeType {
     MAHOGANY("Mahogany", SeedType.MAHOGANY_SEEDS, new int[]{7, 7, 7, 7}, 28,
             "Sap", 1, 2, true, -2, 0, Season.Special),
 
-    MUSHROOM("Mushroom", SeedType.MUSHROOM_TREE_SEEDS, new int[]{7, 7, 7, 7}, 28,
+    MUSHROOM("MushroomTree", SeedType.MUSHROOM_TREE_SEEDS, new int[]{7, 7, 7, 7}, 28,
             "Common Mushroom", 1, 40, true, 38, 17, Season.Special),
 
     MYSTIC("Mystic", SeedType.MYSTIC_TREE_SEEDS, new int[]{7, 7, 7, 7}, 28,

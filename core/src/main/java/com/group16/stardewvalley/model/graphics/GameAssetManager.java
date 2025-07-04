@@ -66,7 +66,7 @@ public class GameAssetManager {
         name.replace(" ", "_");
         Texture texture;
         try{
-            texture = new Texture("Trees/" + name + "_Stage_5.png");
+            texture = new Texture("Trees/" + name + "_Stage_5_Spring.png");
         } catch (Exception e){
             texture = treeTexture;
         }
