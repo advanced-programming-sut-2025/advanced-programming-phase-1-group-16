@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.map.TileTextureManager;
+import com.group16.stardewvalley.model.map.TileType;
 
 public class TileRenderer {
     private final GameAssetManager textureManager;
@@ -20,12 +21,20 @@ public class TileRenderer {
 
 
         // 1. رسم پس‌زمینه‌ی اصلی تایل (مثلاً grass, soil)
+        if (tile.getType().equals(TileType.CottageStartPos)) {
+            Texture house = GameAssetManager.getGameAssetManager().getHouseTexture();
+            int realWidth = TILE_SIZE * 10;
+            int realHeight = TILE_SIZE * 10;
 
+            int offsetX = drawX + (TILE_SIZE - realWidth) / 2;
+            int offsetY = drawY;
+            batch.draw(house, offsetX, offsetY, realWidth, realHeight);
+        }
         // 2. اگر crop وجود داشت، رسم کن
         if (tile.getCrop() != null) {
             Texture cropTexture = textureManager.getCropTexture(tile.getCrop());
-            int realWidth = cropTexture.getWidth();     // مثلا 64
-            int realHeight = cropTexture.getHeight();   // مثلا 96
+            int realWidth = cropTexture.getWidth();
+            int realHeight = cropTexture.getHeight();
 
             int offsetX = drawX + (TILE_SIZE - realWidth) / 2;
             int offsetY = drawY;
@@ -35,8 +44,8 @@ public class TileRenderer {
         // 4. اگر آیتم روی زمین افتاده بود
         if (tile.getItem() != null) {
             Texture itemTexture = textureManager.getItemTexture();
-            int realWidth = itemTexture.getWidth();     // مثلا 64
-            int realHeight = itemTexture.getHeight();   // مثلا 96
+            int realWidth = itemTexture.getWidth();
+            int realHeight = itemTexture.getHeight();
 
             int offsetX = drawX + (TILE_SIZE - realWidth) / 2;
             int offsetY = drawY;
@@ -46,8 +55,8 @@ public class TileRenderer {
         // 3. اگر tree وجود داشت
         if (tile.getTree() != null) {
             Texture treeTexture = textureManager.getTreeTexture(tile.getTree());
-            int realWidth = 30;     // مثلا 64
-            int realHeight = 60;   // مثلا 96
+            int realWidth = 30;
+            int realHeight = 60;
 
             int offsetX = drawX + (TILE_SIZE - realWidth) / 2;
             int offsetY = drawY;
@@ -56,8 +65,8 @@ public class TileRenderer {
 
         if (tile.isBurned()) {
             Texture fireOverlay = textureManager.getBurnTexture();
-            int realWidth = fireOverlay.getWidth();     // مثلا 64
-            int realHeight = fireOverlay.getHeight();   // مثلا 96
+            int realWidth = fireOverlay.getWidth();
+            int realHeight = fireOverlay.getHeight();
 
             int offsetX = drawX + (TILE_SIZE - realWidth) / 2;
             int offsetY = drawY;
@@ -67,8 +76,8 @@ public class TileRenderer {
         // 6. اگر کود ریخته شده بود
         if (tile.isFertilized()) {
             Texture fertOverlay = textureManager.getFertalizeTexture();
-            int realWidth = fertOverlay.getWidth();     // مثلا 64
-            int realHeight = fertOverlay.getHeight();   // مثلا 96
+            int realWidth = fertOverlay.getWidth();
+            int realHeight = fertOverlay.getHeight();
 
             int offsetX = drawX + (TILE_SIZE - realWidth) / 2;
             int offsetY = drawY;
