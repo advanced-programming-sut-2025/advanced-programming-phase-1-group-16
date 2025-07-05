@@ -86,4 +86,14 @@ public class Farm {
     public void setStartPosition(Pos startPosition) {
         this.startPosition = startPosition;
     }
+
+    public Pos getCottageStart() {
+        Pos cottageStart = new Pos(0, 0);
+        switch (type){
+            case small -> cottageStart = new Pos(10, 43);
+            case big -> cottageStart = new Pos(10, 10);
+        }
+        return cottageStart;
+    }
+
 }
