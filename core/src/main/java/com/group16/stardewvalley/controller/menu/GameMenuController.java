@@ -82,33 +82,55 @@ public class GameMenuController {
         }
     }
 
-    public void randomItems(Farm farm){
+    public void randomItems(Farm farm) {
         Random random = new Random();
         int totalTiles = farm.getType().getHeight() * farm.getType().getWidth();
 
-        // تعداد رندم آیتم‌ها (مثلاً بین 5 تا 20 درصد کل تایل‌ها)
+        // موقعیت کلبه
+        Pos cottageStart = farm.getCottageStart();  // فرض: تابعی که موقعیت بالا-چپ کلبه رو می‌ده
+        int cottageX = cottageStart.getX();
+        int cottageY = cottageStart.getY();
+
         int itemCount = (random.nextInt(totalTiles / 5) + totalTiles / 20) / 4;
 
         for (int k = 0; k < itemCount; k++) {
-            int i = random.nextInt(farm.getType().getWidth());           // ردیف رندم
-            int j = random.nextInt(farm.getType().getHeight());        // ستون رندم
-            if (farm.getType().getTiles()[j][i].equals(TileType.Ground) ) {
-                farm.getType().getTiles()[j][i] = TileType.Tree;
+            int i = random.nextInt(farm.getType().getWidth());
+            int j = random.nextInt(farm.getType().getHeight());
+
+            // رد کردن اگر داخل محدوده ممنوعه است
+            if (isNearCottage(i, j, cottageX, cottageY)) {
+                k--; // این تلاش بی‌نتیجه بود، تلاش بعدی
+                continue;
             }
-            if (farm.getType().getTiles()[j][i].equals(TileType.Quarry)) {
+
+            if (farm.getType().getTiles()[j][i].equals(TileType.Ground)) {
+                farm.getType().getTiles()[j][i] = TileType.Tree;
+            } else if (farm.getType().getTiles()[j][i].equals(TileType.Quarry)) {
                 farm.getType().getTiles()[j][i] = TileType.Stone;
             }
         }
+
         for (int k = 0; k < itemCount / 2; k++) {
-            int j = random.nextInt(farm.getType().getHeight());           // ردیف رندم
-            int i = random.nextInt(farm.getType().getWidth());        // ستون رندم
+            int i = random.nextInt(farm.getType().getWidth());
+            int j = random.nextInt(farm.getType().getHeight());
+
+            if (isNearCottage(i, j, cottageX, cottageY)) {
+                k--;
+                continue;
+            }
+
             if (farm.getType().getTiles()[j][i] == TileType.Ground) {
                 farm.getType().getTiles()[j][i] = TileType.Forage;
-            }
-            if (farm.getType().getTiles()[j][i].equals(TileType.Quarry)) {
+            } else if (farm.getType().getTiles()[j][i].equals(TileType.Quarry)) {
                 farm.getType().getTiles()[j][i] = TileType.MineralForage;
             }
         }
+    }
+
+    private boolean isNearCottage(int x, int y, int cottageX, int cottageY) {
+        // محدوده‌ی ممنوعه: بافر 1 تایل اطراف کلبه 4x4 → کل محدوده: 6x6
+        return (x >= cottageX - 1 && x <= cottageX + 4) &&
+            (y >= cottageY - 1 && y <= cottageY + 4);
     }
 
 
