@@ -30,6 +30,8 @@ public class GameAssetManager {
     private final Map<String, Texture> cropTextures = new HashMap<>();
     private final Map<String, Texture> treeTextures = new HashMap<>();
 
+    private final Texture houseTexture = new Texture("House/House_1.png");
+
 
 
     //private final Music backgroundMusic;
@@ -98,6 +100,10 @@ public class GameAssetManager {
 
     public Texture getFertalizeTexture() {
         return fertalizeTexture;
+    }
+
+    public Texture getHouseTexture() {
+        return houseTexture;
     }
 
     public void dispose() {
