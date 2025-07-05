@@ -15,6 +15,7 @@ import com.group16.stardewvalley.model.graphics.TileRenderer;
 import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.map.TileTextureManager;
+import com.group16.stardewvalley.model.map.TileType;
 import com.group16.stardewvalley.model.user.Player;
 
 public class GameScreen implements Screen, InputProcessor {
@@ -60,7 +61,10 @@ public class GameScreen implements Screen, InputProcessor {
         for (int y = 0; y < map.length; y++) {
             for (int x = 0; x < map[y].length; x++) {
                 Tile tile = map[y][x];
-                Texture texture = textureManager.getTexture(tile.getType());
+                Texture texture;
+                if (tile.getType() == TileType.Cottage || tile.getType() == TileType.CottageStartPos) {
+                    texture = textureManager.getTexture(TileType.Ground);
+                } else texture = textureManager.getTexture(tile.getType());
                 batch.draw(texture, x * TILE_SIZE, y * TILE_SIZE);
             }
         }
