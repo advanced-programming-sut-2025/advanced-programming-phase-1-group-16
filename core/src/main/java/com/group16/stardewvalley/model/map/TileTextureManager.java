@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TileTextureManager {
+    private static TileTextureManager tileTextureManager;
+
+
     private Map<TileType, Texture> tileTextures = new HashMap<>();
 
     public TileTextureManager() {
@@ -28,6 +31,11 @@ public class TileTextureManager {
         tileTextures.put(TileType.Stone, new Texture("Crafting/Stone.png"));
         tileTextures.put(TileType.MineralForage, new Texture("Crafting/Diamond.png"));
         tileTextures.put(TileType.GreenHouse, new Texture("Flooring/Flooring_29.png"));
+    }
+
+    public static TileTextureManager getTileTextureManager() {
+        if (tileTextureManager == null) tileTextureManager = new TileTextureManager();
+        return tileTextureManager;
     }
 
     public Texture getTexture(TileType type) {

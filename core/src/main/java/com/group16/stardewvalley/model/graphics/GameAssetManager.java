@@ -5,6 +5,9 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.group16.stardewvalley.model.agriculture.Crop;
 import com.group16.stardewvalley.model.agriculture.Tree;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class GameAssetManager {
     private static GameAssetManager gameAssetManager;
 
@@ -23,6 +26,10 @@ public class GameAssetManager {
     private Texture burnTexture = new Texture(burn);
     private Texture waterTexture = new Texture(water);
     private Texture fertalizeTexture = new Texture(fertalize);
+
+    private final Map<String, Texture> cropTextures = new HashMap<>();
+    private final Map<String, Texture> treeTextures = new HashMap<>();
+
 
 
     //private final Music backgroundMusic;
@@ -50,28 +57,32 @@ public class GameAssetManager {
     }
 
     public Texture getCropTexture(Crop crop) {
-        String name = crop.getCropType().getName();
-        name.replace(" ", "_");
-        Texture texture;
-        try {
-            texture =  new Texture("Crops/" + name + ".png");
-        } catch (Exception e) {
-            texture = cropTexture;
+        String name = crop.getCropType().getName().replace(" ", "_");
+        if (!cropTextures.containsKey(name)) {
+            try {
+                Texture texture = new Texture("Crops/" + name + ".png");
+                cropTextures.put(name, texture);
+            } catch (Exception e) {
+                cropTextures.put(name, cropTexture); // cropTexture = default one
+            }
         }
-        return texture;
+        return cropTextures.get(name);
     }
 
+
     public Texture getTreeTexture(Tree tree) {
-        String name = tree.getTreeType().getName();
-        name.replace(" ", "_");
-        Texture texture;
-        try{
-            texture = new Texture("Trees/" + name + "_Stage_5_Spring.png");
-        } catch (Exception e){
-            texture = treeTexture;
+        String name = tree.getTreeType().getName().replace(" ", "_");
+        if (!treeTextures.containsKey(name)) {
+            try {
+                Texture texture = new Texture("Trees/" + name + "_Stage_5_Spring.png");
+                treeTextures.put(name, texture);
+            } catch (Exception e) {
+                treeTextures.put(name, treeTexture); // treeTexture = default fallback
+            }
         }
-        return texture;
+        return treeTextures.get(name);
     }
+
 
     public Texture getItemTexture() {
         return itemTexture;
@@ -88,6 +99,13 @@ public class GameAssetManager {
     public Texture getFertalizeTexture() {
         return fertalizeTexture;
     }
+
+    public void dispose() {
+        for (Texture t : cropTextures.values()) t.dispose();
+        for (Texture t : treeTextures.values()) t.dispose();
+        // سایر موارد...
+    }
+
 }
 
 

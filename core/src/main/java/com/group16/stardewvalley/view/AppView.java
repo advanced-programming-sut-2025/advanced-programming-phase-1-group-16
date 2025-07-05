@@ -3,6 +3,8 @@ package com.group16.stardewvalley.view;
 import com.badlogic.gdx.Screen;
 import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.graphics.GameAssetManager;
+import com.group16.stardewvalley.model.map.TileTextureManager;
 import com.group16.stardewvalley.model.menu.Menu;
 import com.group16.stardewvalley.view.graphics.GameScreen;
 
@@ -33,6 +35,8 @@ public class AppView implements Screen {
         }
 
         if (App.getCurrentMenu() == Menu.ExitMenu) {
+            GameAssetManager.getGameAssetManager().dispose();
+            TileTextureManager.getTileTextureManager().dispose();
             // بسته شدن بازی
             System.out.println("Exiting...");
             // در آینده بهتره exit رو کنترل کنی
