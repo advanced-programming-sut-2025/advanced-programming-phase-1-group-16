@@ -51,9 +51,10 @@ public enum FarmType {
                     tiles[i][j] = TileType.GreenHouse;
                 }
             }
-            for (int i = 1; i < 5; i++) {
-                for (int j = 33; j < 37; j++) {
+            for (int i = 1; i < 11; i++) {
+                for (int j = 33; j < 44; j++) {
                     tiles[i][j] = TileType.Cottage;
+                    if (i == 5 && j == 38) tiles[i][j] = TileType.CottageStartPos;
                 }
             }
             for (int i = 34; i < 43; i++) {
@@ -73,9 +74,10 @@ public enum FarmType {
                     tiles[i][j] = TileType.GreenHouse;
                 }
             }
-            for (int i = 1; i < 5; i++) {
-                for (int j = 1; j < 5; j++) {
+            for (int i = 1; i < 11; i++) {
+                for (int j = 1; j < 11; j++) {
                     tiles[i][j] = TileType.Cottage;
+                    if (i == 5 && j == 5) tiles[i][j] = TileType.CottageStartPos;
                 }
             }
             for (int i = 1; i < 7; i++) {
