@@ -15,19 +15,25 @@ import java.util.*;
 public class MapController {
     public void createMap() {
         Game game = App.getActiveGame();
-        Tile[][] map = new Tile[game.getMapHeight()][game.getMapWidth()];
-        for (int i = 0; i < game.getMapHeight(); i++) {
-            for (int j = 0; j < game.getMapWidth(); j++) {
-                map[i][j] = new Tile(TileType.Ground);
+        int height = game.getMapHeight();
+        int width = game.getMapWidth();
+        Tile[][] map = new Tile[height][width];
+
+        for (int i = 0; i < height; i++) {
+            int flippedY = height - 1 - i;
+            for (int j = 0; j < width; j++) {
+                map[flippedY][j] = new Tile(TileType.Ground);
             }
         }
-        //مشخص کردن نقطه شروع مزرعه
+
+        // مشخص کردن نقطه شروع مزرعه
         Pos[] positions = {
-                new Pos(0,0),
-                new Pos(game.getMapWidth() - 80, 2),
-                new Pos(40, game.getMapHeight() - 70),
-                new Pos(game.getMapWidth() - 80, game.getMapHeight() - 70)
+            new Pos(10, 10),
+            new Pos(width - 80, 5),
+            new Pos(40, height - 70),
+            new Pos(width - 80, height - 70)
         };
+
         int index = 0;
         for (Player player : game.getPlayers()) {
             player.getFarm().setStartPosition(positions[index]);
@@ -37,42 +43,51 @@ public class MapController {
                 x = r.nextInt(player.getFarm().getType().getWidth());
                 y = r.nextInt(player.getFarm().getType().getHeight());
             } while (player.getFarm().getType().getTiles()[y][x] != TileType.Ground);
-            player.setPosition(new Pos(player.getFarm().getStartPosition().getX() + x,  player.getFarm().getStartPosition().getY() + y));
+
+            // y رو برعکس کن چون map برعکس شده
+            int flippedY = height - 1 - (player.getFarm().getStartPosition().getY() + y);
+            player.setPosition(new Pos(player.getFarm().getStartPosition().getX() + x, flippedY));
             index++;
         }
 
         for (Player player : game.getPlayers()) {
-            for (int i = 0; i < player.getFarm().getType().getHeight()-1; i++) {
-                for (int j = 0; j < player.getFarm().getType().getWidth()-1; j++) {
-                    map[i + player.getFarm().getStartPosition().getY()][j + player.getFarm().getStartPosition().getX()] =
-                            new Tile(player.getFarm().getType().getTiles()[i][j]);
-                    map[i + player.getFarm().getStartPosition().getY()][j + player.getFarm().getStartPosition().getX()].setLocation(Location.Farm);
+            for (int i = 0; i < player.getFarm().getType().getHeight() - 1; i++) {
+                int flippedY = height - 1 - (i + player.getFarm().getStartPosition().getY());
+                for (int j = 0; j < player.getFarm().getType().getWidth() - 1; j++) {
+                    map[flippedY][j + player.getFarm().getStartPosition().getX()] =
+                        new Tile(player.getFarm().getType().getTiles()[i][j]);
+                    map[flippedY][j + player.getFarm().getStartPosition().getX()].setLocation(Location.Farm);
                 }
             }
         }
 
-        for (Shop shop : App.getActiveGame().getShops()) {
+        for (Shop shop : game.getShops()) {
             PlaceType placeType = shop.getPlaceType();
-            for (int i = 0; i < placeType.getHeight()-1; i++) {
-                for (int j = 0; j < placeType.getWidth()-1; j++) {
-                    map[i + placeType.getStartPosition().getY()][j + placeType.getStartPosition().getX()] =
-                            new Tile(placeType.getTiles()[i][j]);
-                    map[i + placeType.getStartPosition().getY()][j + placeType.getStartPosition().getX()].setLocation(getLocationByName(shop.getShopName()));
+            for (int i = 0; i < placeType.getHeight() - 1; i++) {
+                int flippedY = height - 1 - (i + placeType.getStartPosition().getY());
+                for (int j = 0; j < placeType.getWidth() - 1; j++) {
+                    map[flippedY][j + placeType.getStartPosition().getX()] =
+                        new Tile(placeType.getTiles()[i][j]);
+                    map[flippedY][j + placeType.getStartPosition().getX()].setLocation(getLocationByName(shop.getShopName()));
                 }
             }
         }
-        for (NPC npc : App.getActiveGame().getNPCs()) {
+
+        for (NPC npc : game.getNPCs()) {
             PlaceType placeType = npc.getNpcType().getPlaceType();
-            for (int i = 0; i < placeType.getHeight()-1; i++) {
-                for (int j = 0; j < placeType.getWidth()-1; j++) {
-                    map[i + placeType.getStartPosition().getY()][j + placeType.getStartPosition().getX()] =
-                            new Tile(placeType.getTiles()[i][j]);
-                    map[i + placeType.getStartPosition().getY()][j + placeType.getStartPosition().getX()].setLocation(Location.NPCFarm);
+            for (int i = 0; i < placeType.getHeight() - 1; i++) {
+                int flippedY = height - 1 - (i + placeType.getStartPosition().getY());
+                for (int j = 0; j < placeType.getWidth() - 1; j++) {
+                    map[flippedY][j + placeType.getStartPosition().getX()] =
+                        new Tile(placeType.getTiles()[i][j]);
+                    map[flippedY][j + placeType.getStartPosition().getX()].setLocation(Location.NPCFarm);
                 }
             }
         }
+
         game.setMap(map);
     }
+
 
     private Location getLocationByName(String name) {
         return switch (name) {
@@ -324,6 +339,7 @@ public class MapController {
     }
 
     public static boolean isPlayerInFarm(Player currentPlayer) {
+        //TODO میتونی بگی لوکیشنش فارم هست یا نه چون اوکیه
         Pos start = currentPlayer.getFarm().getStartPosition();
         Pos playerPos = currentPlayer.getPosition();
         return playerPos.getX() > start.getX() &&
