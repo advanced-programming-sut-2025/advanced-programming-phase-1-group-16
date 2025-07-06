@@ -28,9 +28,9 @@ public class MapController {
 
         // مشخص کردن نقطه شروع مزرعه
         Pos[] positions = {
-            new Pos(10, 10),
+            new Pos(5, 5),
             new Pos(width - 80, 5),
-            new Pos(40, height - 70),
+            new Pos(5, height - 70),
             new Pos(width - 80, height - 70)
         };
 
