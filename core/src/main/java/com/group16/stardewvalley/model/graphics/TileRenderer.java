@@ -55,8 +55,8 @@ public class TileRenderer {
         // 3. اگر tree وجود داشت
         if (tile.getTree() != null) {
             Texture treeTexture = textureManager.getTreeTexture(tile.getTree());
-            int realWidth = 30;
-            int realHeight = 60;
+            int realWidth = treeTexture.getWidth() / 3;
+            int realHeight = treeTexture.getHeight() / 3;
 
             int offsetX = drawX + (TILE_SIZE - realWidth) / 2;
             int offsetY = drawY;
