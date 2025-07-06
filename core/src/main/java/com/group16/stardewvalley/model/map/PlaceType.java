@@ -8,11 +8,12 @@ public enum PlaceType {
     MarniesRanch(25, 30, new Pos(140, 80), "shop"),
     PierresGeneralStore(25, 30, new Pos(180, 80), "shop"),
     TheStardropSaloon(30, 30, new Pos(130, 140), "shop"),
-    Sebastian(25, 25, new Pos(5, 130), "npc"),
-    Abigail(25, 35, new Pos(130, 170), "npc"),
-    Harvey(25, 35, new Pos(175, 170), "npc"),
-    Leah(25, 25, new Pos(240, 95), "npc"),
-    Robin(30, 40, new Pos(75, 90), "npc");
+
+    Sebastian(10, 10, new Pos(100, 67), "npc"),
+    Abigail(10, 10, new Pos(140, 70), "npc"),
+    Harvey(10, 10, new Pos(100, 97), "npc"),
+    Leah(10, 10, new Pos(180, 67), "npc"),
+    Robin(10, 10, new Pos(180, 97), "npc");
 
     private final int width;
     private final int height;
