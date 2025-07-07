@@ -1,13 +1,13 @@
 package com.group16.stardewvalley.model.map;
 
 public enum PlaceType {
-    Blacksmith(25, 30, new Pos(95, 17), "shop"),
-    CarpentersShop(25, 30, new Pos(130, 17), "shop"),
-    JojaMart(25, 30, new Pos(165, 17), "shop"),
-    FishShop(20, 40, new Pos(25, 90), "shop"),
-    MarniesRanch(25, 30, new Pos(140, 80), "shop"),
-    PierresGeneralStore(25, 30, new Pos(180, 80), "shop"),
-    TheStardropSaloon(30, 30, new Pos(130, 140), "shop"),
+    Blacksmith(10, 20, new Pos(230, 110), "shop"),
+    CarpentersShop(15, 25, new Pos(130, 10), "shop"),
+    JojaMart(15, 30, new Pos(250, 70), "shop"),
+    FishShop(10, 20, new Pos(170, 170), "shop"),
+    MarniesRanch(10, 20, new Pos(25, 90), "shop"),
+    PierresGeneralStore(10, 15, new Pos(170, 50), "shop"),
+    TheStardropSaloon(10, 20, new Pos(110, 135), "shop"),
 
     Sebastian(10, 10, new Pos(100, 67), "npc"),
     Abigail(10, 10, new Pos(140, 70), "npc"),
