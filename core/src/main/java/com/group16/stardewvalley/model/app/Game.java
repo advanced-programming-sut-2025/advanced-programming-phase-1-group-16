@@ -179,7 +179,7 @@ public class Game {
     }
 
     public Tile[][] getMap() {
-        return map;
+        return maps.get(this.currentMapType);
     }
 
     public void setMap(Tile[][] map) {

@@ -12,27 +12,32 @@ import com.badlogic.gdx.math.MathUtils;
 import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.graphics.TileRenderer;
-import com.group16.stardewvalley.model.map.Pos;
-import com.group16.stardewvalley.model.map.Tile;
-import com.group16.stardewvalley.model.map.TileTextureManager;
-import com.group16.stardewvalley.model.map.TileType;
+import com.group16.stardewvalley.model.map.*;
 import com.group16.stardewvalley.model.user.Player;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameScreen implements Screen, InputProcessor {
     private SpriteBatch batch;
-    private Tile[][] map;
     private TileTextureManager textureManager;
+    private TileRenderer tileRenderer;
+
     public static OrthographicCamera camera;
-    TileRenderer tileRenderer;
-
-
     private final int TILE_SIZE = 15;
 
+    private final Map<MapType, Tile[][]> maps = new HashMap<>();
+    private MapType currentMapType;
+
+    Tile[][] currentMap;
+
+    private int currentMapWidthInPixels;
+    private int currentMapHeightInPixels;
+
     public GameScreen() {
-        this.map = App.getActiveGame().getMap();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 600);
-
+        Gdx.input.setInputProcessor(this);
     }
 
     @Override
@@ -40,47 +45,70 @@ public class GameScreen implements Screen, InputProcessor {
         batch = new SpriteBatch();
         textureManager = new TileTextureManager();
         tileRenderer = new TileRenderer();
+
+        // نقشه‌ها رو بارگذاری کن
+        maps.put(MapType.FARM1, MapLoader.loadFromJSON("assets/maps/farm1.json"));
+        maps.put(MapType.FARM2, MapLoader.loadFromJSON("assets/maps/farm2.json"));
+        maps.put(MapType.TOWN, MapLoader.loadFromJSON("assets/maps/town.json"));
+        maps.put(MapType.NPC_VILLAGE, MapLoader.loadFromJSON("assets/maps/npcVillage.json"));
+
+        currentMapType = MapType.FARM1; // فرض کن کاربر Farm1 رو انتخاب کرده
+
+        updateMapSize();
+    }
+
+    private void updateMapSize() {
+        Tile[][] map = maps.get(currentMapType);
+        currentMapWidthInPixels = map[0].length * TILE_SIZE;
+        currentMapHeightInPixels = map.length * TILE_SIZE;
     }
 
     @Override
     public void render(float delta) {
-        camera.position.set(App.getActiveGame().getCurrentPlayer().getX(), App.getActiveGame().getCurrentPlayer().getY(), 0);
+        Player player = App.getActiveGame().getCurrentPlayer();
+        float playerX = player.getX();
+        float playerY = player.getY();
+
+        currentMap = maps.get(currentMapType);
+
         float viewportWidth = camera.viewportWidth;
         float viewportHeight = camera.viewportHeight;
 
-        float cameraX = MathUtils.clamp(App.getActiveGame().getCurrentPlayer().getX(), viewportWidth / 2f, 4500 - viewportWidth / 2f);
-        float cameraY = MathUtils.clamp(App.getActiveGame().getCurrentPlayer().getY(), viewportHeight / 2f, 3000 - viewportHeight / 2f);
+        float cameraX = MathUtils.clamp(playerX, viewportWidth / 2f, currentMapWidthInPixels - viewportWidth / 2f);
+        float cameraY = MathUtils.clamp(playerY, viewportHeight / 2f, currentMapHeightInPixels - viewportHeight / 2f);
 
         camera.position.set(cameraX, cameraY, 0);
         camera.update();
-        batch.setProjectionMatrix(camera.combined);
+
         Gdx.gl.glClearColor(0.2f, 0.5f, 1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        for (int y = 0; y < map.length; y++) {
-            for (int x = 0; x < map[y].length; x++) {
-                Tile tile = map[y][x];
-                Texture texture;
-                if (tile.getType() == TileType.Cottage || tile.getType() == TileType.CottageStartPos) {
-                    texture = textureManager.getTexture(TileType.Ground);
-                } else texture = textureManager.getTexture(tile.getType());
+
+        // ترسیم تایل‌ها
+        for (int y = 0; y < currentMap.length; y++) {
+            for (int x = 0; x < currentMap[y].length; x++) {
+                Tile tile = currentMap[y][x];
+                Texture texture = textureManager.getTexture(tile.getType());
                 batch.draw(texture, x * TILE_SIZE, y * TILE_SIZE);
             }
         }
 
-
-        for (int y = map.length - 1; y >= 0; y--) {
-            for (int x = 0; x < map[y].length; x++) {
-                tileRenderer.renderTile(batch, map[y][x], x, y);
+        // ترسیم Overlay
+        for (int y = currentMap.length - 1; y >= 0; y--) {
+            for (int x = 0; x < currentMap[y].length; x++) {
+                tileRenderer.renderTile(batch, currentMap[y][x], x * TILE_SIZE, y * TILE_SIZE);
             }
         }
 
-        App.getActiveGame().getCurrentPlayer().getPlayerSprite().draw(batch);
-        handlePlayerInput();
+        // ترسیم بازیکن
+        player.getPlayerSprite().setPosition(playerX, playerY);
+        player.getPlayerSprite().draw(batch);
 
         batch.end();
 
+        handlePlayerInput();
     }
 
     public void handlePlayerInput(){
@@ -103,13 +131,64 @@ public class GameScreen implements Screen, InputProcessor {
             player.getPlayerSprite().flip(true, false);
         }
 
-        nextX = MathUtils.clamp(nextX, 0, 4500 - player.getPlayerSprite().getWidth());
-        nextY = MathUtils.clamp(nextY, 0, 3000 - player.getPlayerSprite().getHeight());
+        nextX = MathUtils.clamp(nextX, 0, currentMapWidthInPixels - player.getPlayerSprite().getWidth());
+        nextY = MathUtils.clamp(nextY, 0, currentMapHeightInPixels - player.getPlayerSprite().getHeight());
 
         player.setPosition(new Pos((int) nextX, (int) nextY));
 
         player.getPlayerSprite().setPosition(nextX, nextY);
 
+        checkMapTransition(player);
+
+    }
+
+    private void checkMapTransition(Player player) {
+        float x = player.getX();
+        float y = player.getY();
+
+        switch (currentMapType) {
+            case FARM1, FARM2 -> {
+                if (x <= 0) {
+                    setCurrentMap(MapType.TOWN);
+                    Pos pos = new Pos(currentMapWidthInPixels - TILE_SIZE, (int) y);
+                    player.setPosition(pos);
+                } else if (x >= currentMapWidthInPixels - TILE_SIZE) {
+                    setCurrentMap(MapType.TOWN);
+                    Pos pos = new Pos(TILE_SIZE, (int) y);
+                    player.setPosition(pos);
+                }
+            }
+
+            case TOWN -> {
+                if (y <= 0) {
+                    setCurrentMap(MapType.NPC_VILLAGE);
+                    Pos pos = new Pos((int) x, currentMapHeightInPixels - TILE_SIZE);
+                    player.setPosition(pos);
+                } else if (y >= currentMapHeightInPixels - TILE_SIZE) {
+                    // برگرد به مزرعه اول یا دوم (می‌تونی ذخیره کنی قبلاً کجا بودی)
+                    setCurrentMap(MapType.FARM1); // یا FARM2
+                    Pos pos = new Pos((int) x, TILE_SIZE);
+                    player.setPosition(pos);
+                }
+            }
+
+            case NPC_VILLAGE -> {
+                if (y >= currentMapHeightInPixels - TILE_SIZE) {
+                    setCurrentMap(MapType.TOWN);
+                    player.setPosition(new Pos((int) x, TILE_SIZE));
+                }
+            }
+        }
+    }
+
+
+    public void setCurrentMap(MapType mapType) {
+        this.currentMapType = mapType;
+        updateMapSize();
+    }
+
+    public Tile[][] getCurrentMap() {
+        return maps.get(currentMapType);
     }
 
     @Override public void dispose() {

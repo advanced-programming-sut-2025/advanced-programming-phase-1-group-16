@@ -5,7 +5,6 @@ import com.google.gson.*;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class MapLoader {
