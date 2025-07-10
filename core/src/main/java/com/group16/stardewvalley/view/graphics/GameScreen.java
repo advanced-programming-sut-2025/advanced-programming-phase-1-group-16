@@ -89,16 +89,16 @@ public class GameScreen implements Screen, InputProcessor {
         float nextX = player.getX();
         float nextY = player.getY();
 
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)){
+        if (Gdx.input.isKeyPressed(Input.Keys.W)){
             nextY += 10;
         }
-        else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+        else if (Gdx.input.isKeyPressed(Input.Keys.D)){
             nextX += 10;
         }
-        else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+        else if (Gdx.input.isKeyPressed(Input.Keys.S)){
             nextY -= 10;
         }
-        else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+        else if (Gdx.input.isKeyPressed(Input.Keys.A)){
             nextX -= 10;
             player.getPlayerSprite().flip(true, false);
         }

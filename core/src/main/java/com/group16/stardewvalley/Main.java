@@ -44,7 +44,7 @@ public class Main extends Game {
         App.setActiveGame(newGame);
         App.games.add(newGame);
         for (Player player : App.getActiveGame().getPlayers()) {
-            controller.chooseFarm(player, "2");
+            controller.chooseFarm(player, "1");
 
         }
         mapController.createMap();

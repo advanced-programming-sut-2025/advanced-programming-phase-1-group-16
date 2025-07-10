@@ -89,6 +89,7 @@ public class MapController {
     }
 
 
+
     private Location getLocationByName(String name) {
         return switch (name) {
             case "Blacksmith" -> Location.Blacksmith;

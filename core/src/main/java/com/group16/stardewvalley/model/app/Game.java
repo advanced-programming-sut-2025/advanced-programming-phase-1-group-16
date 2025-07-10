@@ -2,6 +2,8 @@ package com.group16.stardewvalley.model.app;
 
 import com.group16.stardewvalley.model.NPC.NPC;
 import com.group16.stardewvalley.model.NPC.NPCType;
+import com.group16.stardewvalley.model.map.MapLoader;
+import com.group16.stardewvalley.model.map.MapType;
 import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.shops.*;
 import com.group16.stardewvalley.model.weather.WeatherCondition;
@@ -10,11 +12,15 @@ import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.model.time.TimeDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Game {
     private ArrayList<Player> players = new ArrayList<>();
     private Tile[][] map;
+    private final Map<MapType, Tile[][]> maps = new HashMap<>();
+    private MapType currentMapType;
     private final int mapHeight = 200;
     private final int mapWidth = 300;
     private int currentPlayerIndex; //hamoon turn
@@ -58,7 +64,24 @@ public class Game {
         NPCs.add(new NPC(NPCType.Harvey));
         NPCs.add(new NPC(NPCType.Leah));
         NPCs.add(new NPC(NPCType.Robin));
+        loadAllMaps();
     }
+
+    public void loadAllMaps() {
+        maps.put(MapType.FARM1, MapLoader.loadFromJSON("assets/maps/farm1.json"));
+        maps.put(MapType.FARM2, MapLoader.loadFromJSON("assets/maps/farm2.json"));
+        maps.put(MapType.TOWN, MapLoader.loadFromJSON("assets/maps/town.json"));
+        maps.put(MapType.NPC_VILLAGE, MapLoader.loadFromJSON("assets/maps/NPCVillage.json"));
+        maps.put(MapType.MINE, MapLoader.loadFromJSON("assets/maps/mine.json")); // اگه داری
+    }
+
+    public void switchToMap(MapType mapType) {
+        this.currentMapType = mapType;
+        Tile[][] newMap = maps.get(mapType);
+        App.getActiveGame().setMap(newMap); // نمایش این نقشه به عنوان مپ فعال
+    }
+
+
 
     public List<NPC> getNPCs() {
         return NPCs;
