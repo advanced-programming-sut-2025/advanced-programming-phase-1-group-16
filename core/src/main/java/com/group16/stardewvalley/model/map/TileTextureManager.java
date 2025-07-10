@@ -31,6 +31,9 @@ public class TileTextureManager {
         tileTextures.put(TileType.Stone, new Texture("Crafting/Stone.png"));
         tileTextures.put(TileType.MineralForage, new Texture("Crafting/Diamond.png"));
         tileTextures.put(TileType.GreenHouse, new Texture("Flooring/Flooring_29.png"));
+        tileTextures.put(TileType.Grass, new Texture("Flooring/Flooring_28.png"));
+        tileTextures.put(TileType.StonePath, new Texture("Flooring/Flooring_52.png"));
+        tileTextures.put(TileType.Fence, new Texture("Fence/Gate.png"));
     }
 
     public static TileTextureManager getTileTextureManager() {
