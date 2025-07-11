@@ -38,9 +38,9 @@ public class JojaMart extends Shop {
 
         addItem(Seeds.JOJA_COLA, Seeds.JOJA_COLA.getDailyLimit());
         addItem(Seeds.GRASS_STARTER, Seeds.GRASS_STARTER.getDailyLimit());
-        addItem(new FoodIngredient("sugar", Ingredient.SUGAR), Integer.MAX_VALUE);
-        addItem(new FoodIngredient("wheat flour", Ingredient.WHEAT_FLOUR), Integer.MAX_VALUE);
-        addItem(new FoodIngredient("Rice", Ingredient.RICE), Integer.MAX_VALUE);
+        addItem(new FoodIngredient("sugar",125,  Ingredient.SUGAR), Integer.MAX_VALUE);
+        addItem(new FoodIngredient("wheat flour", 125, Ingredient.WHEAT_FLOUR), Integer.MAX_VALUE);
+        addItem(new FoodIngredient("Rice", 25, Ingredient.RICE), Integer.MAX_VALUE);
 
     }
 

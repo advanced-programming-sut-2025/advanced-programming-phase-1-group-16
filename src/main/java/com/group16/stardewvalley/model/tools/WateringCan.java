@@ -8,8 +8,8 @@ import com.group16.stardewvalley.model.user.Player;
 public class WateringCan extends Gadget{
     private int capacity;
     private int usedWaterCapacity;
-    public WateringCan(String name, String material) {
-        super(name);
+    public WateringCan(String name, int price, String material) {
+        super(name, price);
         this.material = material;
         this.capacity = 40;
         this.usedWaterCapacity = 0;

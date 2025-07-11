@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 import static com.group16.stardewvalley.model.menu.GameMenuCommands.Season;
 
 public class FishingPole extends Gadget{
-    public FishingPole(String name, String material) {
-        super(name);
+    public FishingPole(String name, int price, String material) {
+        super(name, price);
         this.material = material;
     }
 
@@ -79,7 +79,7 @@ public class FishingPole extends Gadget{
         for (int i = 0; i < fishNumber; i++) {
             index = random.nextInt(fishes.size());
             fishesToUse.add(fishes.get(index));
-            game.getCurrentPlayer().getInventory().addItem(new Fish(fishes.get(index), quality), 1);
+//            game.getCurrentPlayer().getInventory().addItem(new Fish(fishes.get(index), ,quality), 1);
         }
         game.getCurrentPlayer().addFishingAbilityScore(5);
         StringBuilder result = new StringBuilder();

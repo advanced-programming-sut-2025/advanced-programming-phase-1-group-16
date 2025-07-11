@@ -1,7 +1,8 @@
 package com.group16.stardewvalley.model.user;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.group16.stardewvalley.model.items.Item;
+
+import java.util.*;
 
 public class PlayerInteraction {
     private boolean talked;
@@ -13,7 +14,7 @@ public class PlayerInteraction {
     private int friendshipScore;
     private final int[] relationshipRanks = {100, 200, 300, 400};
     private List<String> dialogueHistory;
-    private List<String> giftHistory;
+    private final Map<Item, Integer> gifts;
 
     public PlayerInteraction() {
         talked = false;
@@ -24,7 +25,16 @@ public class PlayerInteraction {
         friendshipLevel = 0;
         friendshipScore = 0;
         dialogueHistory = new ArrayList<>();
-        giftHistory = new ArrayList<>();
+        gifts = new LinkedHashMap<>();
+    }
+
+    public void addGift(Item item) {
+        if (item == null) {
+            throw new IllegalArgumentException("Don't give null");
+        }
+        int newIndex = GiftIdGenerator.generateNewId();
+        gifts.put(item, newIndex);
+        gifted = true;
     }
 
     public void setTalked(Boolean b) {
@@ -43,12 +53,12 @@ public class PlayerInteraction {
         this.gifted = gifted;
     }
 
-    public void setTraded(boolean traded) {
-        this.traded = traded;
+    public Map<Item, Integer> getGifts() {
+        return gifts;
     }
 
-    public void addGift(String line) {
-        giftHistory.add(line);
+    public void setTraded(boolean traded) {
+        this.traded = traded;
     }
 
     public List<String> getDialogueHistory() {
@@ -117,5 +127,4 @@ public class PlayerInteraction {
             friendshipLevel = 1;
         }
     }
-
 }

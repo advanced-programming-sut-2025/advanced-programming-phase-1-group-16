@@ -31,16 +31,16 @@ public class CarpentersShop extends Shop{
     }
 
     public void initializeItems() {
-        addItem(new Wood("Wood"), Integer.MAX_VALUE);
-        addItem(new Stone("Stone"), Integer.MAX_VALUE);
-        addItem(new Building("Barn"), 1);
-        addItem(new Building("Big Barn"), 1);
-        addItem(new Building("Deluxe Barn"), 1);
-        addItem(new Building("Coop"), 1);
-        addItem(new Building("Big Coop"), 1);
-        addItem(new Building("Deluxe Coop"), 1);
-        addItem(new Building("Well"), 1);
-        addItem(new Building("Shipping Bin"), 1);
+        addItem(new Wood("Wood", 10), Integer.MAX_VALUE);
+        addItem(new Stone("Stone", 20), Integer.MAX_VALUE);
+        addItem(new Building("Barn",6000), 1);
+        addItem(new Building("Big Barn", 12000), 1);
+        addItem(new Building("Deluxe Barn", 25000), 1);
+        addItem(new Building("Coop", 4000), 1);
+        addItem(new Building("Big Coop", 10000), 1);
+        addItem(new Building("Deluxe Coop", 20000), 1);
+        addItem(new Building("Well", 1000), 1);
+        addItem(new Building("Shipping Bin", 250), 1);
     }
     private int barn;
     private int bigBarn;
@@ -109,7 +109,7 @@ public class CarpentersShop extends Shop{
 
         //everything ok, lets build
         Pos buildingPos = new Pos(x, y);
-        Item newBuilding = new Building(buildingType.getName(), buildingType, buildingPos);
+        Item newBuilding = new Building(buildingType.getName(),buildingType.getCost(),  buildingType, buildingPos);
 
         //remove wood/stone from inventory
 

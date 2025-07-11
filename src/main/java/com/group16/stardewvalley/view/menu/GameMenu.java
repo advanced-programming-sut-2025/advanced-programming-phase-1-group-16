@@ -9,8 +9,10 @@ import com.group16.stardewvalley.controller.map.MapController;
 import com.group16.stardewvalley.controller.menu.GameMenuController;
 import com.group16.stardewvalley.controller.menu.HomeMenuController;
 import com.group16.stardewvalley.controller.playercontroller.PlayerController;
+import com.group16.stardewvalley.controller.relationship.RelationshipController;
 import com.group16.stardewvalley.controller.shops.ShopController;
 import com.group16.stardewvalley.controller.tools.GadgetController;
+import com.group16.stardewvalley.controller.trade.TradeController;
 import com.group16.stardewvalley.controller.weather.WeatherController;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
@@ -45,7 +47,8 @@ public class GameMenu implements MenuInterface {
     private final ArtisanController artisanController = new ArtisanController();
     private final WeatherController weatherController = new WeatherController();
     private final PlayerController playerController = new PlayerController();
-
+    private final RelationshipController relationshipController = new RelationshipController();
+    private final TradeController tradeController = new TradeController();
 
     @Override
     public void check(Scanner scanner) {
@@ -156,6 +159,8 @@ public class GameMenu implements MenuInterface {
         //player
         else if ((matcher = GameMenuCommands.Show_Coin.getMatcher(input)) != null) {
             System.out.println(playerController.showCoin());
+        } else if ((matcher = GameMenuCommands.Show_Inventory.getMatcher(input)) != null) {
+            System.out.println(playerController.showInventory());
         }
 
 
@@ -214,7 +219,14 @@ public class GameMenu implements MenuInterface {
         }
 
 
-
+//Trade
+ else if((matcher = GameMenuCommands.StartTrade.getMatcher(input)) != null){
+        System.out.println(tradeController.startTrade()); }
+ else if((matcher = GameMenuCommands.StartTrade.getMatcher(input)) != null){     System.out.println(tradeController);
+    } else if((matcher = GameMenuCommands.StartTrade.getMatcher(input)) != null){
+        System.out.println(tradeController.startTrade()); }
+ else if((matcher = GameMenuCommands.StartTrade.getMatcher(input)) != null){     System.out.println(tradeController.startTrade());
+    }
 
         //Shop
         else if ((matcher = GameMenuCommands.ShopBuildCoopBarn.getMatcher(input)) != null ){
@@ -222,6 +234,14 @@ public class GameMenu implements MenuInterface {
 
         }else if ((matcher = GameMenuCommands.BuyAnimal.getMatcher(input)) != null ){
             System.out.println(App.getActiveGame().getMarniesRanch().buyAnimal(matcher.group("animal"), matcher.group("name")));
+        } else if ((matcher = GameMenuCommands.ShowAllProducts.getMatcher(input)) != null) {
+            System.out.println(shopController.handleShowAllProducts());
+        } else if ((matcher = GameMenuCommands.ShowAllAvailableProducts.getMatcher(input)) != null) {
+            System.out.println(shopController.handleShowAvailableProducts());
+        } else if ((matcher = GameMenuCommands.Purchase.getMatcher(input)) != null) {
+            System.out.println(shopController.handleCommand(input, matcher));
+        } else if ((matcher = GameMenuCommands.Sell.getMatcher(input)) != null) {
+            System.out.println(shopController.handleSellProduct(matcher));
         }
 
         //Animal commands
@@ -250,12 +270,15 @@ public class GameMenu implements MenuInterface {
             System.out.println(animalController.collectProduct(matcher.group("name")));
         }
 
+
          */
         else if((matcher = GameMenuCommands.SellAnimal.getMatcher(input)) != null){
             System.out.println(animalController.sellAnimal(matcher.group("name")));
+        } else if ((matcher = GameMenuCommands.Cheat_Set_Position.getMatcher(input)) != null) {
+            System.out.println(playerController.cheatSetPos(matcher));
         }
 
-    //Artisan commands
+        //Artisan commands
     else if((matcher = GameMenuCommands.ArtisanUse.getMatcher(input)) != null ){
         System.out.println(artisanController.use(matcher.group("artisanName"), matcher.group("itemsName")));
     }
@@ -279,12 +302,46 @@ public class GameMenu implements MenuInterface {
         } else if ((matcher = GadgetsCommands.USE_TOOL.getMatcher(input)) != null) {
             System.out.println(gadgetController.useTool(matcher));
         }
+        // relation
+
+        else if ((matcher = GameMenuCommands.Talk.getMatcher(input)) != null) {
+            System.out.println(relationshipController.meet(matcher));
+        } else if ((matcher = GameMenuCommands.TalkHistory.getMatcher(input)) != null) {
+            System.out.println(relationshipController.showTalkHistory(matcher));
+        } else if ((matcher = GameMenuCommands.Friendship.getMatcher(input)) != null) {
+            System.out.println(relationshipController.showFriendship());
+        } else if ((matcher = GameMenuCommands.AskMarriage.getMatcher(input)) != null) {
+            System.out.println(relationshipController.askMarriage(matcher) != null);
+        } else if ((matcher = GameMenuCommands.Show_Coin.getMatcher(input)) != null) {
+         System.out.println(playerController.showCoin());
+        } else if ((GameMenuCommands.GiftNPC.getMatcher(input)) != null) {
+            System.out.println(relationshipController.giftNPC(matcher));
+        } else if ((matcher = GameMenuCommands.Flower.getMatcher(input)) != null) {
+            System.out.println(relationshipController.flower(matcher));
+        } else if ((matcher = GameMenuCommands.Hug.getMatcher(input)) != null) {
+            System.out.println(relationshipController.hug(matcher));
+        } else if ((matcher = GameMenuCommands.FriendshipNPC.getMatcher(input)) != null) {
+            System.out.println(relationshipController.meetNPC(matcher));
+        } else if ((matcher = GameMenuCommands.Show_Notification.getMatcher(input)) != null) {
+            System.out.println(relationshipController.showNotifications());
+        } else if ((matcher = GameMenuCommands.Gift.getMatcher(input)) != null) {
+            System.out.println(relationshipController.gift(matcher));
+        } else if ((matcher = GameMenuCommands.Hug.getMatcher(input)) != null) {
+            System.out.println(relationshipController.hug(matcher));
+        } else if ((matcher = GameMenuCommands.Flower.getMatcher(input)) != null) {
+            System.out.println(relationshipController.flower(matcher));
+        } else if ((matcher = GameMenuCommands.GiftRate.getMatcher(input)) != null) {
+            System.out.println(relationshipController.rateGift(matcher));
+        } else if ((matcher = GameMenuCommands.GiftList.getMatcher(input)) != null) {
+            System.out.println(relationshipController.showGiftList());
+        }
 
 
         //cheat code
-        else if ((matcher = GameMenuCheatCodeCommands.AddSeed.getMatcher(input)) != null){
-            System.out.println(agricultureController.cheatAdd(matcher.group("seed")));
-        } else if ((matcher = GameMenuCheatCodeCommands.AddTool.getMatcher(input)) != null){
+//        else if ((matcher = GameMenuCheatCodeCommands.AddSeed.getMatcher(input)) != null){
+//            System.out.println(agricultureController.cheatAdd(matcher.group("seed")));
+//        }
+        else if ((matcher = GameMenuCheatCodeCommands.AddTool.getMatcher(input)) != null){
             System.out.println(cheatCodeController.addTool(matcher.group("tool")));
         } else if ((matcher = GameMenuCheatCodeCommands.AddFertilizer.getMatcher(input)) != null){
             System.out.println(cheatCodeController.addFertilizer(matcher.group("fertilizer")));
@@ -296,6 +353,12 @@ public class GameMenu implements MenuInterface {
             System.out.println(cheatCodeController.learnRecipe(matcher.group("recipe")));
         } else if ((matcher = GameMenuCheatCodeCommands.CookFood.getMatcher(input)) != null){
             System.out.println(cheatCodeController.cookFood(matcher.group("food")));
+        } else if ((matcher = GameMenuCommands.Cheat_Set_Location.getMatcher(input)) != null) {
+            System.out.println(playerController.cheatSetLocation(matcher));
+        } else if ((matcher = GameMenuCommands.Cheat_Add_Flower.getMatcher(input)) != null) {
+            System.out.println(playerController.cheatAddFlower());
+        } else if ((matcher = GameMenuCommands.Cheat_Set_friendship.getMatcher(input)) != null) {
+            System.out.println(playerController.setFriendship(matcher));
         }
 
         //ENERGY

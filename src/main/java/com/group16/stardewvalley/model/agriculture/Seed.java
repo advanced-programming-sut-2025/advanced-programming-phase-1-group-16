@@ -13,7 +13,7 @@ public class Seed extends Item {
 
     public Seed(String name, int price, int dailyLimit,
                 int outOfSeasonPrice, List<Season> availableSeasons, String type) {
-        super(name);
+        super(name, price);
         this.outOfSeasonPrice = outOfSeasonPrice;
         this.availableSeasons = availableSeasons;
         this.type = type;

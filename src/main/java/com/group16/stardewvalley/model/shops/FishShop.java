@@ -22,10 +22,10 @@ public class FishShop extends Shop{
     }
 
     public void initializeItems() {
-        addItem(new CraftItem("fish smoker", CraftingRecipes.FishSmoker), 1);
-        addItem(new FishingPole("fishing pole", "bamboo"), 1);
-        addItem(new FishingPole("fishing pole", "training"), 1);
-        addItem(new FishingPole("fishing pole", "fiberglass"), 1);
-        addItem(new FishingPole("fishing pole", "iridium"), 1);
+        addItem(new CraftItem("fish smoker", 10000, CraftingRecipes.FishSmoker), 1);
+        addItem(new FishingPole("fishing pole",500, "bamboo"), 1);
+        addItem(new FishingPole("fishing pole", 25,"training"), 1);
+        addItem(new FishingPole("fishing pole", 1800,"fiberglass"), 1);
+        addItem(new FishingPole("fishing pole", 7500,"iridium"), 1);
     }
 }

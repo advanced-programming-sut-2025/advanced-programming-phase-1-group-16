@@ -21,6 +21,7 @@ import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.map.*;
 
 
+
 public class Player {
     private User user;
     private Farm farm;
@@ -57,6 +58,7 @@ public class Player {
     private boolean isBuffActive;
     private int hourPastForBuff;
     private int finalHourBuff;
+    private Location location;
 
 
 
@@ -89,6 +91,7 @@ public class Player {
         hourPastForBuff = 0;
         finalHourBuff = 0;
         this.buffer = "";
+        this.location = null;
     }
 
     public String getName() {
@@ -129,6 +132,11 @@ public class Player {
 
     public int getHourPastForBuff() {
         return hourPastForBuff;
+    }
+
+    public void setPosition(int x, int y) {
+        this.position.setY(y);
+        this.position.setX(x);
     }
 
     public void setHourPastForBuff(int hourPastForBuff) {
@@ -190,10 +198,6 @@ public class Player {
         return energy;
     }
 
-    public NPCInteraction getInteractionWith(NPC npc) {
-        return dailyNPCInteraction.get(npc);
-    }
-
     public void setEnergy(int energy) {
         this.energy = energy;
     }
@@ -228,6 +232,26 @@ public class Player {
 
     public int getMiningAbilityLevel() {
         return miningAbilityLevel;
+    }
+
+    public NPCInteraction getOrCreateInteractionWith(NPC npc) {
+        // اگر interaction وجود داشت، آن را برگردان
+        if (dailyNPCInteraction.containsKey(npc)) {
+            return dailyNPCInteraction.get(npc);
+        }
+
+        // اگر وجود نداشت، یک interaction جدید بساز و اضافه کن
+        NPCInteraction newInteraction = new NPCInteraction();
+        dailyNPCInteraction.put(npc, newInteraction);
+        return newInteraction;
+    }
+
+    public Location getLocationLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public int getForagingAbilityLevel() {
@@ -463,5 +487,20 @@ public class Player {
 
     public boolean isFainted() {
         return isFainted;
+    }
+
+    public PlayerInteraction getOrCreateInteractionWith(Player player) {
+
+        if (dailyPlayerInteraction.containsKey(player)) {
+            return dailyPlayerInteraction.get(player);
+        }
+
+        PlayerInteraction newInteraction = new PlayerInteraction();
+        dailyPlayerInteraction.put(player, newInteraction);
+        return newInteraction;
+    }
+
+    public void increaseTodayIncome(int amount){
+        todayIncome += amount;
     }
 }

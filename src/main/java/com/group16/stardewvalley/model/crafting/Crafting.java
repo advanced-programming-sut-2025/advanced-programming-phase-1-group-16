@@ -78,7 +78,7 @@ public class Crafting {
                 }
                 //return true;  // All ingredients are available in required amounts
                 //create new crafting item
-                CraftItem newCraftItem = new CraftItem(recipe.getName(), recipe);
+                CraftItem newCraftItem = new CraftItem(recipe.getName(), 0, recipe);
                 player.getInventory().addItem(newCraftItem, 1);
 
                 //consume energy
@@ -195,7 +195,7 @@ public class Crafting {
         //create new crafting item
         for (CraftingRecipes recipe : CraftingRecipes.values()) {//find which item is it
             if (recipe.getName().equalsIgnoreCase(itemName)) {
-                CraftItem newCraftItem = new CraftItem(recipe.getName(), recipe);
+                CraftItem newCraftItem = new CraftItem(recipe.getName(), 0, recipe);
                 player.getInventory().addItem(newCraftItem, count);
                 return new Result(true, "successfully cheated" );
             }

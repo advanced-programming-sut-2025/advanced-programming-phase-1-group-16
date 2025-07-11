@@ -255,13 +255,9 @@ public class Game {
     }
 
     public boolean isAdjacent(Pos pos1, Pos pos2) {
-        for (Direction dir : Direction.values()) {
-            Pos adjacentPos = dir.applyToPosition(pos1);
-            if (adjacentPos.equals(pos2)) {
-                return true;
-            }
-        }
-        return false;
+        int dx = Math.abs(pos1.getX() - pos2.getX());
+        int dy = Math.abs(pos1.getY() - pos2.getY());
+        return (dx <= 1 && dy <= 1) && !(dx == 0 && dy == 0);
     }
 
 }

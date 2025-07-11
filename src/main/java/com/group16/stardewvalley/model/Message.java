@@ -11,6 +11,6 @@ public class Message implements notification{
     }
 
     public String getMessage() {
-        return message;
+        return sender.getName()  + " sent you " + message;
     }
 }

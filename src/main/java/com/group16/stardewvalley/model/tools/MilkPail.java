@@ -6,8 +6,8 @@ import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.user.Player;
 
 public class MilkPail extends  Gadget{
-    public MilkPail(String name) {
-        super(name);
+    public MilkPail(String name, int price) {
+        super(name, price);
     }
 
     public int getPrice() {

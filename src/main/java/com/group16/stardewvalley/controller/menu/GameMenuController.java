@@ -54,6 +54,8 @@ public class GameMenuController {
         Game newGame = new Game(new Player(App.getLoggedInUser()), gamePlayers);
 
         App.games.add(newGame);
+
+
         return new Result(true, "new game created! now choose your farm in turn.");
     }
 

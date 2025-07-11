@@ -6,8 +6,8 @@ import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.user.Player;
 
 public class Shear extends Gadget{
-    public Shear(String name) {
-        super(name);
+    public Shear(String name, int price) {
+        super(name, price);
     }
 
     public int getPrice() {

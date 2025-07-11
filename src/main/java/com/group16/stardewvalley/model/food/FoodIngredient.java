@@ -5,8 +5,8 @@ import com.group16.stardewvalley.model.items.Item;
 public class FoodIngredient extends Item {
     private Ingredient type;
 
-    public FoodIngredient(String name , Ingredient type) {
-        super(name);
+    public FoodIngredient(String name, int price, Ingredient type) {
+        super(name, price);
         this.type = type;
     }
     public Ingredient getType() {
