@@ -9,7 +9,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.group16.stardewvalley.Main;
+import com.group16.stardewvalley.controller.graphic.CharacterController;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.graphics.TileRenderer;
 import com.group16.stardewvalley.model.map.Pos;
@@ -23,15 +26,18 @@ public class GameScreen implements Screen, InputProcessor {
     private Tile[][] map;
     private TileTextureManager textureManager;
     public static OrthographicCamera camera;
+    private Viewport viewport;
     TileRenderer tileRenderer;
+    private CharacterController player;
 
 
-    private final int TILE_SIZE = 15;
+    public static final int TILE_SIZE = 17;
 
     public GameScreen() {
         this.map = App.getActiveGame().getMap();
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 600);
+        viewport = new FillViewport(30 * TILE_SIZE, 20 * TILE_SIZE, camera);
+        viewport.apply();
 
     }
 
@@ -40,6 +46,8 @@ public class GameScreen implements Screen, InputProcessor {
         batch = new SpriteBatch();
         textureManager = new TileTextureManager();
         tileRenderer = new TileRenderer();
+        player = new CharacterController("Character/maidnpc.png", 100, 100, 1f, 48, 64);
+
     }
 
     @Override
@@ -48,8 +56,19 @@ public class GameScreen implements Screen, InputProcessor {
         float viewportWidth = camera.viewportWidth;
         float viewportHeight = camera.viewportHeight;
 
-        float cameraX = MathUtils.clamp(App.getActiveGame().getCurrentPlayer().getX(), viewportWidth / 2f, 4500 - viewportWidth / 2f);
-        float cameraY = MathUtils.clamp(App.getActiveGame().getCurrentPlayer().getY(), viewportHeight / 2f, 3000 - viewportHeight / 2f);
+        float mapPixelHeight = App.getActiveGame().getMapHeight() * TILE_SIZE;
+        float mapPixelWidth = App.getActiveGame().getMapWidth() * TILE_SIZE;
+
+        float cameraX = MathUtils.clamp(
+            App.getActiveGame().getCurrentPlayer().getX(),
+            viewportWidth / 2f,
+            mapPixelWidth - viewportWidth / 2f);
+
+        float cameraY = MathUtils.clamp(
+            App.getActiveGame().getCurrentPlayer().getY(),
+            viewportHeight / 2f,
+            mapPixelHeight - viewportHeight / 2f);
+
 
         camera.position.set(cameraX, cameraY, 0);
         camera.update();
@@ -76,7 +95,7 @@ public class GameScreen implements Screen, InputProcessor {
             }
         }
 
-        App.getActiveGame().getCurrentPlayer().getPlayerSprite().draw(batch);
+        player.render(batch);
         handlePlayerInput();
 
         batch.end();
@@ -90,54 +109,42 @@ public class GameScreen implements Screen, InputProcessor {
         float nextY = player.getY();
 
         if (Gdx.input.isKeyPressed(Input.Keys.UP)){
-            nextY += 10;
+            nextY += 1;
+            this.player.update(1, true, false, false, false);
         }
         else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-            nextX += 10;
+            nextX += 1;
+            this.player.update(1, false, false, false, true);
         }
         else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-            nextY -= 10;
+            nextY -= 1;
+            this.player.update(1, false, true, false, false);
         }
         else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-            nextX -= 10;
-            player.getPlayerSprite().flip(true, false);
+            nextX -= 1;
+            this.player.update(1, false, false, true, false);
         }
 
-        nextX = MathUtils.clamp(nextX, 0, 4500 - player.getPlayerSprite().getWidth());
-        nextY = MathUtils.clamp(nextY, 0, 3000 - player.getPlayerSprite().getHeight());
-
         player.setPosition(new Pos((int) nextX, (int) nextY));
-
-        player.getPlayerSprite().setPosition(nextX, nextY);
 
     }
 
     @Override public void dispose() {
         batch.dispose();
         textureManager.dispose();
+        player.dispose();
     }
 
-    @Override public void resize(int width, int height) {}
+    @Override
+    public void resize(int width, int height) {
+        viewport.update(width, height);
+    }
     @Override public void pause() {}
     @Override public void resume() {}
     @Override public void hide() {}
 
     @Override
     public boolean keyDown(int i) {
-        Player player = App.getActiveGame().getCurrentPlayer();
-        int newX = player.getX();
-        int newY = player.getY();
-
-        if (i == Input.Keys.UP) {
-            newY = player.getY() + 1;
-        } else if (i == Input.Keys.DOWN) {
-            newY = player.getY() - 1;
-        } else if (i == Input.Keys.LEFT) {
-            newX = player.getX() - 1;
-        } else if (i == Input.Keys.RIGHT) {
-            newX = player.getX() + 1;
-        }
-        player.setPosition(new Pos(newX, newY));
         return false;
     }
 

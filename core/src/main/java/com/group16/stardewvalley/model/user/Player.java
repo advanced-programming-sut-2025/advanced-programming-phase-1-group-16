@@ -56,10 +56,6 @@ public class Player {
     private int hourPastForBuff;
     private int finalHourBuff;
 
-    //UI
-    private Texture playerTexture;
-    private Sprite playerSprite;
-
 
     // مقدار های ماکسیمم هر توانایی رو هم در گیم ذخیره کردم سر جمع شه
     // تابعی برای بالا بردن لول شخص در این موارد نوشته نشده است
@@ -89,12 +85,6 @@ public class Player {
         hourPastForBuff = 0;
         finalHourBuff = 0;
         this.buffer = "";
-
-        //UI
-        this.playerTexture = new Texture(GameAssetManager.getGameAssetManager().getCharacter());
-        this.playerSprite = new Sprite(playerTexture);
-        playerSprite.setPosition(50, 50);
-        playerSprite.setSize(playerTexture.getWidth(), playerTexture.getHeight());
 
     }
 
@@ -386,11 +376,4 @@ public class Player {
         return isFainted;
     }
 
-    public Sprite getPlayerSprite() {
-        return playerSprite;
-    }
-
-    public Texture getPlayerTexture() {
-        return playerTexture;
-    }
 }
