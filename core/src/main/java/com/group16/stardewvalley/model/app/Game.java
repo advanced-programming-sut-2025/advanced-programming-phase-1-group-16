@@ -18,7 +18,6 @@ import java.util.Map;
 
 public class Game {
     private ArrayList<Player> players = new ArrayList<>();
-    private Tile[][] map;
     private final Map<MapType, Tile[][]> maps = new HashMap<>();
     private MapType currentMapType;
     private final int mapHeight = 200;
@@ -65,22 +64,13 @@ public class Game {
         NPCs.add(new NPC(NPCType.Leah));
         NPCs.add(new NPC(NPCType.Robin));
         loadAllMaps();
+        currentMapType = MapType.FARM;
     }
 
     public void loadAllMaps() {
-        maps.put(MapType.FARM1, MapLoader.loadFromJSON("assets/maps/farm1.json"));
-        maps.put(MapType.FARM2, MapLoader.loadFromJSON("assets/maps/farm2.json"));
         maps.put(MapType.TOWN, MapLoader.loadFromJSON("assets/maps/town.json"));
         maps.put(MapType.NPC_VILLAGE, MapLoader.loadFromJSON("assets/maps/NPCVillage.json"));
-        maps.put(MapType.MINE, MapLoader.loadFromJSON("assets/maps/mine.json")); // اگه داری
     }
-
-    public void switchToMap(MapType mapType) {
-        this.currentMapType = mapType;
-        Tile[][] newMap = maps.get(mapType);
-        App.getActiveGame().setMap(newMap); // نمایش این نقشه به عنوان مپ فعال
-    }
-
 
 
     public List<NPC> getNPCs() {
@@ -179,11 +169,22 @@ public class Game {
     }
 
     public Tile[][] getMap() {
+        if (currentMapType == MapType.FARM) {
+            return App.getActiveGame().getCurrentPlayer().getFarm().getMap();
+        }
         return maps.get(this.currentMapType);
     }
 
-    public void setMap(Tile[][] map) {
-        this.map = map;
+    public MapType getCurrentMapType() {
+        return currentMapType;
+    }
+
+    public void setCurrentMapType(MapType currentMapType) {
+        this.currentMapType = currentMapType;
+    }
+
+    public void addMap(MapType mapType, Tile[][] map) {
+        maps.put(mapType, map);
     }
 
     public Player getCreator() {

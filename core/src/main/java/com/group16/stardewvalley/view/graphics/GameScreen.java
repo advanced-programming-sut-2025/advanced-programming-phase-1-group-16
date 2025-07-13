@@ -24,10 +24,7 @@ public class GameScreen implements Screen, InputProcessor {
     private TileRenderer tileRenderer;
 
     public static OrthographicCamera camera;
-    private final int TILE_SIZE = 15;
-
-    private final Map<MapType, Tile[][]> maps = new HashMap<>();
-    private MapType currentMapType;
+    private final int TILE_SIZE = 20;
 
     Tile[][] currentMap;
 
@@ -45,20 +42,11 @@ public class GameScreen implements Screen, InputProcessor {
         batch = new SpriteBatch();
         textureManager = new TileTextureManager();
         tileRenderer = new TileRenderer();
-
-        // نقشه‌ها رو بارگذاری کن
-        maps.put(MapType.FARM1, MapLoader.loadFromJSON("assets/maps/farm1.json"));
-        maps.put(MapType.FARM2, MapLoader.loadFromJSON("assets/maps/farm2.json"));
-        maps.put(MapType.TOWN, MapLoader.loadFromJSON("assets/maps/town.json"));
-        maps.put(MapType.NPC_VILLAGE, MapLoader.loadFromJSON("assets/maps/npcVillage.json"));
-
-        currentMapType = MapType.FARM1; // فرض کن کاربر Farm1 رو انتخاب کرده
-
         updateMapSize();
     }
 
     private void updateMapSize() {
-        Tile[][] map = maps.get(currentMapType);
+        Tile[][] map = App.getActiveGame().getMap();
         currentMapWidthInPixels = map[0].length * TILE_SIZE;
         currentMapHeightInPixels = map.length * TILE_SIZE;
     }
@@ -69,7 +57,7 @@ public class GameScreen implements Screen, InputProcessor {
         float playerX = player.getX();
         float playerY = player.getY();
 
-        currentMap = maps.get(currentMapType);
+        currentMap = App.getActiveGame().getMap();
 
         float viewportWidth = camera.viewportWidth;
         float viewportHeight = camera.viewportHeight;
@@ -146,14 +134,16 @@ public class GameScreen implements Screen, InputProcessor {
         float x = player.getX();
         float y = player.getY();
 
-        switch (currentMapType) {
-            case FARM1, FARM2 -> {
+        switch (App.getActiveGame().getCurrentMapType()) {
+            case FARM -> {
                 if (x <= 0) {
-                    setCurrentMap(MapType.TOWN);
+                    App.getActiveGame().setCurrentMapType(MapType.TOWN);
+                    updateMapSize();
                     Pos pos = new Pos(currentMapWidthInPixels - TILE_SIZE, (int) y);
                     player.setPosition(pos);
                 } else if (x >= currentMapWidthInPixels - TILE_SIZE) {
-                    setCurrentMap(MapType.TOWN);
+                    App.getActiveGame().setCurrentMapType(MapType.TOWN);
+                    updateMapSize();
                     Pos pos = new Pos(TILE_SIZE, (int) y);
                     player.setPosition(pos);
                 }
@@ -161,12 +151,14 @@ public class GameScreen implements Screen, InputProcessor {
 
             case TOWN -> {
                 if (y <= 0) {
-                    setCurrentMap(MapType.NPC_VILLAGE);
+                    App.getActiveGame().setCurrentMapType(MapType.NPC_VILLAGE);
+                    updateMapSize();
                     Pos pos = new Pos((int) x, currentMapHeightInPixels - TILE_SIZE);
                     player.setPosition(pos);
                 } else if (y >= currentMapHeightInPixels - TILE_SIZE) {
                     // برگرد به مزرعه اول یا دوم (می‌تونی ذخیره کنی قبلاً کجا بودی)
-                    setCurrentMap(MapType.FARM1); // یا FARM2
+                    App.getActiveGame().setCurrentMapType(MapType.FARM); // یا FARM2
+                    updateMapSize();
                     Pos pos = new Pos((int) x, TILE_SIZE);
                     player.setPosition(pos);
                 }
@@ -174,7 +166,8 @@ public class GameScreen implements Screen, InputProcessor {
 
             case NPC_VILLAGE -> {
                 if (y >= currentMapHeightInPixels - TILE_SIZE) {
-                    setCurrentMap(MapType.TOWN);
+                    App.getActiveGame().setCurrentMapType(MapType.TOWN);
+                    updateMapSize();
                     player.setPosition(new Pos((int) x, TILE_SIZE));
                 }
             }
@@ -182,13 +175,9 @@ public class GameScreen implements Screen, InputProcessor {
     }
 
 
-    public void setCurrentMap(MapType mapType) {
-        this.currentMapType = mapType;
-        updateMapSize();
-    }
 
     public Tile[][] getCurrentMap() {
-        return maps.get(currentMapType);
+        return App.getActiveGame().getMap();
     }
 
     @Override public void dispose() {

@@ -12,6 +12,7 @@ import java.util.HashMap;
 
 public class Farm {
     private FarmType type;
+    private Tile[][] map;
     private Pos startPosition;
     private HashMap<FoodIngredient, Integer> refrigerator;
     private ArrayList<Crop> plantedCrops;
@@ -20,9 +21,18 @@ public class Farm {
 
     public Farm(FarmType type) {
         this.type = type;
+        map = new Tile[type.getHeight() - 1][type.getWidth() - 1];
         this.refrigerator = new HashMap<>();
         this.plantedCrops = new ArrayList<>();
         this.plantedTrees = new ArrayList<>();
+    }
+
+    public Tile[][] getMap() {
+        return map;
+    }
+
+    public void setMap(Tile[][] map) {
+        this.map = map;
     }
 
     public Greenhouse getGreenhouse() {

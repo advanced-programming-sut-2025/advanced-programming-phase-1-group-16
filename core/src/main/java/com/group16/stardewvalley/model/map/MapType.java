@@ -1,8 +1,7 @@
 package com.group16.stardewvalley.model.map;
 
 public enum MapType {
-    FARM1,
-    FARM2,
+    FARM,
     TOWN,
     NPC_VILLAGE,
     MINE

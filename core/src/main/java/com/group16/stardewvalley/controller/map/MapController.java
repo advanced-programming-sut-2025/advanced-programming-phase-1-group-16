@@ -35,6 +35,7 @@ public class MapController {
         };
 
         int index = 0;
+        //مشخص کردن نقطه شروع بازیکن
         for (Player player : game.getPlayers()) {
             player.getFarm().setStartPosition(positions[index]);
             int x, y;
@@ -43,20 +44,26 @@ public class MapController {
                 x = r.nextInt(player.getFarm().getType().getWidth());
                 y = r.nextInt(player.getFarm().getType().getHeight());
             } while (player.getFarm().getType().getTiles()[y][x] != TileType.Ground);
-
-            // y رو برعکس کن چون map برعکس شده
-            int flippedY = height - 1 - (player.getFarm().getStartPosition().getY() + y);
-            player.setPosition(new Pos(player.getFarm().getStartPosition().getX() + x, flippedY));
+            player.setPosition(new Pos(player.getFarm().getStartPosition().getX() + x,  player.getFarm().getStartPosition().getY() + y));
             index++;
         }
 
+        //درست کردن نقظه مزرعه ها
         for (Player player : game.getPlayers()) {
-            for (int i = 0; i < player.getFarm().getType().getHeight() - 1; i++) {
-                int flippedY = height - 1 - (i + player.getFarm().getStartPosition().getY());
-                for (int j = 0; j < player.getFarm().getType().getWidth() - 1; j++) {
-                    map[flippedY][j + player.getFarm().getStartPosition().getX()] =
-                        new Tile(player.getFarm().getType().getTiles()[i][j]);
-                    map[flippedY][j + player.getFarm().getStartPosition().getX()].setLocation(Location.Farm);
+            Tile[][] baseMap;
+            switch (player.getFarm().getType()) {
+                case small -> baseMap = MapLoader.loadFromJSON("assets/maps/farm1.json");
+                case big -> baseMap = MapLoader.loadFromJSON("assets/maps/farm2.json");
+                default -> baseMap = MapLoader.loadFromJSON("assets/maps/farm.json");
+            }
+            for (int i = 0; i < player.getFarm().getType().getHeight()-1; i++) {
+                for (int j = 0; j < player.getFarm().getType().getWidth()-1; j++) {
+                    int y = i + player.getFarm().getStartPosition().getY(), x = j + player.getFarm().getStartPosition().getX();
+                    if (baseMap != null) {
+                        map[y][x] = baseMap[i][j];
+                    } else map[y][x] = new Tile(player.getFarm().getType().getTiles()[i][j]);
+                    player.getFarm().getMap()[i][j] = map[y][x];
+                    map[y][x].setLocation(Location.Farm);
                 }
             }
         }
@@ -85,7 +92,7 @@ public class MapController {
             }
         }
 
-        game.setMap(map);
+        //game.setMap(map);
     }
 
 

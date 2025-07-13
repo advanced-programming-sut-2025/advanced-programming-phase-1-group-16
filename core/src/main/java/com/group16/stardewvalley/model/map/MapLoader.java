@@ -1,6 +1,5 @@
 package com.group16.stardewvalley.model.map;
 
-//TODO
 import com.google.gson.*;
 import java.io.FileReader;
 import java.io.IOException;
@@ -50,7 +49,7 @@ public class MapLoader {
                     int index = y * width + x;
                     int id = data.get(index).getAsInt();
                     TileType tileType = idToType.getOrDefault(id, TileType.Ground);
-                    tiles[y][x] = new Tile(tileType);
+                    tiles[height - y - 1][x] = new Tile(tileType);
                 }
             }
 

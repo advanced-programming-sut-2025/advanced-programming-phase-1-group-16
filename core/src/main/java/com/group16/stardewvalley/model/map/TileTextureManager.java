@@ -21,6 +21,7 @@ public class TileTextureManager {
         tileTextures.put(TileType.Tree, new Texture(tree_tile));
         String cottage_tile = "Flooring/Flooring_92.png";
         tileTextures.put(TileType.Cottage, new Texture(cottage_tile));
+        tileTextures.put(TileType.CottageStartPos, new Texture(cottage_tile));
         String plowed_tile = "Decor/Gravel_Path.png";
         tileTextures.put(TileType.Plowed, new Texture(plowed_tile));
         String quarry_tile = "Flooring/Flooring_52.png";
@@ -43,7 +44,8 @@ public class TileTextureManager {
     }
 
     public Texture getTexture(TileType type) {
-        return tileTextures.get(type);
+        if (tileTextures.get(type) != null) return tileTextures.get(type);
+        return tileTextures.get(TileType.Ground);
     }
 
     public void dispose() {
