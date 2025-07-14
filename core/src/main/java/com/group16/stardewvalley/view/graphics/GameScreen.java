@@ -136,8 +136,14 @@ public class GameScreen implements Screen, InputProcessor {
             nextX -= speed;
             left = true;
         }
-
-        player.setPosition(new Pos((int) nextX, (int) nextY));
+        Result result = mapController.walk((int) nextX, (int) nextY);
+        if (result.isSuccessful()) {
+            player.getController().update(speed, up, down, left, right);
+        }
+        System.out.println(result.message());
+//        if (!result.isSuccessful() && result.message().contains("You fainted")) {
+//            player.
+//        }
 
     }
 
