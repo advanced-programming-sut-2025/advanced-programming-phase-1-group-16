@@ -9,32 +9,41 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.group16.stardewvalley.Main;
+import com.group16.stardewvalley.controller.graphic.CharacterController;
+import com.group16.stardewvalley.controller.map.MapController;
+import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.graphics.TileRenderer;
-import com.group16.stardewvalley.model.map.*;
+import com.group16.stardewvalley.model.map.Pos;
+import com.group16.stardewvalley.model.map.Tile;
+import com.group16.stardewvalley.model.map.TileTextureManager;
+import com.group16.stardewvalley.model.map.TileType;
 import com.group16.stardewvalley.model.user.Player;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class GameScreen implements Screen, InputProcessor {
     private SpriteBatch batch;
+    private Tile[][] map;
     private TileTextureManager textureManager;
-    private TileRenderer tileRenderer;
-
     public static OrthographicCamera camera;
-    private final int TILE_SIZE = 20;
+    private Viewport viewport;
+    TileRenderer tileRenderer;
+    public static float totalGameTime = 0f;
+    private MapController mapController = new MapController();
 
-    Tile[][] currentMap;
 
-    private int currentMapWidthInPixels;
-    private int currentMapHeightInPixels;
+    public static final int TILE_SIZE = 17;
 
     public GameScreen() {
+        this.map = App.getActiveGame().getMap();
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 600);
-        Gdx.input.setInputProcessor(this);
+        viewport = new FillViewport(30 * TILE_SIZE, 20 * TILE_SIZE, camera);
+        viewport.apply();
+
     }
 
     @Override
@@ -42,61 +51,65 @@ public class GameScreen implements Screen, InputProcessor {
         batch = new SpriteBatch();
         textureManager = new TileTextureManager();
         tileRenderer = new TileRenderer();
-        updateMapSize();
-    }
 
-    private void updateMapSize() {
-        Tile[][] map = App.getActiveGame().getMap();
-        currentMapWidthInPixels = map[0].length * TILE_SIZE;
-        currentMapHeightInPixels = map.length * TILE_SIZE;
     }
 
     @Override
     public void render(float delta) {
-        Player player = App.getActiveGame().getCurrentPlayer();
-        float playerX = player.getX();
-        float playerY = player.getY();
-
-        currentMap = App.getActiveGame().getMap();
-
+        totalGameTime += Gdx.graphics.getDeltaTime();
+        if (totalGameTime > 100f) {
+            App.getActiveGame().nextTurn();
+            totalGameTime = 0f;
+        }
+        camera.position.set(App.getActiveGame().getCurrentPlayer().getX() * TILE_SIZE, App.getActiveGame().getCurrentPlayer().getY() * TILE_SIZE, 0);
         float viewportWidth = camera.viewportWidth;
         float viewportHeight = camera.viewportHeight;
 
-        float cameraX = MathUtils.clamp(playerX, viewportWidth / 2f, currentMapWidthInPixels - viewportWidth / 2f);
-        float cameraY = MathUtils.clamp(playerY, viewportHeight / 2f, currentMapHeightInPixels - viewportHeight / 2f);
+        float mapPixelHeight = App.getActiveGame().getMapHeight() * TILE_SIZE;
+        float mapPixelWidth = App.getActiveGame().getMapWidth() * TILE_SIZE;
+
+        float cameraX = MathUtils.clamp(
+            App.getActiveGame().getCurrentPlayer().getX() * TILE_SIZE,
+            viewportWidth / 2f,
+            mapPixelWidth - viewportWidth / 2f);
+
+        float cameraY = MathUtils.clamp(
+            App.getActiveGame().getCurrentPlayer().getY() * TILE_SIZE,
+            viewportHeight / 2f,
+            mapPixelHeight - viewportHeight / 2f);
+
 
         camera.position.set(cameraX, cameraY, 0);
         camera.update();
-
+        batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClearColor(0.2f, 0.5f, 1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        batch.setProjectionMatrix(camera.combined);
         batch.begin();
-
-        // ترسیم تایل‌ها
-        for (int y = 0; y < currentMap.length; y++) {
-            for (int x = 0; x < currentMap[y].length; x++) {
-                Tile tile = currentMap[y][x];
-                Texture texture = textureManager.getTexture(tile.getType());
+        for (int y = 0; y < map.length; y++) {
+            for (int x = 0; x < map[y].length; x++) {
+                Tile tile = map[y][x];
+                Texture texture;
+                if (tile.getType() == TileType.Cottage || tile.getType() == TileType.CottageStartPos) {
+                    texture = textureManager.getTexture(TileType.Ground);
+                } else texture = textureManager.getTexture(tile.getType());
                 batch.draw(texture, x * TILE_SIZE, y * TILE_SIZE);
             }
         }
 
-        // ترسیم Overlay
-        for (int y = currentMap.length - 1; y >= 0; y--) {
-            for (int x = 0; x < currentMap[y].length; x++) {
-                tileRenderer.renderTile(batch, currentMap[y][x], x * TILE_SIZE, y * TILE_SIZE);
+
+        for (int y = map.length - 1; y >= 0; y--) {
+            for (int x = 0; x < map[y].length; x++) {
+                tileRenderer.renderTile(batch, map[y][x], x, y);
             }
         }
-
-        // ترسیم بازیکن
-        player.getPlayerSprite().setPosition(playerX, playerY);
-        player.getPlayerSprite().draw(batch);
+        for (Player player1 : App.getActiveGame().getPlayers()) {
+            player1.getController().render(batch);
+        }
+        handlePlayerInput();
 
         batch.end();
 
-        handlePlayerInput();
     }
 
     public void handlePlayerInput(){
@@ -104,108 +117,54 @@ public class GameScreen implements Screen, InputProcessor {
 
         float nextX = player.getX();
         float nextY = player.getY();
+        boolean up = false, down = false, left = false, right = false;
+        int speed = 1;
 
-        if (Gdx.input.isKeyPressed(Input.Keys.W)){
-            nextY += 10;
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)){
+            nextY += speed;
+            up = true;
         }
-        else if (Gdx.input.isKeyPressed(Input.Keys.D)){
-            nextX += 10;
+        else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+            nextX += speed;
+            right = true;
         }
-        else if (Gdx.input.isKeyPressed(Input.Keys.S)){
-            nextY -= 10;
+        else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+            nextY -= speed;
+            down = true;
         }
-        else if (Gdx.input.isKeyPressed(Input.Keys.A)){
-            nextX -= 10;
-            player.getPlayerSprite().flip(true, false);
+        else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+            nextX -= speed;
+            left = true;
         }
-
-        nextX = MathUtils.clamp(nextX, 0, currentMapWidthInPixels - player.getPlayerSprite().getWidth());
-        nextY = MathUtils.clamp(nextY, 0, currentMapHeightInPixels - player.getPlayerSprite().getHeight());
-
-        player.setPosition(new Pos((int) nextX, (int) nextY));
-
-        player.getPlayerSprite().setPosition(nextX, nextY);
-
-        checkMapTransition(player);
-
-    }
-
-    private void checkMapTransition(Player player) {
-        float x = player.getX();
-        float y = player.getY();
-
-        switch (App.getActiveGame().getCurrentMapType()) {
-            case FARM -> {
-                if (x <= 0) {
-                    App.getActiveGame().setCurrentMapType(MapType.TOWN);
-                    updateMapSize();
-                    Pos pos = new Pos(currentMapWidthInPixels - TILE_SIZE, (int) y);
-                    player.setPosition(pos);
-                } else if (x >= currentMapWidthInPixels - TILE_SIZE) {
-                    App.getActiveGame().setCurrentMapType(MapType.TOWN);
-                    updateMapSize();
-                    Pos pos = new Pos(TILE_SIZE, (int) y);
-                    player.setPosition(pos);
-                }
-            }
-
-            case TOWN -> {
-                if (y <= 0) {
-                    App.getActiveGame().setCurrentMapType(MapType.NPC_VILLAGE);
-                    updateMapSize();
-                    Pos pos = new Pos((int) x, currentMapHeightInPixels - TILE_SIZE);
-                    player.setPosition(pos);
-                } else if (y >= currentMapHeightInPixels - TILE_SIZE) {
-                    // برگرد به مزرعه اول یا دوم (می‌تونی ذخیره کنی قبلاً کجا بودی)
-                    App.getActiveGame().setCurrentMapType(MapType.FARM); // یا FARM2
-                    updateMapSize();
-                    Pos pos = new Pos((int) x, TILE_SIZE);
-                    player.setPosition(pos);
-                }
-            }
-
-            case NPC_VILLAGE -> {
-                if (y >= currentMapHeightInPixels - TILE_SIZE) {
-                    App.getActiveGame().setCurrentMapType(MapType.TOWN);
-                    updateMapSize();
-                    player.setPosition(new Pos((int) x, TILE_SIZE));
-                }
-            }
+        Result result = mapController.walk((int) nextX, (int) nextY);
+        if (result.isSuccessful()) {
+            player.getController().update(speed, up, down, left, right);
         }
-    }
+        System.out.println(result.message());
+//        if (!result.isSuccessful() && result.message().contains("You fainted")) {
+//            player.
+//        }
 
-
-
-    public Tile[][] getCurrentMap() {
-        return App.getActiveGame().getMap();
     }
 
     @Override public void dispose() {
         batch.dispose();
         textureManager.dispose();
+        for (Player player : App.getActiveGame().getPlayers()) {
+            player.getController().dispose();
+        }
     }
 
-    @Override public void resize(int width, int height) {}
+    @Override
+    public void resize(int width, int height) {
+        viewport.update(width, height);
+    }
     @Override public void pause() {}
     @Override public void resume() {}
     @Override public void hide() {}
 
     @Override
     public boolean keyDown(int i) {
-        Player player = App.getActiveGame().getCurrentPlayer();
-        int newX = player.getX();
-        int newY = player.getY();
-
-        if (i == Input.Keys.UP) {
-            newY = player.getY() + 1;
-        } else if (i == Input.Keys.DOWN) {
-            newY = player.getY() - 1;
-        } else if (i == Input.Keys.LEFT) {
-            newX = player.getX() - 1;
-        } else if (i == Input.Keys.RIGHT) {
-            newX = player.getX() + 1;
-        }
-        player.setPosition(new Pos(newX, newY));
         return false;
     }
 

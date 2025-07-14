@@ -3,6 +3,7 @@ package com.group16.stardewvalley;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.group16.stardewvalley.controller.graphic.CharacterController;
 import com.group16.stardewvalley.controller.map.MapController;
 import com.group16.stardewvalley.controller.menu.GameMenuController;
 import com.group16.stardewvalley.model.app.App;
@@ -39,15 +40,28 @@ public class Main extends Game {
             gamePlayers.add(new Player(new User(user, "ee", "ff", "a@gmail", "woman")));
 
         }
-
         com.group16.stardewvalley.model.app.Game newGame = new com.group16.stardewvalley.model.app.Game(new Player(App.getLoggedInUser()), gamePlayers);
         App.setActiveGame(newGame);
         App.games.add(newGame);
+
+        String[] characterPaths = {
+            "Character/maidnpc.png",
+            "Character/gardenernpc.png",
+            "Character/woman_016_npc.png",
+            "Character/man_002_npc.png"
+        };
+
         for (Player player : App.getActiveGame().getPlayers()) {
-            controller.chooseFarm(player, "1");
+            controller.chooseFarm(player, "2");
 
         }
         mapController.createMap();
+        int index = 0;
+        for (Player player : App.getActiveGame().getPlayers()) {
+            CharacterController controller1 = new CharacterController(characterPaths[index], player.getPosition().getX(), player.getPosition().getY(), 1f, 48, 64);
+            player.setController(controller1);
+            index++;
+        }
         setScreen(new GameScreen());
     }
 

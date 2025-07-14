@@ -2,8 +2,6 @@ package com.group16.stardewvalley.model.app;
 
 import com.group16.stardewvalley.model.NPC.NPC;
 import com.group16.stardewvalley.model.NPC.NPCType;
-import com.group16.stardewvalley.model.map.MapLoader;
-import com.group16.stardewvalley.model.map.MapType;
 import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.shops.*;
 import com.group16.stardewvalley.model.weather.WeatherCondition;
@@ -12,14 +10,11 @@ import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.model.time.TimeDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Game {
     private ArrayList<Player> players = new ArrayList<>();
-    private final Map<MapType, Tile[][]> maps = new HashMap<>();
-    private MapType currentMapType;
+    private Tile[][] map;
     private final int mapHeight = 200;
     private final int mapWidth = 300;
     private int currentPlayerIndex; //hamoon turn
@@ -63,15 +58,7 @@ public class Game {
         NPCs.add(new NPC(NPCType.Harvey));
         NPCs.add(new NPC(NPCType.Leah));
         NPCs.add(new NPC(NPCType.Robin));
-        loadAllMaps();
-        currentMapType = MapType.FARM;
     }
-
-    public void loadAllMaps() {
-        maps.put(MapType.TOWN, MapLoader.loadFromJSON("assets/maps/town.json"));
-        maps.put(MapType.NPC_VILLAGE, MapLoader.loadFromJSON("assets/maps/NPCVillage.json"));
-    }
-
 
     public List<NPC> getNPCs() {
         return NPCs;
@@ -169,22 +156,11 @@ public class Game {
     }
 
     public Tile[][] getMap() {
-        if (currentMapType == MapType.FARM) {
-            return App.getActiveGame().getCurrentPlayer().getFarm().getMap();
-        }
-        return maps.get(this.currentMapType);
+        return map;
     }
 
-    public MapType getCurrentMapType() {
-        return currentMapType;
-    }
-
-    public void setCurrentMapType(MapType currentMapType) {
-        this.currentMapType = currentMapType;
-    }
-
-    public void addMap(MapType mapType, Tile[][] map) {
-        maps.put(mapType, map);
+    public void setMap(Tile[][] map) {
+        this.map = map;
     }
 
     public Player getCreator() {
