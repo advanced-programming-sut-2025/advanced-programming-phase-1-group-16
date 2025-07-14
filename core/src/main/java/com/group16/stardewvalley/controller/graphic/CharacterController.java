@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.group16.stardewvalley.view.graphics.GameScreen;
 
 public class CharacterController {
     protected Texture spriteSheet;
@@ -65,7 +66,7 @@ public class CharacterController {
             case LEFT: currentFrame = walkLeft.getKeyFrame(stateTime, true); break;
             case RIGHT: currentFrame = walkRight.getKeyFrame(stateTime, true); break;
         }
-        batch.draw(currentFrame, x, y, (float) spriteSheet.getWidth() / 7, (float) spriteSheet.getHeight() / 7);
+        batch.draw(currentFrame, x * GameScreen.TILE_SIZE, y * GameScreen.TILE_SIZE, (float) spriteSheet.getWidth() / 7, (float) spriteSheet.getHeight() / 7);
     }
 
     public void dispose() {

@@ -9,6 +9,7 @@ import com.group16.stardewvalley.model.items.Stone;
 import com.group16.stardewvalley.model.map.*;
 import com.group16.stardewvalley.model.shops.Shop;
 import com.group16.stardewvalley.model.user.Player;
+import com.group16.stardewvalley.view.graphics.GameScreen;
 
 import java.util.*;
 
@@ -42,11 +43,11 @@ public class MapController {
             do {
                 x = r.nextInt(player.getFarm().getType().getWidth());
                 y = r.nextInt(player.getFarm().getType().getHeight());
-            } while (player.getFarm().getType().getTiles()[y][x] != TileType.Ground);
+            } while (player.getFarm().getType().getTiles()[y][x] != TileType.Cottage);
 
             // y رو برعکس کن چون map برعکس شده
             int flippedY = height - 1 - (player.getFarm().getStartPosition().getY() + y);
-            player.setPosition(new Pos(player.getFarm().getStartPosition().getX() + x, flippedY));
+            player.setPosition(new Pos((player.getFarm().getStartPosition().getX() + x), flippedY));
             index++;
         }
 
@@ -129,7 +130,7 @@ public class MapController {
         if (player.getEnergy() < pathInfo.energyCost()) {
             player.faint();
             player.setPosition(dest);
-            return new Result(false, "Moved to <" + dest.getX() + "," + dest.getY() + "> but \033[31mYou fainted\033[0m");
+            return new Result(false, "Moved to <" + dest.getX() + "," + dest.getY() + "> but You fainted");
         }
         player.setPosition(dest);
         player.decreaseEnergy(pathInfo.energyCost());
@@ -146,7 +147,7 @@ public class MapController {
         int height = map.length;
         int width = map[0].length;
 
-        if (!isValidPos(dest, width, height) || !map[dest.getX()][dest.getY()].isTileEmpty()) {
+        if (!isValidPos(dest, width, height) || (isValidPos(dest, width, height) && !map[dest.getX()][dest.getY()].isTileEmpty())) {
             return PathInfo.invalid("Invalid destination.");
         }
 

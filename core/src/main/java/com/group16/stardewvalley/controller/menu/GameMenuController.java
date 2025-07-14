@@ -48,7 +48,6 @@ public class GameMenuController {
         gamePlayers.add(new Player(App.getLoggedInUser()));
         for (String user : users) {
             gamePlayers.add(new Player(getUserByUsername(user)));
-
         }
 
         Game newGame = new Game(new Player(App.getLoggedInUser()), gamePlayers);

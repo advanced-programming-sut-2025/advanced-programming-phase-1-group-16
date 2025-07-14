@@ -2,6 +2,7 @@ package com.group16.stardewvalley.model.user;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.group16.stardewvalley.controller.graphic.CharacterController;
 import com.group16.stardewvalley.model.Inventory;
 import com.group16.stardewvalley.model.food.Food;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
@@ -56,6 +57,9 @@ public class Player {
     private int hourPastForBuff;
     private int finalHourBuff;
 
+    //UI
+    private CharacterController controller;
+
 
     // مقدار های ماکسیمم هر توانایی رو هم در گیم ذخیره کردم سر جمع شه
     // تابعی برای بالا بردن لول شخص در این موارد نوشته نشده است
@@ -86,6 +90,15 @@ public class Player {
         finalHourBuff = 0;
         this.buffer = "";
 
+    }
+
+    //TODO یادت باشه ست کنی اینو وقتی بازی جدید میسازی
+    public void setController (CharacterController controller) {
+        this.controller = controller;
+    }
+
+    public CharacterController getController() {
+        return controller;
     }
 
     public boolean isEnergyUnlimited() {

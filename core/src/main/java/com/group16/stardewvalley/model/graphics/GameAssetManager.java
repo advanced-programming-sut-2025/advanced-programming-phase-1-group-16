@@ -11,7 +11,6 @@ import java.util.Map;
 public class GameAssetManager {
     private static GameAssetManager gameAssetManager;
 
-    private final String character = "Character/1.png";
     private final String crop = "Foraging/Grape.png";
     private final String tree = "Trees/Pine_Stage_4.png";
     private final String item = "Crafting/Stone.png";
@@ -19,7 +18,6 @@ public class GameAssetManager {
     private final String water = "Flooring/Flooring_47.png";
     private final String fertalize = "Decor/Stepping_Stone_Path.png";
 
-    private Texture characterTexture = new Texture(character);
     private Texture cropTexture = new Texture(crop);
     private Texture treeTexture = new Texture(tree);
     private Texture itemTexture = new Texture(item);
@@ -52,10 +50,6 @@ public class GameAssetManager {
             gameAssetManager = new GameAssetManager();
         }
         return gameAssetManager;
-    }
-
-    public String getCharacter() {
-        return character;
     }
 
     public Texture getCropTexture(Crop crop) {
