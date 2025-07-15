@@ -147,7 +147,7 @@ public class MapController {
         int height = map.length;
         int width = map[0].length;
 
-        if (!isValidPos(dest, width, height) || (isValidPos(dest, width, height) && !map[dest.getX()][dest.getY()].isTileEmpty())) {
+        if (!isValidPos(dest, width, height) || (isValidPos(dest, width, height) && !map[dest.getY()][dest.getX()].isTileEmpty())) {
             return PathInfo.invalid("Invalid destination.");
         }
 
@@ -162,7 +162,7 @@ public class MapController {
 
         for (int i = 1; i < path.size(); i++) {
             Pos curr = path.get(i);
-            Tile tile = map[curr.getX()][curr.getY()];
+            Tile tile = map[curr.getY()][curr.getX()];
 
             // Base cost per step
             int stepCost = 1;
