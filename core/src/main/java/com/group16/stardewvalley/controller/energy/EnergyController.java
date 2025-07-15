@@ -12,7 +12,7 @@ import java.util.regex.Matcher;
 public class EnergyController {
 
     public Result show(){
-        return new Result(true, Integer.toString(App.getActiveGame().getCurrentPlayer().getEnergy()));
+        return new Result(true, Double.toString(App.getActiveGame().getCurrentPlayer().getEnergy()));
     }
 
     public Result setEnergy(Matcher matcher) {
