@@ -34,6 +34,9 @@ public class GameScreen implements Screen, InputProcessor {
     TileRenderer tileRenderer;
     public static float totalGameTime = 0f;
     private MapController mapController = new MapController();
+    private boolean showMiniMap = false;
+    private OrthographicCamera miniMapCamera;
+    private Viewport miniMapViewport;
 
 
     public static final int TILE_SIZE = 17;
@@ -43,6 +46,12 @@ public class GameScreen implements Screen, InputProcessor {
         camera = new OrthographicCamera();
         viewport = new FillViewport(30 * TILE_SIZE, 20 * TILE_SIZE, camera);
         viewport.apply();
+        miniMapCamera = new OrthographicCamera();
+        int mapPixelWidth = App.getActiveGame().getMapWidth() * TILE_SIZE;
+        int mapPixelHeight = App.getActiveGame().getMapHeight() * TILE_SIZE;
+
+        miniMapViewport = new FillViewport(mapPixelWidth, mapPixelHeight, miniMapCamera);
+        miniMapViewport.apply();
 
     }
 
@@ -51,6 +60,7 @@ public class GameScreen implements Screen, InputProcessor {
         batch = new SpriteBatch();
         textureManager = new TileTextureManager();
         tileRenderer = new TileRenderer();
+        Gdx.input.setInputProcessor(this);
 
     }
 
@@ -61,31 +71,43 @@ public class GameScreen implements Screen, InputProcessor {
             App.getActiveGame().nextTurn();
             totalGameTime = 0f;
         }
-        camera.position.set(App.getActiveGame().getCurrentPlayer().getX() * TILE_SIZE, App.getActiveGame().getCurrentPlayer().getY() * TILE_SIZE, 0);
-        float viewportWidth = camera.viewportWidth;
-        float viewportHeight = camera.viewportHeight;
 
-        float mapPixelHeight = App.getActiveGame().getMapHeight() * TILE_SIZE;
-        float mapPixelWidth = App.getActiveGame().getMapWidth() * TILE_SIZE;
+        if (showMiniMap) {
+            miniMapCamera.position.set(
+                App.getActiveGame().getMapWidth() * TILE_SIZE / 2f,
+                App.getActiveGame().getMapHeight() * TILE_SIZE / 2f,
+                0
+            );
+            miniMapCamera.update();
+            batch.setProjectionMatrix(miniMapCamera.combined);
+        } else {
+            float viewportWidth = camera.viewportWidth;
+            float viewportHeight = camera.viewportHeight;
 
-        float cameraX = MathUtils.clamp(
-            App.getActiveGame().getCurrentPlayer().getX() * TILE_SIZE,
-            viewportWidth / 2f,
-            mapPixelWidth - viewportWidth / 2f);
+            float mapPixelHeight = App.getActiveGame().getMapHeight() * TILE_SIZE;
+            float mapPixelWidth = App.getActiveGame().getMapWidth() * TILE_SIZE;
 
-        float cameraY = MathUtils.clamp(
-            App.getActiveGame().getCurrentPlayer().getY() * TILE_SIZE,
-            viewportHeight / 2f,
-            mapPixelHeight - viewportHeight / 2f);
+            float cameraX = MathUtils.clamp(
+                App.getActiveGame().getCurrentPlayer().getX() * TILE_SIZE,
+                viewportWidth / 2f,
+                mapPixelWidth - viewportWidth / 2f);
 
+            float cameraY = MathUtils.clamp(
+                App.getActiveGame().getCurrentPlayer().getY() * TILE_SIZE,
+                viewportHeight / 2f,
+                mapPixelHeight - viewportHeight / 2f);
 
-        camera.position.set(cameraX, cameraY, 0);
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
+            camera.position.set(cameraX, cameraY, 0);
+            camera.update();
+            batch.setProjectionMatrix(camera.combined);
+        }
+
         Gdx.gl.glClearColor(0.2f, 0.5f, 1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
+
+        // بقیه‌ی کد رندرینگ مپ، تایل‌ها، پلیرها
         for (int y = 0; y < map.length; y++) {
             for (int x = 0; x < map[y].length; x++) {
                 Tile tile = map[y][x];
@@ -97,55 +119,26 @@ public class GameScreen implements Screen, InputProcessor {
             }
         }
 
-
         for (int y = map.length - 1; y >= 0; y--) {
             for (int x = 0; x < map[y].length; x++) {
                 tileRenderer.renderTile(batch, map[y][x], x, y);
             }
         }
-        for (Player player1 : App.getActiveGame().getPlayers()) {
-            player1.getController().render(batch);
+
+        if (showMiniMap) {
+            for (Player player1 : App.getActiveGame().getPlayers()) {
+                batch.draw(player1.getController().getFace(), player1.getX() * TILE_SIZE, player1.getY() * TILE_SIZE,
+                    player1.getController().getFace().getWidth() * 4, player1.getController().getFace().getHeight() * 4);
+            }
+        } else {
+            for (Player player1 : App.getActiveGame().getPlayers()) {
+                player1.getController().render(batch);
+            }
         }
-        handlePlayerInput();
 
         batch.end();
-
     }
 
-    public void handlePlayerInput(){
-        Player player = App.getActiveGame().getCurrentPlayer();
-
-        float nextX = player.getX();
-        float nextY = player.getY();
-        boolean up = false, down = false, left = false, right = false;
-        int speed = 1;
-
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)){
-            nextY += speed;
-            up = true;
-        }
-        else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-            nextX += speed;
-            right = true;
-        }
-        else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-            nextY -= speed;
-            down = true;
-        }
-        else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-            nextX -= speed;
-            left = true;
-        }
-        Result result = mapController.walk((int) nextX, (int) nextY);
-        if (result.isSuccessful()) {
-            player.getController().update(speed, up, down, left, right);
-        }
-        System.out.println(result.message());
-//        if (!result.isSuccessful() && result.message().contains("You fainted")) {
-//            player.
-//        }
-
-    }
 
     @Override public void dispose() {
         batch.dispose();
@@ -164,9 +157,51 @@ public class GameScreen implements Screen, InputProcessor {
     @Override public void hide() {}
 
     @Override
-    public boolean keyDown(int i) {
+    public boolean keyDown(int keycode) {
+        Player player = App.getActiveGame().getCurrentPlayer();
+        float nextX = player.getX();
+        float nextY = player.getY();
+        boolean up = false, down = false, left = false, right = false;
+        int speed = 1;
+
+        switch (keycode) {
+            case Input.Keys.UP:
+                nextY += speed;
+                up = true;
+                break;
+            case Input.Keys.RIGHT:
+                nextX += speed;
+                right = true;
+                break;
+            case Input.Keys.DOWN:
+                nextY -= speed;
+                down = true;
+                break;
+            case Input.Keys.LEFT:
+                nextX -= speed;
+                left = true;
+                break;
+            case Input.Keys.M:
+                showMiniMap = !showMiniMap;
+
+            default:
+                return false;
+        }
+
+        Result result = mapController.walk((int) nextX, (int) nextY);
+        System.out.println(player.getEnergy());
+        if (result.isSuccessful()) {
+            player.getController().update(speed, up, down, left, right);
+            player.decreaseEnergy(player.getEnergy() * 0.05);
+            return true;
+        }
+        System.out.println(result.message());
+        if (result.message().contains("You fainted")) {
+            player.getController().setFainted(true);
+        }
         return false;
     }
+
 
     @Override
     public boolean keyUp(int i) {
