@@ -1,11 +1,8 @@
 package com.group16.stardewvalley.model.user;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.group16.stardewvalley.controller.graphic.CharacterController;
 import com.group16.stardewvalley.model.Inventory;
 import com.group16.stardewvalley.model.food.Food;
-import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.map.Farm;
 import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.map.Tile;
@@ -24,7 +21,7 @@ import com.group16.stardewvalley.model.app.App;
 public class Player {
     private User user;
     private Farm farm;
-    private int energy;
+    private double energy;
     private boolean isEnergyUnlimited;
     private Pos position;
     private Inventory inventory;
@@ -172,11 +169,11 @@ public class Player {
         this.inventory = inventory;
     }
 
-    public int getEnergy() {
+    public double getEnergy() {
         return energy;
     }
 
-    public void setEnergy(int energy) {
+    public void setEnergy(double energy) {
         this.energy = energy;
     }
 
@@ -328,8 +325,10 @@ public class Player {
     }
 
 
-    public void decreaseEnergy(int amount) {
+    public void decreaseEnergy(double amount) {
         energy = Math.max(0, energy - amount);
+        if (energy < 0.0001) energy = 0;
+        if (energy == 0.0) faint();
     }
 
     public Tile getLocation() {
@@ -382,6 +381,7 @@ public class Player {
 
     public void faint(){
         this.isFainted = true;
+        controller.setFainted(true);
         this.energy = 0;
     }
 
