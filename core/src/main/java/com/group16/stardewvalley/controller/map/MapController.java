@@ -371,6 +371,10 @@ public class MapController {
                 TileRenderer.getTileRenderer().renderTile(batch, map[y][x], x, y);
             }
         }
+
+        for (Shop shop : App.getActiveGame().getShops()) {
+            PlaceType placeType = shop.getPlaceType();
+        }
     }
 
 
