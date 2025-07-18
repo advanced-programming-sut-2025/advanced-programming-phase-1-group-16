@@ -91,7 +91,15 @@ public class TimeDate {
             }
         }
 
-        //رشد دادن گیاهان کاشته شده
+        growingPlants();
+
+        //  همه ی فروشگاه ها هم داشته باشند این تابع رو باید =)
+        for (Player player : App.getActiveGame().getPlayers()) {
+            player.resetForNewDay();
+        }
+    }
+
+    private static void growingPlants() {
         for (int i = 0; i < App.getActiveGame().getMapHeight(); i++) {
             for (int j = 0; j < App.getActiveGame().getMapWidth(); j++) {
                 Tile tile = App.getActiveGame().getMap()[i][j];
@@ -130,11 +138,6 @@ public class TimeDate {
                     }
                 }
             }
-        }
-
-        //  همه ی فروشگاه ها هم داشته باشند این تابع رو باید =)
-        for (Player player : App.getActiveGame().getPlayers()) {
-            player.resetForNewDay();
         }
     }
 
