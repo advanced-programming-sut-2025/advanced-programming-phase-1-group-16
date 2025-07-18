@@ -1,12 +1,9 @@
 package com.group16.stardewvalley.model.user;
 
-import com.group16.stardewvalley.controller.graphic.CharacterController;
 import com.group16.stardewvalley.model.Inventory;
 import com.group16.stardewvalley.model.food.Food;
-import com.group16.stardewvalley.model.map.Farm;
-import com.group16.stardewvalley.model.map.Pos;
-import com.group16.stardewvalley.model.map.Tile;
-import com.group16.stardewvalley.model.map.TileType;
+import com.group16.stardewvalley.model.graphics.PlayerGraphics;
+import com.group16.stardewvalley.model.map.*;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -55,7 +52,10 @@ public class Player {
     private int finalHourBuff;
 
     //UI
-    private CharacterController controller;
+    private PlayerGraphics playerGraphics;
+    private float speed = 1;
+    private boolean moving = false;
+    private Direction currentDirection = Direction.DOWN;
 
 
     // مقدار های ماکسیمم هر توانایی رو هم در گیم ذخیره کردم سر جمع شه
@@ -90,12 +90,38 @@ public class Player {
     }
 
     //TODO یادت باشه ست کنی اینو وقتی بازی جدید میسازی
-    public void setController (CharacterController controller) {
-        this.controller = controller;
+
+
+    public PlayerGraphics getPlayerGraphics() {
+        return playerGraphics;
     }
 
-    public CharacterController getController() {
-        return controller;
+    public void setPlayerGraphics(String spritePath, int frameWidth, int frameHeight) {
+        this.playerGraphics = new PlayerGraphics(this, spritePath, frameWidth, frameHeight);
+    }
+
+    public Direction getCurrentDirection() {
+        return currentDirection;
+    }
+
+    public void setCurrentDirection(Direction currentDirection) {
+        this.currentDirection = currentDirection;
+    }
+
+    public boolean isMoving() {
+        return moving;
+    }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
     }
 
     public boolean isEnergyUnlimited() {
@@ -358,7 +384,7 @@ public class Player {
     public void setRejectionCooldown(int amount) {
         rejectionCooldown = amount;
     }
-    //RESETFORNEWDAY
+
     public void resetForNewDay() {
         if (rejectionCooldown > 0) {
             energyCeiling = 150;
@@ -381,7 +407,6 @@ public class Player {
 
     public void faint(){
         this.isFainted = true;
-        controller.setFainted(true);
         this.energy = 0;
     }
 

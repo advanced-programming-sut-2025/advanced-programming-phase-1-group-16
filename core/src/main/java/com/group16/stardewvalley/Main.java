@@ -3,19 +3,15 @@ package com.group16.stardewvalley;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.group16.stardewvalley.controller.graphic.CharacterController;
 import com.group16.stardewvalley.controller.map.MapController;
 import com.group16.stardewvalley.controller.menu.GameMenuController;
 import com.group16.stardewvalley.model.app.App;
-import com.group16.stardewvalley.model.menu.GameMenuCommands;
+import com.group16.stardewvalley.model.graphics.PlayerGraphics;
 import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.model.user.User;
-import com.group16.stardewvalley.view.AppView;
 import com.group16.stardewvalley.view.graphics.GameScreen;
 
 import java.util.ArrayList;
-
-import static com.group16.stardewvalley.model.user.User.getUserByUsername;
 
 public class Main extends Game {
     GameMenuController controller = new GameMenuController();
@@ -53,13 +49,11 @@ public class Main extends Game {
 
         for (Player player : App.getActiveGame().getPlayers()) {
             controller.chooseFarm(player, "2");
-
         }
         mapController.createMap();
         int index = 0;
         for (Player player : App.getActiveGame().getPlayers()) {
-            CharacterController controller1 = new CharacterController(characterPaths[index], player.getPosition().getX(), player.getPosition().getY(), 1f, 48, 64);
-            player.setController(controller1);
+            player.setPlayerGraphics(characterPaths[index], 48, 64);
             index++;
         }
         setScreen(new GameScreen());
