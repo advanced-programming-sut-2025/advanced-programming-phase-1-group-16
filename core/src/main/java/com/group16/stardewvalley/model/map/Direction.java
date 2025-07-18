@@ -5,6 +5,10 @@ import com.group16.stardewvalley.model.app.Game;
 import com.group16.stardewvalley.model.map.*;
 
 public enum Direction {
+    UP("up", 0, 1),
+    DOWN("down", 0, -1),
+    LEFT("left", -1, 0),
+    RIGHT("right", 1, 0),
     N("n", 0, -1),
     NE("ne", 1, -1),
     E("e", 1, 0),
