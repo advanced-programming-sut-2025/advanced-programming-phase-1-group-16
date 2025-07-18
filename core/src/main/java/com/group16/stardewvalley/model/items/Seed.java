@@ -6,7 +6,7 @@ public class Seed extends Item {
     private SeedType type;
 
     public Seed(String name, SeedType type) {
-        super(name);
+        super(name, type.getPrice());
         this.type = type;
     }
 
