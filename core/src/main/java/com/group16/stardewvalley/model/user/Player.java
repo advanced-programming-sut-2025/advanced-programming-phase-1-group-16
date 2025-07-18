@@ -349,10 +349,6 @@ public class Player {
         this.spouse = spouse;
     }
 
-    public int getFishingAbilityLevel() {
-        return fishingAbilityLevel;
-    }
-
     public void addFarmingAbilityScore(int amount) {
         farmingAbilityScore += amount;
         if (farmingAbilityScore >= levelRanks[0]) {
@@ -502,7 +498,7 @@ public class Player {
             rejectionCooldown--;
         }
         if (isFainted) {
-            energy = energyCeiling *  75 / 100;
+            energy = (double) (energyCeiling * 75) / 100;
         } else {
             energy = energyCeiling;
         }

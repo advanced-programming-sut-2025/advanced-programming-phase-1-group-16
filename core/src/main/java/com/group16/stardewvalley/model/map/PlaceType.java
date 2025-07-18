@@ -66,4 +66,6 @@ public enum PlaceType {
     public void setTiles(TileType[][] tiles) {
         this.tiles = tiles;
     }
+
+
 }
