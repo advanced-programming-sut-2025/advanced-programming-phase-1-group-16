@@ -9,7 +9,13 @@ import com.group16.stardewvalley.model.map.Farm;
 import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.map.TileType;
+import com.group16.stardewvalley.model.graphics.PlayerGraphics;
+import com.group16.stardewvalley.model.map.*;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.*;
 
 import com.group16.stardewvalley.model.NPC.NPC;
@@ -25,7 +31,7 @@ import com.group16.stardewvalley.model.map.*;
 public class Player {
     private User user;
     private Farm farm;
-    private int energy;
+    private double energy;
     private boolean isEnergyUnlimited;
     private Pos position;
     private Inventory inventory;
@@ -60,7 +66,11 @@ public class Player {
     private int finalHourBuff;
     private Location location;
 
-
+    //UI
+    private PlayerGraphics playerGraphics;
+    private float speed = 1;
+    private boolean moving = false;
+    private Direction currentDirection = Direction.DOWN;
 
 
     // مقدار های ماکسیمم هر توانایی رو هم در گیم ذخیره کردم سر جمع شه
@@ -94,6 +104,40 @@ public class Player {
         this.location = null;
     }
 
+    //TODO یادت باشه ست کنی اینو وقتی بازی جدید میسازی
+
+
+    public PlayerGraphics getPlayerGraphics() {
+        return playerGraphics;
+    }
+
+    public void setPlayerGraphics(String spritePath, int frameWidth, int frameHeight) {
+        this.playerGraphics = new PlayerGraphics(this, spritePath, frameWidth, frameHeight);
+    }
+
+    public Direction getCurrentDirection() {
+        return currentDirection;
+    }
+
+    public void setCurrentDirection(Direction currentDirection) {
+        this.currentDirection = currentDirection;
+    }
+
+    public boolean isMoving() {
+        return moving;
+    }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
     public String getName() {
         return user.getNickName();
     }
@@ -194,11 +238,11 @@ public class Player {
         this.inventory = inventory;
     }
 
-    public int getEnergy() {
+    public double getEnergy() {
         return energy;
     }
 
-    public void setEnergy(int energy) {
+    public void setEnergy(double energy) {
         this.energy = energy;
     }
 
@@ -256,6 +300,10 @@ public class Player {
 
     public int getForagingAbilityLevel() {
         return foragingAbilityLevel;
+    }
+
+    public int getFishingAbilityLevel() {
+        return fishingAbilityLevel;
     }
 
     public int getCoin() {
@@ -405,8 +453,10 @@ public class Player {
     }
 
 
-    public void decreaseEnergy(int amount) {
+    public void decreaseEnergy(double amount) {
         energy = Math.max(0, energy - amount);
+        if (energy < 0.0001) energy = 0;
+        if (energy == 0.0) faint();
     }
 
     public Tile getLocation() {
@@ -445,12 +495,18 @@ public class Player {
     public void setRejectionCooldown(int amount) {
         rejectionCooldown = amount;
     }
-    //RESETFORNEWDAY
+
     public void resetForNewDay() {
         if (rejectionCooldown > 0) {
             energyCeiling = 150;
             rejectionCooldown--;
         }
+        if (isFainted) {
+            energy = energyCeiling *  75 / 100;
+        } else {
+            energy = energyCeiling;
+        }
+
         this.isFainted = false;
         energy = energyCeiling;
         for (Map.Entry<NPC, NPCInteraction> entry : dailyNPCInteraction.entrySet()) {
@@ -469,7 +525,7 @@ public class Player {
         }
         increaseCoin(todayIncome);
         this.todayIncome = 0;
-
+        this.isEnergyUnlimited = false;
     }
 
     public void decreaseCoin(int amount) {
