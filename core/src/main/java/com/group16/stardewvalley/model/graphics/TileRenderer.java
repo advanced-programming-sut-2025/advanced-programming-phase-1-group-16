@@ -9,10 +9,18 @@ import com.group16.stardewvalley.view.graphics.GameScreen;
 
 public class TileRenderer {
     private final GameAssetManager textureManager;
+    private static TileRenderer tileRenderer;
 
 
     public TileRenderer() {
         this.textureManager = GameAssetManager.getGameAssetManager();
+    }
+
+    public static TileRenderer getTileRenderer() {
+        if (tileRenderer == null) {
+            tileRenderer = new TileRenderer();
+        }
+        return tileRenderer;
     }
 
     public void renderTile(SpriteBatch batch, Tile tile, int x, int y) {
