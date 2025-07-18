@@ -5,6 +5,7 @@ import com.group16.stardewvalley.model.agriculture.Crop;
 import com.group16.stardewvalley.model.agriculture.Tree;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
+import com.group16.stardewvalley.model.graphics.PlaceTextureManager;
 import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.map.TileType;
 import com.group16.stardewvalley.model.user.Player;
@@ -84,6 +85,7 @@ public class TimeDate {
             int nextSeasonIndex = (currentSeason.getIndex() + 1) % 4;
             if (getSeasonByIndex(nextSeasonIndex) != null) {
                 currentSeason = getSeasonByIndex(nextSeasonIndex);
+                PlaceTextureManager.getPlaceTextureManager().updateSeason();
             }
 
             if (nextSeasonIndex == 0) { // اگر از زمستان به بهار برگشتیم

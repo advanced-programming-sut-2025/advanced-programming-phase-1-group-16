@@ -2,11 +2,13 @@ package com.group16.stardewvalley.controller.map;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.group16.stardewvalley.model.NPC.NPC;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.agriculture.Mineral;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
+import com.group16.stardewvalley.model.graphics.PlaceTextureManager;
 import com.group16.stardewvalley.model.graphics.TileRenderer;
 import com.group16.stardewvalley.model.items.Stone;
 import com.group16.stardewvalley.model.map.*;
@@ -374,6 +376,8 @@ public class MapController {
 
         for (Shop shop : App.getActiveGame().getShops()) {
             PlaceType placeType = shop.getPlaceType();
+            TextureRegion texture = PlaceTextureManager.getPlaceTextureManager().getShopTexture(placeType);
+            batch.draw(texture, placeType.getStartPosition().getX() * TILE_SIZE, placeType.getStartPosition().getY() * TILE_SIZE);
         }
     }
 
