@@ -37,12 +37,12 @@ public enum FishType {
         this.isNormal = isLegendary;
     }
 
-    public String getName() {
-        return name;
+    public int getPrice() {
+        return price;
     }
 
-    public Integer getPrice() {
-        return price;
+    public String getName() {
+        return name;
     }
 
     public Season getSeason() {

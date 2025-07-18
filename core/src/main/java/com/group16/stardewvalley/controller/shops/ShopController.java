@@ -1,9 +1,14 @@
 package com.group16.stardewvalley.controller.shops;
 
+import com.group16.stardewvalley.model.agriculture.Seed;
+import com.group16.stardewvalley.model.animal.Sellable;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.Result;
+import com.group16.stardewvalley.model.shops.Building;
+import com.group16.stardewvalley.model.shops.BuildingType;
 import com.group16.stardewvalley.model.shops.Shop;
 import com.group16.stardewvalley.model.shops.UpgradeType;
+import com.group16.stardewvalley.model.time.Season;
 import com.group16.stardewvalley.model.tools.Gadget;
 import com.group16.stardewvalley.model.tools.ToolDataManager;
 import com.group16.stardewvalley.model.app.App;
@@ -15,108 +20,123 @@ import java.util.Set;
 import java.util.regex.Matcher;
 
 public class ShopController {
-    private final Game game;
 
-    public ShopController() {
-        this.game = App.getActiveGame();
-    }
 
     public Result handleCommand(String command, Matcher matcher) {
         Player currentPlayer = App.getActiveGame().getCurrentPlayer();
         String[] parts = command.split(" ");
-        Location l = game.getCurrentPlayer().getLocation().getLocation();
-        // در اینجا باید اگر در این مغازه نبود ارور بدیم
-        if (!(l == Location.Blacksmith || l == Location.JojaMart ||
-              l == Location.CarpentersShop || l == Location.FishShop ||
-              l == Location.MarniesRanch || l == Location.TheStardropSaloon ||
-              l == Location.PierresGeneralStore  )) {
+        Location l = currentPlayer.getLocationLocation();
 
+        // بررسی مکان‌های مجاز
+        if (!(l == Location.Blacksmith || l == Location.JojaMart ||
+                l == Location.CarpentersShop || l == Location.FishShop ||
+                l == Location.MarniesRanch || l == Location.TheStardropSaloon ||
+                l == Location.PierresGeneralStore)) {
+            return new Result(false, "You're not in a valid shop location");
         }
 
-        switch (parts[0]) {
+        switch (parts[0].toLowerCase()) { // تبدیل به حروف کوچک برای عدم حساسیت
             case "upgrade":
                 return upgradeTool(matcher);
-            case  "show":{
-                if (parts[2].equalsIgnoreCase("products")) {
-                    switch (currentPlayer.getLocation().getLocation()) {
-                        case Blacksmith:
-                            handleShowProducts(game.getBlacksmith().getAllProducts());
-                        case JojaMart:
-                            handleShowProducts(game.getJojaMart().getAllProducts());
-                        case PierresGeneralStore:
-                            handleShowProducts(game.getPierresGeneralStore().getAllProducts());
-                        case CarpentersShop:
-                            handleShowProducts(game.getCarpentersShop().getAllProducts());
-                        case FishShop:
-                            handleShowProducts(game.getFishShop().getAllProducts());
-                        case MarniesRanch:
-                            handleShowProducts(game.getMarniesRanch().getAllProducts());
-                        case TheStardropSaloon:
-                            handleShowProducts(game.getTheStardropSaloon().getAllProducts());
 
-                        default:
-                            return new Result(false, "Hmmmm" +
-                                    " I think you'd better get yourself to a store first.");
-                    }
-                } else if (parts[2].equalsIgnoreCase("available"))  {
-                    switch (currentPlayer.getLocation().getLocation()) {
-                        case Blacksmith:
-                            handleShowProducts(game.getBlacksmith().getAvailableItems());
-                        case JojaMart:
-                            handleShowProducts(game.getJojaMart().getAvailableItems());
-                        case PierresGeneralStore:
-                            handleShowProducts(game.getPierresGeneralStore().getAvailableItems());
-                        case CarpentersShop:
-                            handleShowProducts(game.getCarpentersShop().getAvailableItems());
-                        case FishShop:
-                            handleShowProducts(game.getFishShop().getAvailableItems());
-                        case MarniesRanch:
-                            handleShowProducts(game.getMarniesRanch().getAvailableItems());
-                        case TheStardropSaloon:
-                            handleShowProducts(game.getTheStardropSaloon().getAvailableItems());
-
-                        default:
-                            return new Result(false, "Hmmmm" +
-                                    " I think you'd better get yourself to a store first.");
-                    }
+            case "show":
+                if (parts.length < 3) {
+                    return new Result(false, "Invalid show command");
                 }
+                if (parts[2].equalsIgnoreCase("products")) {
+                    return handleShowAllProducts();
+                } else if (parts[2].equalsIgnoreCase("available")) {
+                    return handleShowAvailableProducts();
+                }
+                break;
 
-
-            }
             case "purchase":
-                handlePurchase(currentPlayer.getLocation().getLocation(), matcher);
-                // کامند مربوط به ارتقای ابزار الات است که فقط باید در یکی اجرا بشود
+                return handlePurchase(l, matcher);
+
             case "tools":
-                if (currentPlayer.getLocation().getLocation() != Location.Blacksmith) {
-                    return new Result(false, "Tool upgrades? You've come to the wrong place " +
+                if (l != Location.Blacksmith) {
+                    return new Result(false, "Tool upgrades? You've come to the wrong place. " +
                             "The blacksmith's shop is in another part of town.");
                 }
-                else {
-                    upgradeTool(matcher);
-                }
+                return upgradeTool(matcher);
 
             case "sell":
-                handleSellProduct(matcher);
+                return handleSellProduct(matcher);
 
             default:
                 return new Result(false, "Invalid command");
         }
+
+        return new Result(false, "Command processing failed");
     }
 
     public Result handleSellProduct(Matcher matcher) {
         String productName = matcher.group("productName");
         String countStr = matcher.group("count");
-        int count = Integer.parseInt(countStr);
+        Player currentPlayer = App.getActiveGame().getCurrentPlayer();
+        Item targetItem = currentPlayer.getInventory().getItemByName(productName);
+
+        // اصلا نداشته باشد این کالا را
+        if (targetItem == null) {
+            return new Result(false, "You don’t have this item in your inventory");
+        }
+
+        int count;
+        if (countStr == null) {
+            count = currentPlayer.getInventory().getNumberOfItem(targetItem);
+        } else {
+            count = Integer.parseInt(countStr);
+        }
+
+        // این تعداد را نداشته باشد
+        if (currentPlayer.getInventory().getNumberOfItem(targetItem) < count) {
+            return new Result(false, "You don’t have enough of this item to sell!");
+        }
 
         // قابلیت فروش نداشته باشد
-        //TODO mirshekar
-        return new Result(true, "");
+        if (!(targetItem instanceof Sellable)) {
+            return new Result(false, "This item cannot be sold!");
+        }
+
+        int sellPrice = targetItem.getPrice();
+
+        boolean isNear = false;
+        for (Building building : App.getActiveGame().getBuildings()) {
+            if (building.getBuildingType() == BuildingType.Shipping_Bin) {
+                if (building.isNearBuilding(currentPlayer.getPosition())) {
+                    isNear = true;
+                }
+            }
+        }
+        // نزدیک ان نباشد
+        if (!isNear){
+            return new Result(false, "You need to be near a Shipping Bin to sell items!");
+        }
+
+        currentPlayer.increaseTodayIncome(targetItem.getPrice());
+        currentPlayer.getInventory().removeItem(targetItem, count);
+        return new Result(true, "Item sold successfully!");
     }
 
 
-    public Result handleShowProducts(Set<Item> items) {
+    public Result handleShowAllProducts() {
+        Location currentShop = App.getActiveGame().getCurrentPlayer().getLocationLocation();
+        if (currentShop == null) {
+            return new Result(false, "You should go to shop!");
+        }
+        if (currentShop.getShopByLocation() == null) {
+            return new Result(false, "You should go to shop!");
+        }
+
+        Set<Item> items = currentShop.getShopByLocation().getAllProducts();
         if (items == null || items.isEmpty()) {
             return new Result(false, "No products available");
+        }
+
+        Shop targetShop = currentShop.getShopByLocation();
+
+        if (!targetShop.isOpen()) {
+            return new Result(false, "Sorry! we're closed! Shop hours: 9 AM to 4 PM");
         }
 
         StringBuilder productsInfo = new StringBuilder("Available Products:\n");
@@ -132,8 +152,61 @@ public class ShopController {
         return new Result(true, productsInfo.toString());
     }
 
+
+    public Result handleShowAvailableProducts() {
+
+        Location currentShop = App.getActiveGame().getCurrentPlayer().getLocationLocation();
+        if (currentShop.getShopByLocation() == null) {
+            return new Result(false, "You should go to shop!");
+        }
+
+        Shop targetShop = currentShop.getShopByLocation();
+        if (!targetShop.isOpen()) {
+            return new Result(false, "Sorry! we're closed! Shop hours: 9 AM to 4 PM");
+        }
+
+        Set<Item> items = currentShop.getShopByLocation().getAllProducts();
+        if (items == null || items.isEmpty()) {
+            return new Result(false, "No products available");
+        }
+
+         Season currentSeason = App.getActiveGame().getSeason();
+        StringBuilder productsInfo = new StringBuilder("Available Products:\n");
+        int productCount = 0;
+
+        for (Item item : items) {
+            if (item instanceof Seed) {
+                Seed seed = (Seed) item;
+                if (seed.isAvailableInSeason(currentSeason)) {
+                    productsInfo.append(String.format(
+                            "- %s (Price: %d, Type: %s, Daily Limit: %d)%n",
+                            seed.getName(),
+                            seed.getPrice(),
+                            seed.getType(),
+                            seed.getDailyLimit()
+                    ));
+                    productCount++;
+                }
+            } else {
+
+                productsInfo.append(String.format(
+                        "- %s (Price: %d)%n",
+                        item.getName(),
+                        item.getPrice()
+                ));
+                productCount++;
+            }
+        }
+
+        if (productCount == 0) {
+            return new Result(false, "No products available for current season: " + currentSeason);
+        }
+
+        return new Result(true, productsInfo.toString());
+    }
+
+
     private Result handlePurchase(Location location, Matcher matcher) {
-        Player currentPlayer = App.getActiveGame().getCurrentPlayer();
         String productName = matcher.group("productName");
         String countStr = matcher.group("count");
         int count;
@@ -143,31 +216,46 @@ public class ShopController {
             count = Integer.parseInt(countStr);
         }
         Item targetItem = null;
-        Shop targetShop = currentPlayer.getLocation().getLocation().getShopByLocation();
+        Shop targetShop = App.getActiveGame().getCurrentPlayer().getLocationLocation().getShopByLocation();
+
         targetItem = targetShop.findItemByName(productName);
-        // فروشگاه مورد نظر این محصول را نداشته باشد
+
+        //مراجعه در زمان نامناسب
+        if (!targetShop.isOpen()) {
+            return new Result(false, "Sorry! we're closed! Shop hours: 9 AM to 4 PM");
+        }
+
+        // فروشگاه مورد نظر این محصولو نداشته باشه
         if (targetItem == null) {
             return new Result(false, "Sorry, we don't stock that item. " +
                     "Try the specialty shops around town.");
         }
 
-        // فرد موجودی لازم برای خرید ان را نداشته باشد
-        if (currentPlayer.getCoin() < targetItem.getPrice()) {
+        //  موجودی لازم واسه خرید نداشته باشه
+        if (App.getActiveGame().getCurrentPlayer().getCoin() < targetItem.getPrice()) {
             return new Result(false, "Oops! Too expensive!");
         }
 
-        // فروشگاه برای امروز تعداد کافی برای فروش نداشت
+        // فروشگاه برای امروز تعداد کافی برای فروش نداشته
         if (targetShop.getAvailableCountForToday(targetItem) <= count) {
             return new Result(false, "Shop's stock is empty for today! Come back tomorrow.");
         }
 
         // اینونتوری اش جا نداشته باشد
-        if (currentPlayer.getInventory().isFull()) {
+        if (App.getActiveGame().getCurrentPlayer().getInventory().isFull()) {
             return new Result(false, "Oops! Your backpack is completely full!");
         }
-        // با موفقیت خرید کند و به اینونتوری اش اضافه شود
-        currentPlayer.getInventory().addItem(targetItem, count);
-        currentPlayer.decreaseCoin(targetItem.getPrice());
+
+        // با موفقیت خرید کند و به اینونتوریش اضافه شه
+        App.getActiveGame().getCurrentPlayer().getInventory().addItem(targetItem, count);
+        int price = 0;
+        if (targetItem instanceof Seed) {
+            if (! ((Seed) targetItem).getAvailableSeasons().contains(App.getActiveGame().getSeason())) {
+                price = ((Seed) targetItem).getOutOfSeasonPrice();
+            }
+        }
+        price = targetItem.getPrice();
+        App.getActiveGame().getCurrentPlayer().decreaseCoin(price);
         targetShop.addBalance(targetItem.getPrice());
         return new Result(true, "Purchase complete! Enjoy your new item");
 
@@ -175,7 +263,7 @@ public class ShopController {
 
     public Result upgradeTool(Matcher matcher) {
         String toolName = matcher.group("toolName");
-        Player currentPlayer = game.getCurrentPlayer();
+        Player currentPlayer = App.getActiveGame().getCurrentPlayer();
         // خطای مراجعخ در زمان نامناسب
         if (!App.getActiveGame().getBlacksmith().isOpen()) {
             return new Result(false, "Sorry! we're closed! Shop hours: 9 AM to 4 PM");
@@ -202,9 +290,6 @@ public class ShopController {
         }
 
 
-        if (ToolDataManager.getUpgradeCost(toolName, currentMaterial, nextMaterial) == -1) {
-            return new Result(false, "no tool");
-        }
         int upgradeCost = ToolDataManager.getUpgradeCost(toolName, currentMaterial, nextMaterial);
         // خطای پول کافی نداشتن
         if (currentPlayer.getCoin() < upgradeCost) {
@@ -220,12 +305,17 @@ public class ShopController {
         }
 
         // خطای اینکه امروز یکبار انجام شده
-        if (!game.getBlacksmith().cabUpgradeToday(upgradeType)) {
-          return new Result(false, "My anvil needs a break! " +
-                  "One upgrade a day keeps the warranty valid ^ ^");
+        if (!App.getActiveGame().getBlacksmith().cabUpgradeToday(upgradeType)) {
+            return new Result(false, "My anvil needs a break! " +
+                    "One upgrade a day keeps the warranty valid ^ ^");
         }
-        //TODO mirshekar kamel mikone
-        return new Result(true, "Upgrade complete!");
+
+        // اپگرید کند
+        App.getActiveGame().getBlacksmith().increaseBalance(upgradeCost);
+        currentPlayer.decreaseCoin(upgradeCost);
+        currentTool.setMaterial(getNextMaterial(currentMaterial));
+        return new Result(true, "Upgrade complete! Your new material is : " + currentTool.getMaterial());
+
     }
 
     private String getNextMaterial(String currentMaterial) {
@@ -245,6 +335,11 @@ public class ShopController {
             return "Iridium";
         }
 
-        return null;
+        if (currentMaterial.equalsIgnoreCase("Iridium")) {
+            return null;
+        }
+        else return null;
     }
+
+
 }

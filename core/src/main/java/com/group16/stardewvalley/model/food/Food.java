@@ -11,25 +11,28 @@ public class Food extends Item {
     private final String buff;
     private final String source;
     private final int sellPrice;
+    private int purchasePrice;
 
-    public Food(String name, Map<Ingredient, Integer> ingredients, int energy, String buff, String source, int sellPrice) {
-        super(name);
+    public Food(String name,int purchasePrice,  Map<Ingredient, Integer> ingredients, int energy, String buff, String source, int sellPrice) {
+        super(name, purchasePrice);
         this.name = name;
         this.ingredients = ingredients;
         this.energy = energy;
         this.buff = buff;
         this.source = source;
         this.sellPrice = sellPrice;
+        this.purchasePrice = purchasePrice;
     }
 
     public Food(Food other) {
-        super(other.name);
+        super(other.name, other.purchasePrice);
         this.name = other.name;
         this.ingredients = Map.copyOf(other.ingredients); // یا یک نسخه جدید از Map
         this.energy = other.energy;
         this.buff = other.buff;
         this.source = other.source;
         this.sellPrice = other.sellPrice;
+        this.purchasePrice = other.purchasePrice;
     }
 
     @Override
@@ -43,6 +46,11 @@ public class Food extends Item {
 
     public int getEnergy() {
         return energy;
+    }
+
+    @Override
+    public int getPrice() {
+       return purchasePrice;
     }
 
     public String getSource() {

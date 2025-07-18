@@ -6,8 +6,8 @@ public class CraftingIngredients extends Item {
 
     private CraftingIngredientsTypes ingredientType;
 
-    public CraftingIngredients(String name) {
-        super(name);
+    public CraftingIngredients(String name, int price) {
+        super(name, price);
     }
 
     public CraftingIngredientsTypes getIngredientType() {

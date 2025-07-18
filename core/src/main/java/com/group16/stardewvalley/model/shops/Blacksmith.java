@@ -44,10 +44,10 @@ public class Blacksmith extends Shop{
 
 
     public void initializeItems() {
-        addItem(new Ore("Coal", OreType.COAL), OreType.COAL.getDailyLimit());
-        addItem(new Ore("Copper Ore", OreType.COPPER_ORE), OreType.COPPER_ORE.getDailyLimit());
-        addItem(new Ore("Iron Ore", OreType.IRON_ORE), OreType.IRON_ORE.getDailyLimit());
-        addItem(new Ore("Gold Ore", OreType.GOLD_ORE), OreType.GOLD_ORE.getDailyLimit());
+        addItem(new Ore("Coal", OreType.COAL, 75), OreType.COAL.getDailyLimit());
+        addItem(new Ore("Copper Ore", OreType.COPPER_ORE, 75), OreType.COPPER_ORE.getDailyLimit());
+        addItem(new Ore("Iron Ore", OreType.IRON_ORE, 75), OreType.IRON_ORE.getDailyLimit());
+        addItem(new Ore("Gold Ore", OreType.GOLD_ORE, 75), OreType.GOLD_ORE.getDailyLimit());
     }
 
     public EnumMap<UpgradeType, Integer> getUpgrades() {

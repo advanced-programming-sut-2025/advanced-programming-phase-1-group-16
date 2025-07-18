@@ -51,8 +51,10 @@ public class GameMenuController {
         }
 
         Game newGame = new Game(new Player(App.getLoggedInUser()), gamePlayers);
-        App.setActiveGame(newGame);
+
         App.games.add(newGame);
+
+
         return new Result(true, "new game created! now choose your farm in turn.");
     }
 
@@ -190,7 +192,7 @@ public class GameMenuController {
         if(result){
             //terminating won the election
 
-            App.setActiveGame(null);
+//            App.setActiveGame(null);
             App.setCurrentMenu(Menu.GameMenu);
             return new Result(true, "terminated game!");
             //TODO; how to delete the game
@@ -232,9 +234,4 @@ public class GameMenuController {
         String output = "you can do these from Home menu:\n1- Crafting\n2- Cooking\n3- ";
         return new Result(true, output);
     }
-
-
-
-
-
 }

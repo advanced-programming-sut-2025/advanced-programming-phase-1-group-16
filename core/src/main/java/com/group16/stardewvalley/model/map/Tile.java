@@ -34,14 +34,14 @@ public class Tile {
         }
         else if (tileType == TileType.Stone) {
             this.type = TileType.Quarry;
-            this.item = new Stone("stone");
+            this.item = new Stone("stone", 20);
         }
         else if (tileType == TileType.Forage) {
             this.type = TileType.Ground;
             CropType cropType;
             if (random.nextBoolean()) {
                 cropType = getRandomForagingCrop();
-                this.item = new ForagingCrop(cropType.getName(), cropType);
+                this.item = new ForagingCrop(cropType.getName(), 50,cropType);
             }
             else {
                 cropType = getRandomForagingSeed();
@@ -53,7 +53,7 @@ public class Tile {
         else if (tileType == TileType.MineralForage) {
             this.type = TileType.Quarry;
             MineralType mineralType = getRandomForagingMineral();
-            this.item = new Mineral(mineralType.getName(), mineralType);
+            this.item = new Mineral(mineralType.getName(), 150, mineralType);
         }
         else {
             this.type = tileType;

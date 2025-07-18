@@ -6,8 +6,8 @@ public class ArtisanGood extends Item {
     ArtisanGoodType type;
     int startHour;
 
-    public ArtisanGood(String name, ArtisanGoodType type, int startHour) {
-        super(name);
+    public ArtisanGood(String name, int price, ArtisanGoodType type, int startHour) {
+        super(name, price);
         this.type = type;
         this.startHour = startHour;
     }

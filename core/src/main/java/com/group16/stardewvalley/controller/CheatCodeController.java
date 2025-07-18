@@ -17,28 +17,28 @@ public class CheatCodeController {
     public Result addTool(String tool) {
         switch (tool) {
             case "axe":
-                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new Axe("axe", "base"), 1);
+                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new Axe("axe", 0, "base"), 1);
                 break;
             case "fishing pole":
-                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new FishingPole("fishing pole", "training"), 1);
+                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new FishingPole("fishing pole", 25, "training"), 1);
                 break;
             case "hoe":
-                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new Hoe("hoe", "base"), 1);
+                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new Hoe("hoe",0, "base"), 1);
                 break;
             case "milk pail":
-                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new MilkPail("milk pail"), 1);
+                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new MilkPail("milk pail", 0), 1);
                 break;
             case "scythe":
-                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new Scythe("scythe", "base"), 1);
+                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new Scythe("scythe", 0, "base"), 1);
                 break;
             case "pickaxe":
-                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new Pickaxe("pickaxe", "base"), 1);
+                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new Pickaxe("pickaxe", 0, "base"), 1);
                 break;
             case "shear":
-                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new Shear("shear"), 1);
+                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new Shear("shear", 1000), 1);
                 break;
             case "watering can":
-                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new WateringCan("watering can", "base"), 1);
+                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new WateringCan("watering can", 0, "base"), 1);
                 break;
             default:
                 return new Result(false, "Unknown tool");
@@ -49,12 +49,12 @@ public class CheatCodeController {
     public Result addFertilizer(String fertilizer) {
         switch (fertilizer) {
             case "speed":
-                Fertilizer fertilizer1 = new Fertilizer("speed gro", FertilizerType.SPEED_GRO);
-                App.getActiveGame().getCurrentPlayer().getInventory().addItem(fertilizer1, 1);
+//                Fertilizer fertilizer1 = new Fertilizer("speed gro", FertilizerType.SPEED_GRO);
+//                App.getActiveGame().getCurrentPlayer().getInventory().addItem(fertilizer1, 1);
                 break;
             case "deluxe":
-                Fertilizer fertilizer2 = new Fertilizer("deluxe retaining soil", FertilizerType.DELUXE_RETAINING_SOIL);
-                App.getActiveGame().getCurrentPlayer().getInventory().addItem(fertilizer2, 1);
+//                Fertilizer fertilizer2 = new Fertilizer("deluxe retaining soil", FertilizerType.DELUXE_RETAINING_SOIL);
+//                App.getActiveGame().getCurrentPlayer().getInventory().addItem(fertilizer2, 1);
                 break;
         }
         return new Result(true, "added fertilizer");
@@ -70,8 +70,8 @@ public class CheatCodeController {
         if (ingredient == null) {
             return new Result(false, "Ingredient not found");
         }
-        FoodIngredient foodIngredient = new FoodIngredient(name, ingredient);
-        App.getActiveGame().getCurrentPlayer().getInventory().addItem(foodIngredient, 1);
+//        FoodIngredient foodIngredient = new FoodIngredient(name, ingredient);
+//        App.getActiveGame().getCurrentPlayer().getInventory().addItem(foodIngredient, 1);
         return new Result(true, "added ingredient");
     }
 

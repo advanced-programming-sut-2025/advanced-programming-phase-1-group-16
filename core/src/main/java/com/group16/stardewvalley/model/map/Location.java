@@ -26,23 +26,46 @@ public enum Location {
     private final Game game = App.getActiveGame();
 
     public Shop getShopByLocation() {
-        switch(this) {
-            case PierresGeneralStore:
-                return game.getPierresGeneralStore();
-            case FishShop:
-                return game.getFishShop();
-            case Blacksmith:
-                return game.getBlacksmith();
-            case CarpentersShop:
-                return game.getCarpentersShop();
-            case JojaMart:
-                return game.getJojaMart();
-            case MarniesRanch:
-                return game.getMarniesRanch();
-            case TheStardropSaloon:
-                return game.getTheStardropSaloon();
-            default:
-                return null;
+        return switch (this) {
+            case PierresGeneralStore -> game.getPierresGeneralStore();
+            case FishShop -> game.getFishShop();
+            case Blacksmith -> game.getBlacksmith();
+            case CarpentersShop -> game.getCarpentersShop();
+            case JojaMart -> game.getJojaMart();
+            case MarniesRanch -> game.getMarniesRanch();
+            case TheStardropSaloon -> game.getTheStardropSaloon();
+            default -> null;
+        };
+    }
+
+    public static Location getLocationByName(String name) {
+        if (name.equalsIgnoreCase("blacksmith")) {
+            return Location.Blacksmith;
         }
+
+        if (name.equalsIgnoreCase("CarpentersShop")) {
+            return Location.CarpentersShop;
+        }
+
+        if (name.equalsIgnoreCase("TheStardropSaloon")) {
+            return Location.TheStardropSaloon;
+        }
+
+        if (name.equalsIgnoreCase("MarniesRanch")) {
+            return Location.MarniesRanch;
+        }
+
+        if (name.equalsIgnoreCase("FishShop")) {
+            return Location.FishShop;
+        }
+
+        if (name.equalsIgnoreCase("JojaMart")) {
+            return Location.JojaMart;
+        }
+
+        if (name.equalsIgnoreCase("PierresGeneralStore")) {
+            return Location.PierresGeneralStore;
+        }
+        return null;
     }
 }

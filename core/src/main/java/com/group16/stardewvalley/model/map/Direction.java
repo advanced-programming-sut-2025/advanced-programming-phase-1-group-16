@@ -55,6 +55,11 @@ public enum Direction {
     return null;
     }
 
+
+    public Pos applyToPosition(Pos currentPos) {
+        return new Pos(currentPos.getX() + xDelta, currentPos.getY() + yDelta);
+    }
+
     private boolean isValidPos(Pos pos, int width, int height) {
         int x = pos.getX(), y = pos.getY();
         return x >= 0 && y >= 0 && x < width && y < height;

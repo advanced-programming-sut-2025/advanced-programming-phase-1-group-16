@@ -2,24 +2,27 @@ package com.group16.stardewvalley.model.shops;
 
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.animal.Animal;
-import com.group16.stardewvalley.model.animal.AnimalType;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
-import com.group16.stardewvalley.model.items.Item;
-import com.group16.stardewvalley.model.items.Stone;
 import com.group16.stardewvalley.model.map.PlaceType;
-import com.group16.stardewvalley.model.user.Player;
 
-import java.awt.geom.RectangularShape;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.group16.stardewvalley.model.shops.MarniesRanchAnimals.sellAnimalFromName;
 import static com.group16.stardewvalley.model.animal.AnimalType.animalTypeFromName;
 
 public class MarniesRanch extends Shop {
+    private static MarniesRanch instance;
     public MarniesRanch() {
         super("Marnie's Ranch", "Marnie", 9, 16, PlaceType.MarniesRanch);
+
+    }
+
+    public static MarniesRanch getInstance() {
+        if (instance == null) {
+            instance = new MarniesRanch();
+        }
+        return instance;
     }
 
     private MarniesRanchAnimals animals;
@@ -61,7 +64,6 @@ public class MarniesRanch extends Shop {
     }
 
 
-
     public Result showAllProducts() {
         StringBuilder output = new StringBuilder();
         for (MarniesRanchAnimals value : MarniesRanchAnimals.values()) {
@@ -70,7 +72,7 @@ public class MarniesRanch extends Shop {
         return new Result(true,  output.toString());
     }
 
-    public Result showAvailableProducts() {
+    public Result showAvailableItems() {
         StringBuilder output = new StringBuilder();
         for (MarniesRanchAnimals value : MarniesRanchAnimals.values()) {
             if (!Objects.equals(value.getDailyLimit(), value.getDailySold())) {

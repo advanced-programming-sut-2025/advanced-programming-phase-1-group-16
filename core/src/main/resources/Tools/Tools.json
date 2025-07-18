@@ -52,10 +52,10 @@
       "name": "fishing pole",
       "actions": ["Fishing"],
       "material": {
-        "training": {"price": 25, "consumption energy": 8, "enough level": 0},
-        "bamboo": {"price": 500, "consumption energy": 8, "enough level": 0},
-        "fiberglass": {"price": 1800, "consumption energy": 6, "enough level": 2},
-        "iridium": {"price": 7500, "consumption energy": 4, "enough level": 4}
+        "training": {"Cost": 25, "consumption energy": 8, "enough level": 0},
+        "bamboo": {"Cost": 500, "consumption energy": 8, "enough level": 0},
+        "fiberglass": {"Cost": 1800, "consumption energy": 6, "enough level": 2},
+        "iridium": {"Cost": 7500, "consumption energy": 4, "enough level": 4}
       }
     },
 

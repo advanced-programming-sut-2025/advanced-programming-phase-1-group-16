@@ -12,8 +12,8 @@ public class Fish extends Item {
 		return (int) (this.fishType.getPrice() * productQuality.getPriceCoefficient());
 	}
 
-	public Fish(FishType fishType, ProductQuality productQuality) {
-        super(fishType.getName());
+	public Fish(FishType fishType,int price, ProductQuality productQuality) {
+        super(fishType.getName(), price);
         this.fishType = fishType;
 		this.productQuality = productQuality;
 	}

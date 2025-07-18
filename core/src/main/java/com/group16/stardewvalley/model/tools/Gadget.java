@@ -10,8 +10,8 @@ public abstract class Gadget extends Item {
    String name;
    String material;
 
-   public Gadget(String name) {
-      super(name);
+   public Gadget(String name, int price) {
+      super(name, price);
       this.name = name;
    }
 

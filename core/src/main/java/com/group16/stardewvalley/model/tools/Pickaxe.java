@@ -11,8 +11,8 @@ import com.group16.stardewvalley.model.map.TileType;
 import com.group16.stardewvalley.model.user.Player;
 
 public class Pickaxe extends Gadget{
-    public Pickaxe(String name, String material) {
-        super(name);
+    public Pickaxe(String name, int price, String material) {
+        super(name, price);
         this.material = material;
     }
 

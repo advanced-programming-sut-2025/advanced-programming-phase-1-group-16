@@ -1,29 +1,35 @@
 package com.group16.stardewvalley.model.user;
 
 import com.group16.stardewvalley.model.Inventory;
+import com.group16.stardewvalley.model.NPC.NPCInteraction;
+import com.group16.stardewvalley.model.Request;
+import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.food.Food;
-import com.group16.stardewvalley.model.graphics.PlayerGraphics;
-import com.group16.stardewvalley.model.map.*;
+import com.group16.stardewvalley.model.map.Farm;
+import com.group16.stardewvalley.model.map.Pos;
+import com.group16.stardewvalley.model.map.Tile;
+import com.group16.stardewvalley.model.map.TileType;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+
 import com.group16.stardewvalley.model.NPC.NPC;
+import com.group16.stardewvalley.model.notification;
+import com.group16.stardewvalley.model.shops.Shop;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.tools.Gadget;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.map.*;
+
 
 
 public class Player {
     private User user;
     private Farm farm;
-    private double energy;
+    private int energy;
     private boolean isEnergyUnlimited;
     private Pos position;
     private Inventory inventory;
     private int energyCeiling;
-    private final int baseEnergyCeiling;
     private Gadget currentEquipment;
     private Item currentThing;
     private Set<Food> knownRecipes = new HashSet<>();
@@ -39,23 +45,22 @@ public class Player {
     private int fishingAbilityScore;
     private boolean isFainted;
     private int rejectionCooldown;
-    private Map<Player, Integer> interactionsLevel;
-    private Map<Player, Integer> interactionScore;
-    private Map<Player, Boolean> interactionTodayStatus;
-    private Map<NPC, Integer> friendshipNPCScore;
-    private Map<NPC, Integer> friendshipNPCLevel;
+    private final Map<NPC, NPCInteraction> dailyNPCInteraction;
+    private final Map<Player, PlayerInteraction> dailyPlayerInteraction;
+    private final List<Request> quests;
+    private final List<notification> notifications;
+    private int todayIncome;
+    private final List<Request> requestHistory;
+    private Player spouse;
     private final int[] relationshipRanks = {100, 200, 300, 400};
     private final int[] NPCRelationshipRanks = {200, 400, 600, 800};
     private String buffer;
     private boolean isBuffActive;
     private int hourPastForBuff;
     private int finalHourBuff;
+    private Location location;
 
-    //UI
-    private PlayerGraphics playerGraphics;
-    private float speed = 1;
-    private boolean moving = false;
-    private Direction currentDirection = Direction.DOWN;
+
 
 
     // مقدار های ماکسیمم هر توانایی رو هم در گیم ذخیره کردم سر جمع شه
@@ -72,56 +77,25 @@ public class Player {
         fishingAbilityScore = 0;
         isEnergyUnlimited = false;
         inventory = new Inventory();
-        energyCeiling = 200;// مقداردهی انرژی اولیه در ابتدای ساخت
-        baseEnergyCeiling = 200;
+        energyCeiling = 200;
         energy = 200;
+        this.spouse = null;
         isFainted = false;
+        this.dailyPlayerInteraction = new HashMap<>();
+        this.dailyNPCInteraction = new HashMap<>();
+        this.quests = new ArrayList<>();
+        this.notifications = new ArrayList<>();
+        this.requestHistory = new ArrayList<>();
         this.rejectionCooldown = 0;
-        this.interactionsLevel = new HashMap<>();
-        this.interactionScore = new HashMap<>();
-        this.interactionTodayStatus = new HashMap<>();
-        this.friendshipNPCScore = new HashMap<>();
-        this.friendshipNPCLevel = new HashMap<>();
         this.isBuffActive = false;
         hourPastForBuff = 0;
         finalHourBuff = 0;
         this.buffer = "";
-
+        this.location = null;
     }
 
-    //TODO یادت باشه ست کنی اینو وقتی بازی جدید میسازی
-
-
-    public PlayerGraphics getPlayerGraphics() {
-        return playerGraphics;
-    }
-
-    public void setPlayerGraphics(String spritePath, int frameWidth, int frameHeight) {
-        this.playerGraphics = new PlayerGraphics(this, spritePath, frameWidth, frameHeight);
-    }
-
-    public Direction getCurrentDirection() {
-        return currentDirection;
-    }
-
-    public void setCurrentDirection(Direction currentDirection) {
-        this.currentDirection = currentDirection;
-    }
-
-    public boolean isMoving() {
-        return moving;
-    }
-
-    public void setMoving(boolean moving) {
-        this.moving = moving;
-    }
-
-    public float getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(float speed) {
-        this.speed = speed;
+    public String getName() {
+        return user.getNickName();
     }
 
     public boolean isEnergyUnlimited() {
@@ -133,7 +107,7 @@ public class Player {
     }
 
     public int getBaseEnergyCeiling() {
-        return baseEnergyCeiling;
+        return energyCeiling;
     }
 
     public void learnFood(Food food) {
@@ -160,6 +134,11 @@ public class Player {
         return hourPastForBuff;
     }
 
+    public void setPosition(int x, int y) {
+        this.position.setY(y);
+        this.position.setX(x);
+    }
+
     public void setHourPastForBuff(int hourPastForBuff) {
         this.hourPastForBuff = hourPastForBuff;
     }
@@ -180,8 +159,28 @@ public class Player {
         this.buffer = buffer;
     }
 
+    public Result showNotifications() {
+        StringBuilder sb = new StringBuilder();
+        if (!notifications.isEmpty()) {
+        for (notification notification : notifications) {
+            sb.append(notification.getMessage());
+            sb.append("\n");
+        }
+        return new Result(true, sb.toString());
+        }
+        return new Result(false, "you don't have any notification");
+    }
+
     public Inventory getInventory() {
         return inventory;
+    }
+
+    public Map<NPC, NPCInteraction> getDailyNPCInteraction() {
+        return dailyNPCInteraction;
+    }
+
+    public Map<Player, PlayerInteraction> getDailyPlayerInteraction() {
+        return dailyPlayerInteraction;
     }
 
     public void learnRecipe(Food food) {
@@ -195,11 +194,11 @@ public class Player {
         this.inventory = inventory;
     }
 
-    public double getEnergy() {
+    public int getEnergy() {
         return energy;
     }
 
-    public void setEnergy(double energy) {
+    public void setEnergy(int energy) {
         this.energy = energy;
     }
 
@@ -235,20 +234,75 @@ public class Player {
         return miningAbilityLevel;
     }
 
+    public NPCInteraction getOrCreateInteractionWith(NPC npc) {
+        // اگر interaction وجود داشت، آن را برگردان
+        if (dailyNPCInteraction.containsKey(npc)) {
+            return dailyNPCInteraction.get(npc);
+        }
+
+        // اگر وجود نداشت، یک interaction جدید بساز و اضافه کن
+        NPCInteraction newInteraction = new NPCInteraction();
+        dailyNPCInteraction.put(npc, newInteraction);
+        return newInteraction;
+    }
+
+    public Location getLocationLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
     public int getForagingAbilityLevel() {
         return foragingAbilityLevel;
     }
 
-    public int getFishingAbilityLevel() {
-        return fishingAbilityLevel;
-    }
-
     public int getCoin() {
+        if (spouse != null) {
+            return getTotalCoin();
+        }
         return coin;
     }
 
+    public void setCoin(int amount) {
+        this.coin = amount;
+    }
+
+    public String getGender() {
+        return user.getGender();
+    }
+
+    public void addNotification(notification notification) {
+        notifications.add(notification);
+    }
+
+    public PlayerInteraction getInteractionWith(Player player) {
+        return dailyPlayerInteraction.get(player);
+    }
+
     public void increaseCoin(int amount) {
-        coin -= amount;
+        if (spouse != null) {
+            spouse.increaseCoin(amount / 2);
+            this.increaseCoin(amount / 2);
+        }
+        coin += amount;
+    }
+
+    public int getTotalCoin() {
+        return coin + spouse.getCoin();
+    }
+
+    public Player getSpouse() {
+        return spouse;
+    }
+
+    public void setSpouse(Player spouse) {
+        this.spouse = spouse;
+    }
+
+    public int getFishingAbilityLevel() {
+        return fishingAbilityLevel;
     }
 
     public void addFarmingAbilityScore(int amount) {
@@ -351,10 +405,8 @@ public class Player {
     }
 
 
-    public void decreaseEnergy(double amount) {
+    public void decreaseEnergy(int amount) {
         energy = Math.max(0, energy - amount);
-        if (energy < 0.0001) energy = 0;
-        if (energy == 0.0) faint();
     }
 
     public Tile getLocation() {
@@ -381,23 +433,42 @@ public class Player {
         this.isFainted = b;
     }
 
+    public void setFriendshipLevelWith(int amount, String username) {
+        Player target = App.getActiveGame().getPlayerByUsername(username);
+        this.getInteractionWith(target).setFriendshipLevel(amount);
+    }
+
+    public List<notification> getNotifications() {
+        return notifications;
+    }
+
     public void setRejectionCooldown(int amount) {
         rejectionCooldown = amount;
     }
-
+    //RESETFORNEWDAY
     public void resetForNewDay() {
         if (rejectionCooldown > 0) {
             energyCeiling = 150;
             rejectionCooldown--;
         }
-        if (isFainted) {
-            energy = energyCeiling *  75 / 100;
-        } else {
-            energy = energyCeiling;
-        }
         this.isFainted = false;
-        this.isEnergyUnlimited = false;
-        interactionTodayStatus.replaceAll((player, status) -> false);
+        energy = energyCeiling;
+        for (Map.Entry<NPC, NPCInteraction> entry : dailyNPCInteraction.entrySet()) {
+            NPCInteraction interaction = entry.getValue();
+            interaction.setMetToday(false);
+            interaction.setGiftedToday(false);
+        }
+
+        for (Map.Entry<Player, PlayerInteraction> entry : dailyPlayerInteraction.entrySet()) {
+            PlayerInteraction interaction = entry.getValue();
+            interaction.setTalked(false);
+            interaction.setFlowered(false);
+            interaction.setGifted(false);
+            interaction.setHugged(false);
+            interaction.setTraded(false);
+        }
+        increaseCoin(todayIncome);
+        this.todayIncome = 0;
 
     }
 
@@ -410,8 +481,26 @@ public class Player {
         this.energy = 0;
     }
 
+    public String getUsername() {
+        return user.getUsername();
+    }
+
     public boolean isFainted() {
         return isFainted;
     }
 
+    public PlayerInteraction getOrCreateInteractionWith(Player player) {
+
+        if (dailyPlayerInteraction.containsKey(player)) {
+            return dailyPlayerInteraction.get(player);
+        }
+
+        PlayerInteraction newInteraction = new PlayerInteraction();
+        dailyPlayerInteraction.put(player, newInteraction);
+        return newInteraction;
+    }
+
+    public void increaseTodayIncome(int amount){
+        todayIncome += amount;
+    }
 }

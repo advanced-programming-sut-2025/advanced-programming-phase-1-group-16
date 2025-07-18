@@ -7,8 +7,8 @@ import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.user.Player;
 
 public class Axe extends Gadget{
-    public Axe(String name, String material) {
-        super(name);
+    public Axe(String name, int price, String material) {
+        super(name, price);
         this.material = material;
     }
 

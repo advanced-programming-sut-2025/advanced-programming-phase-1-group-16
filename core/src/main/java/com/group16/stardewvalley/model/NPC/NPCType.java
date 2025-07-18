@@ -1,5 +1,10 @@
 package com.group16.stardewvalley.model.NPC;
 
+import com.group16.stardewvalley.model.Request;
+import com.group16.stardewvalley.model.agriculture.Seeds;
+import com.group16.stardewvalley.model.food.*;
+import com.group16.stardewvalley.model.food.FoodRecipe;
+import com.group16.stardewvalley.model.items.*;
 import com.group16.stardewvalley.model.map.Farm;
 import com.group16.stardewvalley.model.map.FarmType;
 import com.group16.stardewvalley.model.map.PlaceType;
@@ -9,87 +14,129 @@ import com.group16.stardewvalley.model.weather.WeatherCondition;
 import java.util.List;
 
 public enum NPCType {
-
-    //(●’◡’●) ಠ_ಠ (ᗒᗣᗕ) ( ˘ ³˘) (•̀ᴗ•́) ʕ•ᴥ•ʔ 𓆩♡𓆪   ﮩ٨ـﮩﮩ٨ـ♡ﮩ٨ـﮩﮩ٨ـ   ﮩ٨ـﮩﮩ٨ـ🖤ﮩ٨ـﮩﮩ٨ـ  (≧◡≦) (◡‿◡✿) (✿◠‿◠) (”__”)
-    // اون قلبه باشه برا وقت درخواست ازدواج
+    //(●’◡’●) ಠ_ಠ (ᗒᗣᗕ) ( ˘ ³˘) (•̀ᴗ•́)  ﮩ٨ـﮩﮩ٨ـ♡ﮩ٨ـﮩﮩ٨ـ   ﮩ٨ـﮩﮩ٨ـ🖤ﮩ٨ـﮩﮩ٨ـ  (≧◡≦) (◡‿◡✿) (✿◠‿◠) (”__”)
     // (*^ -^*) (⊙▂⊙) (∪ ◡ ∪)  (✿ ♥‿♥)
-
     Sebastian("Sebastian",
             List.of("wool", "pumpkin pie", "pizza"),
-            List.of("Delivery of 50 units of iron", "Delivery pumpkin pie", "Delivery 150 units of stone"),
-            List.of("2 diamond", "5000 coin", "50 quartz"),
-            List.of(),  // night / fall / windy
+            List.of(new Request("Sebastian",
+                            new Iron("Iron", 150),
+                            50,
+                            new Diamond("Diamond", 500),
+                            2,
+                            0),
+                    new Request("Sebastian",
+                            FoodFactory.pumpkinPie(),
+                            1,
+                            null,
+                            0,
+                            5000),
+                    new Request("Sebastian",
+                            new Stone("Stone", 20),
+                            150,
+                            new Quartz("Quartz", 200),
+                            50,
+                            0)),
             PlaceType.Sebastian),
     Abigail("Abigail",
             List.of("stone", "iron ore", "coffee"),
-            List.of("Delivery of a gold bar", "Delivery a pumpkin pie", "Delivery of 50 pieces of wheat"),
-            List.of("1 level friendship", "500 gold coin", "Automatic iridium sprinkler"),
-            List.of(""),
+            List.of(new Request("Abigail",
+                            new Bar("Bar", BarType.gold, 100),
+                            1,
+                            null,
+                            0,
+                            0),
+                    new Request("Abigail",
+                            FoodFactory.pumpkinPie(),
+                            1,
+                            null,
+                            0,
+                            500),
+                    new Request("Abigail",
+                            new FoodIngredient("wheat", 100, Ingredient.WHEAT_FLOUR),
+                            50,
+                            FoodFactory.bread(),
+                            1,
+                            0)),
             PlaceType.Abigail),
+
     Harvey("Harvey",
             List.of("coffee", "pickle", "liquor"),
-            List.of("Delivering 12 of a desired plant", "Delivery of a salmon", "Delivery of a bottle of liquor"),
-            List.of("750 coin", "1 level friendship", "5 salad"),
-            List.of(""),
+            List.of(new Request("Harvey",
+                            Seeds.ACORNS,
+                            12,
+                            null,
+                            0,
+                            750),
+                    new Request("Harvey", FoodFactory.salmonDinner(),
+                            1,
+                            null,
+                            0,
+                            0),
+                    new Request("Harvey", FoodFactory.cookie(),
+                            1,
+                            FoodFactory.salad(),
+                            5,
+                            0)),
             PlaceType.Harvey),
+
     Leah("Leah",
             List.of("salad", "grape", "liquor"),
-            List.of("Delivery of 10 hardwoods", "Delivery of a salmon", "Delivery of a bottle of liquor"),
-            List.of("500 coin", "dinner salmoon recipe", "3 deluxe scarecrow"),
-            List.of(""),
+            List.of(new Request("Leah",
+                            new Wood("hard wood", 15),
+                            10,
+                            null,
+                            0,
+                            500),
+                    new Request("Leah", FoodFactory.salmonDinner(),
+                            1,
+                            new FoodRecipe("salmoon dinner recipe", 100, FoodFactory.salmonDinner()),
+                            1,
+                            0),
+                    new Request("Leah",
+                            FoodFactory.cookie(),
+                            1,
+                            FoodFactory.pancakes(),
+                            1,
+                            0)),
             PlaceType.Leah),
+
     Robin("Robin",
             List.of("spaghetti", "wood", "iron ingot"),
-            List.of("Delivery 80 wood", "Delivery 10 iron ingot", "Delivery 1000 wood"),
-            List.of("1000 coin", "3 beeHouse", "25000 coin"),
-            List.of(""),
-           PlaceType.Robin),;
+            List.of(new Request("Robin",
+                            new Wood("wood", 10),
+                            80,
+                            null,
+                            0,
+                            1000),
+                    new Request("Robin",
+                            new Stone("stone", 20),
+                            100,
+                            FoodFactory.friedEgg(),
+                            3,
+                            0),
+                    new Request("Robin",
+                            new Wood("wood", 10),
+                            1000,
+                            null,
+                            0,
+                            0)),
+            PlaceType.Robin);
 
 
 
     private String name;
     private final List<String> favoriteItems;
-    private final List<String> requests;
-    private final List<String> rewards;
-    private final List<String> dialogs;
+    private final List<Request> quests;
     private final PlaceType placeType;
 
     NPCType(String name,
             List<String> favoriteItems,
-            List<String> requests,
-            List<String> rewards,
-            List<String> dialogs,
+            List<Request> requests,
             PlaceType placeType) {
         this.name = name;
         this.favoriteItems = favoriteItems;
-        this.requests = requests;
-        this.rewards = rewards;
-        this.dialogs = dialogs;
+        this.quests = requests;
         this.placeType = placeType;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<String> getFavoriteItems() {
-        return favoriteItems;
-    }
-
-    public List<String> getRequests() {
-        return requests;
-    }
-
-    public List<String> getRewards() {
-        return rewards;
-    }
-
-    public List<String> getDialogs() {
-        return dialogs;
-    }
-
-    public PlaceType getPlaceType() {
-        return placeType;
     }
 
     public boolean isFavorite(String name) {
@@ -104,6 +151,10 @@ public enum NPCType {
 
     public String getName() {
         return name;
+    }
+
+    public List<Request> getQuests() {
+        return quests;
     }
 
     public String getDialogueForSebastian(int friendshipLevel, Season season,
@@ -302,6 +353,10 @@ public enum NPCType {
             default:
                 return "Invalid relationship level";
         }
+    }
+
+    public PlaceType getPlaceType() {
+        return placeType;
     }
 
 

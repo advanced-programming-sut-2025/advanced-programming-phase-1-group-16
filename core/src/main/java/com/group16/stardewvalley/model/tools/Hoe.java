@@ -8,8 +8,8 @@ import com.group16.stardewvalley.model.user.Player;
 
 public class Hoe extends Gadget {
 
-    public Hoe(String name, String material) {
-        super(name);
+    public Hoe(String name, int price, String material) {
+        super(name, price);
         this.material = material;
     }
 

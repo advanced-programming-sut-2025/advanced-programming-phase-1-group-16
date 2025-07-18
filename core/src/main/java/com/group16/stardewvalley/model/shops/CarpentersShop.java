@@ -17,16 +17,31 @@ import java.util.prefs.BackingStoreException;
 
 import static com.group16.stardewvalley.controller.map.MapController.isPlayerInFarm;
 
-public class CarpentersShop extends Shop {
+public class CarpentersShop extends Shop{
+    private static CarpentersShop instance;
+    public static CarpentersShop getInstance() {
+        if (instance == null) {
+            instance = new CarpentersShop(); // ایجاد نمونه جدید
+        }
+        return instance; // برگرداندن نمونه موجود
+    }
     public CarpentersShop() {
         super("Carpenter's Shop", "Robin", 9, 8, PlaceType.CarpentersShop);
+        initializeItems();
     }
 
     public void initializeItems() {
-        addItem(new Wood("Wood"), Integer.MAX_VALUE);
-        addItem(new Stone("Stone"), Integer.MAX_VALUE);
+        addItem(new Wood("Wood", 10), Integer.MAX_VALUE);
+        addItem(new Stone("Stone", 20), Integer.MAX_VALUE);
+        addItem(new Building("Barn",6000), 1);
+        addItem(new Building("Big Barn", 12000), 1);
+        addItem(new Building("Deluxe Barn", 25000), 1);
+        addItem(new Building("Coop", 4000), 1);
+        addItem(new Building("Big Coop", 10000), 1);
+        addItem(new Building("Deluxe Coop", 20000), 1);
+        addItem(new Building("Well", 1000), 1);
+        addItem(new Building("Shipping Bin", 250), 1);
     }
-
     private int barn;
     private int bigBarn;
     private int deluxeBarn;
@@ -57,10 +72,10 @@ public class CarpentersShop extends Shop {
         }
 
         //check if ground is empty
-        for (int i = y; i < y + buildingType.getLength() ; i++) {
+        for (int i = y; i < y + buildingType.getLength(); i++) {
             for (int j = x; j < x + buildingType.getWidth(); j++) {
-                if(game.getMap()[y][x].getItem() != null){
-                    return new Result(false, "there is something on the ground");
+                if(game.getMap()[i][j].getItem() != null){
+                    return new Result(false, "There is something on the ground at (" + j + ", " + i + ")");
                 }
             }
         }
@@ -94,7 +109,7 @@ public class CarpentersShop extends Shop {
 
         //everything ok, lets build
         Pos buildingPos = new Pos(x, y);
-        Item newBuilding = new Building(buildingType.getName(), buildingType, buildingPos);
+        Item newBuilding = new Building(buildingType.getName(),buildingType.getCost(),  buildingType, buildingPos);
 
         //remove wood/stone from inventory
 
@@ -102,12 +117,10 @@ public class CarpentersShop extends Shop {
         items.compute(stoneItem, (k, currentAmount) -> currentAmount - 150);
 
         //place building
-        for (int i = y; i < y + buildingType.getLength() ; i++) {
+        for (int i = y; i < y + buildingType.getLength(); i++) {
             for (int j = x; j < x + buildingType.getWidth(); j++) {
-                game.getMap()[y][x].setItem(newBuilding);
-
+                game.getMap()[i][j].setItem(newBuilding);
             }
-
         }
 
         return new Result(true, newBuilding.getName() + "build successfully");

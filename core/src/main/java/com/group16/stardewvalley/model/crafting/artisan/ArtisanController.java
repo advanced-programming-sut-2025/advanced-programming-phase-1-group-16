@@ -136,7 +136,7 @@ public class ArtisanController {
         // Split input items string into individual ingredient names
         String[] inputItems = itemsName.trim().split("\\s+");
 
-        ArtisanGood newArtisanGood = new ArtisanGood(artisanName, artisanGood, App.getActiveGame().getTimeDate().getHour());
+        ArtisanGood newArtisanGood = new ArtisanGood(artisanName, 0,artisanGood, App.getActiveGame().getTimeDate().getHour());
 //        player.getInventory().addItem(newArtisanGood, 1);
         return new Result(true, artisanGood.getName() + "artisan started, come back later to pick it.");
 
