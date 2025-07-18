@@ -15,12 +15,12 @@ public class TileTextureManager {
     public TileTextureManager() {
         String ground_tile = "Flooring/Flooring_14.png";
         tileTextures.put(TileType.Ground, new Texture(ground_tile));
+        tileTextures.put(TileType.Cottage, new Texture(ground_tile));
+        tileTextures.put(TileType.CottageStartPos, new Texture(ground_tile));
         String lake_tile = "Flooring/Flooring_26.png";
         tileTextures.put(TileType.Lake, new Texture(lake_tile));
         String tree_tile = "Trees/Pine_Stage_4.png";
         tileTextures.put(TileType.Tree, new Texture(tree_tile));
-        String cottage_tile = "Flooring/Flooring_92.png";
-        tileTextures.put(TileType.Cottage, new Texture(cottage_tile));
         String plowed_tile = "Decor/Gravel_Path.png";
         tileTextures.put(TileType.Plowed, new Texture(plowed_tile));
         String quarry_tile = "Flooring/Flooring_52.png";
