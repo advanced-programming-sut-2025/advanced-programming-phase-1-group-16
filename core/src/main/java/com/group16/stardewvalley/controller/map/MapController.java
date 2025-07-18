@@ -1,10 +1,13 @@
 package com.group16.stardewvalley.controller.map;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.group16.stardewvalley.model.NPC.NPC;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.agriculture.Mineral;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
+import com.group16.stardewvalley.model.graphics.TileRenderer;
 import com.group16.stardewvalley.model.items.Stone;
 import com.group16.stardewvalley.model.map.*;
 import com.group16.stardewvalley.model.shops.Shop;
@@ -13,7 +16,10 @@ import com.group16.stardewvalley.view.graphics.GameScreen;
 
 import java.util.*;
 
+import static com.group16.stardewvalley.view.graphics.GameScreen.TILE_SIZE;
+
 public class MapController {
+
     public void createMap() {
         Game game = App.getActiveGame();
         int height = game.getMapHeight();
@@ -88,7 +94,6 @@ public class MapController {
 
         game.setMap(map);
     }
-
 
     private Location getLocationByName(String name) {
         return switch (name) {
@@ -198,11 +203,6 @@ public class MapController {
         if (dy == 1) return Direction.DOWN;
         if (dy == -1) return Direction.UP;
         return null;
-    }
-
-    // Enum for direction
-    private enum Direction {
-        UP, DOWN, LEFT, RIGHT
     }
 
     private List<Pos> findShortestPath(Tile[][] map, Pos start, Pos dest) {
@@ -352,6 +352,25 @@ public class MapController {
     public static boolean isPlayerInCottage(Player currentPlayer) {
         Pos pos = currentPlayer.getPosition();
         return App.getActiveGame().getMap()[pos.getY()][pos.getX()].getType() == TileType.Cottage;
+    }
+
+    public void drawMap(SpriteBatch batch) {
+        Tile[][] map = App.getActiveGame().getMap();
+
+        for (int y = 0; y < map.length; y++) {
+            for (int x = 0; x < map[y].length; x++) {
+                Tile tile = map[y][x];
+                Texture texture;
+                texture = TileTextureManager.getTileTextureManager().getTexture(tile.getType());
+                batch.draw(texture, x * TILE_SIZE, y * TILE_SIZE);
+            }
+        }
+
+        for (int y = map.length - 1; y >= 0; y--) {
+            for (int x = 0; x < map[y].length; x++) {
+                TileRenderer.getTileRenderer().renderTile(batch, map[y][x], x, y);
+            }
+        }
     }
 
 
