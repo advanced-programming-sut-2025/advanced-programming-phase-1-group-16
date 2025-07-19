@@ -425,6 +425,10 @@ public class AgricultureController {
         }
     }
 
+    public static boolean isTreeNotSeasonal(TreeType treeType) {
+        return treeType.equals(TreeType.MUSHROOM) || treeType.equals(TreeType.MYSTIC);
+    }
+
 
     //cheat code
 //    public Result cheatAdd(String input) {

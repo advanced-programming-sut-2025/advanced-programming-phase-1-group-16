@@ -1,9 +1,14 @@
 package com.group16.stardewvalley.model.graphics;
 
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.group16.stardewvalley.controller.agriculture.AgricultureController;
 import com.group16.stardewvalley.model.agriculture.Crop;
 import com.group16.stardewvalley.model.agriculture.Tree;
+import com.group16.stardewvalley.model.agriculture.TreeType;
+import com.group16.stardewvalley.model.app.App;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +32,9 @@ public class GameAssetManager {
 
     private final Map<String, Texture> cropTextures = new HashMap<>();
     private final Map<String, Texture> treeTextures = new HashMap<>();
+
+    private final Map<String, TextureRegion> treeRegions = new HashMap<>();
+
 
     private final Texture houseTexture = new Texture("House/House_1.png");
 
@@ -66,19 +74,58 @@ public class GameAssetManager {
     }
 
 
-    public Texture getTreeTexture(Tree tree) {
+    public TextureRegion getTreeRegion(Tree tree) {
         String name = tree.getTreeType().getName().replace(" ", "_");
-        if (!treeTextures.containsKey(name)) {
+        int stage = tree.getStage();
+        String season = App.getActiveGame().getTimeDate().getSeason().getName().toLowerCase();
+        String key = name + "_stage_" + stage + "_season_" + season;
+
+        if (!treeRegions.containsKey(key)) {
             try {
-                Texture texture = new Texture("Trees/" + name + "_Stage_5_Spring.png");
-                treeTextures.put(name, texture);
+                if (stage != 5) {
+                    Texture texture = new Texture("Trees/" + name + "_Stage_" + stage + ".png");
+                    TextureRegion region = new TextureRegion(texture);
+                    treeRegions.put(key, region);
+                } else {
+                    if (AgricultureController.isTreeNotSeasonal(tree.getTreeType())) {
+                        Texture texture = new Texture("Trees/" + name + "_Stage_5.png");
+                        treeRegions.put(key, new TextureRegion(texture));
+                    } else {
+                        TextureRegion region = getTextureRegion(name, season);
+                        treeRegions.put(key, region);
+                    }
+                }
             } catch (Exception e) {
-                treeTextures.put(name, treeTexture); // treeTexture = default fallback
+                treeRegions.put(key, new TextureRegion(treeTexture));
             }
         }
-        return treeTextures.get(name);
+
+        return treeRegions.get(key);
     }
 
+    private static TextureRegion getTextureRegion(String name, String season) {
+        Texture fullTexture = new Texture("Trees/" + name + "_Stage_5.png");
+
+        int treeWidth, treeHeight;
+
+        treeWidth = fullTexture.getWidth() / 4;
+        treeHeight = fullTexture.getHeight();
+
+        int seasonIndex = switch (season) {
+            case "summer" -> 1;
+            case "fall" -> 2;
+            case "winter" -> 3;
+            default -> 0;
+        };
+
+        return new TextureRegion(
+            fullTexture,
+            seasonIndex * (treeWidth + 2),
+            0,
+            treeWidth,
+            treeHeight
+        );
+    }
 
     public Texture getItemTexture() {
         return itemTexture;
