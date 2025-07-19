@@ -41,17 +41,12 @@ public class TileRenderer {
         }
 
         if (tile.getCrop() != null) {
-            Texture cropTexture = textureManager.getCropTexture(tile.getCrop());
-            int realWidth = cropTexture.getWidth();
-            int realHeight = cropTexture.getHeight();
-
-            int offsetX = drawX + (TILE_SIZE - realWidth) / 2;
-            int offsetY = drawY;
-            batch.draw(cropTexture, offsetX, offsetY, realWidth, realHeight);
+            TextureRegion cropTexture = textureManager.getCropRegion(tile.getCrop());
+            drawPlant(batch, TILE_SIZE, drawX, drawY, cropTexture);
         }
 
         if (tile.getItem() != null) {
-            Texture itemTexture = textureManager.getItemTexture();
+            Texture itemTexture = textureManager.getItemTexture(tile.getItem());
             int realWidth = itemTexture.getWidth();
             int realHeight = itemTexture.getHeight();
 
@@ -62,12 +57,7 @@ public class TileRenderer {
 
         if (tile.getTree() != null) {
             TextureRegion treeTexture = textureManager.getTreeRegion(tile.getTree());
-            int realWidth = treeTexture.getRegionWidth() / 3;
-            int realHeight = treeTexture.getRegionHeight() / 3;
-
-            int offsetX = drawX + (TILE_SIZE - realWidth) / 2;
-            int offsetY = drawY;
-            batch.draw(treeTexture, offsetX, offsetY, realWidth, realHeight);
+            drawPlant(batch, TILE_SIZE, drawX, drawY, treeTexture);
         }
 
         if (tile.isBurned()) {
@@ -89,5 +79,14 @@ public class TileRenderer {
             int offsetY = drawY;
             batch.draw(fertOverlay, offsetX, offsetY, realWidth, realHeight);
         }
+    }
+
+    private void drawPlant(SpriteBatch batch, int TILE_SIZE, int drawX, int drawY, TextureRegion cropTexture) {
+        int realWidth = cropTexture.getRegionWidth() / 3;
+        int realHeight = cropTexture.getRegionHeight() / 3;
+
+        int offsetX = drawX + (TILE_SIZE - realWidth) / 2;
+        int offsetY = drawY;
+        batch.draw(cropTexture, offsetX, offsetY, realWidth, realHeight);
     }
 }
