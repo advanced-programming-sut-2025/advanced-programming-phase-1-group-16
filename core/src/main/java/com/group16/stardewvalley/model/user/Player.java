@@ -87,8 +87,8 @@ public class Player {
         fishingAbilityScore = 0;
         isEnergyUnlimited = false;
         inventory = new Inventory();
-        energyCeiling = 200;
-        energy = 200;
+        energyCeiling = 2000;
+        energy = 2000;
         this.spouse = null;
         isFainted = false;
         this.dailyPlayerInteraction = new HashMap<>();
