@@ -6,9 +6,11 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.group16.stardewvalley.controller.agriculture.AgricultureController;
 import com.group16.stardewvalley.model.agriculture.Crop;
+import com.group16.stardewvalley.model.agriculture.Mineral;
 import com.group16.stardewvalley.model.agriculture.Tree;
 import com.group16.stardewvalley.model.agriculture.TreeType;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.items.Item;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,11 +32,9 @@ public class GameAssetManager {
     private Texture waterTexture = new Texture(water);
     private Texture fertalizeTexture = new Texture(fertalize);
 
-    private final Map<String, Texture> cropTextures = new HashMap<>();
-    private final Map<String, Texture> treeTextures = new HashMap<>();
-
     private final Map<String, TextureRegion> treeRegions = new HashMap<>();
-
+    private final Map<String, TextureRegion> cropRegions = new HashMap<>();
+    private final Map<String, Texture> mineralTextures = new HashMap<>();
 
     private final Texture houseTexture = new Texture("House/House_1.png");
 
@@ -60,17 +60,21 @@ public class GameAssetManager {
         return gameAssetManager;
     }
 
-    public Texture getCropTexture(Crop crop) {
+    public TextureRegion getCropRegion(Crop crop) {
         String name = crop.getCropType().getName().replace(" ", "_");
-        if (!cropTextures.containsKey(name)) {
+        int stage = crop.getStage();
+        String key = name + "_stage_" + stage;
+
+        if (!cropRegions.containsKey(key)) {
             try {
-                Texture texture = new Texture("Crops/" + name + ".png");
-                cropTextures.put(name, texture);
+                Texture texture = new Texture("Crops/" + name + "_Stage_" + stage + ".png");
+                TextureRegion region = new TextureRegion(texture);
+                cropRegions.put(key, region);
             } catch (Exception e) {
-                cropTextures.put(name, cropTexture); // cropTexture = default one
+                cropRegions.put(key, new TextureRegion(cropTexture));
             }
         }
-        return cropTextures.get(name);
+        return cropRegions.get(key);
     }
 
 
@@ -131,6 +135,23 @@ public class GameAssetManager {
         return itemTexture;
     }
 
+    public Texture getItemTexture(Item item) {
+        if (item instanceof Mineral mineral) {
+            String name = mineral.getType().getName().replace(" ", "_");
+            if (!mineralTextures.containsKey(name)) {
+                try {
+                    Texture texture = new Texture("Mineral/" + name + ".png");
+                    mineralTextures.put(name, texture);
+                } catch (Exception e) {
+                    mineralTextures.put(name, itemTexture);
+                }
+            }
+            return mineralTextures.get(name);
+        }
+        return itemTexture;
+    }
+
+
     public Texture getBurnTexture() {
         return burnTexture;
     }
@@ -148,9 +169,7 @@ public class GameAssetManager {
     }
 
     public void dispose() {
-        for (Texture t : cropTextures.values()) t.dispose();
-        for (Texture t : treeTextures.values()) t.dispose();
-        // سایر موارد...
+
     }
 
 }
