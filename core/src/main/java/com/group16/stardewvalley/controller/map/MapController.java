@@ -374,10 +374,9 @@ public class MapController {
             }
         }
 
-        for (Shop shop : App.getActiveGame().getShops()) {
-            PlaceType placeType = shop.getPlaceType();
+        for (PlaceType placeType : PlaceType.values()) {
             TextureRegion texture = PlaceTextureManager.getPlaceTextureManager().getShopTexture(placeType);
-            batch.draw(texture, placeType.getStartPosition().getX() * TILE_SIZE, placeType.getStartPosition().getY() * TILE_SIZE);
+            batch.draw(texture, placeType.getStartPosition().getX() * TILE_SIZE, (App.getActiveGame().getMapHeight() - placeType.getStartPosition().getY() )* TILE_SIZE);
         }
     }
 

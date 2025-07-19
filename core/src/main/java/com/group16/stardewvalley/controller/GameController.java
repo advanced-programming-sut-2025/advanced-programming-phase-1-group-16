@@ -34,7 +34,7 @@ public class GameController {
         float nextX = player.getX();
         float nextY = player.getY();
         boolean up = false, down = false, left = false, right = false;
-        int speed = 1;
+        float speed = player.getSpeed();
 
         switch (keycode) {
             case Input.Keys.UP:
@@ -75,7 +75,6 @@ public class GameController {
         }
 
         Result result = mapController.walk((int) nextX, (int) nextY);
-        System.out.println(player.getEnergy());
         if (result.isSuccessful()) {
             playersController.move(player, speed, up, down, left, right);
             player.decreaseEnergy(player.getEnergy() * 0.05);

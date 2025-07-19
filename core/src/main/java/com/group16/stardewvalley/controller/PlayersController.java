@@ -34,7 +34,7 @@ public class PlayersController {
         }
     }
 
-    public void move(Player player, int speed, boolean up, boolean down, boolean left, boolean right) {
+    public void move(Player player, float speed, boolean up, boolean down, boolean left, boolean right) {
         player.getPlayerGraphics().update(speed, up, down, left, right);
     }
 }
