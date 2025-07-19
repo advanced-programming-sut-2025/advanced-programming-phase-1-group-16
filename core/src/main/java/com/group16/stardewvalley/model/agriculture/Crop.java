@@ -28,7 +28,7 @@ public class Crop {
         this.finalStage = cropType.getStages().length;
 
         // متغیرهای زمان بازی
-        this.stage = 0;
+        this.stage = 1;
         this.dayPastFromLastStage = 0;
         this.daysSinceLastHarvest = 0;
         this.daySinceLastWater = 0;
