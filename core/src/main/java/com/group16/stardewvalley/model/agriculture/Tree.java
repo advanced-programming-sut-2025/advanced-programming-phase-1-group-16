@@ -24,7 +24,7 @@ public class Tree {
         this.dayPastFromLastStage = 0;
         this.dayPastFromPlanting = 0;
         this.daySinceLastWater = 0;
-        this.stage = 0;
+        this.stage = 1;
         this.isMature = false;
         this.isBurned = false;
         this.isWatered = false;
@@ -135,7 +135,7 @@ public class Tree {
             dayPastFromPlanting++;
             if (dayPastFromLastStage >= 7) {
                 stage++;
-                if (stage == 4) {
+                if (stage == 5) {
                     isMature = true;
                 }
                 dayPastFromLastStage = 0;
