@@ -88,19 +88,18 @@ public class GameMenuController {
         int totalTiles = farm.getType().getHeight() * farm.getType().getWidth();
 
         // موقعیت کلبه
-        Pos cottageStart = farm.getCottageStart();  // فرض: تابعی که موقعیت بالا-چپ کلبه رو می‌ده
+        Pos cottageStart = farm.getCottageStart();
         int cottageX = cottageStart.getX();
         int cottageY = cottageStart.getY();
 
-        int itemCount = (random.nextInt(totalTiles / 5) + totalTiles / 20) / 4;
+        int itemCount = (random.nextInt(totalTiles / 5) + totalTiles / 20);
 
         for (int k = 0; k < itemCount; k++) {
             int i = random.nextInt(farm.getType().getWidth());
             int j = random.nextInt(farm.getType().getHeight());
 
-            // رد کردن اگر داخل محدوده ممنوعه است
             if (isNearCottage(i, j, cottageX, cottageY)) {
-                k--; // این تلاش بی‌نتیجه بود، تلاش بعدی
+                k--;
                 continue;
             }
 
