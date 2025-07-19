@@ -5,20 +5,29 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.group16.stardewvalley.model.NPC.NPC;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.map.PlaceType;
+import com.group16.stardewvalley.model.time.Season;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class PlaceTextureManager {
     private static PlaceTextureManager placeTextureManager;
-    private Map<PlaceType, TextureRegion> places = new HashMap<>();
+    private Map<PlaceType, TextureRegion> placesSpring = new HashMap<>();
+    private Map<PlaceType, TextureRegion> placesSummer = new HashMap<>();
+    private Map<PlaceType, TextureRegion> placesFall = new HashMap<>();
+    private Map<PlaceType, TextureRegion> placesWinter = new HashMap<>();
+
+
     private Texture shopSpriteSheet;
     private Texture npcSpriteSheet;
 
     public PlaceTextureManager() {
         shopSpriteSheet = new Texture("Shops/Pelican Town " + App.getActiveGame().getTimeDate().getSeason().getName() + ".png");
         npcSpriteSheet = new Texture("NPC/Cabins.png");
-        loadShops();
+        loadShops(placesSpring, Season.Spring);
+        loadShops(placesSummer, Season.Summer);
+        loadShops(placesFall, Season.Fall);
+        loadShops(placesWinter, Season.Winter);
     }
 
     public static PlaceTextureManager getPlaceTextureManager() {
@@ -28,7 +37,9 @@ public class PlaceTextureManager {
         return placeTextureManager;
     }
 
-    private void loadShops() {
+    private void loadShops(Map<PlaceType, TextureRegion> places, Season season) {
+        shopSpriteSheet = new Texture("Shops/Pelican Town " + season.getName() + ".png");
+
         places.put(PlaceType.Blacksmith, new TextureRegion(shopSpriteSheet, 400, 0, 112, 128));
         places.put(PlaceType.JojaMart, new TextureRegion(shopSpriteSheet, 0, 837, 320, 155));
         places.put(PlaceType.MarniesRanch, new TextureRegion(shopSpriteSheet, 0, 0, 128, 175));
@@ -50,7 +61,20 @@ public class PlaceTextureManager {
     }
 
     public TextureRegion getShopTexture(PlaceType placeType) {
-        return places.get(placeType);
+        switch (App.getActiveGame().getSeason()) {
+            case Summer -> {
+                return placesSummer.get(placeType);
+            }
+            case Fall -> {
+                return placesFall.get(placeType);
+            }
+            case Winter -> {
+                return placesWinter.get(placeType);
+            }
+            default -> {
+                return placesSpring.get(placeType);
+            }
+        }
     }
 
     public void dispose() {
