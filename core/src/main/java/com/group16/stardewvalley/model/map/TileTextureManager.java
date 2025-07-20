@@ -23,7 +23,7 @@ public class TileTextureManager {
         tileTextures.put(TileType.Tree, new Texture(tree_tile));
         String plowed_tile = "Decor/Gravel_Path.png";
         tileTextures.put(TileType.Plowed, new Texture(plowed_tile));
-        String quarry_tile = "Flooring/Flooring_52.png";
+        String quarry_tile = "Flooring/Flooring_11.png";
         tileTextures.put(TileType.Quarry, new Texture(quarry_tile));
         tileTextures.put(TileType.Forage, new Texture("Foraging/Grape.png"));
         tileTextures.put(TileType.NPCHouse, new Texture(ground_tile));
