@@ -364,7 +364,7 @@ public class MapController {
                 Tile tile = map[y][x];
                 Texture texture;
                 texture = TileTextureManager.getTileTextureManager().getTexture(tile.getType());
-                batch.draw(texture, x * TILE_SIZE, y * TILE_SIZE);
+                batch.draw(texture, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
             }
         }
 
