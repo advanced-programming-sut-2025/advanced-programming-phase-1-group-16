@@ -35,7 +35,7 @@ public class Tile {
         }
         else if (tileType == TileType.Stone) {
             this.type = TileType.Quarry;
-            this.item = new Stone("stone", 20);
+            this.item = new Stone("Farm_Boulder.png", 20);
         }
         else if (tileType == TileType.Forage) {
             this.type = TileType.Ground;

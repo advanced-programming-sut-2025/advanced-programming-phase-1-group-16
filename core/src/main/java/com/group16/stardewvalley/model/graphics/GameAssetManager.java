@@ -11,6 +11,7 @@ import com.group16.stardewvalley.model.agriculture.Tree;
 import com.group16.stardewvalley.model.agriculture.TreeType;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.items.Item;
+import com.group16.stardewvalley.model.items.Stone;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +36,7 @@ public class GameAssetManager {
     private final Map<String, TextureRegion> treeRegions = new HashMap<>();
     private final Map<String, TextureRegion> cropRegions = new HashMap<>();
     private final Map<String, Texture> mineralTextures = new HashMap<>();
+    private final Map<String, Texture> stoneTextures = new HashMap<>();
 
     private final Texture houseTexture = new Texture("House/House_1.png");
 
@@ -131,9 +133,6 @@ public class GameAssetManager {
         );
     }
 
-    public Texture getItemTexture() {
-        return itemTexture;
-    }
 
     public Texture getItemTexture(Item item) {
         if (item instanceof Mineral mineral) {
@@ -147,6 +146,24 @@ public class GameAssetManager {
                 }
             }
             return mineralTextures.get(name);
+        }
+        else if (item instanceof Stone stone) {
+            String name = stone.getName();
+            if (name.equals("Farm_Boulder.png")) {
+                if (!stoneTextures.containsKey(name)) {
+                    stoneTextures.put(name, new Texture("Rock/Farm_Boulder.png"));
+                }
+                return stoneTextures.get(name);
+            }
+            if (!stoneTextures.containsKey(name)) {
+                try {
+                    Texture texture = new Texture("Rock/Stone_Index" + name + ".png");
+                    stoneTextures.put(name, texture);
+                } catch (Exception e) {
+                    stoneTextures.put(name, itemTexture);
+                }
+            }
+            return stoneTextures.get(name);
         }
         return itemTexture;
     }
