@@ -1,9 +1,12 @@
 package com.group16.stardewvalley.model.graphics;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.group16.stardewvalley.controller.agriculture.AgricultureController;
 import com.group16.stardewvalley.model.agriculture.Crop;
 import com.group16.stardewvalley.model.agriculture.Mineral;
@@ -17,6 +20,13 @@ import java.util.Map;
 
 public class GameAssetManager {
     private static GameAssetManager gameAssetManager;
+
+    private final Skin skin = new Skin(Gdx.files.internal("assets/skin/pixthulhu-ui.json"));
+
+    public Skin getSkin() {
+        return skin;
+    }
+
 
     private final String crop = "Foraging/Grape.png";
     private final String tree = "Trees/Pine_Stage_4.png";
@@ -170,6 +180,49 @@ public class GameAssetManager {
 
     public void dispose() {
 
+    }
+
+
+    private final Sound wonSound = Gdx.audio.newSound(Gdx.files.internal("SFX/AudioClip/goodresult.mp3"));
+    private final Sound loseSound = Gdx.audio.newSound(Gdx.files.internal("SFX/AudioClip/death-scream.mp3"));
+    private final Sound clickButtonSound = Gdx.audio.newSound(Gdx.files.internal("SFX/AudioClip/Pop.wav"));
+    private final Sound getCoinSound = Gdx.audio.newSound(Gdx.files.internal("SFX/AudioClip/Crystal Reward Tick.wav"));
+    private final Sound monsterDeathSound = Gdx.audio.newSound(Gdx.files.internal("SFX/AudioClip/Explosion_Blood_01.wav"));
+
+    private final Sound shootSound = Gdx.audio.newSound(Gdx.files.internal("SFX/AudioClip/single_shot.wav"));
+    private final Sound powerUpSound = Gdx.audio.newSound(Gdx.files.internal("SFX/AudioClip/Special & Powerup (8).wav"));
+    private final Sound damageSound = Gdx.audio.newSound(Gdx.files.internal("SFX/AudioClip/sfx_sounds_impact1.wav"));
+    private final Sound weaponReloadSound = Gdx.audio.newSound(Gdx.files.internal("SFX/AudioClip/Weapon_Shotgun_Reload.wav"));
+
+
+    public Sound getLoseSound() {
+        return loseSound;
+    }
+
+    public Sound getWonSound() {    return wonSound;}
+
+    public Sound getGetCoinSound() {return getCoinSound;}
+
+    public Sound getPowerUpSound() {
+        return powerUpSound;
+    }
+
+    public Sound getDamageSound() {
+        return damageSound;
+    }
+
+    public Sound getWeaponReloadSound() {
+        return weaponReloadSound;
+    }
+
+    public Sound getMonsterDeathSound() {
+        return monsterDeathSound;
+    }
+
+    public Sound getClickButtonSound() { return clickButtonSound;}
+
+    public Sound getShootSound() {
+        return shootSound;
     }
 
 }

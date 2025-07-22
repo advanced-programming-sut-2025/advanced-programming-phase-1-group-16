@@ -1,6 +1,7 @@
 package com.group16.stardewvalley.model.app;
 
 import com.group16.stardewvalley.model.menu.Menu;
+import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.model.user.User;
 import com.group16.stardewvalley.model.menu.Menu;
 
@@ -8,13 +9,20 @@ import java.util.ArrayList;
 
 public class App {
     private static User loggedInUser;
+    private static Player currentPlayer;
     public static ArrayList<Game> games = new ArrayList<>();
     private static Game activeGame = null;
 
     public static ArrayList<User> users = new ArrayList<User>();
     private static Menu currentMenu = Menu.LoginMenu;
 
+    public static Player getCurrentPlayer() {
+        return currentPlayer;
+    }
 
+    public static void setCurrentPlayer(Player currentPlayer) {
+        App.currentPlayer = currentPlayer;
+    }
 
     public static User getLoggedInUser() {
         return loggedInUser;
