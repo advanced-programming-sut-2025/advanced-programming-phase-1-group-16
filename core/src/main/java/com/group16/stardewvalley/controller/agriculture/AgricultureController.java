@@ -99,7 +99,7 @@ public class AgricultureController {
         int x = playerPos.getX() + dirX;
         int y = playerPos.getY() + dirY;
         Tile targetTile = App.getActiveGame().getMap()[y][x];
-        if (!targetTile.getType().equals(TileType.Plowed)) {
+        if (!targetTile.isPlowed()) {
             return new Result(false, "Shokhm nazadi dadash!");
         }
         if (!App.getActiveGame().getCurrentPlayer().getInventory().isSeedInInventory(seedType)) {
