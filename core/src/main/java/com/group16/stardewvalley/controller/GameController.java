@@ -69,6 +69,13 @@ public class GameController {
                     Result resultOfUsingGadget = player.getCurrentEquipment().use(targetTile, App.getActiveGame());
                     System.out.println(resultOfUsingGadget);
                 }
+                if (player.getCurrentThing() != null) {
+                    int targetY = player.getPosition().getY() + player.getCurrentDirection().getyDelta();
+                    int targetX = player.getPosition().getX() + player.getCurrentDirection().getxDelta();
+                    Tile targetTile = App.getActiveGame().getMap()[targetY][targetX];
+                    targetTile.setItem(player.getCurrentThing());
+                    player.setCurrentThing(null);
+                }
                 return true;
             case Input.Keys.X:
                 return true;
