@@ -40,6 +40,11 @@ public class TileRenderer {
             batch.draw(house, offsetX, offsetY, realWidth, realHeight);
         }
 
+        if (tile.isPlowed()) {
+            Texture plowedTile = TileTextureManager.getTileTextureManager().getTexture(TileType.Plowed);
+            batch.draw(plowedTile, drawX, drawY, TILE_SIZE, TILE_SIZE);
+        }
+
         if (tile.getCrop() != null) {
             TextureRegion cropTexture = textureManager.getCropRegion(tile.getCrop());
             drawPlant(batch, TILE_SIZE, drawX, drawY, cropTexture);

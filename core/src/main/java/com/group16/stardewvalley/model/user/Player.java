@@ -448,6 +448,13 @@ public class Player {
         return currentEquipment;
     }
 
+    public Item getCurrentThing() {
+        return currentThing;
+    }
+
+    public void setCurrentThing(Item currentThing) {
+        this.currentThing = currentThing;
+    }
 
     public void decreaseEnergy(double amount) {
         energy = Math.max(0, energy - amount);

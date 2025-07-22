@@ -20,10 +20,12 @@ public class Tile {
     private FertilizerType fertilizerType;
     private boolean hasWater;
     private boolean isBurned;
+    private boolean isPlowed;
 
     public Tile(TileType tileType) {
         location = Location.Game;
         isBurned = false;
+        isPlowed = false;
         isFertilized = false;
         if (tileType == TileType.Tree) {
             this.type = TileType.Ground;
@@ -241,5 +243,13 @@ public class Tile {
 
     public void setType(TileType type) {
         this.type = type;
+    }
+
+    public boolean isPlowed() {
+        return isPlowed;
+    }
+
+    public void setPlowed(boolean plowed) {
+        isPlowed = plowed;
     }
 }

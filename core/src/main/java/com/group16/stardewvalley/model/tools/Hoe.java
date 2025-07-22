@@ -40,7 +40,7 @@ public class Hoe extends Gadget {
             return new Result(false, "Invalid operation: Hoe can only be used on empty dirt!");
         }
 
-        targetTile.setType(TileType.Plowed);
+        targetTile.setPlowed(true);
         player.decreaseEnergy(this.getConsumptionEnergy());
         return new Result(true, "Success! Dirt dug up cleanly.");
     }

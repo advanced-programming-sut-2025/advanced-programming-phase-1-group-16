@@ -6,6 +6,8 @@ import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.controller.map.MapController;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.map.Direction;
+import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.user.Player;
 
 import static com.group16.stardewvalley.view.graphics.GameScreen.showMiniMap;
@@ -38,24 +40,35 @@ public class GameController {
 
         switch (keycode) {
             case Input.Keys.UP:
+                player.setCurrentDirection(Direction.UP);
                 nextY += speed;
                 up = true;
                 break;
             case Input.Keys.RIGHT:
+                player.setCurrentDirection(Direction.RIGHT);
                 nextX += speed;
                 right = true;
                 break;
             case Input.Keys.DOWN:
+                player.setCurrentDirection(Direction.DOWN);
                 nextY -= speed;
                 down = true;
                 break;
             case Input.Keys.LEFT:
+                player.setCurrentDirection(Direction.LEFT);
                 nextX -= speed;
                 left = true;
                 break;
             case Input.Keys.M:
                 showMiniMap = !showMiniMap;
             case Input.Keys.C:
+                if (player.getCurrentEquipment() != null) {
+                    int targetY = player.getPosition().getY() + player.getCurrentDirection().getyDelta();
+                    int targetX = player.getPosition().getX() + player.getCurrentDirection().getxDelta();
+                    Tile targetTile = App.getActiveGame().getMap()[targetY][targetX];
+                    Result resultOfUsingGadget = player.getCurrentEquipment().use(targetTile, App.getActiveGame());
+                    System.out.println(resultOfUsingGadget);
+                }
                 return true;
             case Input.Keys.X:
                 return true;
