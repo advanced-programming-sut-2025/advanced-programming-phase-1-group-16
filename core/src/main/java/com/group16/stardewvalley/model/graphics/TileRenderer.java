@@ -47,8 +47,10 @@ public class TileRenderer {
 
         if (tile.getItem() != null) {
             Texture itemTexture = textureManager.getItemTexture(tile.getItem());
+            int realWidth = Math.min(TILE_SIZE, itemTexture.getWidth());
+            int realHeight = Math.min(TILE_SIZE, itemTexture.getHeight());
 
-            batch.draw(itemTexture, drawX, drawY, TILE_SIZE, TILE_SIZE);
+            batch.draw(itemTexture, drawX, drawY, realWidth, realHeight);
         }
 
         if (tile.getTree() != null) {

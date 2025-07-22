@@ -42,7 +42,7 @@ public class Tile {
             CropType cropType;
             if (random.nextBoolean()) {
                 cropType = getRandomForagingCrop();
-                this.item = new ForagingCrop(cropType.getName(), 50,cropType);
+                this.item = new ForagingCrop(cropType.getName(), 50, cropType);
             }
             else {
                 cropType = getRandomForagingSeed();
@@ -50,6 +50,11 @@ public class Tile {
                     this.crop = new Crop(cropType);
                 }
             }
+        }
+        else if (tileType.equals(TileType.Rock)) {
+            this.type = TileType.Ground;
+            String[] stones = {"343", "450", "Farm_Boulder.png"};
+            this.item = new Stone(stones[random.nextInt(3)], 20);
         }
         else if (tileType == TileType.MineralForage) {
             this.type = TileType.Quarry;
