@@ -5,7 +5,9 @@ import com.badlogic.gdx.Input;
 import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.controller.map.MapController;
 import com.group16.stardewvalley.model.Result;
+import com.group16.stardewvalley.model.agriculture.Seed;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.map.Direction;
 import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.user.Player;
@@ -70,9 +72,13 @@ public class GameController {
                     System.out.println(resultOfUsingGadget);
                 }
                 if (player.getCurrentThing() != null) {
+                    Item item = player.getCurrentThing();
                     int targetY = player.getPosition().getY() + player.getCurrentDirection().getyDelta();
                     int targetX = player.getPosition().getX() + player.getCurrentDirection().getxDelta();
                     Tile targetTile = App.getActiveGame().getMap()[targetY][targetX];
+                    if (item instanceof Seed seed) {
+
+                    }
                     targetTile.setItem(player.getCurrentThing());
                     player.setCurrentThing(null);
                 }
