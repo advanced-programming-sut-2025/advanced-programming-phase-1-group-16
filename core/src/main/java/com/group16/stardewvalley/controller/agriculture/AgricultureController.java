@@ -99,11 +99,15 @@ public class AgricultureController {
         int x = playerPos.getX() + dirX;
         int y = playerPos.getY() + dirY;
         Tile targetTile = App.getActiveGame().getMap()[y][x];
-        if (!targetTile.isPlowed()) {
-            return new Result(false, "Shokhm nazadi dadash!");
-        }
         if (!App.getActiveGame().getCurrentPlayer().getInventory().isSeedInInventory(seedType)) {
             return new Result(false, "You dont have this seed!");
+        }
+        return plantSeed(targetTile, seedType, x, y);
+    }
+
+    private Result plantSeed(Tile targetTile, SeedType seedType, int x, int y) {
+        if (!targetTile.isPlowed()) {
+            return new Result(false, "Shokhm nazadi dadash!");
         }
         if (seedType.equals(SeedType.MIXED_SEED)){
             seedType = getRandomSeed(App.getActiveGame().getTimeDate().getCurrentSeason());
@@ -160,7 +164,7 @@ public class AgricultureController {
             default:
                 return new Result(false, "Invalid seed");
         }
-        return new Result(true, seedName + " is planted successfully");
+        return new Result(true, seedType.getName() + " is planted successfully");
     }
 
     private static boolean isSameTypeAround(int x, int y, CropType cropType) {
