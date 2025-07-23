@@ -70,6 +70,9 @@ public class GameController {
                 if (player.getCurrentEquipment() != null) {
                     int targetY = player.getPosition().getY() + player.getCurrentDirection().getyDelta();
                     int targetX = player.getPosition().getX() + player.getCurrentDirection().getxDelta();
+                    if (targetX < 0 || targetY < 0 || targetX > App.getActiveGame().getMapWidth() || targetY > App.getActiveGame().getMapHeight()) {
+                        return false;
+                    }
                     Tile targetTile = App.getActiveGame().getMap()[targetY][targetX];
                     Result resultOfUsingGadget = player.getCurrentEquipment().use(targetTile, App.getActiveGame());
                     System.out.println(resultOfUsingGadget);
@@ -78,11 +81,17 @@ public class GameController {
                     Item item = player.getCurrentThing();
                     int targetY = player.getPosition().getY() + player.getCurrentDirection().getyDelta();
                     int targetX = player.getPosition().getX() + player.getCurrentDirection().getxDelta();
+                    if (targetX < 0 || targetY < 0 || targetX > App.getActiveGame().getMapWidth() || targetY > App.getActiveGame().getMapHeight()) {
+                        return false;
+                    }
                     Tile targetTile = App.getActiveGame().getMap()[targetY][targetX];
                     if (item instanceof Seed seed) {
-                        //TODO Plant
+                        Result result = agricultureController.planting(seed, targetX, targetY);
+                        if (!result.isSuccessful()) {
+                            System.out.println(result);
+                        }
                     }
-                    targetTile.setItem(player.getCurrentThing());
+                    else targetTile.setItem(player.getCurrentThing());
                     player.setCurrentThing(null);
                 }
                 return true;

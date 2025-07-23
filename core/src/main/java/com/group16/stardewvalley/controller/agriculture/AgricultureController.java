@@ -81,34 +81,19 @@ public class AgricultureController {
         return new Result(true, result.toString());
     }
 
-    public Result planting(String seedName, String direction) {
+    public Result planting(Seed seed, int targetX, int targetY) {
+        String seedName = seed.getName();
         SeedType seedType = findSeedTypeByName(seedName);
         if (seedType == null) {
             return new Result(false, "Seed not found");
         }
-        Pos offset = getDirectionOffset(direction);
-        if (offset == null) {
-            return new Result(false, "Invalid direction");
-        }
-        int dirX = offset.getX();
-        int dirY = offset.getY();
-        Pos playerPos = App.getActiveGame().getCurrentPlayer().getPosition();
-        if (playerPos.getX() + dirX < 0 || playerPos.getY() + dirY < 0 || playerPos.getX() + dirX > App.getActiveGame().getMapWidth() || playerPos.getY() + dirY > App.getActiveGame().getMapHeight()) {
-            return new Result(false, "Invalid direction");
-        }
-        int x = playerPos.getX() + dirX;
-        int y = playerPos.getY() + dirY;
-        Tile targetTile = App.getActiveGame().getMap()[y][x];
-        if (!App.getActiveGame().getCurrentPlayer().getInventory().isSeedInInventory(seedType)) {
-            return new Result(false, "You dont have this seed!");
-        }
-        return plantSeed(targetTile, seedType, x, y);
-    }
+        Tile targetTile = App.getActiveGame().getMap()[targetY][targetX];
 
-    private Result plantSeed(Tile targetTile, SeedType seedType, int x, int y) {
-        if (!targetTile.isPlowed()) {
-            return new Result(false, "Shokhm nazadi dadash!");
-        }
+//        if (!targetTile.isPlowed()) {
+//            return new Result(false, "Shokhm nazadi dadash!");
+//        }
+
+
         if (seedType.equals(SeedType.MIXED_SEED)){
             seedType = getRandomSeed(App.getActiveGame().getTimeDate().getCurrentSeason());
         }
@@ -134,8 +119,7 @@ public class AgricultureController {
                     App.getActiveGame().getCurrentPlayer().getFarm().getGreenhouse().addGreenHouseTree(tree);
                 } else App.getActiveGame().getCurrentPlayer().getFarm().addPlantedTree(tree);
                 App.getActiveGame().getCurrentPlayer().getFarm().addPlantedTree(tree);
-//                Seed seed3 = App.getActiveGame().getCurrentPlayer().getInventory().findSeedByType(seedType);
-//                App.getActiveGame().getCurrentPlayer().getInventory().getItems().put(seed3, -1);
+                App.getActiveGame().getCurrentPlayer().getInventory().getItems().put(seed, -1);
                 break;
             case "CROP":
                 CropType cropType = findCropTypeBySeed(seedType);
@@ -147,19 +131,18 @@ public class AgricultureController {
                     crop.setFertilized(true);
                 }
                 if (cropType.isCanBecomeGiant() && !targetTile.getType().equals(TileType.GreenHouse)) {
-                    boolean sameTypeAround = isSameTypeAround(x, y, cropType);
+                    boolean sameTypeAround = isSameTypeAround(targetX, targetY, cropType);
 
                     if (sameTypeAround) {
                         crop.setColossal(true);
                     }
                 }
                 targetTile.setCrop(crop);
-                crop.setPosition(new Pos(x, y));
+                crop.setPosition(new Pos(targetX, targetY));
                 if (targetTile.getType().equals(TileType.GreenHouse)) {
                     App.getActiveGame().getCurrentPlayer().getFarm().getGreenhouse().addGreenHouseCrop(crop);
                 } else App.getActiveGame().getCurrentPlayer().getFarm().addPlantedCrop(crop);
-//                Seed seed4 = App.getActiveGame().getCurrentPlayer().getInventory().findSeedByType(seedType);
-//                App.getActiveGame().getCurrentPlayer().getInventory().getItems().put(seed4, -1);
+                App.getActiveGame().getCurrentPlayer().getInventory().getItems().put(seed, -1);
                 break;
             default:
                 return new Result(false, "Invalid seed");
