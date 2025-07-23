@@ -60,8 +60,7 @@ public class StartMenuView implements Screen {
         exitButton.addListener(e -> {
             if (!exitButton.isPressed()) return false;
             if (App.getLoggedInUser() == null  ) {
-                GameAssetManager.getGameAssetManager().getClickButtonSound().play();
-            }
+                GameAssetManager.getGameAssetManager().getBrightClickSound().play();            }
             Gdx.app.exit();
             return true;
         });
@@ -69,19 +68,16 @@ public class StartMenuView implements Screen {
         registerButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if ( App.getLoggedInUser() == null  ) {
-                    GameAssetManager.getGameAssetManager().getClickButtonSound().play();
-                }
+            GameAssetManager.getGameAssetManager().getBrightClickSound().play();
                 controller.onRegisterClicked();
             }
         });
 
+
         loginButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if ( App.getLoggedInUser() == null  ) {
-                    GameAssetManager.getGameAssetManager().getClickButtonSound().play();
-                }
+            GameAssetManager.getGameAssetManager().getBrightClickSound().play();
                 controller.onLoginClicked();
             }
         });

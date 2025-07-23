@@ -3,6 +3,7 @@ package com.group16.stardewvalley.controller.menu.Graphics;
 
 import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.controller.menu.LoginMenuController;
+import com.group16.stardewvalley.controller.menu.SignUpMenuController;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.view.menuGraphics.LoginMenuView;
 import com.group16.stardewvalley.view.menuGraphics.SignUpMenuView;
@@ -17,7 +18,7 @@ public class StartMenuController {
 
     public void onRegisterClicked() {
         Main.getMain().getScreen().dispose();
-        Main.getMain().setScreen(new SignUpMenuView(new SignUpViewController(), GameAssetManager.getGameAssetManager().getSkin()));
+        Main.getMain().setScreen(new SignUpMenuView(new SignUpMenuController(), GameAssetManager.getGameAssetManager().getSkin()));
     }
 
     public void onLoginClicked() {

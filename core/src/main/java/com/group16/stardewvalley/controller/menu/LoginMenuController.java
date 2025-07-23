@@ -19,145 +19,6 @@ import static com.group16.stardewvalley.model.user.User.getUserByUsername;
 
 public class LoginMenuController  {
 
-    //sign up  methods
-    public Result register(String username, String password, String passwordConfirm, String nickName, String email, String gender) {
-
-        if (LoginMenuCommands.Username.getMatcher(username) == null) {
-            return new Result(false, "username format is invalid!");
-        }
-        if (UserSaveManager.isUsernameTaken(username)) {
-            return new Result(false, "username already exists! choose another one.");
-        }
-
-        if (LoginMenuCommands.Email.getMatcher(email) == null) {
-            return new Result(false, "email format is invalid!");
-        }
-
-
-        //how to turn back to enter password again?
-        if(password.equals("random") || password.equals("Random")){
-            String generatedPassword = generateRandomPassword();
-            User newUser = new User(username,generatedPassword,nickName,email,gender);
-            UserSaveManager.addUserAndSave(newUser); // Save new user to file
-
-
-            String sb = "your random password is: "+ generatedPassword  + "\nchoose a security question: \n" +
-                    "1- " + SecurityQuestions.q1.getQuestion() + "\n" +
-                    "2- " + SecurityQuestions.q2.getQuestion() + "\n" + "3- " + SecurityQuestions.q3.getQuestion() + "\n"+
-                    "4- " + SecurityQuestions.q4.getQuestion() + "\n" + "5- " + SecurityQuestions.q5.getQuestion() + "\n";
-
-            return new Result(true, sb);
-        }
-
-
-
-        if (LoginMenuCommands.Password.getMatcher(password) == null) {
-            return new Result(false, "password format is invalid!");
-        }
-        if (password.length() < 8) {
-            return new Result(false, "weak password! password must be at least 8 characters.");
-        }
-        if (!password.matches(".*[a-z].*")){
-            return new Result(false, "weak password! password should contains at least one lowercase letter.");
-        }
-        if (!password.matches(".*[A-Z].*")){
-            return new Result(false, "weak password! password should contains at least one uppercase letter.");
-        }
-        if (!password.matches(".*[0-9].*")){
-            return new Result(false, "weak password! password should contains at least one number.");
-        }
-        if (!password.matches(".*[!#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*")){
-            return new Result(false, "weak password! password should contains at least one special character.");
-        }
-        if(!password.equals(passwordConfirm)){
-            return new Result(false, "password does not match! enter your password again.");
-        }
-
-        //successful
-        User newUser = new User(username,password,nickName,email,gender);
-        UserSaveManager.addUserAndSave(newUser); // Save new user to file
-
-
-
-        //make a list of security questions and show to user
-        String securityQuestionList = "choose a security question: \n" +
-                "1- " + SecurityQuestions.q1.getQuestion() + "\n" +
-                "2- " + SecurityQuestions.q2.getQuestion() + "\n" + "3- " + SecurityQuestions.q3.getQuestion() + "\n"+
-                "4- " + SecurityQuestions.q4.getQuestion() + "\n" + "5- " + SecurityQuestions.q5.getQuestion() + "\n";
-
-        return new Result(true, securityQuestionList);
-    }
-
-
-
-    private String generateRandomPassword() {
-
-        final String LOWER = "abcdefghijklmnopqrstuvwxyz";
-        final String UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        final String DIGITS = "0123456789";
-        final String SPECIAL = "!@#$%^&*()-_=+[]{}<>?/";
-        final String ALL_CHARS = LOWER + UPPER + DIGITS + SPECIAL;
-        final SecureRandom random = new SecureRandom();
-
-
-        int length = 8 + random.nextInt(13); // random length between 8 and 20
-
-        List<Character> password = new ArrayList<>();
-
-        // Ensure at least one of each required type
-        password.add(LOWER.charAt(random.nextInt(LOWER.length())));
-        password.add(UPPER.charAt(random.nextInt(UPPER.length())));
-        password.add(DIGITS.charAt(random.nextInt(DIGITS.length())));
-        password.add(SPECIAL.charAt(random.nextInt(SPECIAL.length())));
-
-        // Fill the rest
-        for (int i = 4; i < length; i++) {
-            password.add(ALL_CHARS.charAt(random.nextInt(ALL_CHARS.length())));
-        }
-
-        Collections.shuffle(password);
-
-        StringBuilder sb = new StringBuilder();
-        for (char c : password) {
-            sb.append(c);
-        }
-
-        return sb.toString();
-    }
-
-    public Result setSecurityQuestion(String username, String securityQuestion, String answer, String answerConfirm) {
-        if (!(securityQuestion.equals("1") || securityQuestion.equals("2") || securityQuestion.equals("3")
-            || securityQuestion.equals("4") || securityQuestion.equals("5"))) {
-            return new Result(false, "question number is invalid!");
-        }
-        if(!answer.equals(answerConfirm)){
-            return new Result(false, "your answer confirm does not match with answer!");
-        }
-
-        User user = getUserByUsername(username);
-        //correct inputs
-        if(user != null){
-            switch (securityQuestion) {
-                case "1": user.setUserSecurityQuestion(SecurityQuestions.q1); break;
-                case "2": user.setUserSecurityQuestion(SecurityQuestions.q2); break;
-                case "3": user.setUserSecurityQuestion(SecurityQuestions.q3); break;
-                case "4": user.setUserSecurityQuestion(SecurityQuestions.q4); break;
-                case "5": user.setUserSecurityQuestion(SecurityQuestions.q5); break;
-            }
-            user.setSecurityAnswer(answer);
-
-        }else {
-            return new Result(false, "username not found!");
-        }
-
-
-
-        return new Result(true, "security question set successfully!");
-
-
-    }
-
-
     //login  methods
     public Result login(String username, String password, boolean stayLoggedIn){
         User user = getUserByUsername(username);
@@ -176,7 +37,6 @@ public class LoginMenuController  {
         App.setCurrentMenu(Menu.MainMenu);
         return new Result(true, "logged in successfully!");
     }
-
 
     public Result forgetPassword(String username){
         User user = getUserByUsername(username);
@@ -229,13 +89,45 @@ public class LoginMenuController  {
         return new Result(true, "password changed successfully!");
 
     }
+
+    public String generateRandomPassword() {
+        final String LOWER = "abcdefghijklmnopqrstuvwxyz";
+        final String UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        final String DIGITS = "0123456789";
+        final String SPECIAL = "!#$%^&*()=+{}[]|\\/:;'\",<>?"; // No whitespace
+        final String ALL_CHARS = LOWER + UPPER + DIGITS + SPECIAL;
+        final SecureRandom random = new SecureRandom();
+
+        int length = 8 + random.nextInt(13); // 8-20 chars
+
+        List<Character> password = new ArrayList<>();
+
+        // Ensure at least one of each type (lower, upper, digit, special)
+        password.add(LOWER.charAt(random.nextInt(LOWER.length())));
+        password.add(UPPER.charAt(random.nextInt(UPPER.length())));
+        password.add(DIGITS.charAt(random.nextInt(DIGITS.length())));
+        password.add(SPECIAL.charAt(random.nextInt(SPECIAL.length())));
+
+        // Fill the rest with random allowed chars
+        for (int i = 4; i < length; i++) {
+            password.add(ALL_CHARS.charAt(random.nextInt(ALL_CHARS.length())));
+        }
+
+        Collections.shuffle(password); // Mix the characters
+
+        // Convert to String
+        StringBuilder sb = new StringBuilder();
+        for (char c : password) {
+            sb.append(c);
+        }
+
+        return sb.toString();
+    }
+
     public Result showMenus() {
         String output = "you can go to these menus from Main menu:\n1- Profile Menu\n2- Login Menu\n3- Game Menu";
         return new Result(true, output);
     }
-
-
-
 
     public Result showCurrentMenu(){
         return new Result(true, App.getCurrentMenu().getName());

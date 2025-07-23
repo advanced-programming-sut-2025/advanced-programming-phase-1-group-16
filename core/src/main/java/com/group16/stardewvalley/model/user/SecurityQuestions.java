@@ -22,4 +22,12 @@ public enum SecurityQuestions {
     public String getQuestion() {
         return question;
     }
+
+    public static SecurityQuestions fromNumber(int number) {
+        for (SecurityQuestions q : values()) {
+            if (q.getNumber() == number) return q;
+        }
+        return null; // Not found
+    }
+
 }

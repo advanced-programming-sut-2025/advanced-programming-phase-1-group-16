@@ -3,6 +3,7 @@ package com.group16.stardewvalley.view.menu;
 
 
 import com.group16.stardewvalley.controller.menu.LoginMenuController;
+import com.group16.stardewvalley.controller.menu.SignUpMenuController;
 import com.group16.stardewvalley.model.menu.LoginMenuCommands;
 import com.group16.stardewvalley.model.Result;
 
@@ -11,6 +12,7 @@ import java.util.regex.Matcher;
 
 public class LoginMenu implements MenuInterface {
 
+    private final SignUpMenuController signUpController = new SignUpMenuController();
     private final LoginMenuController controller = new LoginMenuController();
 
     @Override
@@ -19,7 +21,7 @@ public class LoginMenu implements MenuInterface {
         Matcher matcher = null;
         //register
         if ((matcher = LoginMenuCommands.Register.getMatcher(input)) != null) {
-            Result result = controller.register(matcher.group("username"),
+            Result result = signUpController.register(matcher.group("username"),
                     matcher.group("password"), matcher.group("passwordConfirm"), matcher.group("nickName"),
                     matcher.group("email"), matcher.group("gender"));
 
@@ -35,7 +37,7 @@ public class LoginMenu implements MenuInterface {
                 String input2 = scanner.nextLine();
                 Matcher matcher2 = LoginMenuCommands.PickSecurityQuestion.getMatcher(input2);
                 if (matcher2 != null) {
-                    System.out.println(controller.setSecurityQuestion(matcher.group("username"), matcher2.group("questionNumber"),
+                    System.out.println(signUpController.setSecurityQuestion(matcher.group("username"), matcher2.group("questionNumber"),
                             matcher2.group("answer"), matcher2.group("answerConfirm")));
                 }
 

@@ -1,6 +1,7 @@
 package com.group16.stardewvalley.model.graphics;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -21,7 +22,7 @@ import java.util.Map;
 public class GameAssetManager {
     private static GameAssetManager gameAssetManager;
 
-    private final Skin skin = new Skin(Gdx.files.internal("assets/skin/pixthulhu-ui.json"));
+    private final Skin skin = new Skin(Gdx.files.internal("assets/skin-rainbow/rainbow-ui.json"));
 
     public Skin getSkin() {
         return skin;
@@ -55,12 +56,10 @@ public class GameAssetManager {
 
 
     private GameAssetManager(){
-        /*
-        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("musics/alex-productions-epic-cinematic-gaming-cyberpunk-reset(chosic.com).mp3"));
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(defaultMusicPath));
         backgroundMusic.setLooping(true);
-        backgroundMusic.setVolume(0.5f);
+        backgroundMusic.setVolume(musicVolume);
         backgroundMusic.play();
-         */
     }
 
     public static GameAssetManager getGameAssetManager(){
@@ -183,47 +182,75 @@ public class GameAssetManager {
     }
 
 
-    private final Sound wonSound = Gdx.audio.newSound(Gdx.files.internal("SFX/AudioClip/goodresult.mp3"));
-    private final Sound loseSound = Gdx.audio.newSound(Gdx.files.internal("SFX/AudioClip/death-scream.mp3"));
-    private final Sound clickButtonSound = Gdx.audio.newSound(Gdx.files.internal("SFX/AudioClip/Pop.wav"));
-    private final Sound getCoinSound = Gdx.audio.newSound(Gdx.files.internal("SFX/AudioClip/Crystal Reward Tick.wav"));
-    private final Sound monsterDeathSound = Gdx.audio.newSound(Gdx.files.internal("SFX/AudioClip/Explosion_Blood_01.wav"));
+    //SFX
+    private final Sound wonSound = Gdx.audio.newSound(Gdx.files.internal("SFX/goodresult.mp3"));
+    private final Sound loseSound = Gdx.audio.newSound(Gdx.files.internal("SFX/death-scream.mp3"));
+    private final Sound clickButtonSound = Gdx.audio.newSound(Gdx.files.internal("SFX/Pop.wav"));
+    private final Sound brightClickSound = Gdx.audio.newSound(Gdx.files.internal("SFX/click_bright.mp3"));
+    private final Sound getCoinSound = Gdx.audio.newSound(Gdx.files.internal("SFX/Crystal Reward Tick.wav"));
+    private final Sound monsterDeathSound = Gdx.audio.newSound(Gdx.files.internal("SFX/Explosion_Blood_01.wav"));
+    private final Sound shootSound = Gdx.audio.newSound(Gdx.files.internal("SFX/single_shot.wav"));
+    private final Sound powerUpSound = Gdx.audio.newSound(Gdx.files.internal("SFX/Special & Powerup (8).wav"));
+    private final Sound damageSound = Gdx.audio.newSound(Gdx.files.internal("SFX/sfx_sounds_impact1.wav"));
+    private final Sound weaponReloadSound = Gdx.audio.newSound(Gdx.files.internal("SFX/Weapon_Shotgun_Reload.wav"));
 
-    private final Sound shootSound = Gdx.audio.newSound(Gdx.files.internal("SFX/AudioClip/single_shot.wav"));
-    private final Sound powerUpSound = Gdx.audio.newSound(Gdx.files.internal("SFX/AudioClip/Special & Powerup (8).wav"));
-    private final Sound damageSound = Gdx.audio.newSound(Gdx.files.internal("SFX/AudioClip/sfx_sounds_impact1.wav"));
-    private final Sound weaponReloadSound = Gdx.audio.newSound(Gdx.files.internal("SFX/AudioClip/Weapon_Shotgun_Reload.wav"));
-
-
-    public Sound getLoseSound() {
-        return loseSound;
-    }
-
+    public Sound getBrightClickSound() {return brightClickSound;}
+    public Sound getLoseSound() {return loseSound;}
     public Sound getWonSound() {    return wonSound;}
-
     public Sound getGetCoinSound() {return getCoinSound;}
-
-    public Sound getPowerUpSound() {
-        return powerUpSound;
-    }
-
-    public Sound getDamageSound() {
-        return damageSound;
-    }
-
-    public Sound getWeaponReloadSound() {
-        return weaponReloadSound;
-    }
-
-    public Sound getMonsterDeathSound() {
-        return monsterDeathSound;
-    }
-
+    public Sound getPowerUpSound() {return powerUpSound; }
+    public Sound getDamageSound() {return damageSound;}
+    public Sound getWeaponReloadSound() {return weaponReloadSound;}
+    public Sound getMonsterDeathSound() {return monsterDeathSound;}
     public Sound getClickButtonSound() { return clickButtonSound;}
+    public Sound getShootSound() {return shootSound;}
 
-    public Sound getShootSound() {
-        return shootSound;
+
+    //SOUND TRACKS
+    private Music backgroundMusic;
+    private float musicVolume = 3.0f; // default volume
+    private final String defaultMusicPath = "Soundtracks/01. Stardew Valley Overture.mp3";
+
+    public void setMusic(String path) {
+        if (backgroundMusic != null) backgroundMusic.stop();
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(path));
+        backgroundMusic.setLooping(true);
+        backgroundMusic.setVolume(musicVolume);
+        backgroundMusic.play();
     }
+
+    public void setVolume(float volume) {
+        this.musicVolume = volume;
+        if (backgroundMusic != null) {
+            backgroundMusic.setVolume(volume);
+        }
+    }
+
+    public float getVolume() {
+        return musicVolume;
+    }
+    public void stopMusic() {
+        if (backgroundMusic != null) backgroundMusic.stop();
+    }
+    public void playMusic() {
+        if (backgroundMusic != null) backgroundMusic.play();
+    }
+    public String getDefaultMusicPath() {
+        return defaultMusicPath;
+    }
+    public String getMusic1Path() {
+        return "Soundtracks/02. Cloud Country.mp3";
+    }
+    public String getMusic2Path() {
+        return "Soundtracks/03. Grandpa's Theme.mp3";
+    }
+    public String getMusic3Path() {
+        return "Soundtracks/04. Settling In.mp3";
+    }
+    public String getMusic4Path() {
+        return "Soundtracks/08. Pelican Town.mp3";
+    }
+
 
 }
 

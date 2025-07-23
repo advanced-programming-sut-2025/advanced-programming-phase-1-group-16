@@ -3,12 +3,16 @@ package com.group16.stardewvalley.view.menuGraphics;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.group16.stardewvalley.controller.menu.Graphics.LoginViewController;
 import com.group16.stardewvalley.controller.menu.LoginMenuController;
+import com.group16.stardewvalley.model.Result;
+import com.group16.stardewvalley.model.graphics.GameAssetManager;
 
 
 public class LoginMenuView implements Screen {
@@ -65,6 +69,47 @@ public class LoginMenuView implements Screen {
         // Add background first so it stays behind everything else
         stage.addActor(background);
 
+        //*------------------------------------------*//
+        //button functions
+
+        loginButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+
+                GameAssetManager.getGameAssetManager().getBrightClickSound().play();
+                controller.loginButtonClicked();
+            }
+        });
+
+        forgotPasswordButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+
+                GameAssetManager.getGameAssetManager().getBrightClickSound().play();
+                controller.forgotPasswordButtonClicked();
+
+            }
+        });
+
+        submitSecurityButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+
+                GameAssetManager.getGameAssetManager().getBrightClickSound().play();
+                controller.submitSecurityQuestionButtonClicked();
+            }
+        });
+
+        backButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+
+                GameAssetManager.getGameAssetManager().getBrightClickSound().play();
+                controller.back();
+            }
+        });
+        //*------------------------------------------*//
+
 
         table.setFillParent(true);
         table.center();
@@ -107,7 +152,6 @@ public class LoginMenuView implements Screen {
         ScreenUtils.clear(0, 0, 0, 1);
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
-        controller.handleLoginButtons();
     }
 
     @Override public void resize(int width, int height) {}

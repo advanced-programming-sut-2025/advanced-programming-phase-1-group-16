@@ -41,8 +41,11 @@ public class UserSaveManager {
     }
 
     public static void addUserAndSave(User user) {
-        App.getUsers().add(user);
-        saveUsers();  // reuse save logic
+        loadUsers(); // ensures we’re not working with a blank list
+        if (!isUsernameTaken(user.getUsername())) {
+            App.getUsers().add(user);
+            saveUsers();
+        }
     }
 
 }

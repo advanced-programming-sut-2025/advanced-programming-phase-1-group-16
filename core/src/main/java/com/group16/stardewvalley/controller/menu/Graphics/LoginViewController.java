@@ -21,45 +21,37 @@ public class LoginViewController {
 
 
 
-    public void handleLoginButtons() {
-        if (view.getLoginButton().isPressed()) {
-            if (App.getLoggedInUser() == null  ) {
-                GameAssetManager.getGameAssetManager().getClickButtonSound().play();
-            }
-            String username = view.getUsernameField().getText();
-            String password = view.getPasswordField().getText();
-
-            User user = getUserByUsername(username);
-
-            if (user == null) {
-                view.setMessage("Username Not Found.");
-            } else if (!user.getPassword().equals(password)) {
-                view.setMessage("Incorrect Password.");
-            } else {
-                App.setLoggedInUser(user);
-                App.setCurrentPlayer(new Player(user));
-                Main.getMain().getScreen().dispose();
-//                Main.getMain().setScreen(new MainMenuView(new MainMenuController(), GameAssetManager.getGameAssetManager().getSkin()));
-            }
+    public void loginButtonClicked() {
+        if (App.getLoggedInUser() == null  ) {
+            GameAssetManager.getGameAssetManager().getClickButtonSound().play();
         }
+        String username = view.getUsernameField().getText();
+        String password = view.getPasswordField().getText();
 
-        if (view.getForgotPasswordButton().isPressed()) {
-            if (App.getLoggedInUser() == null  ) {
-                GameAssetManager.getGameAssetManager().getClickButtonSound().play();
-            }
-            view.toggleSecurityUI(true);
-            view.setMessage("Answer your security question:");
-        }
+        User user = getUserByUsername(username);
 
-        if(view.getBackButton().isPressed()){
-            if (App.getLoggedInUser() == null  ) {
-                GameAssetManager.getGameAssetManager().getClickButtonSound().play();
-            }
+        if (user == null) {
+            view.setMessage("Username Not Found.");
+        } else if (!user.getPassword().equals(password)) {
+            view.setMessage("Incorrect Password.");
+        } else {
+            App.setLoggedInUser(user);
+            App.setCurrentPlayer(new Player(user));
             Main.getMain().getScreen().dispose();
-            Main.getMain().setScreen(new StartMenuView(new StartMenuController(), GameAssetManager.getGameAssetManager().getSkin()));
+//                Main.getMain().setScreen(new MainMenuView(new MainMenuController(), GameAssetManager.getGameAssetManager().getSkin()));
         }
+    }
 
-        if (view.isSecurityUIVisible() && view.getSubmitSecurityButton().isPressed()) {
+    public void forgotPasswordButtonClicked() {
+        if (App.getLoggedInUser() == null  ) {
+            GameAssetManager.getGameAssetManager().getClickButtonSound().play();
+        }
+        view.toggleSecurityUI(true);
+        view.setMessage("Answer your security question:");
+    }
+
+    public void submitSecurityQuestionButtonClicked() {
+        if (view.isSecurityUIVisible() ) {
             if (App.getLoggedInUser() == null  ) {
                 GameAssetManager.getGameAssetManager().getClickButtonSound().play();
             }
@@ -98,6 +90,11 @@ public class LoginViewController {
                 view.toggleSecurityUI(false);
             }
         }
+    }
+
+    public void back(){
+        Main.getMain().getScreen().dispose();
+        Main.getMain().setScreen(new StartMenuView(new StartMenuController(), GameAssetManager.getGameAssetManager().getSkin()));
     }
 
 
