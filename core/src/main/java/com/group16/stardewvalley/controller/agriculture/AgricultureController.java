@@ -88,10 +88,9 @@ public class AgricultureController {
             return new Result(false, "Seed not found");
         }
         Tile targetTile = App.getActiveGame().getMap()[targetY][targetX];
-
-//        if (!targetTile.isPlowed()) {
-//            return new Result(false, "Shokhm nazadi dadash!");
-//        }
+        if (!targetTile.isPlowed()) {
+            return new Result(false, "Shokhm nazadi dadash!");
+        }
 
 
         if (seedType.equals(SeedType.MIXED_SEED)){

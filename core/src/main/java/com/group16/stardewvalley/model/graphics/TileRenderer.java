@@ -73,15 +73,7 @@ public class TileRenderer {
             batch.draw(fireOverlay, offsetX, offsetY, realWidth, realHeight);
         }
 
-        if (tile.isFertilized()) {
-            Texture fertOverlay = textureManager.getFertalizeTexture();
-            int realWidth = fertOverlay.getWidth();
-            int realHeight = fertOverlay.getHeight();
 
-            int offsetX = drawX + (TILE_SIZE - realWidth) / 2;
-            int offsetY = drawY;
-            batch.draw(fertOverlay, offsetX, offsetY, realWidth, realHeight);
-        }
     }
 
     private void drawPlant(SpriteBatch batch, int TILE_SIZE, int drawX, int drawY, TextureRegion cropTexture) {

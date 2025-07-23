@@ -101,6 +101,7 @@ public class GameController {
             case Input.Keys.ESCAPE:
                 return true;
             case Input.Keys.F:
+                System.out.println(agricultureController.fertilizePlant("speed gro", "up"));
                 return true;
             case Input.Keys.TAB:
                 return true;

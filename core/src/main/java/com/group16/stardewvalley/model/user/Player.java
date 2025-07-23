@@ -25,7 +25,7 @@ import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.tools.Gadget;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.map.*;
-
+import com.group16.stardewvalley.model.tools.WateringCan;
 
 
 public class Player {
@@ -102,6 +102,7 @@ public class Player {
         finalHourBuff = 0;
         this.buffer = "";
         this.location = null;
+        this.currentEquipment = new WateringCan("watering can", 0, "base");
     }
 
     //TODO یادت باشه ست کنی اینو وقتی بازی جدید میسازی

@@ -24,7 +24,7 @@ public class GameAssetManager {
     private final String item = "Crafting/Stone.png";
     private final String burn = "Flooring/Flooring_33.png";
     private final String water = "Flooring/Flooring_47.png";
-    private final String fertalize = "Decor/Stepping_Stone_Path.png";
+    private final String fertalize = "Fertilizer/Stardew-texture_Basic-Fertilizer.png";
 
     private Texture cropTexture = new Texture(crop);
     private Texture treeTexture = new Texture(tree);
