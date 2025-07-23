@@ -3,6 +3,7 @@ package com.group16.stardewvalley.controller;
 
 import com.badlogic.gdx.Input;
 import com.group16.stardewvalley.Main;
+import com.group16.stardewvalley.controller.agriculture.AgricultureController;
 import com.group16.stardewvalley.controller.map.MapController;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.agriculture.Seed;
@@ -17,8 +18,10 @@ import static com.group16.stardewvalley.view.graphics.GameScreen.showMiniMap;
 public class GameController {
     private final PlayersController playersController;
     private final MapController mapController;
+    private final AgricultureController agricultureController;
 
     public GameController() {
+        this.agricultureController = new AgricultureController();
         this.playersController = new PlayersController();
         this.mapController = new MapController();
     }
@@ -77,7 +80,7 @@ public class GameController {
                     int targetX = player.getPosition().getX() + player.getCurrentDirection().getxDelta();
                     Tile targetTile = App.getActiveGame().getMap()[targetY][targetX];
                     if (item instanceof Seed seed) {
-
+                        //TODO Plant
                     }
                     targetTile.setItem(player.getCurrentThing());
                     player.setCurrentThing(null);
