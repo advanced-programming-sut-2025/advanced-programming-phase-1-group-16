@@ -21,7 +21,19 @@ import java.util.Map;
 
 public class GameAssetManager {
     private static GameAssetManager gameAssetManager;
+    private GameAssetManager(){
+//        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(defaultMusicPath));
+//        backgroundMusic.setLooping(true);
+//        backgroundMusic.setVolume(musicVolume);
+//        backgroundMusic.play();
+    }
 
+    public static GameAssetManager getGameAssetManager(){
+        if (gameAssetManager == null){
+            gameAssetManager = new GameAssetManager();
+        }
+        return gameAssetManager;
+    }
     private final Skin skin = new Skin(Gdx.files.internal("assets/skin-rainbow/rainbow-ui.json"));
 
     public Skin getSkin() {
@@ -49,25 +61,6 @@ public class GameAssetManager {
 
     private final Texture houseTexture = new Texture("House/House_1.png");
 
-
-
-    //private final Music backgroundMusic;
-    //private final Animation<Texture> character1_idle_frames = new Animation<>(0.1f, character1_idle0_tex);
-
-
-    private GameAssetManager(){
-        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(defaultMusicPath));
-        backgroundMusic.setLooping(true);
-        backgroundMusic.setVolume(musicVolume);
-        backgroundMusic.play();
-    }
-
-    public static GameAssetManager getGameAssetManager(){
-        if (gameAssetManager == null){
-            gameAssetManager = new GameAssetManager();
-        }
-        return gameAssetManager;
-    }
 
     public TextureRegion getCropRegion(Crop crop) {
         String name = crop.getCropType().getName().replace(" ", "_");

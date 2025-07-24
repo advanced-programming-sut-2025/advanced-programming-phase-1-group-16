@@ -8,6 +8,7 @@ import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.menu.LoginMenuCommands;
 import com.group16.stardewvalley.model.user.SecurityQuestions;
 import com.group16.stardewvalley.model.user.User;
+import com.group16.stardewvalley.model.user.UserDatabase;
 import com.group16.stardewvalley.model.user.UserSaveManager;
 import com.group16.stardewvalley.view.menuGraphics.SignUpMenuView;
 import com.group16.stardewvalley.view.menuGraphics.StartMenuView;
@@ -43,24 +44,6 @@ public class SignUpMenuController {
             return new Result(false, "email format is invalid!");
         }
 
-
-//        //how to turn back to enter password again?
-//        if(password.equals("random") || password.equals("Random")){
-//            String generatedPassword = generateRandomPassword();
-//            User newUser = new User(username,generatedPassword,nickName,email,gender);
-//            UserSaveManager.addUserAndSave(newUser); // Save new user to file
-//
-//
-//            String sb = "your random password is: "+ generatedPassword  + "\nchoose a security question: \n" +
-//                "1- " + SecurityQuestions.q1.getQuestion() + "\n" +
-//                "2- " + SecurityQuestions.q2.getQuestion() + "\n" + "3- " + SecurityQuestions.q3.getQuestion() + "\n"+
-//                "4- " + SecurityQuestions.q4.getQuestion() + "\n" + "5- " + SecurityQuestions.q5.getQuestion() + "\n";
-//
-//            return new Result(true, sb);
-//        }
-
-
-
         if (LoginMenuCommands.Password.getMatcher(password) == null) {
             return new Result(false, "password format is invalid!");
         }
@@ -85,8 +68,18 @@ public class SignUpMenuController {
 
         //successful
         User newUser = new User(username,password,nickName,email,gender);
-        UserSaveManager.addUserAndSave(newUser); // Save new user to file
-            return new Result(true, "user registered successfully!");
+        App.getUsers().add(newUser);
+
+        UserSaveManager.saveUsers();
+
+//        UserSaveManager.addUserAndSave(newUser); // Save new user to json file
+
+
+        // Save to JSON file (replaces the file with updated user list)
+//        UserDatabase.saveUsers();
+
+
+        return new Result(true, "user registered successfully!");
     }
 
     public String generateRandomPassword() {

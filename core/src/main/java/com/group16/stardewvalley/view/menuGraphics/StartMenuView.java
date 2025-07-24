@@ -85,7 +85,7 @@ public class StartMenuView implements Screen {
 
         table.setFillParent(true);
         table.center();
-        table.add(logoImage).size(700, 300).padBottom(70).row();  // Adds image with space below it
+        table.add(logoImage).padBottom(120).row();  // Adds image with space below it
 
         table.add(registerButton).width(350).pad(10);
         table.row();

@@ -1,13 +1,12 @@
 [ {
-  "username" : "sssss",
-  "password" : "Bl<Di5L79|d6\\z%cis5",
-  "nickName" : "sas",
-  "email" : "sas@gmail.com",
-  "gender" : "Male",
+  "username" : "fatemeh",
+  "password" : "1234",
+  "nickName" : "nilli",
+  "email" : "fatemeh@gmail.com",
+  "gender" : "female",
   "gamePlayed" : 0,
   "logged_in_flag" : false,
-  "userSecurityQuestion" : null,
-  "securityAnswer" : null,
-  "hasActiveGame" : false,
-  "currentGame" : null
+  "userSecurityQuestion" : "q3",
+  "securityAnswer" : "apple",
+  "hasActiveGame" : false
 } ]

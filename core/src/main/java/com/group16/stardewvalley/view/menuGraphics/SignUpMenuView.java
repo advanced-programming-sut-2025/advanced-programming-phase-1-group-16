@@ -95,7 +95,7 @@ public class SignUpMenuView implements Screen {
                     passwordConfirmField.getText(),
                     nicknameField.getText(),
                     emailField.getText(),
-                    genderSelectBox.getSelected()
+                    genderSelectBox.getSelected().toLowerCase()
                 );
 
                 setMessage(result.toString());

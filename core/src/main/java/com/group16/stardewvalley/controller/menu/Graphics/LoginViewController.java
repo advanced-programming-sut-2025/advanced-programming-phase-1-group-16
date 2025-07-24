@@ -22,9 +22,7 @@ public class LoginViewController {
 
 
     public void loginButtonClicked() {
-        if (App.getLoggedInUser() == null  ) {
-            GameAssetManager.getGameAssetManager().getClickButtonSound().play();
-        }
+
         String username = view.getUsernameField().getText();
         String password = view.getPasswordField().getText();
 
@@ -43,18 +41,14 @@ public class LoginViewController {
     }
 
     public void forgotPasswordButtonClicked() {
-        if (App.getLoggedInUser() == null  ) {
-            GameAssetManager.getGameAssetManager().getClickButtonSound().play();
-        }
+
         view.toggleSecurityUI(true);
         view.setMessage("Answer your security question:");
     }
 
     public void submitSecurityQuestionButtonClicked() {
         if (view.isSecurityUIVisible() ) {
-            if (App.getLoggedInUser() == null  ) {
-                GameAssetManager.getGameAssetManager().getClickButtonSound().play();
-            }
+
             String username = view.getUsernameField().getText();
             User user = getUserByUsername(username);
 
