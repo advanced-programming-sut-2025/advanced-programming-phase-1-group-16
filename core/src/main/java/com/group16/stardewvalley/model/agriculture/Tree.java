@@ -14,6 +14,8 @@ public class Tree {
     private boolean isWateredYesterday;
     private boolean isFertilized;
     private int daySinceLastWater;
+    private boolean hasFruit;
+    private int daySincePickFruit;
 
 
     public Tree(TreeType type) {
@@ -30,7 +32,8 @@ public class Tree {
         this.isWatered = false;
         this.isFertilized = false;
         this.isWateredYesterday = true;
-
+        this.hasFruit = true;
+        this.daySincePickFruit = 0;
     }
 
     public boolean isWateredYesterday() {
@@ -129,6 +132,14 @@ public class Tree {
         this.stage = stage;
     }
 
+    public boolean HasFruit() {
+        return hasFruit;
+    }
+
+    public void setHasFruit(boolean hasFruit) {
+        this.hasFruit = hasFruit;
+    }
+
     public void advanceStage() {
         if (!isMature) {
             dayPastFromLastStage++;
@@ -140,6 +151,19 @@ public class Tree {
                 }
                 dayPastFromLastStage = 0;
             }
+        }
+    }
+
+    public void handpickFruit() {
+        hasFruit = false;
+        daySincePickFruit = 0;
+    }
+
+    public void manageFruit() {
+        daySincePickFruit ++;
+        if (daySincePickFruit == treeType.getFruitCycleDays()) {
+            hasFruit = true;
+            daySincePickFruit = 0;
         }
     }
 }

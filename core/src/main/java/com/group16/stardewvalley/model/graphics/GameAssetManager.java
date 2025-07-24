@@ -84,7 +84,8 @@ public class GameAssetManager {
         String name = tree.getTreeType().getName().replace(" ", "_");
         int stage = tree.getStage();
         String season = App.getActiveGame().getTimeDate().getSeason().getName().toLowerCase();
-        String key = name + "_stage_" + stage + "_season_" + season;
+        String fruitState = tree.HasFruit() ? "Fruit" : "";
+        String key = name + "_stage_" + stage + "_season_" + season + fruitState;
 
         if (!treeRegions.containsKey(key)) {
             try {
@@ -93,7 +94,16 @@ public class GameAssetManager {
                     TextureRegion region = new TextureRegion(texture);
                     treeRegions.put(key, region);
                 } else {
-                    if (AgricultureController.isTreeNotSeasonal(tree.getTreeType())) {
+                    if (tree.HasFruit()) {
+                        try {
+                            Texture texture = new Texture("Trees/" + name + "_Stage_5_Fruit.png");
+                            treeRegions.put(key, new TextureRegion(texture));
+                        } catch (Exception e) {
+                            TextureRegion region = getTextureRegion(name, season);
+                            treeRegions.put(key, region);
+                        }
+                    }
+                    else if (AgricultureController.isTreeNotSeasonal(tree.getTreeType())) {
                         Texture texture = new Texture("Trees/" + name + "_Stage_5.png");
                         treeRegions.put(key, new TextureRegion(texture));
                     } else {
