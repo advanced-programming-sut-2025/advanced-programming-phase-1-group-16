@@ -6,6 +6,7 @@ import com.group16.stardewvalley.controller.menu.LoginMenuController;
 import com.group16.stardewvalley.controller.menu.SignUpMenuController;
 import com.group16.stardewvalley.model.menu.LoginMenuCommands;
 import com.group16.stardewvalley.model.Result;
+import com.group16.stardewvalley.model.user.User;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -68,7 +69,7 @@ public class LoginMenu implements MenuInterface {
                         String input3 = scanner.nextLine();
                         Matcher matcher3 = LoginMenuCommands.GetNewPassword.getMatcher(input3);
                         if(matcher3 != null) {
-                            System.out.println(controller.getNewPassword( matcher.group("username") ,matcher3.group("password")));
+                            System.out.println(controller.getNewPassword( User.getUserByUsername(matcher.group("username")) ,matcher3.group("password")));
                         }else {
                             System.out.println("invalid password!");
 

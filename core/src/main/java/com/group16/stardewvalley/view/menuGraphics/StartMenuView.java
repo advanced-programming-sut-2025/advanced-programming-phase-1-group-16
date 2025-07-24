@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.group16.stardewvalley.controller.menu.Graphics.StartMenuController;
 import com.group16.stardewvalley.model.app.App;
@@ -57,12 +58,18 @@ public class StartMenuView implements Screen {
         Texture logoTexture = new Texture(Gdx.files.internal("Background/main_logo.png"));
         Image logoImage = new Image(logoTexture);
 
-        exitButton.addListener(e -> {
-            if (!exitButton.isPressed()) return false;
-            if (App.getLoggedInUser() == null  ) {
-                GameAssetManager.getGameAssetManager().getBrightClickSound().play();            }
-            Gdx.app.exit();
-            return true;
+        exitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                GameAssetManager.getGameAssetManager().getBrightClickSound().play();
+
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        Gdx.app.exit();
+                    }
+                }, 0.5f); // delay in seconds
+            }
         });
 
         registerButton.addListener(new ClickListener() {

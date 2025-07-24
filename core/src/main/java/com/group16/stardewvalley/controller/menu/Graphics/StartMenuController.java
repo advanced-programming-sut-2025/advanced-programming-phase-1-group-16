@@ -23,7 +23,7 @@ public class StartMenuController {
 
     public void onLoginClicked() {
         Main.getMain().getScreen().dispose();
-        Main.getMain().setScreen(new LoginMenuView(new LoginViewController(), GameAssetManager.getGameAssetManager().getSkin()));
+        Main.getMain().setScreen(new LoginMenuView(new LoginMenuController(), GameAssetManager.getGameAssetManager().getSkin()));
     }
 
 

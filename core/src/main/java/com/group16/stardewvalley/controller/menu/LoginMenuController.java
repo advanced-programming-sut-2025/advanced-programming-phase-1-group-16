@@ -1,13 +1,19 @@
 package com.group16.stardewvalley.controller.menu;
 
 
+import com.group16.stardewvalley.Main;
+import com.group16.stardewvalley.controller.menu.Graphics.StartMenuController;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.menu.LoginMenuCommands;
 import com.group16.stardewvalley.model.menu.Menu;
 import com.group16.stardewvalley.model.Result;
+import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.model.user.SecurityQuestions;
 import com.group16.stardewvalley.model.user.User;
 import com.group16.stardewvalley.model.user.UserSaveManager;
+import com.group16.stardewvalley.view.menuGraphics.LoginMenuView;
+import com.group16.stardewvalley.view.menuGraphics.StartMenuView;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -18,6 +24,19 @@ import static com.group16.stardewvalley.model.user.User.getUserByUsername;
 
 
 public class LoginMenuController  {
+    private LoginMenuView view;
+    public void setView(LoginMenuView view) {
+        this.view = view;
+    }
+
+        public void back(){
+        Main.getMain().getScreen().dispose();
+        Main.getMain().setScreen(new StartMenuView(new StartMenuController(), GameAssetManager.getGameAssetManager().getSkin()));
+    }
+
+    public com.badlogic.gdx.scenes.scene2d.ui.Skin getSkin() {
+        return GameAssetManager.getGameAssetManager().getSkin();
+    }
 
     //login  methods
     public Result login(String username, String password, boolean stayLoggedIn){
@@ -55,14 +74,13 @@ public class LoginMenuController  {
         return new Result(true, "enter a new password, or 'random' if you want a random password.");
     }
 
-    public Result getNewPassword(String username, String password){
+    public Result getNewPassword(User user, String password){
         //validate password
-        //how to turn back to enter password again?
-        if(password.equals("random") || password.equals("Random")){
-            return new Result(false, generateRandomPassword());
+
+
+        if(password.isEmpty()) {
+            return new Result(false, "Password cannot be empty.");
         }
-
-
         if (LoginMenuCommands.Password.getMatcher(password) == null) {
             return new Result(false, "password format is invalid!");
         }
@@ -83,8 +101,8 @@ public class LoginMenuController  {
         }
 
         //Strong password -> set as new password
-        User user = getUserByUsername(username);
         user.setPassword(password);
+        UserSaveManager.saveUsers();
 
         return new Result(true, "password changed successfully!");
 
@@ -132,6 +150,7 @@ public class LoginMenuController  {
     public Result showCurrentMenu(){
         return new Result(true, App.getCurrentMenu().getName());
     }
+
 
 
 

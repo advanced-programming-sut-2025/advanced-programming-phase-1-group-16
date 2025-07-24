@@ -282,6 +282,7 @@ public class SignUpMenuView implements Screen {
 
                     if (result.isSuccessful()) {
                         this.hide(); // only close if success
+                        //todo: go to main menu
                     }
 
                 } else {

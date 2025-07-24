@@ -13,10 +13,16 @@ import com.group16.stardewvalley.controller.menu.Graphics.LoginViewController;
 import com.group16.stardewvalley.controller.menu.LoginMenuController;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
+import com.group16.stardewvalley.model.user.SecurityQuestions;
+import com.group16.stardewvalley.model.user.User;
+
+import java.util.Arrays;
+
+import static com.group16.stardewvalley.model.user.User.getUserByUsername;
 
 
 public class LoginMenuView implements Screen {
-    private final LoginViewController controller;
+    private final LoginMenuController controller;
     private Stage stage;
     private final Label titleLabel;
     private final TextField usernameField;
@@ -26,13 +32,12 @@ public class LoginMenuView implements Screen {
     private final Label messageLabel;
     private final TextButton forgotPasswordButton;
     private final TextField securityAnswerField;
-    private final TextButton submitSecurityButton;
     private boolean securityUIVisible = false;
     private final TextButton backButton;
+    private final CheckBox stayLoggedInCheckbox;
 
 
-
-    public LoginMenuView(LoginViewController controller, Skin skin) {
+    public LoginMenuView(LoginMenuController controller, Skin skin) {
         this.controller = controller;
         this.titleLabel = new Label("L o g i n   M e n u", skin.get("title", Label.LabelStyle.class));
         this.usernameField = new TextField("", skin);
@@ -42,11 +47,9 @@ public class LoginMenuView implements Screen {
         this.messageLabel = new Label("", skin); // empty message initially
         this.forgotPasswordButton = new TextButton("Forgot Password?", skin);
         this.securityAnswerField = new TextField("", skin);
-        this.submitSecurityButton = new TextButton( "Submit", skin);
         securityAnswerField.setMessageText("Your security answer");
-        securityAnswerField.setVisible(false);
-        submitSecurityButton.setVisible(false);
         this.backButton = new TextButton("Back", skin);
+        this.stayLoggedInCheckbox = new CheckBox(" Stay Logged In", skin);
 
         passwordField.setPasswordCharacter('*');
         passwordField.setPasswordMode(true);
@@ -75,35 +78,49 @@ public class LoginMenuView implements Screen {
         loginButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-
                 GameAssetManager.getGameAssetManager().getBrightClickSound().play();
-                controller.loginButtonClicked();
+
+                Result result = controller.login(
+                    usernameField.getText(),
+                    passwordField.getText(),
+                    stayLoggedInCheckbox.isChecked()
+                );
+
+                setMessage(result.toString());
+
+                if (result.isSuccessful()) {
+                    //TODO: go to main menu
+                }
             }
         });
 
         forgotPasswordButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-
                 GameAssetManager.getGameAssetManager().getBrightClickSound().play();
-                controller.forgotPasswordButtonClicked();
 
+                String username = usernameField.getText().trim();
+                if (username.isEmpty()) {
+                    setMessage("Please enter your username first.");
+                    return;
+                }
+
+                User user = getUserByUsername(username);
+                if (user == null) {
+                    setMessage("User not found.");
+                    return;
+                }
+
+                showSecurityQuestionDialog(user);
             }
         });
 
-        submitSecurityButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
 
-                GameAssetManager.getGameAssetManager().getBrightClickSound().play();
-                controller.submitSecurityQuestionButtonClicked();
-            }
-        });
+
 
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-
                 GameAssetManager.getGameAssetManager().getBrightClickSound().play();
                 controller.back();
             }
@@ -120,26 +137,22 @@ public class LoginMenuView implements Screen {
         table.row().pad(10, 0, 10, 0);
         table.add(new Label("Password"+":", controller.getSkin())).left();
         table.add(passwordField).width(300);
+
         table.row().pad(10, 250, 10, 0);
-        table.add(loginButton).width(500).padLeft(300);
+        Table loginRow = new Table();
+        loginRow.add(loginButton).width(350).padRight(20);
+        loginRow.add(stayLoggedInCheckbox).left();
+
+        table.add(loginRow).colspan(2).padLeft(300);
+
+        table.row().pad(5, 0, 5, 0);
+        table.add(forgotPasswordButton).colspan(2).width(550);
 
         table.row().pad(10, 0, 10, 0);
         table.add(messageLabel).colspan(2);
 
-        table.row().pad(5, 0, 5, 0);
-        table.add(forgotPasswordButton).colspan(2).width(500);
-
-        table.row().pad(10, 0, 10, 0);
-        table.add(securityAnswerField).width(490).padLeft(300);
-        table.row().pad(10, 0, 10, 0);
-        table.add(submitSecurityButton).colspan(2).width(500);
-
         table.row().pad(0, 0, 0, 600);
         table.add(backButton).width(200);
-
-
-        securityAnswerField.setVisible(false);
-        submitSecurityButton.setVisible(false);
 
 
         stage.addActor(table);
@@ -189,21 +202,120 @@ public class LoginMenuView implements Screen {
         return securityAnswerField;
     }
 
-    public TextButton getSubmitSecurityButton() {
-        return submitSecurityButton;
-    }
-
-    public void toggleSecurityUI(boolean visible) {
-        securityAnswerField.setVisible(visible);
-        submitSecurityButton.setVisible(visible);
-        securityUIVisible = visible;
-    }
 
     public boolean isSecurityUIVisible() {
         return securityUIVisible;
     }
 
-    public TextButton getBackButton() {
-        return backButton;
+    private void showSecurityQuestionDialog(User user) {
+        TextField answerField = new TextField("", getSkin());
+        answerField.setMessageText("Your answer");
+
+        Dialog dialog = new Dialog("Security Check", getSkin());
+
+        Table content = dialog.getContentTable();
+        content.add(new Label("Security Question:", getSkin())).padBottom(5).colspan(1);
+        content.row();
+        content.add(new Label(user.getUserSecurityQuestion().getQuestion(), getSkin())).padBottom(10).colspan(1);
+        content.row();
+        content.add(answerField).width(300).padBottom(10);
+
+        TextButton submitButton = new TextButton("Submit", getSkin());
+        TextButton cancelButton = new TextButton("Cancel", getSkin());
+
+        dialog.getButtonTable().add(submitButton).width(250).pad(5);
+        dialog.getButtonTable().add(cancelButton).width(250).pad(5);
+
+        // Show the dialog
+        dialog.show(stage);
+        dialog.setSize(600, 300);  // width, height
+
+        cancelButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                GameAssetManager.getGameAssetManager().getBrightClickSound().play();
+                dialog.hide();
+            }
+        });
+
+        submitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                GameAssetManager.getGameAssetManager().getBrightClickSound().play();
+                String enteredAnswer = answerField.getText().trim();
+                if (enteredAnswer.equalsIgnoreCase(user.getSecurityAnswer())) {
+                    setMessage("Security answer correct.");
+                    dialog.hide();
+                    showResetPasswordDialog(user);  // ➤ Show second dialog
+                } else {
+                    setMessage("Incorrect security answer.");
+                }
+            }
+        });
     }
+
+    private void showResetPasswordDialog(User user) {
+        TextField newPasswordField = new TextField("", getSkin());
+//        newPasswordField.setPasswordMode(true);
+//        newPasswordField.setPasswordCharacter('*');
+        newPasswordField.setMessageText("New password");
+
+        TextButton randomButton = new TextButton("Random", getSkin());
+
+        Dialog dialog = new Dialog("Reset Password", getSkin());
+
+        Table content = dialog.getContentTable();
+        content.add(new Label("Enter your new password:", getSkin())).colspan(2).padBottom(5);
+        content.row();
+        content.add(newPasswordField).width(300).padRight(10).padBottom(10);
+        content.add(randomButton).width(300).padBottom(10);
+
+        TextButton confirmButton = new TextButton("Confirm", getSkin());
+        TextButton cancelButton = new TextButton("Cancel", getSkin());
+
+        dialog.getButtonTable().add(confirmButton).width(200).pad(5);
+        dialog.getButtonTable().add(cancelButton).width(200).pad(5);
+
+        dialog.show(stage);
+        dialog.setSize(600, 300);  // width, height
+
+
+        randomButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                GameAssetManager.getGameAssetManager().getBrightClickSound().play();
+                String generated = controller.generateRandomPassword();
+                newPasswordField.setText(generated);
+            }
+        });
+
+        cancelButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                GameAssetManager.getGameAssetManager().getBrightClickSound().play();
+                dialog.hide();
+            }
+        });
+
+        confirmButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                GameAssetManager.getGameAssetManager().getBrightClickSound().play();
+
+                String newPassword = newPasswordField.getText().trim();
+
+                Result result = controller.getNewPassword(user, newPassword);
+                if (result.isSuccessful()) {
+                    setMessage(result.toString());
+                    dialog.hide();
+                } else {
+                    setMessage(result.toString());
+                }
+
+            }
+        });
+    }
+
+
+
 }

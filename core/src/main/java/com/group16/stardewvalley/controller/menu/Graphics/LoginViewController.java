@@ -40,51 +40,7 @@ public class LoginViewController {
         }
     }
 
-    public void forgotPasswordButtonClicked() {
 
-        view.toggleSecurityUI(true);
-        view.setMessage("Answer your security question:");
-    }
-
-    public void submitSecurityQuestionButtonClicked() {
-        if (view.isSecurityUIVisible() ) {
-
-            String username = view.getUsernameField().getText();
-            User user = getUserByUsername(username);
-
-            if (user == null) {
-                view.setMessage("Username Not Found.");
-                return;
-            }
-
-            if (!answerVerified) {
-                String answer = view.getSecurityAnswerField().getText();
-                if (user.getSecurityAnswer() != null && user.getSecurityAnswer().equalsIgnoreCase(answer.trim())) {
-                    view.setMessage("Correct! Enter your new password:");
-                    view.getSecurityAnswerField().setText(""); // clear field
-                    view.getSecurityAnswerField().setPasswordMode(true);
-                    view.getSecurityAnswerField().setPasswordCharacter('*');
-                    view.getSubmitSecurityButton().setText("Set Password");
-                    answerVerified = true;
-                } else {
-                    view.setMessage("Incorrect answer.");
-                }
-            } else {
-                String newPassword = view.getSecurityAnswerField().getText();
-                if (!isRegistrationValid(newPassword)) {
-                    view.setMessage("Weak Password.");
-                    return;
-                }
-
-
-                user.setPassword(newPassword);
-//                userDatabase.save();
-                view.setMessage("Password updated successfully.");
-                answerVerified = false;
-                view.toggleSecurityUI(false);
-            }
-        }
-    }
 
     public void back(){
         Main.getMain().getScreen().dispose();
