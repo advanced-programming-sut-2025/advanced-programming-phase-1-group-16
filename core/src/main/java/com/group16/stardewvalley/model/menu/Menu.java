@@ -15,8 +15,8 @@ public enum Menu {
     HomeMenu(new HomeMenu(), "Home Menu"),
     ExitMenu(new ExitMenu(), "Exit Menu"),;
 
-    private final MenuInterface menu;
     private final String name;
+    private final MenuInterface menu;
 
     Menu(MenuInterface menu, String name) {
         this.menu = menu;

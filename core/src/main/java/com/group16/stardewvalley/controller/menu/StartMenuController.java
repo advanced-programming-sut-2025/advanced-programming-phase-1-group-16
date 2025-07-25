@@ -1,9 +1,7 @@
-package com.group16.stardewvalley.controller.menu.Graphics;
+package com.group16.stardewvalley.controller.menu;
 
 
 import com.group16.stardewvalley.Main;
-import com.group16.stardewvalley.controller.menu.LoginMenuController;
-import com.group16.stardewvalley.controller.menu.SignUpMenuController;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.view.menuGraphics.LoginMenuView;
 import com.group16.stardewvalley.view.menuGraphics.SignUpMenuView;

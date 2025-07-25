@@ -1,11 +1,23 @@
 package com.group16.stardewvalley.controller.menu;
 
 
-import com.group16.stardewvalley.model.app.App;
-import com.group16.stardewvalley.model.menu.Menu;
+// Import your other Views for Settings, Profile, Scoreboard, Talent, Login etc.
+
+import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.model.Result;
+import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.graphics.GameAssetManager;
+import com.group16.stardewvalley.model.menu.Menu;
+import com.group16.stardewvalley.view.menuGraphics.MainMenuView;
+import com.group16.stardewvalley.view.menuGraphics.StartMenuView;
 
 public class MainMenuController {
+    private MainMenuView view;
+
+
+    public void setView(MainMenuView view) {
+        this.view = view;
+    }
 
 
     public Result changeMenu(String menuName){
@@ -28,6 +40,7 @@ public class MainMenuController {
 
     public Result logout(){
         App.setLoggedInUser(null);
+        App.setCurrentPlayer(null);
         App.setCurrentMenu(Menu.LoginMenu);
         return new Result(true, "you are in login menu now!");
     }
@@ -35,5 +48,4 @@ public class MainMenuController {
     public Result showCurrentMenu(){
         return new Result(true, App.getCurrentMenu().getName());
     }
-
 }

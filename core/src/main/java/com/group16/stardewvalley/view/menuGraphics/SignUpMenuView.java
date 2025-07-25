@@ -9,7 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.controller.menu.SignUpMenuController;
+import com.group16.stardewvalley.controller.menu.StartMenuController;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.user.SecurityQuestions;
@@ -80,6 +82,12 @@ public class SignUpMenuView implements Screen {
         background.setFillParent(true);
         stage.addActor(background);
 
+        // Load and display logo image
+        Texture logoTexture = new Texture(Gdx.files.internal("Background/Sign-Up-Menu.png"));
+        Image logoImage = new Image(logoTexture);
+        logoImage.setScale(0.5f);
+
+
         //*------------------------------------------*//
         //button functions
 
@@ -127,9 +135,9 @@ public class SignUpMenuView implements Screen {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-
                 GameAssetManager.getGameAssetManager().getBrightClickSound().play();
-                controller.back();
+                Main.getMain().getScreen().dispose();
+                Main.getMain().setScreen(new StartMenuView(new StartMenuController(), GameAssetManager.getGameAssetManager().getSkin()));
             }
         });
         //*------------------------------------------*//
@@ -137,6 +145,7 @@ public class SignUpMenuView implements Screen {
         table.setFillParent(true);
         table.center();
         table.add(titleLabel).colspan(2).padTop(30);
+//        table.add(logoImage).colspan(2).padTop(30);
         table.row().pad(10, 0, 10, 0);
         // Username row
         table.add(new Label("Username:", controller.getSkin())).left();

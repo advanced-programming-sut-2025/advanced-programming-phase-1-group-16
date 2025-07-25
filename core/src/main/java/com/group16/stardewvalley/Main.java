@@ -90,7 +90,7 @@ package com.group16.stardewvalley;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.group16.stardewvalley.controller.menu.Graphics.StartMenuController;
+import com.group16.stardewvalley.controller.menu.StartMenuController;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.view.menuGraphics.StartMenuView;
 

@@ -2,14 +2,11 @@ package com.group16.stardewvalley.controller.menu;
 
 
 import com.group16.stardewvalley.Main;
-import com.group16.stardewvalley.controller.menu.Graphics.StartMenuController;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.menu.LoginMenuCommands;
 import com.group16.stardewvalley.model.menu.Menu;
 import com.group16.stardewvalley.model.Result;
-import com.group16.stardewvalley.model.user.Player;
-import com.group16.stardewvalley.model.user.SecurityQuestions;
 import com.group16.stardewvalley.model.user.User;
 import com.group16.stardewvalley.model.user.UserSaveManager;
 import com.group16.stardewvalley.view.menuGraphics.LoginMenuView;
@@ -29,10 +26,6 @@ public class LoginMenuController  {
         this.view = view;
     }
 
-        public void back(){
-        Main.getMain().getScreen().dispose();
-        Main.getMain().setScreen(new StartMenuView(new StartMenuController(), GameAssetManager.getGameAssetManager().getSkin()));
-    }
 
     public com.badlogic.gdx.scenes.scene2d.ui.Skin getSkin() {
         return GameAssetManager.getGameAssetManager().getSkin();
@@ -51,6 +44,7 @@ public class LoginMenuController  {
         // log in and set user as logged in
         App.setLoggedInUser(user);
         App.getLoggedInUser().setLogged_in_flag(stayLoggedIn);
+        System.out.println(stayLoggedIn);
 
         //change menu to main menu
         App.setCurrentMenu(Menu.MainMenu);

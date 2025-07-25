@@ -71,4 +71,8 @@ public class App {
         App.activeGame = activeGame;
     }
 
+    public static void logout(){
+        loggedInUser = null;
+        currentPlayer = null;
+    }
 }

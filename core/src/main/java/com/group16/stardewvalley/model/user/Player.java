@@ -5,6 +5,7 @@ import com.group16.stardewvalley.model.NPC.NPCInteraction;
 import com.group16.stardewvalley.model.Request;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.food.Food;
+import com.group16.stardewvalley.model.graphics.Heros;
 import com.group16.stardewvalley.model.map.Farm;
 import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.map.Tile;
@@ -65,6 +66,7 @@ public class Player {
     private int hourPastForBuff;
     private int finalHourBuff;
     private Location location;
+    private Heros hero;
 
     //UI
     private PlayerGraphics playerGraphics;
@@ -102,6 +104,11 @@ public class Player {
         finalHourBuff = 0;
         this.buffer = "";
         this.location = null;
+
+        // Assign a random hero from the enum
+        Heros[] allHeroes = Heros.values();
+        int index = (int)(Math.random() * allHeroes.length);
+        this.hero = allHeroes[index];
     }
 
     //TODO یادت باشه ست کنی اینو وقتی بازی جدید میسازی
@@ -554,5 +561,10 @@ public class Player {
 
     public void increaseTodayIncome(int amount){
         todayIncome += amount;
+    }
+
+
+    public void setHero(Heros hero) {
+        this.hero = hero;
     }
 }

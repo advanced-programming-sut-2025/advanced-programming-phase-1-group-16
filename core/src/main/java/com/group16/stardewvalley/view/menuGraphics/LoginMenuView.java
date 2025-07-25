@@ -9,8 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.group16.stardewvalley.controller.menu.Graphics.LoginViewController;
+import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.controller.menu.LoginMenuController;
+import com.group16.stardewvalley.controller.menu.MainMenuController;
+import com.group16.stardewvalley.controller.menu.StartMenuController;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.user.SecurityQuestions;
@@ -72,6 +74,11 @@ public class LoginMenuView implements Screen {
         // Add background first so it stays behind everything else
         stage.addActor(background);
 
+        // Load and display logo image
+        Texture logoTexture = new Texture(Gdx.files.internal("Background/Login-Menu.png"));
+        Image logoImage = new Image(logoTexture);
+        logoImage.setScale(0.5f);
+
         //*------------------------------------------*//
         //button functions
 
@@ -80,6 +87,7 @@ public class LoginMenuView implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 GameAssetManager.getGameAssetManager().getBrightClickSound().play();
 
+                System.out.println(stayLoggedInCheckbox.isChecked());
                 Result result = controller.login(
                     usernameField.getText(),
                     passwordField.getText(),
@@ -89,8 +97,8 @@ public class LoginMenuView implements Screen {
                 setMessage(result.toString());
 
                 if (result.isSuccessful()) {
-                    //TODO: go to main menu
-                }
+                    Main.getMain().getScreen().dispose();
+                    Main.getMain().setScreen(new MainMenuView(new MainMenuController(), GameAssetManager.getGameAssetManager().getSkin()));                }
             }
         });
 
@@ -122,7 +130,8 @@ public class LoginMenuView implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 GameAssetManager.getGameAssetManager().getBrightClickSound().play();
-                controller.back();
+                Main.getMain().getScreen().dispose();
+                Main.getMain().setScreen(new StartMenuView(new StartMenuController(), GameAssetManager.getGameAssetManager().getSkin()));
             }
         });
         //*------------------------------------------*//
@@ -130,6 +139,7 @@ public class LoginMenuView implements Screen {
 
         table.setFillParent(true);
         table.center();
+//        table.add(logoImage).padLeft(200).padBottom(100);
         table.add(titleLabel).colspan(2).padTop(30);
         table.row().pad(10, 0, 10, 0);
         table.add(new Label("Username"+":", controller.getSkin())).left();

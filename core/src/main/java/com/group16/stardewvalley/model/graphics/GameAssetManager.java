@@ -19,6 +19,8 @@ import com.group16.stardewvalley.model.items.Item;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.badlogic.gdx.math.Rectangle.tmp;
+
 public class GameAssetManager {
     private static GameAssetManager gameAssetManager;
     private GameAssetManager(){
@@ -243,6 +245,12 @@ public class GameAssetManager {
     public String getMusic4Path() {
         return "Soundtracks/08. Pelican Town.mp3";
     }
+
+
+    Texture spriteSheet = new Texture("sprites/Abigail.png");
+    TextureRegion[][] frames = TextureRegion.split(spriteSheet, 16, 32);  // Width and height of each frame
+    public Animation<TextureRegion> menuWalkDown = new Animation<>(0.4f, frames[2]);
+
 
 
 }

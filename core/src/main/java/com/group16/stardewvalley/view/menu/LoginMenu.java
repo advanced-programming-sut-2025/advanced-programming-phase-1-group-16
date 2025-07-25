@@ -3,17 +3,14 @@ package com.group16.stardewvalley.view.menu;
 
 
 import com.group16.stardewvalley.controller.menu.LoginMenuController;
-import com.group16.stardewvalley.controller.menu.SignUpMenuController;
 import com.group16.stardewvalley.model.menu.LoginMenuCommands;
 import com.group16.stardewvalley.model.Result;
-import com.group16.stardewvalley.model.user.User;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
 public class LoginMenu implements MenuInterface {
 
-    private final SignUpMenuController signUpController = new SignUpMenuController();
     private final LoginMenuController controller = new LoginMenuController();
 
     @Override
@@ -22,27 +19,27 @@ public class LoginMenu implements MenuInterface {
         Matcher matcher = null;
         //register
         if ((matcher = LoginMenuCommands.Register.getMatcher(input)) != null) {
-            Result result = signUpController.register(matcher.group("username"),
-                    matcher.group("password"), matcher.group("passwordConfirm"), matcher.group("nickName"),
-                    matcher.group("email"), matcher.group("gender"));
-
-            System.out.println(result);
-            boolean success = result.isSuccessful();
+//            Result result = controller.register(matcher.group("username"),
+//                    matcher.group("password"), matcher.group("passwordConfirm"), matcher.group("nickName"),
+//                    matcher.group("email"), matcher.group("gender"));
+//
+//            System.out.println(result);
+//            boolean success = result.isSuccessful();
 
 
             //random password handling
 
-            if (success) {
-                //security questions have been shown
-                //get security question
-                String input2 = scanner.nextLine();
-                Matcher matcher2 = LoginMenuCommands.PickSecurityQuestion.getMatcher(input2);
-                if (matcher2 != null) {
-                    System.out.println(signUpController.setSecurityQuestion(matcher.group("username"), matcher2.group("questionNumber"),
-                            matcher2.group("answer"), matcher2.group("answerConfirm")));
-                }
-
-            }
+//            if (success) {
+//                //security questions have been shown
+//                //get security question
+//                String input2 = scanner.nextLine();
+//                Matcher matcher2 = LoginMenuCommands.PickSecurityQuestion.getMatcher(input2);
+//                if (matcher2 != null) {
+//                    System.out.println(controller.setSecurityQuestion(matcher.group("username"), matcher2.group("questionNumber"),
+//                            matcher2.group("answer"), matcher2.group("answerConfirm")));
+//                }
+//
+//            }
 
         }else if((matcher = LoginMenuCommands.Login.getMatcher(input)) != null) {
             boolean logged_in_flag = false;
@@ -69,7 +66,7 @@ public class LoginMenu implements MenuInterface {
                         String input3 = scanner.nextLine();
                         Matcher matcher3 = LoginMenuCommands.GetNewPassword.getMatcher(input3);
                         if(matcher3 != null) {
-                            System.out.println(controller.getNewPassword( User.getUserByUsername(matcher.group("username")) ,matcher3.group("password")));
+//                            System.out.println(controller.getNewPassword( matcher.group("username") ,matcher3.group("password")));
                         }else {
                             System.out.println("invalid password!");
 
