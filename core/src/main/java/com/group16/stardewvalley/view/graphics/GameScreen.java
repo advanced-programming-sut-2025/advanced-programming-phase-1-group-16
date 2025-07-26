@@ -181,7 +181,9 @@ public class GameScreen implements Screen, InputProcessor {
                 tree.handpickFruit();
                 String fruitName = tree.getTreeType().getFruitName().toUpperCase().replace(" ", "_");
                 Ingredient ingredient = findIngredient(fruitName);
-                if (ingredient != null) player.getInventory().addItem(new FoodIngredient(fruitName, tree.getFruitSellPrice(), ingredient), 4);
+                if (ingredient != null) {
+                    Result result = player.getInventory().addItem(new FoodIngredient(fruitName, tree.getFruitSellPrice(), ingredient), 4);
+                }
             }
         }
     }
