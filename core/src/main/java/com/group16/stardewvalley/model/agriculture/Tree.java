@@ -1,5 +1,8 @@
 package com.group16.stardewvalley.model.agriculture;
 
+import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.time.Season;
+
 public class Tree {
     private final TreeType treeType;
     private final int totalHarvestTime;
@@ -161,7 +164,8 @@ public class Tree {
 
     public void manageFruit() {
         daySincePickFruit ++;
-        if (daySincePickFruit == treeType.getFruitCycleDays()) {
+        if (daySincePickFruit == treeType.getFruitCycleDays() &&
+            treeType.getSeason().equals(App.getActiveGame().getSeason()) || treeType.getSeason().equals(Season.Special)) {
             hasFruit = true;
             daySincePickFruit = 0;
         }
