@@ -123,35 +123,43 @@ public class TimeDate {
                     }
                     tile.getCrop().advanceStage();
                     attackOfCrow();
-                    if (tile.getCrop().isWatered()) {
-                        tile.getCrop().setWateredYesterday(true);
-                        tile.getCrop().setWatered(false);
-                    } else {
-                        tile.getCrop().setWateredYesterday(false);
-                    }
-
-
-                    if (!tile.getCrop().isWateredYesterday() && !tile.getCrop().isWatered()) {
-                        tile.setCrop(null);
-                    }
+                    removeUnwateredPlants(tile);
                 }
 
                 if (tile.getTree() != null && !tile.getTree().isMature()) {
                     tile.getTree().advanceStage();
-                    if (App.getActiveGame().getWeatherCondition() == WeatherCondition.RAINY && tile.getType() != TileType.GreenHouse) {
-                        tile.getTree().setWatered(true);
-                    }
-                    if (tile.getTree().isWatered()) {
-                        tile.getTree().setWateredYesterday(true);
-                        tile.getTree().setWatered(false);
-                    } else {
-                        tile.getTree().setWateredYesterday(false);
-                    }
-                    if (!tile.getTree().isWateredYesterday() && !tile.getTree().isWatered()) {
-                        tile.setTree(null);
-                    }
+                    removeUnwateredTrees(tile);
                 }
             }
+        }
+    }
+
+    private static void removeUnwateredTrees(Tile tile) {
+        if (App.getActiveGame().getWeatherCondition() == WeatherCondition.RAINY && tile.getType() != TileType.GreenHouse) {
+            tile.getTree().setWatered(true);
+        }
+        if (tile.getTree().isWatered()) {
+            tile.getTree().setWateredYesterday(true);
+            tile.getTree().setWatered(false);
+        } else {
+            tile.getTree().setWateredYesterday(false);
+        }
+        if (!tile.getTree().isWateredYesterday() && !tile.getTree().isWatered()) {
+            tile.setTree(null);
+        }
+    }
+
+    private static void removeUnwateredPlants(Tile tile) {
+        if (tile.getCrop().isWatered()) {
+            tile.getCrop().setWateredYesterday(true);
+            tile.getCrop().setWatered(false);
+        } else {
+            tile.getCrop().setWateredYesterday(false);
+        }
+
+
+        if (!tile.getCrop().isWateredYesterday() && !tile.getCrop().isWatered()) {
+            tile.setCrop(null);
         }
     }
 
