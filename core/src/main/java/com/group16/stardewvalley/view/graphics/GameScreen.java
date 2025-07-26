@@ -18,6 +18,8 @@ import com.group16.stardewvalley.controller.map.MapController;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.agriculture.Tree;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.food.FoodIngredient;
+import com.group16.stardewvalley.model.food.Ingredient;
 import com.group16.stardewvalley.model.graphics.TileRenderer;
 import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.map.TileTextureManager;
@@ -66,9 +68,6 @@ public class GameScreen implements Screen, InputProcessor {
         controller.update(delta);
         handleTurn();
 
-        if (totalGameTime > 10f) {
-            App.getActiveGame().getTimeDate().advanceDateCheat(1);
-        }
 
         if (showMiniMap) {
             setCameraForMiniMap();
@@ -180,9 +179,19 @@ public class GameScreen implements Screen, InputProcessor {
         if (isAdjacent && tree != null) {
             if (tree.HasFruit()) {
                 tree.handpickFruit();
-                player.getInventory().addItem(tree)
+                String fruitName = tree.getTreeType().getFruitName().toUpperCase().replace(" ", "_");
+                Ingredient ingredient = findIngredient(fruitName);
+                if (ingredient != null) player.getInventory().addItem(new FoodIngredient(fruitName, tree.getFruitSellPrice(), ingredient), 4);
             }
         }
+    }
+    private Ingredient findIngredient(String input){
+        for (Ingredient ingredient : Ingredient.values()) {
+            if (ingredient.getName().equals(input)) {
+                return ingredient;
+            }
+        }
+        return null;
     }
 
     @Override

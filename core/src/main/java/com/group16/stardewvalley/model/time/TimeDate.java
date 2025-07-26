@@ -94,10 +94,22 @@ public class TimeDate {
         }
 
         growingPlants();
+        manageTreeFruits();
 
         //  همه ی فروشگاه ها هم داشته باشند این تابع رو باید =)
         for (Player player : App.getActiveGame().getPlayers()) {
             player.resetForNewDay();
+        }
+    }
+
+    private static void manageTreeFruits() {
+        for (int i = 0; i < App.getActiveGame().getMapHeight(); i++) {
+            for (int j = 0; j < App.getActiveGame().getMapWidth(); j++) {
+                Tile tile = App.getActiveGame().getMap()[i][j];
+                if (tile.getTree() != null && tile.getTree().isMature()) {
+                    tile.getTree().manageFruit();
+                }
+            }
         }
     }
 
