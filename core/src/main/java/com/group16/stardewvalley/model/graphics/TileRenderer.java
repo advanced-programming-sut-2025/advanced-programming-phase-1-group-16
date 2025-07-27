@@ -46,8 +46,18 @@ public class TileRenderer {
         }
 
         if (tile.getCrop() != null) {
-            TextureRegion cropTexture = textureManager.getCropRegion(tile.getCrop());
-            drawPlant(batch, TILE_SIZE, drawX, drawY, cropTexture);
+            if (tile.getCrop().isColossal()) {
+                if (tile.getCrop().isMature()) {
+                    Texture cropTexture = textureManager.getGiantCropTexture(tile.getCrop());
+                    batch.draw(cropTexture, drawX, drawY, TILE_SIZE * 2 , TILE_SIZE * 2);
+                } else {
+                    TextureRegion cropTexture = textureManager.getCropRegion(tile.getCrop());
+                    drawPlant(batch, TILE_SIZE * 2, drawX, drawY, cropTexture);
+                }
+            } else if (!tile.getCrop().isPartOfColossal()) {
+                TextureRegion cropTexture = textureManager.getCropRegion(tile.getCrop());
+                drawPlant(batch, TILE_SIZE, drawX, drawY, cropTexture);
+            }
         }
 
         if (tile.getItem() != null) {

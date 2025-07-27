@@ -103,7 +103,7 @@ public class GameController {
                     player.equip(new Hoe("hoe",0, "base"));
                 } else {
                     player.equip(null);
-                    player.setCurrentThing(Seeds.POWDERMELON_SEEDS);
+                    player.setCurrentThing(Seeds.MIXED_SEED);
                 }
                 return true;
             case Input.Keys.Y:
