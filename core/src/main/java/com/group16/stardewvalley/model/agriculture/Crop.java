@@ -17,7 +17,9 @@ public class Crop {
     private boolean isWatered;
     private boolean isWateredYesterday;
     private boolean isMature;
-    private boolean isColossal;
+    boolean isColossal;
+    boolean isPartOfColossal = false;
+    Pos rootOfColossal = null; // مختصاتی که محصول غول‌پیکر واقعی اونجاست (مثلاً (5, 5))
     private boolean isFertilized;
     private Pos position;
 
@@ -59,6 +61,22 @@ public class Crop {
 
     public void setColossal(boolean colossal) {
         isColossal = colossal;
+    }
+
+    public boolean isPartOfColossal() {
+        return isPartOfColossal;
+    }
+
+    public void setPartOfColossal(boolean partOfColossal) {
+        isPartOfColossal = partOfColossal;
+    }
+
+    public Pos getRootOfColossal() {
+        return rootOfColossal;
+    }
+
+    public void setRootOfColossal(Pos rootOfColossal) {
+        this.rootOfColossal = rootOfColossal;
     }
 
     public boolean isFertilized() {
