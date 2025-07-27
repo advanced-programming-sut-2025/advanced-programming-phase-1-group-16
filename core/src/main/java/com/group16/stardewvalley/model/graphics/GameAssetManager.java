@@ -37,6 +37,7 @@ public class GameAssetManager {
     private final Map<String, TextureRegion> cropRegions = new HashMap<>();
     private final Map<String, Texture> mineralTextures = new HashMap<>();
     private final Map<String, Texture> stoneTextures = new HashMap<>();
+    private final Map<String, Texture> giantCropTextures = new HashMap<>();
 
     private final Texture houseTexture = new Texture("House/House_1.png");
 
@@ -77,6 +78,19 @@ public class GameAssetManager {
             }
         }
         return cropRegions.get(key);
+    }
+
+    public  Texture getGiantCropTexture(Crop crop) {
+        String name = crop.getCropType().getName();
+        if (!giantCropTextures.containsKey(name)) {
+            try {
+                Texture texture = new Texture("Crops/Giant_" + name + ".png");
+                giantCropTextures.put(name, texture);
+            } catch (Exception e) {
+                giantCropTextures.put(name, cropTexture);
+            }
+        }
+        return giantCropTextures.get(name);
     }
 
 
