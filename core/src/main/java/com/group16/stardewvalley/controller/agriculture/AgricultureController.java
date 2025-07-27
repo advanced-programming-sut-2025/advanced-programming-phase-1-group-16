@@ -130,12 +130,9 @@ public class AgricultureController {
                     crop.setFertilized(true);
                 }
                 if (cropType.isCanBecomeGiant() && !targetTile.getType().equals(TileType.GreenHouse)) {
-                    boolean sameTypeAround = isSameTypeAround(targetX, targetY, cropType);
-
-                    if (sameTypeAround) {
-                        crop.setColossal(true);
-                    }
+                    tryMakeGiantCrop(targetX, targetY, cropType);
                 }
+
                 targetTile.setCrop(crop);
                 crop.setPosition(new Pos(targetX, targetY));
                 if (targetTile.getType().equals(TileType.GreenHouse)) {
@@ -149,47 +146,49 @@ public class AgricultureController {
         return new Result(true, seedType.getName() + " is planted successfully");
     }
 
-    private static boolean isSameTypeAround(int x, int y, CropType cropType) {
-        boolean sameTypeAround = true;
+    public void tryMakeGiantCrop(int x, int y, CropType type) {
         Tile[][] map = App.getActiveGame().getMap();
-        // فرض بر این است که Tile مختصات دارد
+        if (!type.isCanBecomeGiant()) return;
 
-        int height = App.getActiveGame().getMapHeight();
-        int width = App.getActiveGame().getMapWidth();
+        // لیست همه‌ی الگوهای ممکن برای یک محصول غول‌پیکر
+        int[][][] patterns = {
+            { {0,0}, {0,1}, {-1,1}, {-1,0} },    // بالا-چپ
+            { {0,0}, {0,-1}, {-1,0}, {-1,-1} },      // بالا-راست
+            { {0,0}, {1,0}, {1,1}, {0,1} },        // پایین-راست
+            { {0,0}, {1,0}, {1,-1}, {0,-1} }       // پایین-چپ
+        };
 
-// بالا
-        if (x > 0) {
-            Crop upCrop = map[x - 1][y].getCrop();
-            if (upCrop == null || !upCrop.getCropType().equals(cropType)) {
-                sameTypeAround = false;
+        for (int[][] pattern : patterns) {
+            boolean valid = true;
+            for (int[] offset : pattern) {
+                int dx = x + offset[0];
+                int dy = y + offset[1];
+                if (!isInBounds(dx, dy, map) || !isSameCrop(map[dy][dx], type)) {
+                    valid = false;
+                    break;
+                }
             }
-        } else sameTypeAround = false;
-
-// پایین
-        if (x < height - 1) {
-            Crop downCrop = map[x + 1][y].getCrop();
-            if (downCrop == null || !downCrop.getCropType().equals(cropType)) {
-                sameTypeAround = false;
+            if (valid) {
+                int gx = x;
+                int gy = y;
+                for (int[] offset : pattern) {
+                    gx = Math.min(gx, x + offset[0]);
+                    gy = Math.min(gy, y + offset[1]);
+                }
+                map[gy][gx].getCrop().setColossal(true);
+                break;
             }
-        } else sameTypeAround = false;
-
-// چپ
-        if (y > 0) {
-            Crop leftCrop = map[x][y - 1].getCrop();
-            if (leftCrop == null || !leftCrop.getCropType().equals(cropType)) {
-                sameTypeAround = false;
-            }
-        } else sameTypeAround = false;
-
-// راست
-        if (y < width - 1) {
-            Crop rightCrop = map[x][y + 1].getCrop();
-            if (rightCrop == null || !rightCrop.getCropType().equals(cropType)) {
-                sameTypeAround = false;
-            }
-        } else sameTypeAround = false;
-        return sameTypeAround;
+        }
     }
+
+    private boolean isInBounds(int x, int y, Tile[][] map) {
+        return x >= 0 && y >= 0 && y < map.length && x < map[0].length;
+    }
+
+    private boolean isSameCrop(Tile tile, CropType type) {
+        return tile.getCrop() != null && tile.getCrop().getCropType() == type;
+    }
+
 
     public SeedType getRandomSeed(Season season) {
         SeedType[] seeds;
