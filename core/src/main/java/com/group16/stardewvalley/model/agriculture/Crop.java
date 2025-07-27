@@ -25,7 +25,7 @@ public class Crop {
         this.cropType = cropType;
         this.sellPrice = cropType.getBaseSellPrice();
         this.energy = cropType.getEnergy();
-        this.finalStage = cropType.getStages().length;
+        this.finalStage = cropType.getStages().length + 1;
 
         // متغیرهای زمان بازی
         this.stage = 1;
@@ -74,6 +74,9 @@ public class Crop {
     }
 
     public void setHarvested(boolean harvested) {
+        if (harvested) {
+            stage = finalStage + 1;
+        }
         isHarvested = harvested;
     }
 
@@ -169,7 +172,7 @@ public class Crop {
         if (!isMature) {
             dayPastFromLastStage++;
             daysSincePlanting++;
-            if (dayPastFromLastStage >= cropType.getStages()[stage]) {
+            if (dayPastFromLastStage >= cropType.getStages()[stage - 1]) {
                 stage++;
                 if (stage == finalStage) {
                     isMature = true;
@@ -180,8 +183,9 @@ public class Crop {
         if (!cropType.isOneTime()) {
             if (isHarvested) {
                 daysSinceLastHarvest++;
-                if (daysSinceLastHarvest > getCropType().getRegrowthTime()) {
+                if (daysSinceLastHarvest >= getCropType().getRegrowthTime()) {
                     isMature = true;
+                    stage = finalStage;
                     isHarvested = false;
                     daysSinceLastHarvest = 0;
                 }

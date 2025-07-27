@@ -32,7 +32,7 @@ public class Tile {
             TreeType treeType = getRandomForagingTree();
             if (treeType != null) {
                 this.tree = new Tree(treeType);
-                this.tree.setStage((random.nextInt() % 5) + 5);
+                this.tree.setStage((random.nextInt() % 5) + 1);
             }
         }
         else if (tileType == TileType.Stone) {
@@ -175,6 +175,8 @@ public class Tile {
                 SeedType.MAPLE_SEEDS,
                 SeedType.PINE_CONES,
                 SeedType.MAHOGANY_SEEDS,
+                SeedType.APPLE_SAPLING,
+                SeedType.MANGO_SAPLING
                 //SeedType.MUSHROOM_TREE_SEEDS
         };
         SeedType seed = seeds[random.nextInt(seeds.length)];

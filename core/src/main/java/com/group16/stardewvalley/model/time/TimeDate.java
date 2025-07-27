@@ -117,18 +117,19 @@ public class TimeDate {
         for (int i = 0; i < App.getActiveGame().getMapHeight(); i++) {
             for (int j = 0; j < App.getActiveGame().getMapWidth(); j++) {
                 Tile tile = App.getActiveGame().getMap()[i][j];
-                if (tile.getCrop() != null && !tile.getCrop().isMature()) {
-                    if (App.getActiveGame().getWeatherCondition() == WeatherCondition.RAINY && tile.getType() != TileType.GreenHouse) {
+                if (tile.getCrop() != null) {
+                    if (App.getActiveGame().getWeatherCondition() == WeatherCondition.RAINY
+                        && tile.getType() != TileType.GreenHouse  && !tile.getCrop().isMature()) {
                         tile.getCrop().setWatered(true);
                     }
                     tile.getCrop().advanceStage();
                     attackOfCrow();
-                    removeUnwateredPlants(tile);
+                    //removeUnwateredPlants(tile);
                 }
 
                 if (tile.getTree() != null && !tile.getTree().isMature()) {
                     tile.getTree().advanceStage();
-                    removeUnwateredTrees(tile);
+                    //removeUnwateredTrees(tile);
                 }
             }
         }
@@ -144,9 +145,12 @@ public class TimeDate {
         } else {
             tile.getTree().setWateredYesterday(false);
         }
-        if (!tile.getTree().isWateredYesterday() && !tile.getTree().isWatered()) {
-            tile.setTree(null);
+        if (!tile.getTree().isMature()) {
+            if (!tile.getTree().isWateredYesterday() && !tile.getTree().isWatered()) {
+                tile.setTree(null);
+            }
         }
+
     }
 
     private static void removeUnwateredPlants(Tile tile) {
@@ -158,7 +162,7 @@ public class TimeDate {
         }
 
 
-        if (!tile.getCrop().isWateredYesterday() && !tile.getCrop().isWatered()) {
+        if (!tile.getCrop().isWateredYesterday() && !tile.getCrop().isWatered() && !tile.getCrop().isMature()) {
             tile.setCrop(null);
         }
     }

@@ -25,6 +25,8 @@ import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.map.TileTextureManager;
 import com.group16.stardewvalley.model.user.Player;
 
+import static com.group16.stardewvalley.controller.menu.HomeMenuController.findIngredient;
+
 public class GameScreen implements Screen, InputProcessor {
     private GameController controller;
     private SpriteBatch batch;
@@ -186,14 +188,6 @@ public class GameScreen implements Screen, InputProcessor {
                 }
             }
         }
-    }
-    private Ingredient findIngredient(String input){
-        for (Ingredient ingredient : Ingredient.values()) {
-            if (ingredient.getName().equals(input)) {
-                return ingredient;
-            }
-        }
-        return null;
     }
 
     @Override
