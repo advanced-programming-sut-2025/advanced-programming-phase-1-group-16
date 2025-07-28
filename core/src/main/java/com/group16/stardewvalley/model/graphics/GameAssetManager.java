@@ -1,15 +1,18 @@
 package com.group16.stardewvalley.model.graphics;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.group16.stardewvalley.controller.agriculture.AgricultureController;
 import com.group16.stardewvalley.model.agriculture.Crop;
 import com.group16.stardewvalley.model.agriculture.Mineral;
 import com.group16.stardewvalley.model.agriculture.Tree;
 import com.group16.stardewvalley.model.agriculture.TreeType;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.food.Food;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.items.Stone;
 
@@ -18,6 +21,8 @@ import java.util.Map;
 
 public class GameAssetManager {
     private static GameAssetManager gameAssetManager;
+
+    private final Skin skin = new Skin(Gdx.files.internal("assets/skin-rainbow/rainbow-ui.json"));
 
     private final String crop = "Foraging/Grape.png";
     private final String tree = "Trees/Pine_Stage_4.png";
@@ -38,6 +43,7 @@ public class GameAssetManager {
     private final Map<String, Texture> mineralTextures = new HashMap<>();
     private final Map<String, Texture> stoneTextures = new HashMap<>();
     private final Map<String, Texture> giantCropTextures = new HashMap<>();
+    private final Map<String, Texture> foodTextures = new HashMap<>();
 
     private final Texture houseTexture = new Texture("House/House_1.png");
 
@@ -61,6 +67,10 @@ public class GameAssetManager {
             gameAssetManager = new GameAssetManager();
         }
         return gameAssetManager;
+    }
+
+    public Skin getSkin() {
+        return skin;
     }
 
     public TextureRegion getCropRegion(Crop crop) {
@@ -207,6 +217,19 @@ public class GameAssetManager {
 
     public Texture getHouseTexture() {
         return houseTexture;
+    }
+
+    public Texture getFoodTexture(Food food) {
+        String name = food.getName().replace(" ", "_");
+        if (!foodTextures.containsKey(name)) {
+            try {
+                Texture texture = new Texture("Recipe/" + name + ".png");
+                foodTextures.put(name, texture);
+            } catch (Exception e) {
+                foodTextures.put(name, itemTexture);
+            }
+        }
+        return foodTextures.get(name);
     }
 
     public void dispose() {

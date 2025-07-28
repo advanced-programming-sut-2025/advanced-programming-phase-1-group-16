@@ -18,6 +18,7 @@ public class Main extends Game {
     private final MapController mapController = new MapController();
     private static Main main;
     private static SpriteBatch batch;
+    private GameScreen gameScreen;
 
     @Override
     public void create() {
@@ -56,7 +57,13 @@ public class Main extends Game {
             player.setPlayerGraphics(characterPaths[index], 48, 64);
             index++;
         }
-        setScreen(new GameScreen());
+        gameScreen = new GameScreen();
+
+        setScreen(gameScreen);
+    }
+
+    public GameScreen getGameScreen() {
+        return gameScreen;
     }
 
     @Override

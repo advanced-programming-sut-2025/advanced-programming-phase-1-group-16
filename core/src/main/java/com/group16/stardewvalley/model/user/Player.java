@@ -6,6 +6,7 @@ import com.group16.stardewvalley.model.Request;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.agriculture.Seeds;
 import com.group16.stardewvalley.model.food.Food;
+import com.group16.stardewvalley.model.food.FoodFactory;
 import com.group16.stardewvalley.model.map.Farm;
 import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.map.Tile;
@@ -103,6 +104,7 @@ public class Player {
         finalHourBuff = 0;
         this.buffer = "";
         this.location = null;
+        learnRecipe(FoodFactory.pizza());
     }
 
     //TODO یادت باشه ست کنی اینو وقتی بازی جدید میسازی

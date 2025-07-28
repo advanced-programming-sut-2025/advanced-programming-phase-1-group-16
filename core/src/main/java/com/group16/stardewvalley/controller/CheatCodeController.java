@@ -1,5 +1,6 @@
 package com.group16.stardewvalley.controller;
 
+import com.group16.stardewvalley.controller.menu.HomeMenuController;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.agriculture.Fertilizer;
 import com.group16.stardewvalley.model.agriculture.FertilizerType;
@@ -103,11 +104,6 @@ public class CheatCodeController {
     }
 
     private Ingredient findIngredient(String input){
-        for (Ingredient ingredient : Ingredient.values()) {
-            if (ingredient.getName().equals(input)) {
-                return ingredient;
-            }
-        }
-        return null;
+        return HomeMenuController.findIngredient(input);
     }
 }

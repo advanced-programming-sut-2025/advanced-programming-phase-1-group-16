@@ -9,12 +9,14 @@ import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.agriculture.Seed;
 import com.group16.stardewvalley.model.agriculture.Seeds;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.map.Direction;
 import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.tools.Hoe;
 import com.group16.stardewvalley.model.tools.Scythe;
 import com.group16.stardewvalley.model.user.Player;
+import com.group16.stardewvalley.view.graphics.CookingMenu;
 
 import static com.group16.stardewvalley.view.graphics.GameScreen.showMiniMap;
 
@@ -22,6 +24,8 @@ public class GameController {
     private final PlayersController playersController;
     private final MapController mapController;
     private final AgricultureController agricultureController;
+    private CookingMenu cookingMenu;
+    private boolean isCookingMenuOpen = false;
 
     public GameController() {
         this.agricultureController = new AgricultureController();
@@ -30,12 +34,14 @@ public class GameController {
     }
 
     public void update(float delta) {
+        if (isCookingMenuOpen) return; // بازی آپدیت نشه
         playersController.update(delta);
     }
 
     public void render() {
         mapController.drawMap(Main.getBatch());
         playersController.render();
+
     }
 
     public boolean handleInput(int keycode) {
@@ -69,7 +75,7 @@ public class GameController {
                 break;
             case Input.Keys.M:
                 showMiniMap = !showMiniMap;
-            case Input.Keys.C:
+            case Input.Keys.V:
                 if (player.getCurrentEquipment() != null) {
                     int targetY = player.getPosition().getY() + player.getCurrentDirection().getyDelta();
                     int targetX = player.getPosition().getX() + player.getCurrentDirection().getxDelta();
@@ -96,6 +102,21 @@ public class GameController {
                     }
                     else targetTile.setItem(player.getCurrentThing());
                     player.setCurrentThing(null);
+                }
+                return true;
+            case Input.Keys.C:
+                if (!isCookingMenuOpen) {
+                    cookingMenu = new CookingMenu(
+                        GameAssetManager.getGameAssetManager().getSkin(),
+                        App.getActiveGame().getCurrentPlayer().getKnownRecipes(),
+                        App.getActiveGame().getCurrentPlayer().getInventory()
+                    );
+                    Main.getMain().getGameScreen().getStage().addActor(cookingMenu);
+                    isCookingMenuOpen = true;
+                } else {
+                    cookingMenu.remove();
+                    cookingMenu = null;
+                    isCookingMenuOpen = false;
                 }
                 return true;
             case Input.Keys.X:

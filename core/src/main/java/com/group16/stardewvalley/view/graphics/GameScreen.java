@@ -10,7 +10,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.controller.GameController;
@@ -38,6 +40,7 @@ public class GameScreen implements Screen, InputProcessor {
     public static boolean showMiniMap = false;
     private OrthographicCamera miniMapCamera;
     private Viewport miniMapViewport;
+    private Stage stage;
 
 
     public static final int TILE_SIZE = 17;
@@ -58,6 +61,8 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void show() {
+        stage = new Stage(new ScreenViewport());
+        Gdx.input.setInputProcessor(stage);
         batch = Main.getBatch();
         textureManager = new TileTextureManager();
         tileRenderer = new TileRenderer();
@@ -85,9 +90,15 @@ public class GameScreen implements Screen, InputProcessor {
         controller.render();
 
         batch.end();
+
+        stage.act(delta);
+        stage.draw();
+
     }
 
-
+    public Stage getStage() {
+        return stage;
+    }
 
     private void setCameraForMiniMap() {
         miniMapCamera.position.set(
