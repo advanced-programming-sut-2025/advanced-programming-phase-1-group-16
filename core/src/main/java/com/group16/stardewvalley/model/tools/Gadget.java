@@ -29,4 +29,8 @@ public abstract class Gadget extends Item {
       this.material = material;
    }
 
+   public String getAssetPath() {
+       return "assets/tools/" + name + "/" + material + "_" + name + ".png";
+   }
+
 }

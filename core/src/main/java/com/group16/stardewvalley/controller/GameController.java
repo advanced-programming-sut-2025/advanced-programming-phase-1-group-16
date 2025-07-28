@@ -4,6 +4,7 @@ package com.group16.stardewvalley.controller;
 import com.badlogic.gdx.Input;
 import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.controller.map.MapController;
+import com.group16.stardewvalley.model.Inventory;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.user.Player;
@@ -67,6 +68,7 @@ public class GameController {
             case Input.Keys.TAB:
                 return true;
             case Input.Keys.T:
+                App.getGameScreen().toggleShowTools();
                 return true;
             case Input.Keys.F4:
                 return true;

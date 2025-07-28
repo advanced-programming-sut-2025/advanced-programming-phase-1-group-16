@@ -1,7 +1,6 @@
 package com.group16.stardewvalley.view.graphics;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -9,17 +8,21 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.controller.GameController;
-import com.group16.stardewvalley.controller.map.MapController;
-import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.graphics.TileRenderer;
-import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.map.TileTextureManager;
+import com.group16.stardewvalley.model.tools.Gadget;
 import com.group16.stardewvalley.model.user.Player;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+
 
 public class GameScreen implements Screen, InputProcessor {
     private GameController controller;
@@ -32,9 +35,12 @@ public class GameScreen implements Screen, InputProcessor {
     public static boolean showMiniMap = false;
     private OrthographicCamera miniMapCamera;
     private Viewport miniMapViewport;
-
-
+    Skin skin = new Skin(Gdx.files.internal("skin.json"));
+    Stage uiStage = new Stage(new ScreenViewport());
+    Table toolTable = new Table(skin);
     public static final int TILE_SIZE = 17;
+    private static boolean showTools;
+    private Stage toolStage;
 
     public GameScreen() {
         this.controller = new GameController();
@@ -47,7 +53,10 @@ public class GameScreen implements Screen, InputProcessor {
 
         miniMapViewport = new FillViewport(mapPixelWidth, mapPixelHeight, miniMapCamera);
         miniMapViewport.apply();
-
+        toolTable.top().left().pad(10);
+        toolTable.setFillParent(true);
+        toolStage = new Stage(new ScreenViewport());
+        toolStage.addActor(toolTable);
     }
 
     @Override
@@ -56,7 +65,13 @@ public class GameScreen implements Screen, InputProcessor {
         textureManager = new TileTextureManager();
         tileRenderer = new TileRenderer();
         Gdx.input.setInputProcessor(this);
+    }
 
+    public void toggleShowTools() {
+        showTools = !showTools;
+        if (showTools) {
+            buildToolTable();
+        }
     }
 
     @Override
@@ -78,8 +93,12 @@ public class GameScreen implements Screen, InputProcessor {
         controller.render();
 
         batch.end();
+        if (showTools) {
+            App.getActiveGame().getCurrentPlayer().getInventory().showTools(toolStage, skin);
+            toolStage.act(delta);
+            toolStage.draw();
+        }
     }
-
 
 
     private void setCameraForMiniMap() {
@@ -123,7 +142,8 @@ public class GameScreen implements Screen, InputProcessor {
     }
 
 
-    @Override public void dispose() {
+    @Override
+    public void dispose() {
         batch.dispose();
         textureManager.dispose();
         for (Player player : App.getActiveGame().getPlayers()) {
@@ -135,9 +155,18 @@ public class GameScreen implements Screen, InputProcessor {
     public void resize(int width, int height) {
         viewport.update(width, height);
     }
-    @Override public void pause() {}
-    @Override public void resume() {}
-    @Override public void hide() {}
+
+    @Override
+    public void pause() {
+    }
+
+    @Override
+    public void resume() {
+    }
+
+    @Override
+    public void hide() {
+    }
 
     @Override
     public boolean keyDown(int keycode) {
@@ -183,4 +212,17 @@ public class GameScreen implements Screen, InputProcessor {
     public boolean scrolled(float v, float v1) {
         return false;
     }
+
+    private void buildToolTable() {
+        toolTable.clear();
+
+        for (Gadget tool : App.getActiveGame().getCurrentPlayer().getInventory().getTools().keySet()) {
+            Texture texture = new Texture(Gdx.files.internal(tool.getAssetPath()));
+            Image image = new Image(texture);
+            toolTable.add(image).pad(10);
+        }
+    }
+
+
 }
+

@@ -1,10 +1,17 @@
 package com.group16.stardewvalley.model;
 
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.agriculture.*;
 import com.group16.stardewvalley.model.agriculture.Seed;
 import com.group16.stardewvalley.model.items.Wood;
+import com.group16.stardewvalley.model.tools.Axe;
 import com.group16.stardewvalley.model.tools.Gadget;
 import com.group16.stardewvalley.model.crafting.CraftingRecipes;
 import com.group16.stardewvalley.model.tools.FishingPole;
@@ -36,6 +43,20 @@ public class Inventory {
         this.craftingRecipes = new ArrayList<>(
                 List.of(CraftingRecipes.CherryBomb, CraftingRecipes.Sprinkler, CraftingRecipes.CharcoalKlin, CraftingRecipes.Furnace,
                         CraftingRecipes.Scarecrow, CraftingRecipes.BeeHouse, CraftingRecipes.MayonnaiseMachine));
+        tools.put(new Axe("axe", 0, "base"), 1);
+    }
+
+    public void showTools(Stage stage, Skin skin) {
+      Table table = new Table();
+      table.top().left().pad(10);
+      table.setFillParent(true);
+      for (Gadget gadget : tools.keySet()) {
+          String assetName = gadget.getName();
+          Image icon = new Image(new Texture(Gdx.files.internal("tools/axe/base_axe.png")));
+          table.add(icon).pad(10);
+      }
+      stage.clear();
+      stage.addActor(table);
     }
 
     public Map<Crop, Integer> getCrops() {

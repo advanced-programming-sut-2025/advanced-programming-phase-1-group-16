@@ -17,28 +17,59 @@ public class CheatCodeController {
     public Result addTool(String tool) {
         switch (tool) {
             case "axe":
-                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new Axe("axe", 0, "base"), 1);
+                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new Axe(
+                    "axe",
+                    0,
+                    "base"),
+                    1);
+                System.out.println("Axe added");
                 break;
             case "fishing pole":
-                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new FishingPole("fishing pole", 25, "training"), 1);
+                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new FishingPole(
+                    "fishing pole",
+                    25,
+                    "training"),
+                    1);
                 break;
             case "hoe":
-                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new Hoe("hoe",0, "base"), 1);
+                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new Hoe(
+                    "hoe",
+                    0,
+                    "base"),
+                    1);
                 break;
             case "milk pail":
-                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new MilkPail("milk pail", 0), 1);
+                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new MilkPail(
+                    "milk pail",
+                    0),
+                    1);
                 break;
             case "scythe":
-                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new Scythe("scythe", 0, "base"), 1);
+                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new Scythe(
+                    "scythe",
+                    0,
+                    "base"),
+                    1);
                 break;
             case "pickaxe":
-                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new Pickaxe("pickaxe", 0, "base"), 1);
+                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new Pickaxe(
+                    "pickaxe",
+                    0,
+                    "base"),
+                    1);
                 break;
             case "shear":
-                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new Shear("shear", 1000), 1);
+                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new Shear(
+                    "shear",
+                    1000),
+                    1);
                 break;
             case "watering can":
-                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new WateringCan("watering can", 0, "base"), 1);
+                App.getActiveGame().getCurrentPlayer().getInventory().addTool(new WateringCan(
+                    "watering can",
+                    0,
+                    "base"),
+                    1);
                 break;
             default:
                 return new Result(false, "Unknown tool");

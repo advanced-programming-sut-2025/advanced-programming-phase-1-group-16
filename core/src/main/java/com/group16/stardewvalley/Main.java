@@ -7,6 +7,7 @@ import com.group16.stardewvalley.controller.map.MapController;
 import com.group16.stardewvalley.controller.menu.GameMenuController;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.graphics.PlayerGraphics;
+import com.group16.stardewvalley.model.tools.Gadget;
 import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.model.user.User;
 import com.group16.stardewvalley.view.graphics.GameScreen;
@@ -21,6 +22,12 @@ public class Main extends Game {
 
     @Override
     public void create() {
+//        for (Gadget gadget : App.getActiveGame().getCurrentPlayer().getInventory().getTools().keySet()) {
+//            System.out.println(gadget.getName());
+//        }
+//        if (App.getActiveGame().getCurrentPlayer().getInventory().getTools().isEmpty()){
+//            System.out.println("em");
+//        }
         main = this;
         batch = new SpriteBatch();
         String[] users = new String[3];
@@ -56,7 +63,9 @@ public class Main extends Game {
             player.setPlayerGraphics(characterPaths[index], 48, 64);
             index++;
         }
-        setScreen(new GameScreen());
+        GameScreen screen = new GameScreen();
+        setScreen(screen);
+        App.setGameScreen(screen);
     }
 
     @Override
