@@ -77,7 +77,7 @@ public class LoginMenuView implements Screen {
         // Load and display logo image
         Texture logoTexture = new Texture(Gdx.files.internal("Background/Login-Menu.png"));
         Image logoImage = new Image(logoTexture);
-        logoImage.setScale(0.5f);
+        logoImage.setScale(1.2f);
 
         //*------------------------------------------*//
         //button functions
@@ -87,7 +87,6 @@ public class LoginMenuView implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 GameAssetManager.getGameAssetManager().getBrightClickSound().play();
 
-                System.out.println(stayLoggedInCheckbox.isChecked());
                 Result result = controller.login(
                     usernameField.getText(),
                     passwordField.getText(),
@@ -139,8 +138,8 @@ public class LoginMenuView implements Screen {
 
         table.setFillParent(true);
         table.center();
-//        table.add(logoImage).padLeft(200).padBottom(100);
-        table.add(titleLabel).colspan(2).padTop(30);
+        table.add(logoImage).padLeft(200).padBottom(100);
+//        table.add(titleLabel).colspan(2).padTop(30);
         table.row().pad(10, 0, 10, 0);
         table.add(new Label("Username"+":", controller.getSkin())).left();
         table.add(usernameField).width(300);

@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.group16.stardewvalley.Main;
@@ -38,7 +39,7 @@ public class MainMenuView implements Screen {
 
         this.gameTitle = new Label("M a i n    M e n u", skin.get("title", Label.LabelStyle.class));
         this.profileButton = new TextButton("Profile", skin);
-        this.preGameButton = new TextButton("Pre Game", skin);
+        this.preGameButton = new TextButton("Game", skin);
         this.logoutButton = new TextButton("Logout", skin);
 
         this.usernameLabel = new Label("Name: " + App.getLoggedInUser().getNickName(), skin);
@@ -67,10 +68,15 @@ public class MainMenuView implements Screen {
         Image background = new Image(bgTexture);
         background.setFillParent(true);
         stage.addActor(background);
-        // Load and display logo image
+// Load and display logo image
         Texture logoTexture = new Texture(Gdx.files.internal("Background/Main-Menu.png"));
+        float screenWidth = Gdx.graphics.getWidth();
+        float logoWidth = screenWidth * 0.3f;
+        float aspect = logoTexture.getHeight() / (float) logoTexture.getWidth();
+        float logoHeight = logoWidth * aspect;
+
         Image logoImage = new Image(logoTexture);
-        logoImage.setScale(0.5f);
+        logoImage.setSize(logoWidth, logoHeight);
 
 
 
@@ -106,6 +112,7 @@ public class MainMenuView implements Screen {
                 );
             }
         });
+
         //*------------------------------------------*//
 
         // === Root Table ===
@@ -117,12 +124,12 @@ public class MainMenuView implements Screen {
 
 
 
-        // === Logo + Title Row ===
+// === Logo + Title Row ===
         Table titleTable = new Table();
         titleTable.center();
 
-//        titleTable.add(logoImage).padBottom(20).row();
-        titleTable.add(gameTitle).padBottom(50).row();
+        titleTable.add(logoImage).center().padBottom(20).row();
+// titleTable.add(gameTitle).padBottom(50).row(); // Uncomment if you want title text
 
         rootTable.add(titleTable).colspan(2).center().padBottom(40).row();
 
@@ -137,8 +144,8 @@ public class MainMenuView implements Screen {
         Table rightColumn = new Table();
         rightColumn.top();
 
-        rightColumn.add(profileButton).width(280).padBottom(15).row();
         rightColumn.add(preGameButton).width(280).padBottom(15).row();
+        rightColumn.add(profileButton).width(280).padBottom(15).row();
         rightColumn.add(logoutButton).width(280);
 
         // === Add Columns to Root Table ===

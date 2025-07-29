@@ -50,11 +50,13 @@ public class ProfileMenuController {
     }
 
     public Result changeNickName(String nickname){
-        if(App.getLoggedInUser().getUsername().equals(nickname)){
+        User user = App.getLoggedInUser();
+
+        if(user.getNickName().equals(nickname)){
             return new Result(false, "enter a new nickname!");
         }
 
-        App.getLoggedInUser().setNickName(nickname);
+        user.setNickName(nickname);
         UserSaveManager.saveUsers();
 
         return new Result(true, "nickname successfully changed!");
@@ -74,7 +76,7 @@ public class ProfileMenuController {
         return new Result(true, "email successfully changed!");
     }
 
-    public Result changePassword(String newPassword, String oldPassword){
+    public Result changePassword(String oldPassword, String newPassword ){
         User user = App.getLoggedInUser();
         if(!user.getPassword().equals(oldPassword)){
             return new Result(false, "enter your old password correctly!");

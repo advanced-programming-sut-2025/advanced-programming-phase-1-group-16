@@ -9,16 +9,15 @@
   "userSecurityQuestion" : "q3",
   "securityAnswer" : "apple",
   "hasActiveGame" : false
-},
-  {
-    "username" : "as",
-    "password" : "as",
-    "nickName" : "as",
-    "email" : "fatemeh@gmail.com",
-    "gender" : "female",
-    "gamePlayed" : 0,
-    "logged_in_flag" : false,
-    "userSecurityQuestion" : "q3",
-    "securityAnswer" : "apple",
-    "hasActiveGame" : false
-  }]
+}, {
+  "username" : "as",
+  "password" : "Ass12345!",
+  "nickName" : "aw",
+  "email" : "ass@as.as",
+  "gender" : "female",
+  "gamePlayed" : 0,
+  "logged_in_flag" : false,
+  "userSecurityQuestion" : "q3",
+  "securityAnswer" : "apple",
+  "hasActiveGame" : false
+} ]
