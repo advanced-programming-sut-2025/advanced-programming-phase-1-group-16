@@ -13,6 +13,7 @@ import com.group16.stardewvalley.model.agriculture.Tree;
 import com.group16.stardewvalley.model.agriculture.TreeType;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.food.Food;
+import com.group16.stardewvalley.model.food.Ingredient;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.items.Stone;
 
@@ -44,6 +45,7 @@ public class GameAssetManager {
     private final Map<String, Texture> stoneTextures = new HashMap<>();
     private final Map<String, Texture> giantCropTextures = new HashMap<>();
     private final Map<String, Texture> foodTextures = new HashMap<>();
+    private final Map<String, Texture> ingredientTextures = new HashMap<>();
 
     private final Texture houseTexture = new Texture("House/House_1.png");
 
@@ -230,6 +232,19 @@ public class GameAssetManager {
             }
         }
         return foodTextures.get(name);
+    }
+
+    public Texture getIngredientTexture(Ingredient ingredient) {
+        String name = ingredient.getName().replace(" ", "_");
+        if (!ingredientTextures.containsKey(name)) {
+            try {
+                Texture texture = new Texture("Ingredient/" + name + ".png");
+                ingredientTextures.put(name, texture);
+            } catch (Exception e) {
+                ingredientTextures.put(name, itemTexture);
+            }
+        }
+        return ingredientTextures.get(name);
     }
 
     public void dispose() {

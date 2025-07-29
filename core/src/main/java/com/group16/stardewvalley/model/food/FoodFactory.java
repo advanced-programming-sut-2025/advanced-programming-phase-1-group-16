@@ -22,7 +22,7 @@ public class FoodFactory {
     }
 
     public static Food pumpkinPie() {
-        return new Food("Pumpkin Pie", 120, Map.of(Ingredient.PUMPKING, 1, Ingredient.WHEAT_FLOUR, 1, Ingredient.MILK, 1, Ingredient.SUGAR, 1), 225, "", "Stardrop Saloon", 385);
+        return new Food("Pumpkin Pie", 120, Map.of(Ingredient.PUMPKIN, 1, Ingredient.WHEAT_FLOUR, 1, Ingredient.MILK, 1, Ingredient.SUGAR, 1), 225, "", "Stardrop Saloon", 385);
     }
 
     public static Food spaghetti() {
@@ -50,7 +50,7 @@ public class FoodFactory {
     }
 
     public static Food hashBrowns() {
-        return new Food("Hash Browns", 230, Map.of(Ingredient.HASH_BROWN, 1), 90, "Farming (5 hours)", "Stardrop Saloon", 120);
+        return new Food("Hash Browns", 230, Map.of(Ingredient.POTATO, 1, Ingredient.OIL, 1), 90, "Farming (5 hours)", "Stardrop Saloon", 120);
     }
 
     public static Food pancakes() {

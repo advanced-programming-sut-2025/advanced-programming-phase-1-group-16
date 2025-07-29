@@ -108,10 +108,10 @@ public class GameController {
                 if (!isCookingMenuOpen) {
                     cookingMenu = new CookingMenu(
                         GameAssetManager.getGameAssetManager().getSkin(),
-                        App.getActiveGame().getCurrentPlayer().getKnownRecipes(),
-                        App.getActiveGame().getCurrentPlayer().getInventory()
+                        App.getActiveGame().getCurrentPlayer().getKnownRecipes()
                     );
                     Main.getMain().getGameScreen().getStage().addActor(cookingMenu);
+                    Main.getMain().getGameScreen().getStage().addActor(cookingMenu.getTooltip());
                     isCookingMenuOpen = true;
                 } else {
                     cookingMenu.remove();
