@@ -57,8 +57,7 @@ public class HomeMenuController {
         return new Result(true, output.toString());
     }
 
-    public Result cooking(String foodName) {
-        Food food = getFoodByName(foodName);
+    public Result cooking(Food food) {
         if (food == null) {
             return new Result(false, "You don't know this food recipe!");
         }

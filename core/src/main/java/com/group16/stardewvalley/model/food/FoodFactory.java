@@ -78,7 +78,7 @@ public class FoodFactory {
     }
 
     public static Food farmersLunch() {
-        return new Food("Farmer's Lunch", 120, Map.of(Ingredient.OMELET, 1, Ingredient.PARSNIP, 1), 200, "Farming (5 hours)", "Farming level 1", 150);
+        return new Food("Farmers Lunch", 120, Map.of(Ingredient.OMELET, 1, Ingredient.PARSNIP, 1), 200, "Farming (5 hours)", "Farming level 1", 150);
     }
 
     public static Food survivalBurger() {
@@ -86,7 +86,7 @@ public class FoodFactory {
     }
 
     public static Food dishOTheSea() {
-        return new Food("Dish O' the Sea", 100, Map.of(Ingredient.SARDINE, 2, Ingredient.HASH_BROWN, 1), 150, "Fishing (5 hours)", "Fishing level 2", 220);
+        return new Food("Dish O The Sea", 100, Map.of(Ingredient.SARDINE, 2, Ingredient.HASH_BROWN, 1), 150, "Fishing (5 hours)", "Fishing level 2", 220);
     }
 
     public static Food seafoamPudding() {
@@ -94,7 +94,7 @@ public class FoodFactory {
     }
 
     public static Food minersTreat() {
-        return new Food("Miner's Treat", 100, Map.of(Ingredient.CARROT, 2, Ingredient.SUGAR, 1, Ingredient.MILK, 1), 125, "Mining (5 hours)", "Mining level 1", 200);
+        return new Food("Miners Treat", 100, Map.of(Ingredient.CARROT, 2, Ingredient.SUGAR, 1, Ingredient.MILK, 1), 125, "Mining (5 hours)", "Mining level 1", 200);
     }
 
     public static List<Food> getAllFoods() {

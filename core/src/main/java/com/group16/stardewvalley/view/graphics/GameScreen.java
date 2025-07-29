@@ -1,9 +1,6 @@
 package com.group16.stardewvalley.view.graphics;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -66,8 +63,10 @@ public class GameScreen implements Screen, InputProcessor {
         batch = Main.getBatch();
         textureManager = new TileTextureManager();
         tileRenderer = new TileRenderer();
-        Gdx.input.setInputProcessor(this);
-
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(stage);       // اول stage
+        multiplexer.addProcessor(this);        // بعدش inputهای خودت
+        Gdx.input.setInputProcessor(multiplexer);
     }
 
     @Override

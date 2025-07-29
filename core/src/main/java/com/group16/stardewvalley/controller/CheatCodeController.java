@@ -71,8 +71,8 @@ public class CheatCodeController {
         if (ingredient == null) {
             return new Result(false, "Ingredient not found");
         }
-//        FoodIngredient foodIngredient = new FoodIngredient(name, ingredient);
-//        App.getActiveGame().getCurrentPlayer().getInventory().addItem(foodIngredient, 1);
+        FoodIngredient foodIngredient = new FoodIngredient(name, 500, ingredient);
+        App.getActiveGame().getCurrentPlayer().getInventory().addItem(foodIngredient, 1);
         return new Result(true, "added ingredient");
     }
 

@@ -104,7 +104,6 @@ public class Player {
         finalHourBuff = 0;
         this.buffer = "";
         this.location = null;
-        learnRecipe(FoodFactory.pizza());
     }
 
     //TODO یادت باشه ست کنی اینو وقتی بازی جدید میسازی

@@ -7,11 +7,14 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.group16.stardewvalley.controller.CheatCodeController;
 import com.group16.stardewvalley.controller.menu.HomeMenuController;
 import com.group16.stardewvalley.model.Inventory;
 import com.group16.stardewvalley.model.Result;
+import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.food.Food;
 import com.group16.stardewvalley.model.food.FoodFactory;
+import com.group16.stardewvalley.model.food.Ingredient;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
 
 import java.util.List;
@@ -19,7 +22,7 @@ import java.util.Set;
 
 public class CookingMenu extends Window {
     private final Skin skin;
-    private final Set<Food> knownRecipes;
+    private Set<Food> knownRecipes;
     private final Inventory inventory;
 
     public CookingMenu(Skin skin, Set<Food> knownRecipes, Inventory inventory) {
@@ -42,19 +45,20 @@ public class CookingMenu extends Window {
         List<Food> allFoods = FoodFactory.getAllFoods();
         int cols = 5;
         int count = 0;
+        knownRecipes = App.getActiveGame().getCurrentPlayer().getKnownRecipes();
 
         for (Food food : allFoods) {
-            boolean isKnown = knownRecipes.contains(food);
+            boolean isKnown = knowRecipe(food);
             Texture texture = GameAssetManager.getGameAssetManager().getFoodTexture(food);
             Image img = new Image(texture);
-
-            if (!isKnown) {
-                img.setColor(0.3f, 0.3f, 0.3f, 0.7f);
-            }
 
             ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
             style.imageUp = img.getDrawable();
             ImageButton btn = new ImageButton(style);
+
+            if (!isKnown) {
+                btn.getImage().setColor(0.3f, 0.3f, 0.3f, 0.7f);
+            }
 
             btn.addListener(new ClickListener() {
                 @Override
@@ -62,7 +66,7 @@ public class CookingMenu extends Window {
                     if (!isKnown) return;
 
                     HomeMenuController controller = new HomeMenuController();
-                    Result result = controller.cooking(food.getName());
+                    Result result = controller.cooking(food);
                     if (result.isSuccessful()) {
                         System.out.println("✅ Cooked: " + food.getName());
                     } else {
@@ -78,6 +82,15 @@ public class CookingMenu extends Window {
 
         ScrollPane scroll = new ScrollPane(grid, skin);
         add(scroll).expand().fill();
+    }
+
+    private boolean knowRecipe(Food food) {
+        for (Food f : knownRecipes) {
+            if (f.getName().equals(food.getName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 
