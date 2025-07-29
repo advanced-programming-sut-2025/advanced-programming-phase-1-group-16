@@ -1,14 +1,23 @@
 package com.group16.stardewvalley.controller;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.Align;
 import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.controller.agriculture.AgricultureController;
 import com.group16.stardewvalley.controller.map.MapController;
+import com.group16.stardewvalley.controller.menu.HomeMenuController;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.agriculture.Seed;
 import com.group16.stardewvalley.model.agriculture.Seeds;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.food.Food;
+import com.group16.stardewvalley.model.food.FoodFactory;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.map.Direction;
@@ -24,6 +33,7 @@ public class GameController {
     private final PlayersController playersController;
     private final MapController mapController;
     private final AgricultureController agricultureController;
+    private final HomeMenuController homeMenuController;
     private CookingMenu cookingMenu;
     private boolean isCookingMenuOpen = false;
 
@@ -31,6 +41,7 @@ public class GameController {
         this.agricultureController = new AgricultureController();
         this.playersController = new PlayersController();
         this.mapController = new MapController();
+        this.homeMenuController = new HomeMenuController();
     }
 
     public void update(float delta) {
@@ -140,6 +151,11 @@ public class GameController {
                 App.getActiveGame().getTimeDate().advanceDateCheat(1);
                 return true;
             case Input.Keys.T:
+                Result result = homeMenuController.eat(FoodFactory.tripleShotEspresso().getName());
+                if (result.isSuccessful()) {
+                    Food food = FoodFactory.tripleShotEspresso();
+                    showEatEffect(food.getName(), food.getBuff(), food.getEnergy());
+                }
                 return true;
             case Input.Keys.F4:
                 return true;
@@ -159,4 +175,31 @@ public class GameController {
         }
         return false;
     }
+
+    public void showEatEffect(String foodName, String buff, int energy) {
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle.font = new BitmapFont();
+        labelStyle.fontColor = Color.YELLOW;
+
+        String message = " Ate " + foodName + "\n+" + energy + " Energy";
+
+        if (!buff.isEmpty()) {
+            message += "\n" + buff + " Buff Activated!";
+        }
+
+        final Label label = new Label(message, labelStyle);
+        label.setFontScale(1.2f);
+        label.setPosition(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
+        label.setAlignment(Align.center);
+        label.addAction(Actions.sequence(
+            Actions.parallel(
+                Actions.moveBy(0, 100, 2f),
+                Actions.fadeOut(2f)
+            ),
+            Actions.removeActor()
+        ));
+
+        Main.getMain().getGameScreen().getStage().addActor(label);
+    }
+
 }
