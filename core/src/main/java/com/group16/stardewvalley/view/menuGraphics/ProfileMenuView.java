@@ -294,7 +294,7 @@ public class ProfileMenuView implements Screen {
             });
 
             dialog.getContentTable().add(input).width(500).padBottom(10).row();
-            dialog.getContentTable().add(feedback).width(500).height(80).padBottom(20).row();
+            dialog.getContentTable().add(feedback).width(500).height(80).padBottom(20).padLeft(50).row();
             dialog.getButtonTable().add(submit).width(250).pad(5);
             dialog.getButtonTable().add(cancel).width(250).pad(5);
 

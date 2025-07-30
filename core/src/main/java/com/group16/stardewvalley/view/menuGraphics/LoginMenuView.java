@@ -161,7 +161,7 @@ public class LoginMenuView implements Screen {
         table.add(messageLabel).colspan(2);
 
         table.row().pad(0, 0, 0, 600);
-        table.add(backButton).width(200);
+        table.add(backButton).width(250);
 
 
         stage.addActor(table);

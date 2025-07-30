@@ -10,6 +10,7 @@ import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.user.User;
 import com.group16.stardewvalley.model.map.FarmType;
+import com.group16.stardewvalley.view.menuGraphics.PreGameMenuView;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -19,6 +20,15 @@ import static com.group16.stardewvalley.model.user.User.getUserByUsername;
 
 
 public class GameMenuController {
+    private PreGameMenuView view;
+
+
+    public void setView(PreGameMenuView view) {
+        this.view = view;
+    }
+
+
+
 
     public Result newGame(String input){
         if(input == null || input.isEmpty()){

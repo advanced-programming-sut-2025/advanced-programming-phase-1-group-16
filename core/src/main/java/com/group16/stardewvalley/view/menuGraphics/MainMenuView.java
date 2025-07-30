@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.group16.stardewvalley.Main;
+import com.group16.stardewvalley.controller.menu.GameMenuController;
 import com.group16.stardewvalley.controller.menu.MainMenuController;
 import com.group16.stardewvalley.controller.menu.ProfileMenuController;
 import com.group16.stardewvalley.controller.menu.StartMenuController;
@@ -95,7 +96,7 @@ public class MainMenuView implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 GameAssetManager.getGameAssetManager().getBrightClickSound().play();
                 Main.getMain().getScreen().dispose();
-//            Main.getMain().setScreen(new PreGameMenuView(new PreGameMenuController(), GameAssetManager.getGameAssetManager().getSkin()));
+                Main.getMain().setScreen(new PreGameMenuView(new GameMenuController(), GameAssetManager.getGameAssetManager().getSkin()));
             }
         });
 
