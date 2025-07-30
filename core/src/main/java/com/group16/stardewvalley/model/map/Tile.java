@@ -20,29 +20,31 @@ public class Tile {
     private FertilizerType fertilizerType;
     private boolean hasWater;
     private boolean isBurned;
+    private boolean isPlowed;
 
     public Tile(TileType tileType) {
         location = Location.Game;
         isBurned = false;
+        isPlowed = false;
         isFertilized = false;
         if (tileType == TileType.Tree) {
             this.type = TileType.Ground;
             TreeType treeType = getRandomForagingTree();
             if (treeType != null) {
                 this.tree = new Tree(treeType);
-                this.tree.setStage((random.nextInt() % 5) + 5);
+                this.tree.setStage((random.nextInt() % 5) + 1);
             }
         }
         else if (tileType == TileType.Stone) {
             this.type = TileType.Quarry;
-            this.item = new Stone("stone", 20);
+            this.item = new Stone("Farm_Boulder.png", 20);
         }
         else if (tileType == TileType.Forage) {
             this.type = TileType.Ground;
             CropType cropType;
             if (random.nextBoolean()) {
                 cropType = getRandomForagingCrop();
-                this.item = new ForagingCrop(cropType.getName(), 50,cropType);
+                this.item = new ForagingCrop(cropType.getName(), 50, cropType);
             }
             else {
                 cropType = getRandomForagingSeed();
@@ -50,6 +52,11 @@ public class Tile {
                     this.crop = new Crop(cropType);
                 }
             }
+        }
+        else if (tileType.equals(TileType.Rock)) {
+            this.type = TileType.Ground;
+            String[] stones = {"343", "450", "Farm_Boulder.png"};
+            this.item = new Stone(stones[random.nextInt(3)], 20);
         }
         else if (tileType == TileType.MineralForage) {
             this.type = TileType.Quarry;
@@ -70,7 +77,7 @@ public class Tile {
     }
 
     public boolean isHasWater() {
-        return hasWater || type == TileType.Lake;
+        return hasWater;
     }
 
     public void setHasWater(boolean hasWater) {
@@ -168,6 +175,8 @@ public class Tile {
                 SeedType.MAPLE_SEEDS,
                 SeedType.PINE_CONES,
                 SeedType.MAHOGANY_SEEDS,
+                SeedType.APPLE_SAPLING,
+                SeedType.MANGO_SAPLING
                 //SeedType.MUSHROOM_TREE_SEEDS
         };
         SeedType seed = seeds[random.nextInt(seeds.length)];
@@ -236,5 +245,13 @@ public class Tile {
 
     public void setType(TileType type) {
         this.type = type;
+    }
+
+    public boolean isPlowed() {
+        return isPlowed;
+    }
+
+    public void setPlowed(boolean plowed) {
+        isPlowed = plowed;
     }
 }

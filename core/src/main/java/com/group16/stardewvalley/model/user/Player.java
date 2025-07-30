@@ -4,6 +4,7 @@ import com.group16.stardewvalley.model.Inventory;
 import com.group16.stardewvalley.model.NPC.NPCInteraction;
 import com.group16.stardewvalley.model.Request;
 import com.group16.stardewvalley.model.Result;
+import com.group16.stardewvalley.model.agriculture.Seeds;
 import com.group16.stardewvalley.model.food.Food;
 import com.group16.stardewvalley.model.graphics.Heros;
 import com.group16.stardewvalley.model.map.Farm;
@@ -26,7 +27,7 @@ import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.tools.Gadget;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.map.*;
-
+import com.group16.stardewvalley.model.tools.WateringCan;
 
 
 public class Player {
@@ -452,6 +453,13 @@ public class Player {
         return currentEquipment;
     }
 
+    public Item getCurrentThing() {
+        return currentThing;
+    }
+
+    public void setCurrentThing(Item currentThing) {
+        this.currentThing = currentThing;
+    }
 
     public void decreaseEnergy(double amount) {
         energy = Math.max(0, energy - amount);

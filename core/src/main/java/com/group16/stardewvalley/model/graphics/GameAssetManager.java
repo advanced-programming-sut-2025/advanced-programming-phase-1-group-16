@@ -15,6 +15,7 @@ import com.group16.stardewvalley.model.agriculture.Tree;
 import com.group16.stardewvalley.model.agriculture.TreeType;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.items.Item;
+import com.group16.stardewvalley.model.items.Stone;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,7 +49,7 @@ public class GameAssetManager {
     private final String item = "Crafting/Stone.png";
     private final String burn = "Flooring/Flooring_33.png";
     private final String water = "Flooring/Flooring_47.png";
-    private final String fertalize = "Decor/Stepping_Stone_Path.png";
+    private final String fertalize = "Fertilizer/Stardew-texture_Basic-Fertilizer.png";
 
     private Texture cropTexture = new Texture(crop);
     private Texture treeTexture = new Texture(tree);
@@ -60,6 +61,8 @@ public class GameAssetManager {
     private final Map<String, TextureRegion> treeRegions = new HashMap<>();
     private final Map<String, TextureRegion> cropRegions = new HashMap<>();
     private final Map<String, Texture> mineralTextures = new HashMap<>();
+    private final Map<String, Texture> stoneTextures = new HashMap<>();
+    private final Map<String, Texture> giantCropTextures = new HashMap<>();
 
     private final Texture houseTexture = new Texture("House/House_1.png");
 
@@ -81,12 +84,26 @@ public class GameAssetManager {
         return cropRegions.get(key);
     }
 
+    public  Texture getGiantCropTexture(Crop crop) {
+        String name = crop.getCropType().getName();
+        if (!giantCropTextures.containsKey(name)) {
+            try {
+                Texture texture = new Texture("Crops/Giant_" + name + ".png");
+                giantCropTextures.put(name, texture);
+            } catch (Exception e) {
+                giantCropTextures.put(name, cropTexture);
+            }
+        }
+        return giantCropTextures.get(name);
+    }
+
 
     public TextureRegion getTreeRegion(Tree tree) {
         String name = tree.getTreeType().getName().replace(" ", "_");
         int stage = tree.getStage();
         String season = App.getActiveGame().getTimeDate().getSeason().getName().toLowerCase();
-        String key = name + "_stage_" + stage + "_season_" + season;
+        String fruitState = tree.HasFruit() ? "Fruit" : "";
+        String key = name + "_stage_" + stage + "_season_" + season + fruitState;
 
         if (!treeRegions.containsKey(key)) {
             try {
@@ -95,7 +112,16 @@ public class GameAssetManager {
                     TextureRegion region = new TextureRegion(texture);
                     treeRegions.put(key, region);
                 } else {
-                    if (AgricultureController.isTreeNotSeasonal(tree.getTreeType())) {
+                    if (tree.HasFruit()) {
+                        try {
+                            Texture texture = new Texture("Trees/" + name + "_Stage_5_Fruit.png");
+                            treeRegions.put(key, new TextureRegion(texture));
+                        } catch (Exception e) {
+                            TextureRegion region = getTextureRegion(name, season);
+                            treeRegions.put(key, region);
+                        }
+                    }
+                    else if (AgricultureController.isTreeNotSeasonal(tree.getTreeType())) {
                         Texture texture = new Texture("Trees/" + name + "_Stage_5.png");
                         treeRegions.put(key, new TextureRegion(texture));
                     } else {
@@ -135,9 +161,6 @@ public class GameAssetManager {
         );
     }
 
-    public Texture getItemTexture() {
-        return itemTexture;
-    }
 
     public Texture getItemTexture(Item item) {
         if (item instanceof Mineral mineral) {
@@ -151,6 +174,24 @@ public class GameAssetManager {
                 }
             }
             return mineralTextures.get(name);
+        }
+        else if (item instanceof Stone stone) {
+            String name = stone.getName();
+            if (name.equals("Farm_Boulder.png")) {
+                if (!stoneTextures.containsKey(name)) {
+                    stoneTextures.put(name, new Texture("Rock/Farm_Boulder.png"));
+                }
+                return stoneTextures.get(name);
+            }
+            if (!stoneTextures.containsKey(name)) {
+                try {
+                    Texture texture = new Texture("Rock/Stone_Index" + name + ".png");
+                    stoneTextures.put(name, texture);
+                } catch (Exception e) {
+                    stoneTextures.put(name, itemTexture);
+                }
+            }
+            return stoneTextures.get(name);
         }
         return itemTexture;
     }

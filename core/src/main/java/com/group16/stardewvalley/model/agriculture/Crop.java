@@ -17,7 +17,9 @@ public class Crop {
     private boolean isWatered;
     private boolean isWateredYesterday;
     private boolean isMature;
-    private boolean isColossal;
+    boolean isColossal;
+    boolean isPartOfColossal = false;
+    Pos rootOfColossal = null; // مختصاتی که محصول غول‌پیکر واقعی اونجاست (مثلاً (5, 5))
     private boolean isFertilized;
     private Pos position;
 
@@ -25,7 +27,7 @@ public class Crop {
         this.cropType = cropType;
         this.sellPrice = cropType.getBaseSellPrice();
         this.energy = cropType.getEnergy();
-        this.finalStage = cropType.getStages().length;
+        this.finalStage = cropType.getStages().length + 1;
 
         // متغیرهای زمان بازی
         this.stage = 1;
@@ -61,6 +63,22 @@ public class Crop {
         isColossal = colossal;
     }
 
+    public boolean isPartOfColossal() {
+        return isPartOfColossal;
+    }
+
+    public void setPartOfColossal(boolean partOfColossal) {
+        isPartOfColossal = partOfColossal;
+    }
+
+    public Pos getRootOfColossal() {
+        return rootOfColossal;
+    }
+
+    public void setRootOfColossal(Pos rootOfColossal) {
+        this.rootOfColossal = rootOfColossal;
+    }
+
     public boolean isFertilized() {
         return isFertilized;
     }
@@ -74,6 +92,9 @@ public class Crop {
     }
 
     public void setHarvested(boolean harvested) {
+        if (harvested) {
+            stage = finalStage + 1;
+        }
         isHarvested = harvested;
     }
 
@@ -169,7 +190,7 @@ public class Crop {
         if (!isMature) {
             dayPastFromLastStage++;
             daysSincePlanting++;
-            if (dayPastFromLastStage >= cropType.getStages()[stage]) {
+            if (dayPastFromLastStage >= cropType.getStages()[stage - 1]) {
                 stage++;
                 if (stage == finalStage) {
                     isMature = true;
@@ -180,8 +201,9 @@ public class Crop {
         if (!cropType.isOneTime()) {
             if (isHarvested) {
                 daysSinceLastHarvest++;
-                if (daysSinceLastHarvest > getCropType().getRegrowthTime()) {
+                if (daysSinceLastHarvest >= getCropType().getRegrowthTime()) {
                     isMature = true;
+                    stage = finalStage;
                     isHarvested = false;
                     daysSinceLastHarvest = 0;
                 }

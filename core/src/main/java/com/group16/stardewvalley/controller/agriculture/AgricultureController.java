@@ -81,30 +81,18 @@ public class AgricultureController {
         return new Result(true, result.toString());
     }
 
-    public Result planting(String seedName, String direction) {
+    public Result planting(Seed seed, int targetX, int targetY) {
+        String seedName = seed.getName();
         SeedType seedType = findSeedTypeByName(seedName);
         if (seedType == null) {
             return new Result(false, "Seed not found");
         }
-        Pos offset = getDirectionOffset(direction);
-        if (offset == null) {
-            return new Result(false, "Invalid direction");
-        }
-        int dirX = offset.getX();
-        int dirY = offset.getY();
-        Pos playerPos = App.getActiveGame().getCurrentPlayer().getPosition();
-        if (playerPos.getX() + dirX < 0 || playerPos.getY() + dirY < 0 || playerPos.getX() + dirX > App.getActiveGame().getMapWidth() || playerPos.getY() + dirY > App.getActiveGame().getMapHeight()) {
-            return new Result(false, "Invalid direction");
-        }
-        int x = playerPos.getX() + dirX;
-        int y = playerPos.getY() + dirY;
-        Tile targetTile = App.getActiveGame().getMap()[y][x];
-        if (!targetTile.getType().equals(TileType.Plowed)) {
+        Tile targetTile = App.getActiveGame().getMap()[targetY][targetX];
+        if (!targetTile.isPlowed()) {
             return new Result(false, "Shokhm nazadi dadash!");
         }
-        if (!App.getActiveGame().getCurrentPlayer().getInventory().isSeedInInventory(seedType)) {
-            return new Result(false, "You dont have this seed!");
-        }
+
+
         if (seedType.equals(SeedType.MIXED_SEED)){
             seedType = getRandomSeed(App.getActiveGame().getTimeDate().getCurrentSeason());
         }
@@ -130,8 +118,7 @@ public class AgricultureController {
                     App.getActiveGame().getCurrentPlayer().getFarm().getGreenhouse().addGreenHouseTree(tree);
                 } else App.getActiveGame().getCurrentPlayer().getFarm().addPlantedTree(tree);
                 App.getActiveGame().getCurrentPlayer().getFarm().addPlantedTree(tree);
-//                Seed seed3 = App.getActiveGame().getCurrentPlayer().getInventory().findSeedByType(seedType);
-//                App.getActiveGame().getCurrentPlayer().getInventory().getItems().put(seed3, -1);
+                App.getActiveGame().getCurrentPlayer().getInventory().getItems().put(seed, -1);
                 break;
             case "CROP":
                 CropType cropType = findCropTypeBySeed(seedType);
@@ -143,67 +130,65 @@ public class AgricultureController {
                     crop.setFertilized(true);
                 }
                 if (cropType.isCanBecomeGiant() && !targetTile.getType().equals(TileType.GreenHouse)) {
-                    boolean sameTypeAround = isSameTypeAround(x, y, cropType);
-
-                    if (sameTypeAround) {
-                        crop.setColossal(true);
-                    }
+                    tryMakeGiantCrop(targetX, targetY, cropType);
                 }
+
                 targetTile.setCrop(crop);
-                crop.setPosition(new Pos(x, y));
+                crop.setPosition(new Pos(targetX, targetY));
                 if (targetTile.getType().equals(TileType.GreenHouse)) {
                     App.getActiveGame().getCurrentPlayer().getFarm().getGreenhouse().addGreenHouseCrop(crop);
                 } else App.getActiveGame().getCurrentPlayer().getFarm().addPlantedCrop(crop);
-//                Seed seed4 = App.getActiveGame().getCurrentPlayer().getInventory().findSeedByType(seedType);
-//                App.getActiveGame().getCurrentPlayer().getInventory().getItems().put(seed4, -1);
+                App.getActiveGame().getCurrentPlayer().getInventory().getItems().put(seed, -1);
                 break;
             default:
                 return new Result(false, "Invalid seed");
         }
-        return new Result(true, seedName + " is planted successfully");
+        return new Result(true, seedType.getName() + " is planted successfully");
     }
 
-    private static boolean isSameTypeAround(int x, int y, CropType cropType) {
-        boolean sameTypeAround = true;
+    public void tryMakeGiantCrop(int x, int y, CropType type) {
         Tile[][] map = App.getActiveGame().getMap();
-        // فرض بر این است که Tile مختصات دارد
+        if (!type.isCanBecomeGiant()) return;
 
-        int height = App.getActiveGame().getMapHeight();
-        int width = App.getActiveGame().getMapWidth();
+        // لیست همه‌ی الگوهای ممکن برای یک محصول غول‌پیکر
+        int[][][] patterns = {
+            { {0,0}, {0,1}, {-1,1}, {-1,0} },    // بالا-چپ
+            { {0,0}, {0,-1}, {-1,0}, {-1,-1} },      // بالا-راست
+            { {0,0}, {1,0}, {1,1}, {0,1} },        // پایین-راست
+            { {0,0}, {1,0}, {1,-1}, {0,-1} }       // پایین-چپ
+        };
 
-// بالا
-        if (x > 0) {
-            Crop upCrop = map[x - 1][y].getCrop();
-            if (upCrop == null || !upCrop.getCropType().equals(cropType)) {
-                sameTypeAround = false;
+        for (int[][] pattern : patterns) {
+            boolean valid = true;
+            for (int[] offset : pattern) {
+                int dx = x + offset[0];
+                int dy = y + offset[1];
+                if (!isInBounds(dx, dy, map) || !isSameCrop(map[dy][dx], type)) {
+                    valid = false;
+                    break;
+                }
             }
-        } else sameTypeAround = false;
-
-// پایین
-        if (x < height - 1) {
-            Crop downCrop = map[x + 1][y].getCrop();
-            if (downCrop == null || !downCrop.getCropType().equals(cropType)) {
-                sameTypeAround = false;
+            if (valid) {
+                int gx = x;
+                int gy = y;
+                for (int[] offset : pattern) {
+                    gx = Math.min(gx, x + offset[0]);
+                    gy = Math.min(gy, y + offset[1]);
+                }
+                map[gy][gx].getCrop().setColossal(true);
+                break;
             }
-        } else sameTypeAround = false;
-
-// چپ
-        if (y > 0) {
-            Crop leftCrop = map[x][y - 1].getCrop();
-            if (leftCrop == null || !leftCrop.getCropType().equals(cropType)) {
-                sameTypeAround = false;
-            }
-        } else sameTypeAround = false;
-
-// راست
-        if (y < width - 1) {
-            Crop rightCrop = map[x][y + 1].getCrop();
-            if (rightCrop == null || !rightCrop.getCropType().equals(cropType)) {
-                sameTypeAround = false;
-            }
-        } else sameTypeAround = false;
-        return sameTypeAround;
+        }
     }
+
+    private boolean isInBounds(int x, int y, Tile[][] map) {
+        return x >= 0 && y >= 0 && y < map.length && x < map[0].length;
+    }
+
+    private boolean isSameCrop(Tile tile, CropType type) {
+        return tile.getCrop() != null && tile.getCrop().getCropType() == type;
+    }
+
 
     public SeedType getRandomSeed(Season season) {
         SeedType[] seeds;

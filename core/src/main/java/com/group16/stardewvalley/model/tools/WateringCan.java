@@ -3,6 +3,7 @@ package com.group16.stardewvalley.model.tools;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.Game;
 import com.group16.stardewvalley.model.map.Tile;
+import com.group16.stardewvalley.model.map.TileType;
 import com.group16.stardewvalley.model.user.Player;
 
 public class WateringCan extends Gadget{
@@ -74,7 +75,7 @@ public class WateringCan extends Gadget{
         }
 
         // پر کردن ظرف ابیاری
-        if (targetTile.isHasWater()) {
+        if (targetTile.getType().equals(TileType.Lake)) {
             player.decreaseEnergy(requiredEnergy);
             this.usedWaterCapacity = 0;
             return new Result(true, "Ready to water! Your can is now full of water =)");

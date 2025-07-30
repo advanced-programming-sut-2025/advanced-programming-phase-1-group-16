@@ -167,7 +167,7 @@ public class HomeMenuController {
     }
 
 
-    private Ingredient findIngredient(String input){
+    public static Ingredient findIngredient(String input){
         for (Ingredient ingredient : Ingredient.values()) {
             if (ingredient.getName().equals(input)) {
                 return ingredient;
