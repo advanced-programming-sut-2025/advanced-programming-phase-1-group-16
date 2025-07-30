@@ -4,6 +4,7 @@ package com.group16.stardewvalley.controller;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -16,6 +17,7 @@ import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.agriculture.Seed;
 import com.group16.stardewvalley.model.agriculture.Seeds;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.food.BuffType;
 import com.group16.stardewvalley.model.food.Food;
 import com.group16.stardewvalley.model.food.FoodFactory;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
@@ -53,6 +55,24 @@ public class GameController {
         mapController.drawMap(Main.getBatch());
         playersController.render();
 
+        drawPlayerBuff();
+
+    }
+
+    private void drawPlayerBuff() {
+        Player player = App.getActiveGame().getCurrentPlayer();
+        BuffType buff = player.getBuffer();
+
+        if (buff != BuffType.NONE) {
+            Texture buffTexture = GameAssetManager.getGameAssetManager().getTexture(buff.getTexturePath());
+
+            // موقعیت نمایش: وسط بالای صفحه
+            float x = 20;
+            float y = Gdx.graphics.getHeight() - 84;  // از بالا 64 پیکسل پایین‌تر، با فاصله
+
+
+            Main.getBatch().draw(buffTexture, x, y, 64, 64);
+        }
     }
 
     public boolean handleInput(int keycode) {
@@ -154,7 +174,7 @@ public class GameController {
                 Result result = homeMenuController.eat(FoodFactory.tripleShotEspresso().getName());
                 if (result.isSuccessful()) {
                     Food food = FoodFactory.tripleShotEspresso();
-                    showEatEffect(food.getName(), food.getBuff(), food.getEnergy());
+                    showEatEffect(food.getName(), food.getBuff().getDescription(), food.getEnergy());
                 }
                 return true;
             case Input.Keys.F4:

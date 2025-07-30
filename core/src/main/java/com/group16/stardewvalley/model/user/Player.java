@@ -5,6 +5,7 @@ import com.group16.stardewvalley.model.NPC.NPCInteraction;
 import com.group16.stardewvalley.model.Request;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.agriculture.Seeds;
+import com.group16.stardewvalley.model.food.BuffType;
 import com.group16.stardewvalley.model.food.Food;
 import com.group16.stardewvalley.model.food.FoodFactory;
 import com.group16.stardewvalley.model.map.Farm;
@@ -62,7 +63,7 @@ public class Player {
     private Player spouse;
     private final int[] relationshipRanks = {100, 200, 300, 400};
     private final int[] NPCRelationshipRanks = {200, 400, 600, 800};
-    private String buffer;
+    private BuffType buffer;
     private boolean isBuffActive;
     private int hourPastForBuff;
     private int finalHourBuff;
@@ -102,8 +103,9 @@ public class Player {
         this.isBuffActive = false;
         hourPastForBuff = 0;
         finalHourBuff = 0;
-        this.buffer = "";
+        this.buffer = BuffType.NONE;
         this.location = null;
+        learnRecipe(FoodFactory.tripleShotEspresso());
     }
 
     //TODO یادت باشه ست کنی اینو وقتی بازی جدید میسازی
@@ -197,11 +199,11 @@ public class Player {
         isBuffActive = buffActive;
     }
 
-    public String getBuffer() {
+    public BuffType getBuffer() {
         return buffer;
     }
 
-    public void setBuffer(String buffer) {
+    public void setBuffer(BuffType buffer) {
         this.buffer = buffer;
     }
 
@@ -540,6 +542,7 @@ public class Player {
     public void faint(){
         this.isFainted = true;
         this.energy = 0;
+        App.getActiveGame().nextTurn();
     }
 
     public String getUsername() {

@@ -19,6 +19,8 @@ import com.group16.stardewvalley.model.agriculture.Tree;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.food.FoodIngredient;
 import com.group16.stardewvalley.model.food.Ingredient;
+import com.group16.stardewvalley.model.graphics.GameAssetManager;
+import com.group16.stardewvalley.model.graphics.GameHUD;
 import com.group16.stardewvalley.model.graphics.TileRenderer;
 import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.map.TileTextureManager;
@@ -38,6 +40,7 @@ public class GameScreen implements Screen, InputProcessor {
     private OrthographicCamera miniMapCamera;
     private Viewport miniMapViewport;
     private Stage stage;
+    private GameHUD gameHUD;
 
 
     public static final int TILE_SIZE = 17;
@@ -64,14 +67,18 @@ public class GameScreen implements Screen, InputProcessor {
         textureManager = new TileTextureManager();
         tileRenderer = new TileRenderer();
         InputMultiplexer multiplexer = new InputMultiplexer();
-        multiplexer.addProcessor(stage);       // اول stage
-        multiplexer.addProcessor(this);        // بعدش inputهای خودت
+        multiplexer.addProcessor(stage);
+        multiplexer.addProcessor(this);
         Gdx.input.setInputProcessor(multiplexer);
+
+        gameHUD = new GameHUD(stage, GameAssetManager.getGameAssetManager().getSkin());
+
     }
 
     @Override
     public void render(float delta) {
         controller.update(delta);
+        gameHUD.updateHUD();
         handleTurn();
 
 

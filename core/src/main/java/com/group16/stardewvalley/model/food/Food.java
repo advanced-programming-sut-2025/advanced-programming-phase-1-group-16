@@ -8,12 +8,12 @@ public class Food extends Item {
     private final String name;
     private final Map<Ingredient, Integer> ingredients;
     private final int energy;
-    private final String buff;
+    private final BuffType buff;
     private final String source;
     private final int sellPrice;
     private int purchasePrice;
 
-    public Food(String name,int purchasePrice,  Map<Ingredient, Integer> ingredients, int energy, String buff, String source, int sellPrice) {
+    public Food(String name,int purchasePrice,  Map<Ingredient, Integer> ingredients, int energy, BuffType buff, String source, int sellPrice) {
         super(name, purchasePrice);
         this.name = name;
         this.ingredients = ingredients;
@@ -61,7 +61,7 @@ public class Food extends Item {
         return sellPrice;
     }
 
-    public String getBuff() {
+    public BuffType getBuff() {
         return buff;
     }
 

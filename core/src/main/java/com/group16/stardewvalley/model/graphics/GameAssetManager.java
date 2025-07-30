@@ -247,6 +247,10 @@ public class GameAssetManager {
         return ingredientTextures.get(name);
     }
 
+    public Texture getTexture(String path) {
+        return new Texture(path);
+    }
+
     public void dispose() {
 
     }

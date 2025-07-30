@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.group16.stardewvalley.Main;
+import com.group16.stardewvalley.controller.CheatCodeController;
 import com.group16.stardewvalley.controller.menu.HomeMenuController;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
@@ -73,8 +74,11 @@ public class CookingMenu extends Window {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     if (!isKnown) return;
-
                     HomeMenuController controller = new HomeMenuController();
+                    CheatCodeController controller2 = new CheatCodeController();
+                    for (Ingredient ingredient : food.getIngredients().keySet()) {
+                        controller2.addIngredient(ingredient.getName());
+                    }
                     Result result = controller.cooking(food);
                     if (result.isSuccessful()) {
                         System.out.println("✅ Cooked: " + food.getName());

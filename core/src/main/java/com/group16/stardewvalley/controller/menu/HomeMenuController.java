@@ -2,6 +2,7 @@ package com.group16.stardewvalley.controller.menu;
 
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.food.BuffType;
 import com.group16.stardewvalley.model.food.Food;
 import com.group16.stardewvalley.model.food.FoodIngredient;
 import com.group16.stardewvalley.model.food.Ingredient;
@@ -86,56 +87,30 @@ public class HomeMenuController {
         return new Result(true, "You have eaten " + foodName + "!");
     }
 
-    public void doBuffer(String name) {
+    public void doBuffer(BuffType buff) {
         Player player = App.getActiveGame().getCurrentPlayer();
-        switch (name) {
-            case "Max Energy + 100 (5 hours)":
+        switch (buff) {
+            case MAX_ENERGY_100:
                 player.setEnergyCeiling(player.getEnergyCeiling() + 100);
-                player.setBuffer("Max Energy");
-                player.setFinalHourBuff(5);
-                player.setBuffActive(true);
                 break;
-            case "Farming (5 hours)":
+            case FARMING_5H:
                 player.addFarmingAbilityScore(2);
-                player.setBuffer("Farming");
-                player.setFinalHourBuff(5);
-                player.setBuffActive(true);
                 break;
-            case "Foraging (11 hours)":
+            case FORAGING_11H:
                 player.addFarmingAbilityScore(11);
-                player.setBuffer("Foraging");
-                player.setFinalHourBuff(11);
-                player.setBuffActive(true);
                 break;
-            case "Max Energy +50 (3 hours)":
+            case MAX_ENERGY_50:
                 player.setEnergyCeiling(player.getEnergyCeiling() + 50);
-                player.setBuffer("Max Energy");
-                player.setFinalHourBuff(3);
-                player.setBuffActive(true);
                 break;
-            case "Foraging (5 hours)":
-                player.setBuffer("Foraging");
-                player.setFinalHourBuff(5);
-                player.setBuffActive(true);
+            case FORAGING_5H, MINING_5H:
                 break;
-            case "Fishing (5 hours)":
+            case FISHING_5H, FISHING_10H:
                 player.addFishingAbilityScore(5);
-                player.setBuffer("Fishing");
-                player.setFinalHourBuff(5);
-                player.setBuffActive(true);
-                break;
-            case "Fishing (10 hours)":
-                player.addFishingAbilityScore(5);
-                player.setBuffer("Fishing");
-                player.setFinalHourBuff(10);
-                player.setBuffActive(true);
-                break;
-            case "Mining (5 hours)":
-                player.setBuffer("Mining");
-                player.setFinalHourBuff(5);
-                player.setBuffActive(true);
                 break;
         }
+        player.setFinalHourBuff(buff.getDurationHours());
+        player.setBuffActive(true);
+        player.setBuffer(buff);
     }
 
     private void reduceIngredient(Food food) {
