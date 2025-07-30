@@ -8,16 +8,18 @@
   "logged_in_flag" : false,
   "userSecurityQuestion" : "q3",
   "securityAnswer" : "apple",
-  "hasActiveGame" : false
+  "hasActiveGame" : false,
+  "hero" : "ABIGAIL"
 }, {
   "username" : "as",
-  "password" : "Ass12345!",
-  "nickName" : "aw",
+  "password" : "as",
+  "nickName" : "asw",
   "email" : "ass@as.as",
   "gender" : "female",
   "gamePlayed" : 0,
   "logged_in_flag" : false,
   "userSecurityQuestion" : "q3",
   "securityAnswer" : "apple",
-  "hasActiveGame" : false
+  "hasActiveGame" : false,
+  "hero" : "ABIGAIL"
 } ]

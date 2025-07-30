@@ -26,7 +26,6 @@ public class MainMenuView implements Screen {
     private final TextButton logoutButton;
 
     private final Label usernameLabel;
-    private final Image avatarImage;
 
     private final Label gameTitle;
     private final Table table;
@@ -44,13 +43,12 @@ public class MainMenuView implements Screen {
 
         this.usernameLabel = new Label("Name: " + App.getLoggedInUser().getNickName(), skin);
 
-        // Load Abigail sprite sheet
-        Texture avatarTexture = new Texture("sprites/Abigail.png");
+        // Load user sprite sheet
+        Texture avatarTexture = new Texture(App.getLoggedInUser().getHero().getTexturePath());
 
         // Create animated avatar actor (row 2 = index 2; assuming walking down)
         this.animatedAvatar = new AnimatedSpriteActor(avatarTexture, 16, 32, 0, 0.3f);
         animatedAvatar.setSize(64, 128); // Resize for menu
-        this.avatarImage = null; // No longer needed
 
 
         this.table = new Table();

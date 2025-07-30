@@ -2,9 +2,11 @@ package com.group16.stardewvalley.controller.menu;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Timer;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
+import com.group16.stardewvalley.model.graphics.AnimatedSpriteActor;
 import com.group16.stardewvalley.model.graphics.Heros;
 import com.group16.stardewvalley.model.menu.Menu;
 import com.group16.stardewvalley.model.menu.ProfileMenuCommands;
@@ -109,7 +111,6 @@ public class ProfileMenuController {
 
     public Result setAvatar(Heros hero) {
         User user = App.getLoggedInUser();
-        Player player = App.getCurrentPlayer();
 
         if (hero == null ) {
             return new Result(false, "Hero name cannot be empty.");
@@ -117,10 +118,10 @@ public class ProfileMenuController {
 
 
 
-        player.setHero(hero); // Assuming setHero(String) exists in Player
+        user.setHero(hero);
         UserSaveManager.saveUsers();
 
-        return new Result(true, "Avatar successfully changed to " + hero.toString() + "!");
+        return new Result(true, "Avatar successfully changed to " + hero.toString() );
     }
 
 
@@ -170,6 +171,11 @@ public class ProfileMenuController {
 
     public Result showCurrentMenu(){
         return new Result(true, App.getCurrentMenu().getName());
+    }
+
+    private AnimatedSpriteActor createHero(Heros hero) {
+        Texture texture = new Texture(Gdx.files.internal(hero.getTexturePath()));
+        return new AnimatedSpriteActor(texture, hero.getFrameWidth(), hero.getFrameHeight(), hero.getUpRow(), 0.3f);
     }
 
 

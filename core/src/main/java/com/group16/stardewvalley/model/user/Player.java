@@ -105,10 +105,7 @@ public class Player {
         this.buffer = "";
         this.location = null;
 
-        // Assign a random hero from the enum
-        Heros[] allHeroes = Heros.values();
-        int index = (int)(Math.random() * allHeroes.length);
-        this.hero = allHeroes[index];
+       this.hero = user.getHero();
     }
 
     //TODO یادت باشه ست کنی اینو وقتی بازی جدید میسازی
@@ -564,7 +561,4 @@ public class Player {
     }
 
 
-    public void setHero(Heros hero) {
-        this.hero = hero;
-    }
 }

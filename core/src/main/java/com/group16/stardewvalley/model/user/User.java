@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.group16.stardewvalley.model.app.Game;
+import com.group16.stardewvalley.model.graphics.Heros;
 
 import static com.group16.stardewvalley.model.app.App.users;
 import static com.group16.stardewvalley.model.user.UserSaveManager.loadUsers;
@@ -15,14 +16,12 @@ public class User {
     private String nickName;
     private String email;
     private final String gender;
-
     private int gamePlayed;
-
     private boolean logged_in_flag;
     private SecurityQuestions userSecurityQuestion;
     private String securityAnswer;
-
     boolean hasActiveGame;
+    private Heros hero;
     private Game currentGame;
 
 //    public User(String username, String password, String nickName, String email, String gender) {
@@ -55,6 +54,10 @@ public class User {
         this.gender = gender;
         this.logged_in_flag = false;
         this.hasActiveGame = false;
+
+        Heros[] allHeroes = Heros.values();
+        int index = (int)(Math.random() * allHeroes.length);
+        this.hero = allHeroes[index];
     }
 
     public String getUsername() {
@@ -151,5 +154,13 @@ public class User {
             }
         }
         return null; // Username not found
+    }
+
+    public Heros getHero() {
+        return hero;
+    }
+
+    public void setHero(Heros hero) {
+        this.hero = hero;
     }
 }
