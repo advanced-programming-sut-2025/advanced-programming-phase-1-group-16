@@ -1,29 +1,38 @@
 package com.group16.stardewvalley.view.graphics;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.controller.GameController;
 import com.group16.stardewvalley.controller.map.MapController;
+import com.group16.stardewvalley.controller.menu.GameMenuController;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.agriculture.Tree;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.food.FoodIngredient;
 import com.group16.stardewvalley.model.food.Ingredient;
+import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.graphics.TileRenderer;
 import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.map.TileTextureManager;
 import com.group16.stardewvalley.model.user.Player;
+import com.group16.stardewvalley.view.menuGraphics.PreGameMenuView;
 
 import static com.group16.stardewvalley.controller.menu.HomeMenuController.findIngredient;
 
@@ -38,6 +47,13 @@ public class GameScreen implements Screen, InputProcessor {
     public static boolean showMiniMap = false;
     private OrthographicCamera miniMapCamera;
     private Viewport miniMapViewport;
+
+    private Stage stage;
+    private Skin skin = GameAssetManager.getGameAssetManager().getSkin();
+    private Table pauseMenu;
+    private boolean isPaused = false;
+
+    private ClockWidget clockWidget;
 
 
     public static final int TILE_SIZE = 17;
@@ -61,15 +77,38 @@ public class GameScreen implements Screen, InputProcessor {
         batch = Main.getBatch();
         textureManager = new TileTextureManager();
         tileRenderer = new TileRenderer();
-        Gdx.input.setInputProcessor(this);
+        Gdx.input.setInputProcessor(new InputMultiplexer(this, stage = new Stage()));
 
+        clockWidget = new ClockWidget();
+
+
+
+
+
+        // === Pause Button ===
+        TextButton pauseButton = new TextButton("Pause", GameAssetManager.getGameAssetManager().getSkin());
+        pauseButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                togglePause();
+            }
+        });
+
+        Table topLeft = new Table();
+        topLeft.top().left().setFillParent(true);
+        topLeft.add(pauseButton).pad(10).padLeft(50).padTop(50);
+        stage.addActor(topLeft);
+
+        createPauseMenu();
     }
+
 
     @Override
     public void render(float delta) {
-        controller.update(delta);
-        handleTurn();
-
+        if (!isPaused) {
+            controller.update(delta);
+            handleTurn();
+        }
 
         if (showMiniMap) {
             setCameraForMiniMap();
@@ -81,12 +120,17 @@ public class GameScreen implements Screen, InputProcessor {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-
         controller.render();
+        float clockX = camera.position.x + camera.viewportWidth / 2f - 80; // top right corner-ish
+        float clockY = camera.position.y + camera.viewportHeight / 2f - 80;
+
+        clockWidget.render(batch, clockX, clockY);
 
         batch.end();
-    }
 
+        stage.act(delta);
+        stage.draw();
+    }
 
 
     private void setCameraForMiniMap() {
@@ -101,7 +145,7 @@ public class GameScreen implements Screen, InputProcessor {
 
     private static void handleTurn() {
         totalGameTime += Gdx.graphics.getDeltaTime();
-        if (totalGameTime > 100f) {
+        if (totalGameTime > 30f) {
             App.getActiveGame().nextTurn();
             totalGameTime = 0f;
         }
@@ -130,8 +174,13 @@ public class GameScreen implements Screen, InputProcessor {
     }
 
 
-    @Override public void dispose() {
+
+    @Override
+    public void dispose() {
         batch.dispose();
+        stage.dispose();
+        clockWidget.dispose();
+
         textureManager.dispose();
         for (Player player : App.getActiveGame().getPlayers()) {
             player.getPlayerGraphics().dispose();
@@ -214,4 +263,47 @@ public class GameScreen implements Screen, InputProcessor {
     public boolean scrolled(float v, float v1) {
         return false;
     }
+
+    private void createPauseMenu() {
+        pauseMenu = new Table();
+        pauseMenu.setFillParent(true);
+        pauseMenu.center();
+
+        TextButton continueButton = new TextButton("Continue", skin);
+        continueButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                togglePause(); // resume game
+            }
+        });
+
+        TextButton mainMenuButton = new TextButton("Main Menu", skin);
+        mainMenuButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                GameAssetManager.getGameAssetManager().getBrightClickSound().play();
+
+                // ✅ Dispose current screen and switch to PreGameMenuView
+                Main.getMain().getScreen().dispose();
+                Main.getMain().setScreen(new PreGameMenuView(
+                    new GameMenuController(),
+                    GameAssetManager.getGameAssetManager().getSkin()
+                ));
+            }
+        });
+
+        pauseMenu.add(new Label("Game Paused", skin)).padBottom(20).row();
+        pauseMenu.add(continueButton).width(250).pad(10).row();
+        pauseMenu.add(mainMenuButton).width(250).pad(10).row();
+
+        pauseMenu.setVisible(false);
+        stage.addActor(pauseMenu);
+    }
+
+
+    private void togglePause() {
+        isPaused = !isPaused;
+        pauseMenu.setVisible(isPaused);
+    }
+
 }

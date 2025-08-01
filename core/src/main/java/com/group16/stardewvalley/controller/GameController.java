@@ -67,6 +67,31 @@ public class GameController {
                 nextX -= speed;
                 left = true;
                 break;
+
+
+
+            case Input.Keys.W:
+                player.setCurrentDirection(Direction.UP);
+                nextY += speed;
+                up = true;
+                break;
+            case Input.Keys.D:
+                player.setCurrentDirection(Direction.RIGHT);
+                nextX += speed;
+                right = true;
+                break;
+            case Input.Keys.S:
+                player.setCurrentDirection(Direction.DOWN);
+                nextY -= speed;
+                down = true;
+                break;
+            case Input.Keys.A:
+                player.setCurrentDirection(Direction.LEFT);
+                nextX -= speed;
+                left = true;
+                break;
+
+
             case Input.Keys.M:
                 showMiniMap = !showMiniMap;
             case Input.Keys.C:

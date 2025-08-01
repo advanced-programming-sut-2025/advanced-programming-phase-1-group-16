@@ -67,7 +67,7 @@ public class SignUpMenuController {
         //successful
         User newUser = new User(username,password,nickName,email,gender);
         App.getUsers().add(newUser);
-
+        App.setLoggedInUser(newUser);
         UserSaveManager.saveUsers();
 
 //        UserSaveManager.addUserAndSave(newUser); // Save new user to json file

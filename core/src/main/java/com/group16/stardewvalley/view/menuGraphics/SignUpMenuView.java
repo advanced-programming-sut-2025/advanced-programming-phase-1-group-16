@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.group16.stardewvalley.Main;
+import com.group16.stardewvalley.controller.menu.MainMenuController;
 import com.group16.stardewvalley.controller.menu.SignUpMenuController;
 import com.group16.stardewvalley.controller.menu.StartMenuController;
 import com.group16.stardewvalley.model.Result;
@@ -109,7 +110,9 @@ public class SignUpMenuView implements Screen {
 
                 if (result.isSuccessful()) {
                     showSecurityQuestionDialog();
+
                 }
+
 
 
             }
@@ -297,8 +300,9 @@ public class SignUpMenuView implements Screen {
                     setMessage(result.toString());
 
                     if (result.isSuccessful()) {
-                        this.hide(); // only close if success
-                        //todo: go to main menu
+                        this.hide();
+                        Main.getMain().getScreen().dispose();
+                        Main.getMain().setScreen(new MainMenuView(new MainMenuController(), GameAssetManager.getGameAssetManager().getSkin()));
                     }
 
                 } else {

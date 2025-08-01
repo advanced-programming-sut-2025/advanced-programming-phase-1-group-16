@@ -237,7 +237,7 @@ public class LoginMenuView implements Screen {
 
         // Show the dialog
         dialog.show(stage);
-        dialog.setSize(600, 300);  // width, height
+        dialog.setSize(800, 400);  // width, height
 
         cancelButton.addListener(new ClickListener() {
             @Override
@@ -279,14 +279,14 @@ public class LoginMenuView implements Screen {
         content.add(newPasswordField).width(300).padRight(10).padBottom(10);
         content.add(randomButton).width(300).padBottom(10);
 
-        TextButton confirmButton = new TextButton("Confirm", getSkin());
+        TextButton confirmButton = new TextButton("Submit", getSkin());
         TextButton cancelButton = new TextButton("Cancel", getSkin());
 
-        dialog.getButtonTable().add(confirmButton).width(200).pad(5);
-        dialog.getButtonTable().add(cancelButton).width(200).pad(5);
+        dialog.getButtonTable().add(confirmButton).width(300).pad(5);
+        dialog.getButtonTable().add(cancelButton).width(300).pad(5);
 
         dialog.show(stage);
-        dialog.setSize(600, 300);  // width, height
+        dialog.setSize(800, 400);  // width, height
 
 
         randomButton.addListener(new ClickListener() {

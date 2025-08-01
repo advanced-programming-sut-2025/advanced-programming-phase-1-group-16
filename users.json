@@ -1,25 +1,13 @@
 [ {
-  "username" : "fatemeh",
-  "password" : "1234",
-  "nickName" : "nilli",
-  "email" : "fatemeh@gmail.com",
-  "gender" : "female",
-  "gamePlayed" : 0,
-  "logged_in_flag" : false,
-  "userSecurityQuestion" : "q3",
-  "securityAnswer" : "apple",
-  "hasActiveGame" : false,
-  "hero" : "ABIGAIL"
-}, {
   "username" : "as",
   "password" : "as",
-  "nickName" : "asw",
-  "email" : "ass@as.as",
+  "nickName" : "as",
+  "email" : "sal@sal.com",
   "gender" : "female",
   "gamePlayed" : 0,
-  "logged_in_flag" : false,
+  "logged_in_flag" : true,
   "userSecurityQuestion" : "q3",
   "securityAnswer" : "apple",
   "hasActiveGame" : false,
-  "hero" : "ABIGAIL"
+  "hero" : "ALEX"
 } ]
