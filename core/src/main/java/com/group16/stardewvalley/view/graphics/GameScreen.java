@@ -152,6 +152,7 @@ public class GameScreen implements Screen, InputProcessor {
             mapPixelHeight - viewportHeight / 2f);
 
         camera.position.set(cameraX, cameraY, 0);
+        camera.zoom = 1f;
         camera.update();
         batch.setProjectionMatrix(camera.combined);
     }

@@ -142,19 +142,22 @@ public class GameController {
                 }
                 return true;
             case Input.Keys.C:
-                if (!isCookingMenuOpen) {
-                    cookingMenu = new CookingMenu(
-                        GameAssetManager.getGameAssetManager().getSkin(),
-                        App.getActiveGame().getCurrentPlayer().getKnownRecipes()
-                    );
-                    Main.getMain().getGameScreen().getStage().addActor(cookingMenu);
-                    Main.getMain().getGameScreen().getStage().addActor(cookingMenu.getTooltip());
-                    isCookingMenuOpen = true;
-                } else {
-                    cookingMenu.remove();
-                    cookingMenu = null;
-                    isCookingMenuOpen = false;
+                if (player.isAtHome()) {
+                    if (!isCookingMenuOpen) {
+                        cookingMenu = new CookingMenu(
+                                GameAssetManager.getGameAssetManager().getSkin(),
+                                App.getActiveGame().getCurrentPlayer().getKnownRecipes()
+                        );
+                        Main.getMain().getGameScreen().getStage().addActor(cookingMenu);
+                        Main.getMain().getGameScreen().getStage().addActor(cookingMenu.getTooltip());
+                        isCookingMenuOpen = true;
+                    } else {
+                        cookingMenu.remove();
+                        cookingMenu = null;
+                        isCookingMenuOpen = false;
+                    }
                 }
+
                 return true;
             case Input.Keys.X:
                 if (player.getCurrentEquipment() == null) {
@@ -187,6 +190,10 @@ public class GameController {
                 return true;
             default:
                 return false;
+        }
+
+        if (player.isAtHome()) {
+            return false;
         }
 
         Result result = mapController.walk((int) nextX, (int) nextY);

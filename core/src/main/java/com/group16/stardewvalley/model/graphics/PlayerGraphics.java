@@ -17,6 +17,7 @@ public class PlayerGraphics {
     private Animation<TextureRegion> walkUp, walkDown, walkLeft, walkRight, faint;
     private TextureRegion currentFrame;
     private Texture face;
+    private TextureRegion simpleTexture;
     private float stateTime = 0f;
     protected float x, y;
 
@@ -27,6 +28,8 @@ public class PlayerGraphics {
         this.tileSize = GameScreen.TILE_SIZE;
         spriteSheet = new Texture(spritePath);
         TextureRegion[][] tmp = TextureRegion.split(spriteSheet, frameWidth, frameHeight);
+
+        simpleTexture = tmp[2][1];
 
         walkDown = new Animation<>(0.4f, tmp[2]);
         walkLeft = new Animation<>(0.4f, tmp[3]);
@@ -89,6 +92,14 @@ public class PlayerGraphics {
             case RIGHT: currentFrame = walkRight.getKeyFrame(stateTime, true); break;
         }
         batch.draw(currentFrame, x * GameScreen.TILE_SIZE, y * GameScreen.TILE_SIZE, (float) spriteSheet.getWidth() / 7, (float) spriteSheet.getHeight() / 7);
+    }
+
+    public TextureRegion getSimpleTexture() {
+        return simpleTexture;
+    }
+
+    public void setSimpleTexture(TextureRegion simpleTexture) {
+        this.simpleTexture = simpleTexture;
     }
 
     public void dispose() {
