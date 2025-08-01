@@ -52,7 +52,13 @@ public class GameController {
     }
 
     public void render() {
-        mapController.drawMap(Main.getBatch());
+        Player player = App.getActiveGame().getCurrentPlayer();
+        if (player.isAtHome()){
+            player.getHomeMap().render(Main.getBatch());
+        } else {
+            mapController.drawMap(Main.getBatch());
+        }
+
         playersController.render();
 
         drawPlayerBuff();

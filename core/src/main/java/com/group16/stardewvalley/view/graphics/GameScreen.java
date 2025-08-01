@@ -22,8 +22,7 @@ import com.group16.stardewvalley.model.food.Ingredient;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.graphics.GameHUD;
 import com.group16.stardewvalley.model.graphics.TileRenderer;
-import com.group16.stardewvalley.model.map.Tile;
-import com.group16.stardewvalley.model.map.TileTextureManager;
+import com.group16.stardewvalley.model.map.*;
 import com.group16.stardewvalley.model.user.Player;
 
 import static com.group16.stardewvalley.controller.menu.HomeMenuController.findIngredient;
@@ -81,8 +80,10 @@ public class GameScreen implements Screen, InputProcessor {
         gameHUD.updateHUD();
         handleTurn();
 
-
-        if (showMiniMap) {
+        if (App.getActiveGame().getCurrentPlayer().isAtHome()) {
+            setCameraForHouse();
+        }
+        else if (showMiniMap) {
             setCameraForMiniMap();
         } else {
             setCameraForMap();
@@ -105,6 +106,15 @@ public class GameScreen implements Screen, InputProcessor {
     public Stage getStage() {
         return stage;
     }
+
+    private void setCameraForHouse() {
+        camera.position.set(camera.viewportWidth + 200, camera.viewportHeight + 100, 0);
+        camera.zoom = 3.5f;
+
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);
+    }
+
 
     private void setCameraForMiniMap() {
         miniMapCamera.position.set(
@@ -204,6 +214,13 @@ public class GameScreen implements Screen, InputProcessor {
                     Result result = player.getInventory().addItem(new FoodIngredient(fruitName, tree.getFruitSellPrice(), ingredient), 4);
                 }
             }
+        }
+        else if (App.getActiveGame().getMap()[tileY][tileX].getType().equals(TileType.Cottage) &&
+                    !player.isAtHome()) {
+            player.setHomeMap(new HomeMap(player));
+            player.setAtHome(true);
+        } else if (player.isAtHome()) {
+            player.setAtHome(false);
         }
     }
 

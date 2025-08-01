@@ -34,6 +34,7 @@ import com.group16.stardewvalley.model.tools.WateringCan;
 public class Player {
     private User user;
     private Farm farm;
+    private HomeMap homeMap;
     private double energy;
     private boolean isEnergyUnlimited;
     private Pos position;
@@ -68,6 +69,8 @@ public class Player {
     private int hourPastForBuff;
     private int finalHourBuff;
     private Location location;
+    private boolean isAtHome = false;
+
 
     //UI
     private PlayerGraphics playerGraphics;
@@ -110,13 +113,28 @@ public class Player {
 
     //TODO یادت باشه ست کنی اینو وقتی بازی جدید میسازی
 
-
     public PlayerGraphics getPlayerGraphics() {
         return playerGraphics;
     }
 
     public void setPlayerGraphics(String spritePath, int frameWidth, int frameHeight) {
         this.playerGraphics = new PlayerGraphics(this, spritePath, frameWidth, frameHeight);
+    }
+
+    public HomeMap getHomeMap() {
+        return homeMap;
+    }
+
+    public void setHomeMap(HomeMap homeMap) {
+        this.homeMap = homeMap;
+    }
+
+    public boolean isAtHome() {
+        return isAtHome;
+    }
+
+    public void setAtHome(boolean atHome) {
+        isAtHome = atHome;
     }
 
     public Direction getCurrentDirection() {
