@@ -3,7 +3,6 @@ package com.group16.stardewvalley.view.graphics;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
@@ -20,7 +19,6 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.controller.GameController;
-import com.group16.stardewvalley.controller.map.MapController;
 import com.group16.stardewvalley.controller.menu.GameMenuController;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.agriculture.Tree;
@@ -29,7 +27,6 @@ import com.group16.stardewvalley.model.food.FoodIngredient;
 import com.group16.stardewvalley.model.food.Ingredient;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.graphics.TileRenderer;
-import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.map.TileTextureManager;
 import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.view.menuGraphics.PreGameMenuView;
@@ -53,7 +50,7 @@ public class GameScreen implements Screen, InputProcessor {
     private Table pauseMenu;
     private boolean isPaused = false;
 
-    private ClockWidget clockWidget;
+    private ClockHUD clockHUD;
 
 
     public static final int TILE_SIZE = 17;
@@ -79,7 +76,7 @@ public class GameScreen implements Screen, InputProcessor {
         tileRenderer = new TileRenderer();
         Gdx.input.setInputProcessor(new InputMultiplexer(this, stage = new Stage()));
 
-        clockWidget = new ClockWidget();
+        clockHUD = new ClockHUD();
 
 
 
@@ -124,7 +121,7 @@ public class GameScreen implements Screen, InputProcessor {
         float clockX = camera.position.x + camera.viewportWidth / 2f - 80; // top right corner-ish
         float clockY = camera.position.y + camera.viewportHeight / 2f - 80;
 
-        clockWidget.render(batch, clockX, clockY);
+        clockHUD.render(batch, clockX, clockY);
 
         batch.end();
 
@@ -179,7 +176,7 @@ public class GameScreen implements Screen, InputProcessor {
     public void dispose() {
         batch.dispose();
         stage.dispose();
-        clockWidget.dispose();
+        clockHUD.dispose();
 
         textureManager.dispose();
         for (Player player : App.getActiveGame().getPlayers()) {

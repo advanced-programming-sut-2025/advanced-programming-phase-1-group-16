@@ -7,12 +7,14 @@ public enum WeatherCondition {
     STORM(3, "Storm", new Season[]{Season.Spring, Season.Summer, Season.Fall}),
     SNOWY(4, "Snowy", new Season[]{Season.Winter});
 
-    private final int weatherNumber;
+
+
+    private final int weatherNumber = (int)(Math.random() * 4);;
     private final String name;
     private final Season[] possibleSeasons;
 
     WeatherCondition(int weatherNumber, String displayName, Season[] possibleSeasons) {
-        this.weatherNumber = weatherNumber;
+//        this.weatherNumber = weatherNumber;
         this.name = displayName;
         this.possibleSeasons = possibleSeasons;
 

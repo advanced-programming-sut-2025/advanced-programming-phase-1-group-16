@@ -1,115 +1,157 @@
 package com.group16.stardewvalley.view.graphics;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.group16.stardewvalley.model.app.App;
-import com.group16.stardewvalley.model.time.Season;
+import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.time.TimeDate;
+import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.model.weather.WeatherCondition;
+import com.group16.stardewvalley.model.time.Season;
+
+import java.beans.XMLEncoder;
 
 public class ClockHUD {
-    private final Stage stage;
-    private final Table table;
-    private final Skin skin;
-
-    private final Label timeLabel;
-    private final Label dateLabel;
-    private final Label dayLabel;
-    private final Label moneyLabel;
-    private final Image background;
-    private final Image weatherIcon;
-    private final Image seasonIcon;
-
     private final Texture clockTexture;
-    private final TextureRegion[][] regions;
+    private final TextureRegion clockFaceRegion;
+    private final TextureRegion clockHandRegion;
 
-    public ClockHUD(Stage stage, Skin skin) {
-        this.stage = stage;
-        this.skin = skin;
+    private final TextureRegion springRegion;
+    private final TextureRegion summerRegion;
+    private final TextureRegion fallRegion;
+    private final TextureRegion winterRegion;
+    private final TextureRegion sunnyRegion;
+    private final TextureRegion rainyRegion;
+    private final TextureRegion stormRegion;
+    private final TextureRegion snowyRegion;
+    private final BitmapFont font;
 
-        // === Load Spritesheet ===
-        clockTexture = new Texture(Gdx.files.internal("sprites/Clock.png"));
-        regions = TextureRegion.split(clockTexture, 16, 16); // assuming each icon is 16x16
+    private static final int CLOCK_WIDTH = 70;
+    private static final int CLOCK_HEIGHT = 60;
+    private static final float SCALE = 1.2f; // 2x bigger
+    public ClockHUD() {
+        clockTexture = new Texture("sprites/Clock.png"); // Place this in assets
 
-        // === UI Elements ===
-        background = new Image(clockTexture); // full image
-        timeLabel = new Label("", skin);
-        dateLabel = new Label("", skin);
-        dayLabel = new Label("", skin);
-        moneyLabel = new Label("", skin);
-        weatherIcon = new Image();
-        seasonIcon = new Image();
+        BitmapFont originalFont = GameAssetManager.getGameAssetManager().getSkin().getFont("font");
+        font = new BitmapFont(originalFont.getData().fontFile, originalFont.getRegion(), false);
+        font.getData().setScale(0.5f); //  Smaller font only for the clock
+        font.setColor(Color.BLACK);
 
-        // === Container Table ===
-        table = new Table();
-        table.top().right();
-        table.setFillParent(true);
+        // Main clock face
+        clockFaceRegion = new TextureRegion(clockTexture, 0, 0, 70, 60);
 
-        Table content = new Table();
-        content.add(background).size(236, 288).row();
-        content.add(dayLabel).padTop(-250).padLeft(50).left().row();
-        content.add(seasonIcon).size(24).padLeft(50).left();
-        content.add(weatherIcon).size(24).padLeft(10).left().row();
-        content.add(timeLabel).padLeft(50).left().row();
-        content.add(moneyLabel).padLeft(50).padTop(10).left();
+//         Clock hand (pointer)
+        clockHandRegion = new TextureRegion(clockTexture, 71, 0, 9, 59);
 
-        table.add(content).pad(10).top().right();
 
-        stage.addActor(table);
+        springRegion = new TextureRegion(clockTexture, 80, 0, 12, 8);
+        summerRegion = new TextureRegion(clockTexture, 93, 0, 12, 8);
+        fallRegion   = new TextureRegion(clockTexture, 106, 0, 12, 8);
+        winterRegion = new TextureRegion(clockTexture, 80, 9, 12, 8);
+
+        sunnyRegion = new TextureRegion(clockTexture, 119, 9, 12, 8);
+        rainyRegion = new TextureRegion(clockTexture, 106, 9, 12, 8);
+        stormRegion = new TextureRegion(clockTexture, 119, 18, 12, 8);
+        snowyRegion = new TextureRegion(clockTexture, 93, 18, 12, 8);
+
     }
 
-    public void update() {
-        TimeDate timeDate = App.getActiveGame().getTimeDate();
+    public void render(SpriteBatch batch, float screenX, float screenY) {
+        TimeDate time = App.getActiveGame().getTimeDate();
+        Player player = App.getActiveGame().getCurrentPlayer();
 
-        timeLabel.setText(timeDate.getTime());
-        dateLabel.setText("Day " + timeDate.getDay());
-        dayLabel.setText(timeDate.getDayOfWeek());
-        moneyLabel.setText(App.getActiveGame().getCurrentPlayer().getCoin() + " G");
+        float scaledWidth = CLOCK_WIDTH * SCALE;
+        float scaledHeight = CLOCK_HEIGHT * SCALE;
+        // Draw scaled clock face
+        batch.draw(clockFaceRegion, screenX-10, screenY-5, scaledWidth, scaledHeight);
 
-        setWeatherIcon(App.getActiveGame().getWeatherCondition());
-        setSeasonIcon(timeDate.getSeason());
-    }
 
-    private void setWeatherIcon(WeatherCondition condition) {
-        // Based on known positions in your Clock.png (row 0)
-        TextureRegion iconRegion;
-        switch (condition) {
-            case SUNNY:
-                iconRegion = regions[0][6]; break;
-            case RAINY:
-                iconRegion = regions[0][8]; break;
-            case STORM:
-                iconRegion = regions[0][7]; break;
-            case SNOWY:
-                iconRegion = regions[0][9]; break;
-            default:
-                iconRegion = regions[0][6]; break; // fallback
-        }
-        weatherIcon.setDrawable(new TextureRegionDrawable(iconRegion));
-    }
+        // Update origin for pointer
+        float originX = screenX + scaledWidth / 2f - 20;
+        float originY = screenY + scaledHeight / 2f + 12;
 
-    private void setSeasonIcon(Season season) {
-        // Based on known positions in your Clock.png (row 0)
-        TextureRegion iconRegion;
-        switch (season) {
+        //TODO: uncomment following line and delete its next line if you debugged time (hour) system
+//        float rotation = (App.getActiveGame().getTimeDate().getHour() - 6) * 30f;
+        float rotation = 5 * 30f;
+
+//         Draw pointer, scaled
+        batch.draw(clockHandRegion, originX - 3, originY - scaledHeight / 2,
+            3, scaledHeight / 2, 10, CLOCK_HEIGHT,
+            SCALE, SCALE, rotation );
+
+        // Draw date (upper field)
+        font.draw(batch, time.getDayOfWeek() + ". " + time.getDay() ,
+            screenX + 25, screenY + 59);
+
+        // Draw time (lower field)
+        font.draw(batch, time.getTime(), screenX + 30, screenY + 32);
+
+        // Draw season icon
+        switch (App.getActiveGame().getSeason()){
             case Spring:
-                iconRegion = regions[0][2]; break;
+                batch.draw(springRegion, screenX + 25 , screenY+38, SCALE * 12, SCALE * 8 ); break;
             case Summer:
-                iconRegion = regions[0][3]; break;
+                batch.draw(summerRegion, screenX + 25 , screenY+38, SCALE * 12, SCALE * 8 ); break;
             case Fall:
-                iconRegion = regions[0][4]; break;
+                batch.draw(fallRegion, screenX + 25 , screenY+38, SCALE * 12, SCALE * 8 ); break;
             case Winter:
-                iconRegion = regions[0][5]; break;
-            default:
-                iconRegion = regions[0][2]; break; // fallback
+                batch.draw(winterRegion, screenX + 25 , screenY+38, SCALE * 12, SCALE * 8 ); break;
         }
-        seasonIcon.setDrawable(new TextureRegionDrawable(iconRegion));
+
+        // Draw weather icon
+        if (App.getActiveGame().getWeatherCondition() == null) {
+            batch.draw(sunnyRegion, screenX + 54 , screenY+ 38, SCALE * 12, SCALE * 8 );
+        }else{
+            switch (App.getActiveGame().getWeatherCondition()){
+                case SUNNY:
+                    batch.draw(sunnyRegion, screenX + 54 , screenY+ 38, SCALE * 12, SCALE * 8 ); break;
+                case RAINY:
+                    batch.draw(rainyRegion, screenX + 54 , screenY+ 38, SCALE * 12, SCALE * 8 ); break;
+                case STORM:
+                    batch.draw(stormRegion, screenX + 54 , screenY+ 38, SCALE * 12, SCALE * 8 ); break;
+                case SNOWY:
+                    batch.draw(snowyRegion, screenX + 54 , screenY+ 38, SCALE * 12, SCALE * 8 ); break;
+            }
+        }
+
+
+        //Draw money
+//        String money = String.valueOf(App.getActiveGame().getCurrentPlayer().getCoin());
+//        if (App.getActiveGame().getCurrentPlayer().getCoin() == 0 || App.getActiveGame().getCurrentPlayer() == null){
+//            money = "5460";
+//        }
+//        font.draw(batch, money , screenX + 47, screenY + 8);
+
+        String money;
+        if (App.getActiveGame().getCurrentPlayer() == null || App.getActiveGame().getCurrentPlayer().getCoin() == 0) {
+            money = "000";
+        } else {
+            money = String.valueOf(App.getActiveGame().getCurrentPlayer().getCoin());
+        }
+
+// Define box area
+        float boxX = screenX - 4; // start of beige area (adjust based on image)
+        float boxY = screenY + 8;  // vertical position
+        float boxWidth = 70f;      // width of beige area (adjust as needed)
+
+// Measure text width
+        GlyphLayout layout = new GlyphLayout(font, money);
+        float textWidth = layout.width;
+
+// Draw text right-aligned inside the box
+        float textX = boxX + boxWidth - textWidth; // right edge - text width
+        font.draw(batch, layout, textX, boxY);
+
+
+
+    }
+
+    public void dispose() {
+        clockTexture.dispose();
+        font.dispose();
     }
 }
