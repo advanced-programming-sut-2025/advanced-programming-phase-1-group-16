@@ -40,7 +40,9 @@ public class GameScreen implements Screen, InputProcessor {
     Table toolTable = new Table(skin);
     public static final int TILE_SIZE = 17;
     private static boolean showTools;
+    private static boolean showInventory;
     private Stage toolStage;
+    private Stage inventoryStage;
 
     public GameScreen() {
         this.controller = new GameController();
@@ -57,6 +59,7 @@ public class GameScreen implements Screen, InputProcessor {
         toolTable.setFillParent(true);
         toolStage = new Stage(new ScreenViewport());
         toolStage.addActor(toolTable);
+        inventoryStage = new Stage(new ScreenViewport());
     }
 
     @Override
@@ -71,6 +74,13 @@ public class GameScreen implements Screen, InputProcessor {
         showTools = !showTools;
         if (showTools) {
             buildToolTable();
+        }
+    }
+
+    public void toggleShowInventory() {
+        showInventory = !showInventory;
+        if (showInventory) {
+
         }
     }
 
@@ -98,8 +108,13 @@ public class GameScreen implements Screen, InputProcessor {
             toolStage.act(delta);
             toolStage.draw();
         }
-    }
 
+        if (showInventory) {
+            App.getActiveGame().getCurrentPlayer().getInventory().showItems(inventoryStage, skin);
+            inventoryStage.act(delta);
+            inventoryStage.draw();
+        }
+    }
 
     private void setCameraForMiniMap() {
         miniMapCamera.position.set(

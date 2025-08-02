@@ -38,6 +38,18 @@ public class GameController {
         float speed = player.getSpeed();
 
         switch (keycode) {
+            case Input.Keys.NUM_0:
+            case Input.Keys.NUM_1:
+            case Input.Keys.NUM_2:
+            case Input.Keys.NUM_3:
+            case Input.Keys.NUM_4:
+            case Input.Keys.NUM_5:
+            case Input.Keys.NUM_6:
+            case Input.Keys.NUM_7:
+            case Input.Keys.NUM_8:
+            case Input.Keys.NUM_9:
+                App.getGameScreen().toggleShowInventory();
+                return true;
             case Input.Keys.UP:
                 nextY += speed;
                 up = true;

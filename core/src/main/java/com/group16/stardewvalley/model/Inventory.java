@@ -3,10 +3,11 @@ package com.group16.stardewvalley.model;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Scaling;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.agriculture.*;
 import com.group16.stardewvalley.model.agriculture.Seed;
@@ -43,7 +44,10 @@ public class Inventory {
         this.craftingRecipes = new ArrayList<>(
                 List.of(CraftingRecipes.CherryBomb, CraftingRecipes.Sprinkler, CraftingRecipes.CharcoalKlin, CraftingRecipes.Furnace,
                         CraftingRecipes.Scarecrow, CraftingRecipes.BeeHouse, CraftingRecipes.MayonnaiseMachine));
-        tools.put(new Axe("axe", 0, "base"), 1);
+        Axe newAse = new Axe("axe", 0, "base");
+        tools.put(newAse, 1);
+        items.put(newAse, 1);
+
     }
 
     public void showTools(Stage stage, Skin skin) {
@@ -57,6 +61,49 @@ public class Inventory {
       }
       stage.clear();
       stage.addActor(table);
+    }
+
+    public void showItems(Stage stage, Skin skin) {
+        stage.clear();
+        Texture inventoryTexture = new Texture(Gdx.files.internal("Inventory/Inventory_Parts.png"));
+        TextureRegion emptySlotRegion = new TextureRegion(inventoryTexture, 0, 0, 64, 64);
+        TextureRegionDrawable emptySlotDrawable = new TextureRegionDrawable(emptySlotRegion);
+        Table inventoryTable = new Table();
+        inventoryTable.top().left().pad(10);
+        int columns = 5;
+        int i = 0;
+
+        for (Item item : items.keySet()) {
+            Stack slot = new Stack();
+            Image slotBackground = new Image(emptySlotDrawable);
+
+            Image itemIcon;
+            if (item instanceof Gadget) {
+                Gadget gadget = (Gadget) item;
+                itemIcon = new Image(new Texture(Gdx.files.internal(gadget.getAssetPath())));
+            } else {
+                String assetPath = "items/" + item.getName() + ".png";
+                itemIcon = new Image(new Texture(Gdx.files.internal(assetPath)));
+            }
+
+            itemIcon.setScaling(Scaling.fit);
+            itemIcon.setSize(48, 48);
+            slot.add(slotBackground);
+            slot.add(itemIcon);
+            inventoryTable.add(slot).size(64, 64).pad(5);
+            i++;
+            if (i % columns == 0) {
+                inventoryTable.row();
+            }
+        }
+
+        ScrollPane scrollPane = new ScrollPane(inventoryTable);
+        scrollPane.setScrollingDisabled(true, false);
+        Table rootTable = new Table();
+        rootTable.setFillParent(true);
+        rootTable.add(scrollPane).expand().fill().pad(10);
+        stage.addActor(rootTable);
+
     }
 
     public Map<Crop, Integer> getCrops() {
