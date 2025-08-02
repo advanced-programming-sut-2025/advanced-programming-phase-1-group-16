@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -108,24 +109,44 @@ public class GameScreen implements Screen, InputProcessor {
             handleTurn();
         }
 
+        // Choose camera
         if (showMiniMap) {
             setCameraForMiniMap();
         } else {
             setCameraForMap();
         }
 
+        // Clear screen
         Gdx.gl.glClearColor(0.2f, 0.5f, 1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+
+        // === Draw game world ===
+        batch.setProjectionMatrix((showMiniMap ? miniMapCamera : camera).combined);
         batch.begin();
         controller.render();
-        float clockX = camera.position.x + camera.viewportWidth / 2f - 80; // top right corner-ish
-        float clockY = camera.position.y + camera.viewportHeight / 2f - 80;
-
-        clockHUD.render(batch, clockX, clockY);
-
         batch.end();
 
+        // === Draw ClockHUD in screen space and scaled ===
+        batch.setProjectionMatrix(stage.getCamera().combined); // Switch to screen-space
+        batch.begin();
+
+        // Apply a scaling transform (e.g., 2x size)
+        Matrix4 originalTransform = batch.getTransformMatrix().cpy();
+        Matrix4 scaled = new Matrix4().setToScaling(2f, 2f, 1f); // Scale 2x
+        batch.setTransformMatrix(scaled);
+
+        // Adjust HUD position because scaling affects it (divide by scale)
+        float scale = 2f;
+        float hudX = (Gdx.graphics.getWidth() - 170) / scale;
+        float hudY = (Gdx.graphics.getHeight() - 130) / scale;
+        clockHUD.render(batch, hudX, hudY);
+
+        // Restore original transform
+        batch.setTransformMatrix(originalTransform);
+        batch.end();
+
+        // === Draw stage UI ===
         stage.act(delta);
         stage.draw();
     }
