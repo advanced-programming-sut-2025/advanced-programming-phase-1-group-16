@@ -6,7 +6,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.food.BuffType;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.time.TimeDate;
 import com.group16.stardewvalley.model.user.Player;
@@ -33,6 +36,10 @@ public class ClockHUD {
     private static final int CLOCK_WIDTH = 70;
     private static final int CLOCK_HEIGHT = 60;
     private static final float SCALE = 1.2f; // 2x bigger
+
+    private Image buffIcon;
+
+
     public ClockHUD() {
         clockTexture = new Texture("sprites/Clock.png"); // Place this in assets
 
@@ -57,6 +64,9 @@ public class ClockHUD {
         rainyRegion = new TextureRegion(clockTexture, 106, 9, 12, 8);
         stormRegion = new TextureRegion(clockTexture, 119, 18, 12, 8);
         snowyRegion = new TextureRegion(clockTexture, 93, 18, 12, 8);
+
+        buffIcon = new Image();
+
 
     }
 
@@ -139,6 +149,15 @@ public class ClockHUD {
 // Draw text right-aligned inside the box
         float textX = boxX + boxWidth - textWidth; // right edge - text width
         font.draw(batch, layout, textX, boxY);
+
+        BuffType buff = player.getBuffer();
+        if (buff != BuffType.NONE) {
+            buffIcon.setDrawable(new TextureRegionDrawable(
+                new TextureRegion(GameAssetManager.getGameAssetManager().getTexture(buff.getTexturePath()))
+            ));
+        } else {
+            buffIcon.setDrawable(null);
+        }
 
 
 
