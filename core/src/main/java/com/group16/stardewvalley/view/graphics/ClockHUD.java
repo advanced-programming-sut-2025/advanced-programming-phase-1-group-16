@@ -61,7 +61,6 @@ public class ClockHUD {
     }
 
     public void render(SpriteBatch batch, float screenX, float screenY) {
-        TimeDate time = App.getActiveGame().getTimeDate();
         Player player = App.getActiveGame().getCurrentPlayer();
 
         float scaledWidth = CLOCK_WIDTH * SCALE;
@@ -75,7 +74,7 @@ public class ClockHUD {
         float originY = screenY + scaledHeight / 2f + 12;
 
         //TODO: uncomment following line and delete its next line if you debugged time (hour) system
-//        float rotation = (App.getActiveGame().getTimeDate().getHour() - 6) * 30f;
+//        float rotation = (TimeDate.getInstance(App.getActiveGame()).getHour() - 6) * 30f;
         float rotation = 5 * 30f;
 
 //         Draw pointer, scaled
@@ -83,12 +82,13 @@ public class ClockHUD {
             3, scaledHeight / 2, 10, CLOCK_HEIGHT,
             SCALE, SCALE, rotation );
 
-        // Draw date (upper field)
-        font.draw(batch, time.getDayOfWeek() + ". " + time.getDay() ,
-            screenX + 25, screenY + 59);
+// Draw time (lower field)
+        font.draw(batch, TimeDate.getInstance(App.getActiveGame()).getTime(), screenX + 30, screenY + 32);
 
-        // Draw time (lower field)
-        font.draw(batch, time.getTime(), screenX + 30, screenY + 32);
+// Draw date (upper field)
+        font.draw(batch, TimeDate.getInstance(App.getActiveGame()).getDayOfWeek() + ". " +
+            TimeDate.getInstance(App.getActiveGame()).getDay(), screenX + 25, screenY + 59);
+
 
         // Draw season icon
         switch (App.getActiveGame().getSeason()){
@@ -120,12 +120,6 @@ public class ClockHUD {
 
 
         //Draw money
-//        String money = String.valueOf(App.getActiveGame().getCurrentPlayer().getCoin());
-//        if (App.getActiveGame().getCurrentPlayer().getCoin() == 0 || App.getActiveGame().getCurrentPlayer() == null){
-//            money = "5460";
-//        }
-//        font.draw(batch, money , screenX + 47, screenY + 8);
-
         String money;
         if (App.getActiveGame().getCurrentPlayer() == null || App.getActiveGame().getCurrentPlayer().getCoin() == 0) {
             money = "000";

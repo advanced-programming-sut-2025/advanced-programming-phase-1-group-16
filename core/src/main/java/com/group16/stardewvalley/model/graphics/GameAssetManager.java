@@ -16,6 +16,7 @@ import com.group16.stardewvalley.model.agriculture.TreeType;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.items.Stone;
+import com.group16.stardewvalley.model.time.TimeDate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -101,7 +102,7 @@ public class GameAssetManager {
     public TextureRegion getTreeRegion(Tree tree) {
         String name = tree.getTreeType().getName().replace(" ", "_");
         int stage = tree.getStage();
-        String season = App.getActiveGame().getTimeDate().getSeason().getName().toLowerCase();
+        String season = TimeDate.getInstance(App.getActiveGame()).getSeason().getName().toLowerCase();
         String fruitState = tree.HasFruit() ? "Fruit" : "";
         String key = name + "_stage_" + stage + "_season_" + season + fruitState;
 

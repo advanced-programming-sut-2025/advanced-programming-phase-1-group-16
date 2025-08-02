@@ -12,6 +12,7 @@ import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.map.Direction;
 import com.group16.stardewvalley.model.map.Tile;
+import com.group16.stardewvalley.model.time.TimeDate;
 import com.group16.stardewvalley.model.tools.Hoe;
 import com.group16.stardewvalley.model.tools.Scythe;
 import com.group16.stardewvalley.model.user.Player;
@@ -141,7 +142,7 @@ public class GameController {
                 System.out.println(agricultureController.fertilizePlant("speed gro", "up"));
                 return true;
             case Input.Keys.TAB:
-                App.getActiveGame().getTimeDate().advanceDateCheat(1);
+                TimeDate.getInstance(App.getActiveGame()).advanceDateCheat(1);
                 return true;
             case Input.Keys.T:
                 return true;

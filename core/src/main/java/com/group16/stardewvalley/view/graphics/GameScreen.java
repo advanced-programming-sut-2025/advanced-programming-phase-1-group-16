@@ -28,6 +28,7 @@ import com.group16.stardewvalley.model.food.Ingredient;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.graphics.TileRenderer;
 import com.group16.stardewvalley.model.map.TileTextureManager;
+import com.group16.stardewvalley.model.time.TimeDate;
 import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.view.menuGraphics.PreGameMenuView;
 
@@ -83,20 +84,20 @@ public class GameScreen implements Screen, InputProcessor {
 
 
         // === Pause Button ===
-        TextButton pauseButton = new TextButton("Pause", GameAssetManager.getGameAssetManager().getSkin());
-        pauseButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                togglePause();
-            }
-        });
-
-        Table topLeft = new Table();
-        topLeft.top().left().setFillParent(true);
-        topLeft.add(pauseButton).pad(10).padLeft(50).padTop(50);
-        stage.addActor(topLeft);
-
-        createPauseMenu();
+//        TextButton pauseButton = new TextButton("Pause", GameAssetManager.getGameAssetManager().getSkin());
+//        pauseButton.addListener(new ChangeListener() {
+//            @Override
+//            public void changed(ChangeEvent event, Actor actor) {
+//                togglePause();
+//            }
+//        });
+//
+//        Table topLeft = new Table();
+//        topLeft.top().left().setFillParent(true);
+//        topLeft.add(pauseButton).pad(10).padLeft(50).padTop(50);
+//        stage.addActor(topLeft);
+//
+//        createPauseMenu();
     }
 
 
@@ -142,9 +143,14 @@ public class GameScreen implements Screen, InputProcessor {
 
     private static void handleTurn() {
         totalGameTime += Gdx.graphics.getDeltaTime();
-        if (totalGameTime > 30f) {
-            App.getActiveGame().nextTurn();
+
+        // For example: 30 seconds real time = 1 hour game time
+        if (totalGameTime >= 10f) {
+            TimeDate.getInstance(App.getActiveGame()).advanceOneHour(); // advance game time
+            System.out.println(TimeDate.getInstance(App.getActiveGame()).getDateTime());
+
             totalGameTime = 0f;
+            App.getActiveGame().nextTurn(); // if needed for other game state updates
         }
     }
 
