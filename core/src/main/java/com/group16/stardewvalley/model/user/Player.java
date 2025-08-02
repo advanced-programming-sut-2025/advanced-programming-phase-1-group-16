@@ -5,8 +5,10 @@ import com.group16.stardewvalley.model.NPC.NPCInteraction;
 import com.group16.stardewvalley.model.Request;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.agriculture.Seeds;
+import com.group16.stardewvalley.model.food.BuffType;
 import com.group16.stardewvalley.model.food.Food;
 import com.group16.stardewvalley.model.graphics.Heros;
+import com.group16.stardewvalley.model.food.FoodFactory;
 import com.group16.stardewvalley.model.map.Farm;
 import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.map.Tile;
@@ -33,6 +35,7 @@ import com.group16.stardewvalley.model.tools.WateringCan;
 public class Player {
     private User user;
     private Farm farm;
+    private HomeMap homeMap;
     private double energy;
     private boolean isEnergyUnlimited;
     private Pos position;
@@ -62,12 +65,14 @@ public class Player {
     private Player spouse;
     private final int[] relationshipRanks = {100, 200, 300, 400};
     private final int[] NPCRelationshipRanks = {200, 400, 600, 800};
-    private String buffer;
+    private BuffType buffer;
     private boolean isBuffActive;
     private int hourPastForBuff;
     private int finalHourBuff;
     private Location location;
     private Heros hero;
+    private boolean isAtHome = false;
+
 
     //UI
     private PlayerGraphics playerGraphics;
@@ -103,10 +108,11 @@ public class Player {
         this.isBuffActive = false;
         hourPastForBuff = 0;
         finalHourBuff = 0;
-        this.buffer = "";
+        this.buffer = BuffType.NONE;
         this.location = null;
 
        this.hero = user.getHero();
+        learnRecipe(FoodFactory.tripleShotEspresso());
     }
 
     //TODO یادت باشه ست کنی اینو وقتی بازی جدید میسازی
@@ -118,6 +124,22 @@ public class Player {
 
     public void setPlayerGraphics(String spritePath, int frameWidth, int frameHeight) {
         this.playerGraphics = new PlayerGraphics(this, spritePath, frameWidth, frameHeight);
+    }
+
+    public HomeMap getHomeMap() {
+        return homeMap;
+    }
+
+    public void setHomeMap(HomeMap homeMap) {
+        this.homeMap = homeMap;
+    }
+
+    public boolean isAtHome() {
+        return isAtHome;
+    }
+
+    public void setAtHome(boolean atHome) {
+        isAtHome = atHome;
     }
 
     public Direction getCurrentDirection() {
@@ -200,11 +222,11 @@ public class Player {
         isBuffActive = buffActive;
     }
 
-    public String getBuffer() {
+    public BuffType getBuffer() {
         return buffer;
     }
 
-    public void setBuffer(String buffer) {
+    public void setBuffer(BuffType buffer) {
         this.buffer = buffer;
     }
 
@@ -543,6 +565,7 @@ public class Player {
     public void faint(){
         this.isFainted = true;
         this.energy = 0;
+        App.getActiveGame().nextTurn();
     }
 
     public String getUsername() {
@@ -567,6 +590,4 @@ public class Player {
     public void increaseTodayIncome(int amount){
         todayIncome += amount;
     }
-
-
 }

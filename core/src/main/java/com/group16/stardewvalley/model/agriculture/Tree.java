@@ -35,7 +35,7 @@ public class Tree {
         this.isWatered = false;
         this.isFertilized = false;
         this.isWateredYesterday = true;
-        this.hasFruit = true;
+        this.hasFruit = false;
         this.daySincePickFruit = 0;
     }
 

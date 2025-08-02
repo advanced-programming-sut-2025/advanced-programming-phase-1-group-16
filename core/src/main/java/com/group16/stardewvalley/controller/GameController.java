@@ -1,14 +1,26 @@
 package com.group16.stardewvalley.controller;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.Align;
 import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.controller.agriculture.AgricultureController;
 import com.group16.stardewvalley.controller.map.MapController;
+import com.group16.stardewvalley.controller.menu.HomeMenuController;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.agriculture.Seed;
 import com.group16.stardewvalley.model.agriculture.Seeds;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.food.BuffType;
+import com.group16.stardewvalley.model.food.Food;
+import com.group16.stardewvalley.model.food.FoodFactory;
+import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.map.Direction;
 import com.group16.stardewvalley.model.map.Tile;
@@ -16,6 +28,7 @@ import com.group16.stardewvalley.model.time.TimeDate;
 import com.group16.stardewvalley.model.tools.Hoe;
 import com.group16.stardewvalley.model.tools.Scythe;
 import com.group16.stardewvalley.model.user.Player;
+import com.group16.stardewvalley.view.graphics.CookingMenu;
 
 import static com.group16.stardewvalley.view.graphics.GameScreen.showMiniMap;
 
@@ -23,20 +36,50 @@ public class GameController {
     private final PlayersController playersController;
     private final MapController mapController;
     private final AgricultureController agricultureController;
+    private final HomeMenuController homeMenuController;
+    private CookingMenu cookingMenu;
+    private boolean isCookingMenuOpen = false;
 
     public GameController() {
         this.agricultureController = new AgricultureController();
         this.playersController = new PlayersController();
         this.mapController = new MapController();
+        this.homeMenuController = new HomeMenuController();
     }
 
     public void update(float delta) {
+        if (isCookingMenuOpen) return; // بازی آپدیت نشه
         playersController.update(delta);
     }
 
     public void render() {
-        mapController.drawMap(Main.getBatch());
+        Player player = App.getActiveGame().getCurrentPlayer();
+        if (player.isAtHome()){
+            player.getHomeMap().render(Main.getBatch());
+        } else {
+            mapController.drawMap(Main.getBatch());
+        }
+
         playersController.render();
+
+        drawPlayerBuff();
+
+    }
+
+    private void drawPlayerBuff() {
+        Player player = App.getActiveGame().getCurrentPlayer();
+        BuffType buff = player.getBuffer();
+
+        if (buff != BuffType.NONE) {
+            Texture buffTexture = GameAssetManager.getGameAssetManager().getTexture(buff.getTexturePath());
+
+            // موقعیت نمایش: وسط بالای صفحه
+            float x = 20;
+            float y = Gdx.graphics.getHeight() - 84;  // از بالا 64 پیکسل پایین‌تر، با فاصله
+
+
+            Main.getBatch().draw(buffTexture, x, y, 64, 64);
+        }
     }
 
     public boolean handleInput(int keycode) {
@@ -95,7 +138,7 @@ public class GameController {
 
             case Input.Keys.M:
                 showMiniMap = !showMiniMap;
-            case Input.Keys.C:
+            case Input.Keys.V:
                 if (player.getCurrentEquipment() != null) {
                     int targetY = player.getPosition().getY() + player.getCurrentDirection().getyDelta();
                     int targetX = player.getPosition().getX() + player.getCurrentDirection().getxDelta();
@@ -124,6 +167,24 @@ public class GameController {
                     player.setCurrentThing(null);
                 }
                 return true;
+            case Input.Keys.C:
+                if (player.isAtHome()) {
+                    if (!isCookingMenuOpen) {
+                        cookingMenu = new CookingMenu(
+                                GameAssetManager.getGameAssetManager().getSkin(),
+                                App.getActiveGame().getCurrentPlayer().getKnownRecipes()
+                        );
+                        Main.getMain().getGameScreen().getStage().addActor(cookingMenu);
+                        Main.getMain().getGameScreen().getStage().addActor(cookingMenu.getTooltip());
+                        isCookingMenuOpen = true;
+                    } else {
+                        cookingMenu.remove();
+                        cookingMenu = null;
+                        isCookingMenuOpen = false;
+                    }
+                }
+
+                return true;
             case Input.Keys.X:
                 if (player.getCurrentEquipment() == null) {
                     player.equip(new Hoe("hoe",0, "base"));
@@ -145,11 +206,20 @@ public class GameController {
                 TimeDate.getInstance(App.getActiveGame()).advanceDateCheat(1);
                 return true;
             case Input.Keys.T:
+                Result result = homeMenuController.eat(FoodFactory.tripleShotEspresso().getName());
+                if (result.isSuccessful()) {
+                    Food food = FoodFactory.tripleShotEspresso();
+                    showEatEffect(food.getName(), food.getBuff().getDescription(), food.getEnergy());
+                }
                 return true;
             case Input.Keys.F4:
                 return true;
             default:
                 return false;
+        }
+
+        if (player.isAtHome()) {
+            return false;
         }
 
         Result result = mapController.walk((int) nextX, (int) nextY);
@@ -164,4 +234,31 @@ public class GameController {
         }
         return false;
     }
+
+    public void showEatEffect(String foodName, String buff, int energy) {
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle.font = new BitmapFont();
+        labelStyle.fontColor = Color.YELLOW;
+
+        String message = " Ate " + foodName + "\n+" + energy + " Energy";
+
+        if (!buff.isEmpty()) {
+            message += "\n" + buff + " Buff Activated!";
+        }
+
+        final Label label = new Label(message, labelStyle);
+        label.setFontScale(1.2f);
+        label.setPosition(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
+        label.setAlignment(Align.center);
+        label.addAction(Actions.sequence(
+            Actions.parallel(
+                Actions.moveBy(0, 100, 2f),
+                Actions.fadeOut(2f)
+            ),
+            Actions.removeActor()
+        ));
+
+        Main.getMain().getGameScreen().getStage().addActor(label);
+    }
+
 }

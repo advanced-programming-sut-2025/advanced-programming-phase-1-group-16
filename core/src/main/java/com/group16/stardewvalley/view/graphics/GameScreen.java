@@ -3,6 +3,7 @@ package com.group16.stardewvalley.view.graphics;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
@@ -16,7 +17,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.controller.GameController;
@@ -27,7 +30,10 @@ import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.food.FoodIngredient;
 import com.group16.stardewvalley.model.food.Ingredient;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
+import com.group16.stardewvalley.model.graphics.GameHUD;
+import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.graphics.TileRenderer;
+import com.group16.stardewvalley.model.map.*;
 import com.group16.stardewvalley.model.map.TileTextureManager;
 import com.group16.stardewvalley.model.time.TimeDate;
 import com.group16.stardewvalley.model.user.Player;
@@ -46,6 +52,9 @@ public class GameScreen implements Screen, InputProcessor {
     public static boolean showMiniMap = false;
     private OrthographicCamera miniMapCamera;
     private Viewport miniMapViewport;
+
+    private Stage stage;
+    private GameHUD gameHUD;
 
     private Stage stage;
     private Skin skin = GameAssetManager.getGameAssetManager().getSkin();
@@ -73,9 +82,17 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void show() {
+        stage = new Stage(new ScreenViewport());
+        Gdx.input.setInputProcessor(stage);
         batch = Main.getBatch();
         textureManager = new TileTextureManager();
         tileRenderer = new TileRenderer();
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(stage);
+        multiplexer.addProcessor(this);
+        Gdx.input.setInputProcessor(multiplexer);
+
+        gameHUD = new GameHUD(stage, GameAssetManager.getGameAssetManager().getSkin());
         Gdx.input.setInputProcessor(new InputMultiplexer(this, stage = new Stage()));
 
         clockHUD = new ClockHUD();
@@ -108,9 +125,16 @@ public class GameScreen implements Screen, InputProcessor {
             controller.update(delta);
             handleTurn();
         }
+        controller.update(delta);
+        gameHUD.updateHUD();
+        handleTurn();
 
         // Choose camera
         if (showMiniMap) {
+        if (App.getActiveGame().getCurrentPlayer().isAtHome()) {
+            setCameraForHouse();
+        }
+        else if (showMiniMap) {
             setCameraForMiniMap();
         } else {
             setCameraForMap();
@@ -149,6 +173,15 @@ public class GameScreen implements Screen, InputProcessor {
         // === Draw stage UI ===
         stage.act(delta);
         stage.draw();
+    }
+        }
+
+    private void setCameraForHouse() {
+        camera.position.set(camera.viewportWidth + 200, camera.viewportHeight + 100, 0);
+        camera.zoom = 3.5f;
+
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);
     }
 
 
@@ -193,6 +226,7 @@ public class GameScreen implements Screen, InputProcessor {
             mapPixelHeight - viewportHeight / 2f);
 
         camera.position.set(cameraX, cameraY, 0);
+        camera.zoom = 1f;
         camera.update();
         batch.setProjectionMatrix(camera.combined);
     }
@@ -260,6 +294,13 @@ public class GameScreen implements Screen, InputProcessor {
                     Result result = player.getInventory().addItem(new FoodIngredient(fruitName, tree.getFruitSellPrice(), ingredient), 4);
                 }
             }
+        }
+        else if (App.getActiveGame().getMap()[tileY][tileX].getType().equals(TileType.Cottage) &&
+                    !player.isAtHome()) {
+            player.setHomeMap(new HomeMap(player));
+            player.setAtHome(true);
+        } else if (player.isAtHome()) {
+            player.setAtHome(false);
         }
     }
 
