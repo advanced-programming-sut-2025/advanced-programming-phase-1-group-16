@@ -48,8 +48,6 @@ public class GameAssetManager {
     }
 
 
-    private final Skin skin = new Skin(Gdx.files.internal("assets/skin-rainbow/rainbow-ui.json"));
-
     private final String crop = "Foraging/Grape.png";
     private final String tree = "Trees/Pine_Stage_4.png";
     private final String item = "Crafting/Stone.png";

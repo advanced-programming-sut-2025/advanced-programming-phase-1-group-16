@@ -3,7 +3,6 @@ package com.group16.stardewvalley.view.graphics;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
@@ -17,7 +16,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -29,8 +27,6 @@ import com.group16.stardewvalley.model.agriculture.Tree;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.food.FoodIngredient;
 import com.group16.stardewvalley.model.food.Ingredient;
-import com.group16.stardewvalley.model.graphics.GameAssetManager;
-import com.group16.stardewvalley.model.graphics.GameHUD;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.graphics.TileRenderer;
 import com.group16.stardewvalley.model.map.*;
@@ -54,9 +50,7 @@ public class GameScreen implements Screen, InputProcessor {
     private Viewport miniMapViewport;
 
     private Stage stage;
-    private GameHUD gameHUD;
 
-    private Stage stage;
     private Skin skin = GameAssetManager.getGameAssetManager().getSkin();
     private Table pauseMenu;
     private boolean isPaused = false;
@@ -92,7 +86,6 @@ public class GameScreen implements Screen, InputProcessor {
         multiplexer.addProcessor(this);
         Gdx.input.setInputProcessor(multiplexer);
 
-        gameHUD = new GameHUD(stage, GameAssetManager.getGameAssetManager().getSkin());
         Gdx.input.setInputProcessor(new InputMultiplexer(this, stage = new Stage()));
 
         clockHUD = new ClockHUD();
@@ -125,12 +118,8 @@ public class GameScreen implements Screen, InputProcessor {
             controller.update(delta);
             handleTurn();
         }
-        controller.update(delta);
-        gameHUD.updateHUD();
-        handleTurn();
 
         // Choose camera
-        if (showMiniMap) {
         if (App.getActiveGame().getCurrentPlayer().isAtHome()) {
             setCameraForHouse();
         }
@@ -173,8 +162,8 @@ public class GameScreen implements Screen, InputProcessor {
         // === Draw stage UI ===
         stage.act(delta);
         stage.draw();
+
     }
-        }
 
     private void setCameraForHouse() {
         camera.position.set(camera.viewportWidth + 200, camera.viewportHeight + 100, 0);
@@ -371,4 +360,11 @@ public class GameScreen implements Screen, InputProcessor {
         pauseMenu.setVisible(isPaused);
     }
 
+    public Stage getStage() {
+        return stage;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
 }
