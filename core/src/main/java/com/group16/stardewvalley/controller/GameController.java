@@ -219,7 +219,6 @@ public class GameController {
                 return true;
 
             case Input.Keys.B:
-            case Input.Keys.B:
                 if (!isCraftingMenuOpen) {
                     craftMenu = new CraftMenu(
                         GameAssetManager.getGameAssetManager().getSkin(),
@@ -232,8 +231,6 @@ public class GameController {
                     craftMenu = null;
                     isCraftingMenuOpen = false;
                 }
-                return true;
-
                 return true;
 
 

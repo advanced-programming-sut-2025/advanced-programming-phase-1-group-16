@@ -71,6 +71,7 @@ public class GameAssetManager {
     private final Map<String, Texture> foodTextures = new HashMap<>();
     private final Map<String, Texture> ingredientTextures = new HashMap<>();
     private final Map<String, Texture> craftingTextures = new HashMap<>();
+    private final Map<String, Texture> craftingIngredientTextures = new HashMap<>();
 
     private final Texture houseTexture = new Texture("House/House_1.png");
 
@@ -258,6 +259,19 @@ public class GameAssetManager {
             }
         }
         return craftingTextures.get(name);
+    }
+
+    public Texture getCraftingIngredientTexture(Ingredient craftingItem) {
+        String name = craftingItem.getName().replace(" ", "_");
+        if (!craftingIngredientTextures.containsKey(name)) {
+            try {
+                Texture texture = new Texture("Crafting/" + name + ".png");
+                craftingIngredientTextures.put(name, texture);
+            } catch (Exception e) {
+                craftingIngredientTextures.put(name, itemTexture);
+            }
+        }
+        return craftingIngredientTextures.get(name);
     }
 
 

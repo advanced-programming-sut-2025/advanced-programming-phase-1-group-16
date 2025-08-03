@@ -1,6 +1,6 @@
 package com.group16.stardewvalley.model.food;
 
-public enum Ingredient {
+public enum     Ingredient {
     EGG("Egg"),
     SARDINE("Sardine"),
     SALMON("Salmon"),
