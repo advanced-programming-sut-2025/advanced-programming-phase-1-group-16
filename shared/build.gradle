@@ -1,0 +1,14 @@
+plugins {
+  id 'java'
+}
+
+group 'com.mygdx.game'
+version '1.0'
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  // فعلاً نیاز خاصی نیست، اگه بخوای مثلاً Gson برای JSON یا چیزای دیگه اضافه کنی، اینجا اضافه کن
+}
