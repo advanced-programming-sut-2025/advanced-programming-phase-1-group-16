@@ -19,27 +19,27 @@ public class LoginMenu implements MenuInterface {
         Matcher matcher = null;
         //register
         if ((matcher = LoginMenuCommands.Register.getMatcher(input)) != null) {
-            Result result = controller.register(matcher.group("username"),
-                    matcher.group("password"), matcher.group("passwordConfirm"), matcher.group("nickName"),
-                    matcher.group("email"), matcher.group("gender"));
-
-            System.out.println(result);
-            boolean success = result.isSuccessful();
+//            Result result = controller.register(matcher.group("username"),
+//                    matcher.group("password"), matcher.group("passwordConfirm"), matcher.group("nickName"),
+//                    matcher.group("email"), matcher.group("gender"));
+//
+//            System.out.println(result);
+//            boolean success = result.isSuccessful();
 
 
             //random password handling
 
-            if (success) {
-                //security questions have been shown
-                //get security question
-                String input2 = scanner.nextLine();
-                Matcher matcher2 = LoginMenuCommands.PickSecurityQuestion.getMatcher(input2);
-                if (matcher2 != null) {
-                    System.out.println(controller.setSecurityQuestion(matcher.group("username"), matcher2.group("questionNumber"),
-                            matcher2.group("answer"), matcher2.group("answerConfirm")));
-                }
-
-            }
+//            if (success) {
+//                //security questions have been shown
+//                //get security question
+//                String input2 = scanner.nextLine();
+//                Matcher matcher2 = LoginMenuCommands.PickSecurityQuestion.getMatcher(input2);
+//                if (matcher2 != null) {
+//                    System.out.println(controller.setSecurityQuestion(matcher.group("username"), matcher2.group("questionNumber"),
+//                            matcher2.group("answer"), matcher2.group("answerConfirm")));
+//                }
+//
+//            }
 
         }else if((matcher = LoginMenuCommands.Login.getMatcher(input)) != null) {
             boolean logged_in_flag = false;
@@ -66,7 +66,7 @@ public class LoginMenu implements MenuInterface {
                         String input3 = scanner.nextLine();
                         Matcher matcher3 = LoginMenuCommands.GetNewPassword.getMatcher(input3);
                         if(matcher3 != null) {
-                            System.out.println(controller.getNewPassword( matcher.group("username") ,matcher3.group("password")));
+//                            System.out.println(controller.getNewPassword( matcher.group("username") ,matcher3.group("password")));
                         }else {
                             System.out.println("invalid password!");
 

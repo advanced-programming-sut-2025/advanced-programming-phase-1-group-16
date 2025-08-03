@@ -7,6 +7,7 @@ import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.agriculture.Seeds;
 import com.group16.stardewvalley.model.food.BuffType;
 import com.group16.stardewvalley.model.food.Food;
+import com.group16.stardewvalley.model.graphics.Heros;
 import com.group16.stardewvalley.model.food.FoodFactory;
 import com.group16.stardewvalley.model.map.Farm;
 import com.group16.stardewvalley.model.map.Pos;
@@ -70,7 +71,7 @@ public class Player {
     private int finalHourBuff;
     private Location location;
     private boolean isAtHome = false;
-
+    private Heros hero;
 
     //UI
     private PlayerGraphics playerGraphics;
@@ -109,6 +110,11 @@ public class Player {
         this.buffer = BuffType.NONE;
         this.location = null;
         learnRecipe(FoodFactory.tripleShotEspresso());
+
+        // Assign a random hero from the enum
+        Heros[] allHeroes = Heros.values();
+        int index = (int)(Math.random() * allHeroes.length);
+        this.hero = allHeroes[index];
     }
 
     //TODO یادت باشه ست کنی اینو وقتی بازی جدید میسازی
@@ -584,5 +590,10 @@ public class Player {
 
     public void increaseTodayIncome(int amount){
         todayIncome += amount;
+    }
+
+
+    public void setHero(Heros hero) {
+        this.hero = hero;
     }
 }

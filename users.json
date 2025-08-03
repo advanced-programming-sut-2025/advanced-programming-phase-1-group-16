@@ -1,49 +1,24 @@
 [ {
-  "username" : "Fa-nilli",
-  "password" : "Byebye1234!",
-  "nickName" : "fatemeh",
-  "email" : "salam@sd.com",
+  "username" : "fatemeh",
+  "password" : "1234",
+  "nickName" : "nilli",
+  "email" : "fatemeh@gmail.com",
   "gender" : "female",
   "gamePlayed" : 0,
-  "logged_in_flag" : true,
+  "logged_in_flag" : false,
   "userSecurityQuestion" : "q3",
   "securityAnswer" : "apple",
-  "hasActiveGame" : false,
-  "currentGame" : null
-}, {
-  "username" : "Sara",
-  "password" : "VQmTiDhDz@T9ZOY!Hh",
-  "nickName" : "sara",
-  "email" : "salam@sd.com",
-  "gender" : "female",
-  "gamePlayed" : 0,
-  "logged_in_flag" : false,
-  "userSecurityQuestion" : "q5",
-  "securityAnswer" : "pizza",
-  "hasActiveGame" : false,
-  "currentGame" : null
-}, {
-  "username" : "Atena",
-  "password" : "Salam12!",
-  "nickName" : "atena",
-  "email" : "salam@sd.com",
-  "gender" : "female",
-  "gamePlayed" : 0,
-  "logged_in_flag" : false,
-  "userSecurityQuestion" : "q2",
-  "securityAnswer" : "garfild",
-  "hasActiveGame" : false,
-  "currentGame" : null
-}, {
-  "username" : "gholi",
-  "password" : "Salam34!",
-  "nickName" : "gholi",
-  "email" : "salam@sd.com",
-  "gender" : "male",
-  "gamePlayed" : 0,
-  "logged_in_flag" : false,
-  "userSecurityQuestion" : null,
-  "securityAnswer" : null,
-  "hasActiveGame" : false,
-  "currentGame" : null
-} ]
+  "hasActiveGame" : false
+},
+  {
+    "username" : "as",
+    "password" : "as",
+    "nickName" : "as",
+    "email" : "fatemeh@gmail.com",
+    "gender" : "female",
+    "gamePlayed" : 0,
+    "logged_in_flag" : false,
+    "userSecurityQuestion" : "q3",
+    "securityAnswer" : "apple",
+    "hasActiveGame" : false
+  }]

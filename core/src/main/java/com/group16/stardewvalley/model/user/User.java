@@ -1,9 +1,12 @@
 package com.group16.stardewvalley.model.user;
 
-
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.group16.stardewvalley.model.app.Game;
 
 import static com.group16.stardewvalley.model.app.App.users;
+import static com.group16.stardewvalley.model.user.UserSaveManager.loadUsers;
 
 public class User {
     //register data
@@ -22,8 +25,29 @@ public class User {
     boolean hasActiveGame;
     private Game currentGame;
 
+//    public User(String username, String password, String nickName, String email, String gender) {
+//        this.username = username;
+//        this.password = password;
+//        this.nickName = nickName;
+//        this.email = email;
+//        this.gender = gender;
+//        this.logged_in_flag = false;
+//        this.hasActiveGame = false;
+//    }
 
-    public User(String username, String password, String nickName, String email, String gender) {
+
+    // Default constructor needed for Jackson
+    public User() {
+        // Initialize defaults if needed
+        this.gender = "";
+    }
+
+    @JsonCreator
+    public User(@JsonProperty("username") String username,
+                @JsonProperty("password") String password,
+                @JsonProperty("nickName") String nickName,
+                @JsonProperty("email") String email,
+                @JsonProperty("gender") String gender) {
         this.username = username;
         this.password = password;
         this.nickName = nickName;
@@ -61,11 +85,10 @@ public class User {
         return securityAnswer;
     }
 
+    @JsonIgnore
     public Game getCurrentGame() {
         return currentGame;
     }
-
-
 
     public void setUsername(String username) {
         this.username = username;
@@ -91,10 +114,10 @@ public class User {
         this.securityAnswer = securityAnswer;
     }
 
+    @JsonIgnore
     public void setCurrentGroup(Game currentGame) {
         this.currentGame = currentGame;
     }
-
 
     public boolean isLogged_in_flag() {
         return logged_in_flag;
@@ -103,8 +126,6 @@ public class User {
     public void setLogged_in_flag(boolean logged_in_flag) {
         this.logged_in_flag = logged_in_flag;
     }
-
-
 
     public int getGamePlayed() {
         return gamePlayed;
@@ -122,7 +143,8 @@ public class User {
         this.gamePlayed = gamePlayed;
     }
 
-    public static User  getUserByUsername(String username) {
+    public static User getUserByUsername(String username) {
+        loadUsers();
         for (User user : users) {
             if (user.getUsername().equals(username)) {
                 return user;
@@ -130,6 +152,4 @@ public class User {
         }
         return null; // Username not found
     }
-
-
 }

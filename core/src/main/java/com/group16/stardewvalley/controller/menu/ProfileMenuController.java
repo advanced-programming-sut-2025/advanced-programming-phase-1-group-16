@@ -1,16 +1,36 @@
 package com.group16.stardewvalley.controller.menu;
 
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.Timer;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
+import com.group16.stardewvalley.model.graphics.Heros;
 import com.group16.stardewvalley.model.menu.Menu;
 import com.group16.stardewvalley.model.menu.ProfileMenuCommands;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.model.user.User;
+import com.group16.stardewvalley.model.user.UserSaveManager;
+import com.group16.stardewvalley.view.menuGraphics.ProfileMenuView;
 
 public class ProfileMenuController {
+    //graphical elements
+    private ProfileMenuView view;
+    private final User currentUser;
 
+
+    public ProfileMenuController() {
+        this.currentUser = App.getLoggedInUser();
+    }
+
+    public void setView(ProfileMenuView view) {
+        this.view = view;
+    }
+
+
+
+    //main elements
 
     public Result changeUsername(String username){
         User user = App.getLoggedInUser();
@@ -25,6 +45,7 @@ public class ProfileMenuController {
         }
 
         user.setUsername(username);
+        UserSaveManager.saveUsers();
         return new Result(true, "username successfully changed!");
     }
 
@@ -34,6 +55,8 @@ public class ProfileMenuController {
         }
 
         App.getLoggedInUser().setNickName(nickname);
+        UserSaveManager.saveUsers();
+
         return new Result(true, "nickname successfully changed!");
     }
 
@@ -46,6 +69,8 @@ public class ProfileMenuController {
             return new Result(false, "enter a new email!");
         }
         user.setEmail(email);
+        UserSaveManager.saveUsers();
+
         return new Result(true, "email successfully changed!");
     }
 
@@ -75,8 +100,27 @@ public class ProfileMenuController {
 
 
         user.setPassword(newPassword);
+        UserSaveManager.saveUsers();
+
         return new Result(true, "password successfully changed!");
     }
+
+    public Result setAvatar(Heros hero) {
+        User user = App.getLoggedInUser();
+        Player player = App.getCurrentPlayer();
+
+        if (hero == null ) {
+            return new Result(false, "Hero name cannot be empty.");
+        }
+
+
+
+        player.setHero(hero); // Assuming setHero(String) exists in Player
+        UserSaveManager.saveUsers();
+
+        return new Result(true, "Avatar successfully changed to " + hero.toString() + "!");
+    }
+
 
     public Result showUserInfo(){
         User user = App.getLoggedInUser();
