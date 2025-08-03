@@ -18,6 +18,7 @@ import com.group16.stardewvalley.model.food.Food;
 import com.group16.stardewvalley.model.food.FoodFactory;
 import com.group16.stardewvalley.model.food.Ingredient;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
+import com.group16.stardewvalley.view.AppView;
 
 import java.util.List;
 import java.util.Set;
@@ -155,7 +156,7 @@ public class CookingMenu extends Window {
         super.act(delta);
 
         if (tooltip.isVisible()) {
-            Vector2 mousePos = Main.getMain().getGameScreen().getStage().screenToStageCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
+            Vector2 mousePos = AppView.getGameScreen().getStage().screenToStageCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
             tooltip.setPosition(mousePos.x + 10, mousePos.y - 10);
         }
     }

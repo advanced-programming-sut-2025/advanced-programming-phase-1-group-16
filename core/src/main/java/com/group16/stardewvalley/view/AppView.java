@@ -13,9 +13,12 @@ import java.util.Scanner;
 public class AppView implements Screen {
 
     private final Main game;
+    private static GameScreen gameScreen;
+
 
     public AppView(Main game) {
         this.game = game;
+        gameScreen = new GameScreen();
     }
 
     @Override
@@ -29,8 +32,8 @@ public class AppView implements Screen {
         // معادل حلقه‌ی do-while قبلی
         App.getCurrentMenu().checkCommand(scanner); // اگر هنوز Scanner استفاده می‌کنی، باید UI بشه
         if (App.getActiveGame() != null) {
-
-            game.setScreen(new GameScreen());
+            gameScreen = new GameScreen();
+            game.setScreen(gameScreen);
 
         }
 
@@ -41,6 +44,10 @@ public class AppView implements Screen {
             System.out.println("Exiting...");
             // در آینده بهتره exit رو کنترل کنی
         }
+    }
+
+    public static GameScreen getGameScreen() {
+        return gameScreen;
     }
 
     @Override public void resize(int width, int height) {}

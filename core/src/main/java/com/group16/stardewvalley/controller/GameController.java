@@ -27,6 +27,7 @@ import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.tools.Hoe;
 import com.group16.stardewvalley.model.tools.Scythe;
 import com.group16.stardewvalley.model.user.Player;
+import com.group16.stardewvalley.view.AppView;
 import com.group16.stardewvalley.view.graphics.CookingMenu;
 
 import static com.group16.stardewvalley.view.graphics.GameScreen.showMiniMap;
@@ -148,8 +149,8 @@ public class GameController {
                                 GameAssetManager.getGameAssetManager().getSkin(),
                                 App.getActiveGame().getCurrentPlayer().getKnownRecipes()
                         );
-                        Main.getMain().getGameScreen().getStage().addActor(cookingMenu);
-                        Main.getMain().getGameScreen().getStage().addActor(cookingMenu.getTooltip());
+                        AppView.getGameScreen().getStage().addActor(cookingMenu);
+                        AppView.getGameScreen().getStage().addActor(cookingMenu.getTooltip());
                         isCookingMenuOpen = true;
                     } else {
                         cookingMenu.remove();
@@ -232,7 +233,7 @@ public class GameController {
             Actions.removeActor()
         ));
 
-        Main.getMain().getGameScreen().getStage().addActor(label);
+        AppView.getGameScreen().getStage().addActor(label);
     }
 
 }

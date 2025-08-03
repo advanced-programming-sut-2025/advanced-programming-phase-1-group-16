@@ -92,11 +92,13 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.group16.stardewvalley.controller.menu.StartMenuController;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
+import com.group16.stardewvalley.view.graphics.GameScreen;
 import com.group16.stardewvalley.view.menuGraphics.StartMenuView;
 
 public class Main extends Game {
     private static Main main;
     private static SpriteBatch batch;
+
 
     @Override
     public void create() {
