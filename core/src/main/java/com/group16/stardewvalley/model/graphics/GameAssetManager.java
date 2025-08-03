@@ -15,6 +15,7 @@ import com.group16.stardewvalley.model.agriculture.Mineral;
 import com.group16.stardewvalley.model.agriculture.Tree;
 import com.group16.stardewvalley.model.agriculture.TreeType;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.crafting.CraftingRecipes;
 import com.group16.stardewvalley.model.food.Food;
 import com.group16.stardewvalley.model.food.Ingredient;
 import com.group16.stardewvalley.model.items.Item;
@@ -69,6 +70,7 @@ public class GameAssetManager {
     private final Map<String, Texture> giantCropTextures = new HashMap<>();
     private final Map<String, Texture> foodTextures = new HashMap<>();
     private final Map<String, Texture> ingredientTextures = new HashMap<>();
+    private final Map<String, Texture> craftingTextures = new HashMap<>();
 
     private final Texture houseTexture = new Texture("House/House_1.png");
 
@@ -244,6 +246,20 @@ public class GameAssetManager {
         }
         return ingredientTextures.get(name);
     }
+
+    public Texture getCraftingTexture(CraftingRecipes craftingItem) {
+        String name = craftingItem.getName().replace(" ", "_");
+        if (!craftingTextures.containsKey(name)) {
+            try {
+                Texture texture = new Texture("Crafting/" + name + ".png");
+                craftingTextures.put(name, texture);
+            } catch (Exception e) {
+                craftingTextures.put(name, itemTexture);
+            }
+        }
+        return craftingTextures.get(name);
+    }
+
 
     public Texture getTexture(String path) {
         return new Texture(path);

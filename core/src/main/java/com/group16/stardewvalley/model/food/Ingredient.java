@@ -75,7 +75,25 @@ public enum Ingredient {
     YAM("Yam"),
     SWEET_GEM_BERRY("Sweet Gem Berry"),
     POWDERMELON("Powdermelon"),
-    ANCIENT_FRUIT("Ancient Fruit");
+    ANCIENT_FRUIT("Ancient Fruit"),
+
+    // Crafting Ingredients
+    COAL("Coal"),
+    COPPER_ORE("Copper Ore"),
+    IRON_ORE("Iron Ore"),
+    GOLD_ORE("Gold Ore"),
+    IRIDIUM_ORE("Iridium Ore"),
+    COPPER_BAR("Copper Bar"),
+    IRON_BAR("Iron Bar"),
+    GOLD_BAR("Gold Bar"),
+    IRIDIUM_BAR("Iridium Bar"),
+    WOOD("Wood"),
+    STONE("Stone"),
+    ACORN("Acorn"),
+    MAPLE_SEED("Maple Seed"),
+    PINE_CONE("Pine Cone"),
+    MAHOGANY_SEED("Mahogany Seed");
+
 
     private final String name;
 

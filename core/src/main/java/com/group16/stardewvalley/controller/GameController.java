@@ -29,6 +29,7 @@ import com.group16.stardewvalley.model.tools.Hoe;
 import com.group16.stardewvalley.model.tools.Scythe;
 import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.view.graphics.CookingMenu;
+import com.group16.stardewvalley.view.graphics.CraftMenu;
 
 import static com.group16.stardewvalley.view.graphics.GameScreen.showMiniMap;
 
@@ -39,6 +40,8 @@ public class GameController {
     private final HomeMenuController homeMenuController;
     private CookingMenu cookingMenu;
     private boolean isCookingMenuOpen = false;
+    private CraftMenu craftMenu;
+    private boolean isCraftingMenuOpen = false;
 
     public GameController() {
         this.agricultureController = new AgricultureController();
@@ -214,6 +217,26 @@ public class GameController {
                 return true;
             case Input.Keys.F4:
                 return true;
+
+            case Input.Keys.B:
+            case Input.Keys.B:
+                if (!isCraftingMenuOpen) {
+                    craftMenu = new CraftMenu(
+                        GameAssetManager.getGameAssetManager().getSkin(),
+                        App.getActiveGame().getCurrentPlayer().getInventory().getCraftingRecipes()                    );
+                    Main.getMain().getGameScreen().getStage().addActor(craftMenu);
+                    Main.getMain().getGameScreen().getStage().addActor(craftMenu.getTooltip());
+                    isCraftingMenuOpen = true;
+                } else {
+                    craftMenu.remove();
+                    craftMenu = null;
+                    isCraftingMenuOpen = false;
+                }
+                return true;
+
+                return true;
+
+
             default:
                 return false;
         }
