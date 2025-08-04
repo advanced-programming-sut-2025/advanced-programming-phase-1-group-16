@@ -3,11 +3,18 @@ package io.github.stradew.lwjgl3;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.group16.stardewvalley.Main;
+import com.group16.stardewvalley.app.ServerConnection;
 
 /** Launches the desktop (LWJGL3) application. */
 public class Lwjgl3Launcher {
+    public static ServerConnection connection;
+
     public static void main(String[] args) {
         if (StartupHelper.startNewJvmIfRequired()) return; // This handles macOS support and helps on Windows.
+
+        connection = new ServerConnection("localhost", 8888);
+        connection.start();
+
         createApplication();
     }
 
