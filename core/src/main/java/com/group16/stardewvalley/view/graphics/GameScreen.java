@@ -57,7 +57,7 @@ public class GameScreen implements Screen, InputProcessor {
     private Table pauseMenu;
     private boolean isPaused = false;
 
-    private ClockHUD clockHUD;
+    private GameHUD gameHUD;
 
 
     public static final int TILE_SIZE = 17;
@@ -73,6 +73,8 @@ public class GameScreen implements Screen, InputProcessor {
 
         miniMapViewport = new FillViewport(mapPixelWidth, mapPixelHeight, miniMapCamera);
         miniMapViewport.apply();
+
+
 
     }
 
@@ -90,7 +92,7 @@ public class GameScreen implements Screen, InputProcessor {
 
         Gdx.input.setInputProcessor(new InputMultiplexer(this, stage = new Stage()));
 
-        clockHUD = new ClockHUD();
+        gameHUD = new GameHUD();
 
 
 
@@ -142,7 +144,7 @@ public class GameScreen implements Screen, InputProcessor {
         controller.render();
         batch.end();
 
-        // === Draw ClockHUD in screen space and scaled ===
+        // === Draw GameHUD in screen space and scaled ===
         batch.setProjectionMatrix(stage.getCamera().combined); // Switch to screen-space
         batch.begin();
 
@@ -155,7 +157,13 @@ public class GameScreen implements Screen, InputProcessor {
         float scale = 2f;
         float hudX = (Gdx.graphics.getWidth() - 170) / scale;
         float hudY = (Gdx.graphics.getHeight() - 130) / scale;
-        clockHUD.render(batch, hudX, hudY);
+
+        float barx = (Gdx.graphics.getWidth() - 35 - 15) / scale;
+        float bary = 30 / scale;
+
+        gameHUD.render(batch, hudX, hudY, barx, bary);
+
+
 
         // Restore original transform
         batch.setTransformMatrix(originalTransform);
@@ -228,7 +236,8 @@ public class GameScreen implements Screen, InputProcessor {
     public void dispose() {
         batch.dispose();
         stage.dispose();
-        clockHUD.dispose();
+        gameHUD.dispose();
+
 
         textureManager.dispose();
         for (Player player : App.getActiveGame().getPlayers()) {

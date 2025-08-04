@@ -37,6 +37,7 @@ public class Player {
     private Farm farm;
     private HomeMap homeMap;
     private double energy;
+    public static final double MAXENERGY = 2000;
     private boolean isEnergyUnlimited;
     private Pos position;
     private Inventory inventory;
@@ -96,7 +97,7 @@ public class Player {
         isEnergyUnlimited = false;
         inventory = new Inventory();
         energyCeiling = 2000;
-        energy = 2000;
+        energy = MAXENERGY;
         this.spouse = null;
         isFainted = false;
         this.dailyPlayerInteraction = new HashMap<>();
