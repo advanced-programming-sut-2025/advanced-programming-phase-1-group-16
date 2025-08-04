@@ -10,5 +10,6 @@ repositories {
 }
 
 dependencies {
-  // فعلاً نیاز خاصی نیست، اگه بخوای مثلاً Gson برای JSON یا چیزای دیگه اضافه کنی، اینجا اضافه کن
+  implementation project(":core")
+  implementation 'com.google.code.gson:gson:2.10.1'
 }

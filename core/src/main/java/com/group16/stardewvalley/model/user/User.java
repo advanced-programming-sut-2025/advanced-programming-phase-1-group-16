@@ -3,6 +3,7 @@ package com.group16.stardewvalley.model.user;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.group16.stardewvalley.data.UserDataSQL;
 import com.group16.stardewvalley.model.app.Game;
 
 import static com.group16.stardewvalley.model.app.App.users;
@@ -91,19 +92,24 @@ public class User {
     }
 
     public void setUsername(String username) {
+        UserDataSQL.getInstance().updateUsername(this.username, username);
+
         this.username = username;
     }
 
     public void setPassword(String password) {
         this.password = password;
+        UserDataSQL.getInstance().updatePassword(username, this.password);
     }
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
+        UserDataSQL.getInstance().updateNickname(username, nickName);
     }
 
     public void setEmail(String email) {
         this.email = email;
+        UserDataSQL.getInstance().updateEmail(username, email);
     }
 
     public void setUserSecurityQuestion(SecurityQuestions userSecurityQuestion) {

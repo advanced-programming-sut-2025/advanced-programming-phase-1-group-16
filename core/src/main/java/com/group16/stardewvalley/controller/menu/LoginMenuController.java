@@ -2,12 +2,14 @@ package com.group16.stardewvalley.controller.menu;
 
 
 import com.group16.stardewvalley.Main;
+import com.group16.stardewvalley.data.UserDataSQL;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.menu.LoginMenuCommands;
 import com.group16.stardewvalley.model.menu.Menu;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.user.User;
+import com.group16.stardewvalley.model.user.UserDatabase;
 import com.group16.stardewvalley.model.user.UserSaveManager;
 import com.group16.stardewvalley.view.menuGraphics.LoginMenuView;
 import com.group16.stardewvalley.view.menuGraphics.StartMenuView;
@@ -33,7 +35,7 @@ public class LoginMenuController  {
 
     //login  methods
     public Result login(String username, String password, boolean stayLoggedIn){
-        User user = getUserByUsername(username);
+        User user = UserDataSQL.getInstance().getUserByUsername(username);
         if(user == null) {
             return new Result(false, "username doesn't exist!");
         }
@@ -52,7 +54,7 @@ public class LoginMenuController  {
     }
 
     public Result forgetPassword(String username){
-        User user = getUserByUsername(username);
+        User user = UserDataSQL.getInstance().getUserByUsername(username);
         if(user == null) {
             return new Result(false, "username doesn't exist!");
         }
@@ -60,7 +62,7 @@ public class LoginMenuController  {
     }
 
     public Result checkSecurityAnswer(String username, String answer){
-        User user = getUserByUsername(username);
+        User user = UserDataSQL.getInstance().getUserByUsername(username);
 
         if(!user.getSecurityAnswer().equals(answer)) {
             return new Result(false, "your answer is incorrect!");

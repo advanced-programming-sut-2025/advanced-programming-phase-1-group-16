@@ -1,6 +1,7 @@
 package com.group16.stardewvalley.controller.menu;
 
 import com.group16.stardewvalley.Main;
+import com.group16.stardewvalley.data.UserDataSQL;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
@@ -17,6 +18,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.group16.stardewvalley.model.user.User.getUserByUsername;
+import static com.group16.stardewvalley.model.user.UserSaveManager.loadUsers;
 import static com.group16.stardewvalley.model.user.UserSaveManager.saveUsers;
 
 public class SignUpMenuController {
@@ -66,9 +68,7 @@ public class SignUpMenuController {
 
         //successful
         User newUser = new User(username,password,nickName,email,gender);
-        App.getUsers().add(newUser);
-
-        UserSaveManager.saveUsers();
+        UserDataSQL.getInstance().addUser(newUser);
 
 //        UserSaveManager.addUserAndSave(newUser); // Save new user to json file
 
