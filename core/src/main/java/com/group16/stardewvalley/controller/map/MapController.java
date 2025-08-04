@@ -384,10 +384,39 @@ public class MapController {
             }
         }
 
+//        for (PlaceType placeType : PlaceType.values()) {
+//            TextureRegion texture = PlaceTextureManager.getPlaceTextureManager().getShopTexture(placeType);
+//            batch.draw(texture, placeType.getStartPosition().getX() * TILE_SIZE, (App.getActiveGame().getMapHeight() - placeType.getStartPosition().getY() )* TILE_SIZE);
+//        }
         for (PlaceType placeType : PlaceType.values()) {
             TextureRegion texture = PlaceTextureManager.getPlaceTextureManager().getShopTexture(placeType);
-            batch.draw(texture, placeType.getStartPosition().getX() * TILE_SIZE, (App.getActiveGame().getMapHeight() - placeType.getStartPosition().getY() )* TILE_SIZE);
+
+            float x = placeType.getStartPosition().getX() * TILE_SIZE;
+            float y = (App.getActiveGame().getMapHeight() - placeType.getStartPosition().getY()) * TILE_SIZE;
+
+            if (placeType.equals(PlaceType.CarpentersShop)) {
+                float yOffset = -250f;// move 20 pixels lower (you can adjust this value)
+                float xOffset = -100f;
+                batch.draw(
+                    texture,
+                    x + xOffset,
+                    y + yOffset,
+                    texture.getRegionWidth() * 0.45f,
+                    texture.getRegionHeight() * 0.45f
+                );
+            } else if (placeType.equals(PlaceType.MarniesRanch)) {
+                batch.draw(
+                    texture,
+                    x,
+                    y,
+                    texture.getRegionWidth() * 0.45f,
+                    texture.getRegionHeight() * 0.45f
+                );
+            } else {
+                batch.draw(texture, x, y);
+            }
         }
+
     }
 
 

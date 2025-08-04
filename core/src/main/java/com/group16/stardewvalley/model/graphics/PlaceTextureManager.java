@@ -43,10 +43,12 @@ public class PlaceTextureManager {
 
         places.put(PlaceType.Blacksmith, new TextureRegion(shopSpriteSheet, 400, 0, 112, 128));
         places.put(PlaceType.JojaMart, new TextureRegion(shopSpriteSheet, 0, 837, 320, 155));
-        places.put(PlaceType.MarniesRanch, new TextureRegion(shopSpriteSheet, 0, 0, 128, 175));
+//        places.put(PlaceType.MarniesRanch, new TextureRegion(shopSpriteSheet, 0, 0, 128, 175));
+        places.put(PlaceType.MarniesRanch, new TextureRegion(new Texture("Shops/Ranch.png")));
         places.put(PlaceType.PierresGeneralStore, new TextureRegion(shopSpriteSheet, 0, 176, 239, 147));
         places.put(PlaceType.TheStardropSaloon, new TextureRegion(shopSpriteSheet, 239, 176, 113, 144));
-        places.put(PlaceType.CarpentersShop, new TextureRegion(shopSpriteSheet, 190, 640, 195, 161));
+//        places.put(PlaceType.CarpentersShop, new TextureRegion(shopSpriteSheet, 190, 640, 195, 161));
+        places.put(PlaceType.CarpentersShop, new TextureRegion(new Texture("Shops/Carpenter.png")));
         places.put(PlaceType.FishShop, new TextureRegion(shopSpriteSheet, 384, 665, 128, 136));
 
         places.put(PlaceType.Abigail, new TextureRegion(npcSpriteSheet, 79, 0, 82, 112));
