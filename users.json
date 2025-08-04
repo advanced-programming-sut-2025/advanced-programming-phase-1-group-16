@@ -1,12 +1,23 @@
 [ {
-  "username" : "atena",
-  "password" : "@Atena12345*",
-  "nickName" : "ati",
-  "email" : "atena@gmail.com",
-  "gender" : "female",
+  "username" : "fff",
+  "password" : "\\2vtW2A/7W}8{($",
+  "nickName" : "ff",
+  "email" : "fff@ffff.fff",
+  "gender" : "male",
+  "gamePlayed" : 0,
+  "logged_in_flag" : false,
+  "userSecurityQuestion" : null,
+  "securityAnswer" : null,
+  "hasActiveGame" : false
+}, {
+  "username" : "jjj",
+  "password" : ";^^40&bb6GWz%Lj",
+  "nickName" : "hh",
+  "email" : "hhh@hhh.ggg",
+  "gender" : "male",
   "gamePlayed" : 0,
   "logged_in_flag" : false,
   "userSecurityQuestion" : "q1",
-  "securityAnswer" : "nik",
+  "securityAnswer" : "hhhh",
   "hasActiveGame" : false
 } ]
