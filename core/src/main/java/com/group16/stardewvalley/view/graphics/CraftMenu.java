@@ -20,7 +20,9 @@ import com.group16.stardewvalley.model.food.Ingredient;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CraftMenu extends Window {
     private final Skin skin;
@@ -28,14 +30,16 @@ public class CraftMenu extends Window {
     private final Window tooltip;
     private Crafting craftingController = new Crafting();
     private CheatCodeController CheatController = new CheatCodeController();
+    private final Map<CraftingRecipes, Table> tooltipCache = new HashMap<>();
+    private Label resultLabel;
 
     public CraftMenu(Skin skin, ArrayList<CraftingRecipes> knownCraftingRecipes){
-        super("Cooking Menu", skin);
+        super("Crafting Menu", skin);
         this.skin = skin;
         this.knownCraftingRecipes = knownCraftingRecipes;
 
 
-        tooltip = new com.badlogic.gdx.scenes.scene2d.ui.Window("Crafting", skin);
+        tooltip = new com.badlogic.gdx.scenes.scene2d.ui.Window("", skin);
         tooltip.setMovable(true);
         tooltip.setVisible(false);
         tooltip.setKeepWithinStage(true);
@@ -85,6 +89,7 @@ public class CraftMenu extends Window {
                     }else {
                         System.out.println(result.message());
                     }
+                    resultLabel.setText(result.message());
                 }
             });
 
@@ -93,13 +98,13 @@ public class CraftMenu extends Window {
                 public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                     tooltip.clear();
 
-                    Table content = getDescriptionTable(craftItem);
+                    Table content = tooltipCache.computeIfAbsent(craftItem, item -> getDescriptionTable(item));
 
                     tooltip.add(content).pad(50);
                     tooltip.pack();
                     tooltip.setVisible(true);
-
                 }
+
 
                 @Override
                 public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
@@ -113,7 +118,18 @@ public class CraftMenu extends Window {
         }
 
         ScrollPane scroll = new ScrollPane(grid, skin);
-        add(scroll).expand().fill();
+
+        // Clear any previous children from the window and start clean layout
+        clear(); // clear previous layout children (like multiple scrolls if called again)
+
+        add(scroll).expand().fill().row(); // put scrollpane and go to next row
+
+        resultLabel = new Label("", skin);
+        resultLabel.setColor(Color.LIGHT_GRAY);
+        resultLabel.setWrap(true); // wrap text for long messages
+
+        add(resultLabel).padBottom(15).padLeft(200).fillX().height(50);
+
     }
 
     private Table getDescriptionTable(CraftingRecipes craftingItem) {
@@ -141,12 +157,6 @@ public class CraftMenu extends Window {
             content.add(ingRow).left().row();
         }
 
-//        content.add(new Label("This is very nutritious.", skin)).padTop(5).row();
-//
-//        Table energyRow = new Table();
-//        energyRow.add(new Image(new Texture("Crafting/Energy.png"))).size(25);
-//        energyRow.add(new Label(" +" + food.getEnergy() + " Energy", skin));
-//        content.add(energyRow).left().row();
         return content;
     }
 
