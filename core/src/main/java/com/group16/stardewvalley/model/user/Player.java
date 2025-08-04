@@ -502,7 +502,7 @@ public class Player {
         if (amount <= 0) {
             amount = 0;
         }
-        energy = Math.min(energy + amount, energyCeiling);
+        energy = Math.min(energy + amount, MAXENERGY);
     }
 
     private boolean isInBound(int x, int y, TileType[][] map) {

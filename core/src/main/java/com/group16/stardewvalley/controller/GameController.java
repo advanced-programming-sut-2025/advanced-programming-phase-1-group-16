@@ -94,6 +94,7 @@ public class GameController {
         float speed = player.getSpeed();
 
         switch (keycode) {
+            //MOVEMENT-1
             case Input.Keys.UP:
                 player.setCurrentDirection(Direction.UP);
                 nextY += speed;
@@ -115,8 +116,7 @@ public class GameController {
                 left = true;
                 break;
 
-
-
+                //MOVEMENT-2
             case Input.Keys.W:
                 player.setCurrentDirection(Direction.UP);
                 nextY += speed;
@@ -140,7 +140,10 @@ public class GameController {
 
 
             case Input.Keys.M:
+                //minimize and maximize map
                 showMiniMap = !showMiniMap;
+                return true;
+
             case Input.Keys.V:
                 if (player.getCurrentEquipment() != null) {
                     int targetY = player.getPosition().getY() + player.getCurrentDirection().getyDelta();
@@ -171,6 +174,7 @@ public class GameController {
                 }
                 return true;
             case Input.Keys.C:
+                //cooking menu
                 if (player.isAtHome()) {
                     if (!isCookingMenuOpen) {
                         cookingMenu = new CookingMenu(
@@ -199,15 +203,23 @@ public class GameController {
             case Input.Keys.Y:
                 player.equip(new Scythe("scythe", 0, "base"));
                 return true;
+
             case Input.Keys.E:
             case Input.Keys.ESCAPE:
+                //TODO: for inventory menu
                 return true;
+
+
+
             case Input.Keys.F:
                 System.out.println(agricultureController.fertilizePlant("speed gro", "up"));
                 return true;
+
             case Input.Keys.TAB:
+                //time cheat code: +1 day
                 TimeDate.getInstance(App.getActiveGame()).advanceDateCheat(1);
                 return true;
+
             case Input.Keys.T:
                 Result result = homeMenuController.eat(FoodFactory.tripleShotEspresso().getName());
                 if (result.isSuccessful()) {
@@ -219,6 +231,7 @@ public class GameController {
                 return true;
 
             case Input.Keys.B:
+                //Crafting menu
                 if (!isCraftingMenuOpen) {
                     craftMenu = new CraftMenu(
                         GameAssetManager.getGameAssetManager().getSkin(),
@@ -233,6 +246,11 @@ public class GameController {
                 }
                 return true;
 
+            case Input.Keys.G:
+                //energy cheat code +200
+                App.getActiveGame().getCurrentPlayer().increaseEnergy(200);
+
+                return true;
 
             default:
                 return false;

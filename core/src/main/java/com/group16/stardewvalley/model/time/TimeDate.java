@@ -43,6 +43,18 @@ public class TimeDate {
         return instance;
     }
 
+    // جلو بردن زمان به اندازه 10 دقیقه
+    public void advanceTenMinutes() {
+        minute += 10;
+
+        if (minute >= 60) {
+            minute -= 60;
+            advanceOneHour();
+        }
+
+    }
+
+
     // افزایش یک ساعت
     public void advanceOneHour() {
         hour++;

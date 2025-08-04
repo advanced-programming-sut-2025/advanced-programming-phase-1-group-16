@@ -44,12 +44,15 @@ public class GameScreen implements Screen, InputProcessor {
     public static OrthographicCamera camera;
     private Viewport viewport;
     TileRenderer tileRenderer;
+
     public static float totalGameTime = 0f;
+    private static int tenMinuteCounter = 0;
+    private static float oneHourGameTime = 30f;
+
     public static boolean showMiniMap = false;
     private OrthographicCamera miniMapCamera;
     private Viewport miniMapViewport;
 
-    private static float oneHourGameTime = 30f;
 
     private Stage stage;
 
@@ -194,18 +197,36 @@ public class GameScreen implements Screen, InputProcessor {
         batch.setProjectionMatrix(miniMapCamera.combined);
     }
 
+//    private static void handleTurn() {
+//        totalGameTime += Gdx.graphics.getDeltaTime();
+//
+//        if (totalGameTime >= oneHourGameTime) {
+//            TimeDate.getInstance(App.getActiveGame()).advanceOneHour(); // advance game time
+//            System.out.println(TimeDate.getInstance(App.getActiveGame()).getDateTime());
+//
+//            totalGameTime = 0f;
+//            App.getActiveGame().nextTurn(); // if needed for other game state updates
+//        }
+//    }
+
+
     private static void handleTurn() {
         totalGameTime += Gdx.graphics.getDeltaTime();
 
-        // For example: 30 seconds real time = 1 hour game time
-        if (totalGameTime >= oneHourGameTime) {
-            TimeDate.getInstance(App.getActiveGame()).advanceOneHour(); // advance game time
+        if (totalGameTime >= oneHourGameTime / 6f) {
+            TimeDate.getInstance(App.getActiveGame()).advanceTenMinutes();
             System.out.println(TimeDate.getInstance(App.getActiveGame()).getDateTime());
 
+            tenMinuteCounter++;
             totalGameTime = 0f;
-            App.getActiveGame().nextTurn(); // if needed for other game state updates
+
+            if (tenMinuteCounter >= 6) {
+                App.getActiveGame().nextTurn();
+                tenMinuteCounter = 0;
+            }
         }
     }
+
 
     private void setCameraForMap() {
         float viewportWidth = camera.viewportWidth;
