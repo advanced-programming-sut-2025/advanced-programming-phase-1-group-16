@@ -365,7 +365,7 @@ public class MapController {
             for (int x = 0; x < map[y].length; x++) {
                 Tile tile = map[y][x];
                 Texture texture;
-                texture = TileTextureManager.getTileTextureManager().getTexture(tile.getType());
+                    texture = TileTextureManager.getTileTextureManager().getTexture(tile.getType());
                 if (tile.isHasWater()) { //TODO یه عکس واسش درست کن چون زشته
                     batch.setColor(0f, 0f, 1f, 0.2f);
                 }
@@ -399,8 +399,8 @@ public class MapController {
                     texture,
                     x ,
                     y ,
-                    texture.getRegionWidth() * 0.35f,
-                    texture.getRegionHeight() * 0.35f
+                    texture.getRegionWidth() * 1f,
+                    texture.getRegionHeight() * 1f
                 );
             } else {
                 batch.draw(texture, x, y);
@@ -409,15 +409,25 @@ public class MapController {
 
     }
 
-    public static boolean isPlayerInsidePlace(Pos playerPos, PlaceType placeType) {
-        int startX = placeType.getStartPosition().getX();
-        int startY = placeType.getStartPosition().getY();
-        int endX = startX + placeType.getWidth();
-        int endY = startY + placeType.getHeight();
 
-        return playerPos.getX() >= startX && playerPos.getX() < endX
-            && playerPos.getY() >= startY && playerPos.getY() < endY;
+    public static boolean isPlayerInsidePlace(Player player, PlaceType placeType) {
+        Pos start = placeType.getStartPosition();
+        int width = placeType.getWidth();
+        int height = placeType.getHeight();
+
+        int mapHeight = App.getActiveGame().getMapHeight();
+
+        int placeX1 = start.getX();
+        int placeX2 = start.getX() + width - 1;
+
+        // invert Y-coordinates to match top-left origin
+        int placeY2 = mapHeight - start.getY();  // top edge
+        int placeY1 = placeY2 - height + 1;      // bottom edge
+
+        return player.getX() >= placeX1 && player.getX() <= placeX2
+            && player.getY() >= placeY1 && player.getY() <= placeY2;
     }
+
 
 
 }

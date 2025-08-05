@@ -35,6 +35,9 @@ import com.group16.stardewvalley.model.time.TimeDate;
 import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.view.menuGraphics.PreGameMenuView;
 
+import javax.swing.text.Position;
+
+import static com.group16.stardewvalley.controller.map.MapController.isPlayerInsidePlace;
 import static com.group16.stardewvalley.controller.menu.HomeMenuController.findIngredient;
 
 public class GameScreen implements Screen, InputProcessor {
@@ -52,6 +55,8 @@ public class GameScreen implements Screen, InputProcessor {
     public static boolean showMiniMap = false;
     private OrthographicCamera miniMapCamera;
     private Viewport miniMapViewport;
+
+    private ShopMenuManager shopMenuManager;
 
 
     private Stage stage;
@@ -78,7 +83,6 @@ public class GameScreen implements Screen, InputProcessor {
         miniMapViewport.apply();
 
 
-
     }
 
     @Override
@@ -98,6 +102,7 @@ public class GameScreen implements Screen, InputProcessor {
         gameHUD = new GameHUD();
 
 
+        shopMenuManager = new ShopMenuManager(Main.getMain().getGameScreen().getStage(), GameAssetManager.getGameAssetManager().getSkin());
 
 
 
@@ -197,35 +202,34 @@ public class GameScreen implements Screen, InputProcessor {
         batch.setProjectionMatrix(miniMapCamera.combined);
     }
 
-    private static void handleTurn() {
-        totalGameTime += Gdx.graphics.getDeltaTime();
-
-        if (totalGameTime >= oneHourGameTime) {
-            TimeDate.getInstance(App.getActiveGame()).advanceOneHour(); // advance game time
-            System.out.println(TimeDate.getInstance(App.getActiveGame()).getDateTime() + " " + TimeDate.getInstance(App.getActiveGame()).getSeason());
-
-            totalGameTime = 0f;
-            App.getActiveGame().nextTurn(); // if needed for other game state updates
-        }
-    }
-
-
 //    private static void handleTurn() {
 //        totalGameTime += Gdx.graphics.getDeltaTime();
 //
-//        if (totalGameTime >= oneHourGameTime / 6f) {
-//            TimeDate.getInstance(App.getActiveGame()).advanceTenMinutes();
-//            System.out.println(TimeDate.getInstance(App.getActiveGame()).getDateTime());
+//        if (totalGameTime >= oneHourGameTime) {
+//            TimeDate.getInstance(App.getActiveGame()).advanceOneHour(); // advance game time
+//            System.out.println(TimeDate.getInstance(App.getActiveGame()).getDateTime() + " " + TimeDate.getInstance(App.getActiveGame()).getSeason());
 //
-//            tenMinuteCounter++;
 //            totalGameTime = 0f;
-//
-//            if (tenMinuteCounter >= 6) {
-//                App.getActiveGame().nextTurn();
-//                tenMinuteCounter = 0;
-//            }
+//            App.getActiveGame().nextTurn(); // if needed for other game state updates
 //        }
 //    }
+
+
+    private static void handleTurn() {
+        totalGameTime += Gdx.graphics.getDeltaTime();
+
+        if (totalGameTime >= oneHourGameTime / 6f) {
+            TimeDate.getInstance(App.getActiveGame()).advanceTenMinutes();
+
+            tenMinuteCounter++;
+            totalGameTime = 0f;
+
+            if (tenMinuteCounter >= 6) {
+                App.getActiveGame().nextTurn();
+                tenMinuteCounter = 0;
+            }
+        }
+    }
 
 
     private void setCameraForMap() {
@@ -298,13 +302,62 @@ public class GameScreen implements Screen, InputProcessor {
         return false;
     }
 
+//    private void handleRightClick(int screenX, int screenY) {
+//        Vector3 worldCoordinates = camera.unproject(new Vector3(screenX, screenY, 0));
+//        int tileX = (int) worldCoordinates.x / TILE_SIZE;
+//        int tileY = (int) worldCoordinates.y / TILE_SIZE;
+//
+//        Player player = App.getActiveGame().getCurrentPlayer();
+//        boolean isAdjacent = (Math.abs(player.getX() - tileX) + Math.abs(player.getY() - tileY) ) == 1;
+//
+//        Tree tree = App.getActiveGame().getMap()[tileY][tileX].getTree();
+//        if (isAdjacent && tree != null) {
+//            if (tree.HasFruit()) {
+//                tree.handpickFruit();
+//                String fruitName = tree.getTreeType().getFruitName().toUpperCase().replace(" ", "_");
+//                Ingredient ingredient = findIngredient(fruitName);
+//                if (ingredient != null) {
+//                    Result result = player.getInventory().addItem(new FoodIngredient(fruitName, tree.getFruitSellPrice(), ingredient), 4);
+//                }
+//            }
+//        }
+//        else if (App.getActiveGame().getMap()[tileY][tileX].getType().equals(TileType.Cottage) &&
+//                    !player.isAtHome()) {
+//            player.setHomeMap(new HomeMap(player));
+//            player.setAtHome(true);
+//        } else if (player.isAtHome()) {
+//            player.setAtHome(false);
+//        }
+//
+//
+//        //Open shops
+//        else if (isPlayerInsidePlace(new Pos(tileX, tileY), PlaceType.CarpentersShop) ) {
+//            if (shopMenuManager.isMenuOpenFor(PlaceType.CarpentersShop)) {
+//                shopMenuManager.closeMenu();
+//            } else {
+//                shopMenuManager.openMenu(PlaceType.CarpentersShop);
+//            }
+//        }
+//
+//    }
+
     private void handleRightClick(int screenX, int screenY) {
         Vector3 worldCoordinates = camera.unproject(new Vector3(screenX, screenY, 0));
         int tileX = (int) worldCoordinates.x / TILE_SIZE;
         int tileY = (int) worldCoordinates.y / TILE_SIZE;
+        //tileX and tileY are the coordination which user clicked on it
 
         Player player = App.getActiveGame().getCurrentPlayer();
-        boolean isAdjacent = (Math.abs(player.getX() - tileX) + Math.abs(player.getY() - tileY) ) == 1;
+        int playerX = player.getX();
+        int playerY = player.getY();
+
+        int dx = Math.abs(playerX - tileX);
+        int dy = Math.abs(playerY - tileY);
+        boolean isAdjacent = (dx <= 1 && dy <= 1) && (dx + dy > 0);
+
+        System.out.println("Clicked tile: (" + tileX + ", " + tileY + ")");
+        System.out.println("Player tile:  (" + playerX + ", " + playerY + ")");
+
         Tree tree = App.getActiveGame().getMap()[tileY][tileX].getTree();
         if (isAdjacent && tree != null) {
             if (tree.HasFruit()) {
@@ -315,15 +368,50 @@ public class GameScreen implements Screen, InputProcessor {
                     Result result = player.getInventory().addItem(new FoodIngredient(fruitName, tree.getFruitSellPrice(), ingredient), 4);
                 }
             }
-        }
-        else if (App.getActiveGame().getMap()[tileY][tileX].getType().equals(TileType.Cottage) &&
-                    !player.isAtHome()) {
+        } else if (App.getActiveGame().getMap()[tileY][tileX].getType().equals(TileType.Cottage) &&
+            !player.isAtHome()) {
             player.setHomeMap(new HomeMap(player));
             player.setAtHome(true);
         } else if (player.isAtHome()) {
             player.setAtHome(false);
         }
+
+        // DEBUG: Check if tile is inside Carpenter's Shop area
+        boolean inCarpenterShop = isPlayerInsidePlace(player, PlaceType.CarpentersShop);
+        System.out.println("Clicked inside Carpenter's Shop: " + inCarpenterShop);
+        PlaceType carpenterShop = PlaceType.CarpentersShop;
+        Pos start = carpenterShop.getStartPosition();
+        int width = carpenterShop.getWidth();
+        int height = carpenterShop.getHeight();
+        int mapHeight = App.getActiveGame().getMapHeight();
+
+        int x1 = start.getX();
+        int x2 = x1 + width - 1;
+
+        int y2 = mapHeight - start.getY();
+        int y1 = y2 - height + 1;
+
+        System.out.println("Carpenter's Shop bounds:");
+        System.out.println("Start tile: (" + x1 + ", " + y1 + ")");
+        System.out.println("Width x Height: " + width + " x " + height);
+        System.out.println("Covers tiles from (" + x1 + ", " + y1 + ") to (" + x2 + ", " + y2 + ")");
+
+
+        // Open Carpenter's Shop
+        if (inCarpenterShop ) {
+            System.out.println("Trying to open Carpenter's Shop menu...");
+
+            if (shopMenuManager.isMenuOpenFor(PlaceType.CarpentersShop)) {
+                System.out.println("Menu is already open. Closing it.");
+                shopMenuManager.closeMenu();
+            } else {
+                System.out.println("Menu is closed. Opening it.");
+                shopMenuManager.openMenu(PlaceType.CarpentersShop);
+            }
+        }
     }
+
+
 
     @Override
     public boolean touchUp(int i, int i1, int i2, int i3) {

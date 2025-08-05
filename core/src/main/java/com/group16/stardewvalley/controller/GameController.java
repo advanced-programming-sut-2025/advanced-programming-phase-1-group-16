@@ -193,46 +193,12 @@ public class GameController {
                 }
 
                 return true;
-            case Input.Keys.X:
-                if (player.getCurrentEquipment() == null) {
-                    player.equip(new Hoe("hoe",0, "base"));
-                } else {
-                    player.equip(null);
-                    player.setCurrentThing(Seeds.MIXED_SEED);
-                }
-                return true;
-            case Input.Keys.Y:
-                player.equip(new Scythe("scythe", 0, "base"));
-                return true;
-
-            case Input.Keys.E:
-            case Input.Keys.ESCAPE:
-                //TODO: for inventory menu
-                return true;
-
-
-
-            case Input.Keys.F:
-                System.out.println(agricultureController.fertilizePlant("speed gro", "up"));
-                return true;
-
-
-            case Input.Keys.T:
-                Result result = homeMenuController.eat(FoodFactory.tripleShotEspresso().getName());
-                if (result.isSuccessful()) {
-                    Food food = FoodFactory.tripleShotEspresso();
-                    showEatEffect(food.getName(), food.getBuff().getDescription(), food.getEnergy());
-                }
-                return true;
-            case Input.Keys.F4:
-                return true;
-
             case Input.Keys.B:
                 //Crafting menu
                 if (!isCraftingMenuOpen) {
                     craftMenu = new CraftMenu(
                         GameAssetManager.getGameAssetManager().getSkin(),
-                        App.getActiveGame().getCurrentPlayer().getInventory().getCraftingRecipes()                    );
+                        App.getActiveGame().getCurrentPlayer().getInventory().getCraftingRecipes());
                     Main.getMain().getGameScreen().getStage().addActor(craftMenu);
                     Main.getMain().getGameScreen().getStage().addActor(craftMenu.getTooltip());
                     isCraftingMenuOpen = true;
@@ -243,9 +209,7 @@ public class GameController {
                 }
                 return true;
 
-
-                //TODO: cheat codes:
-
+            //TODO: cheat codes:
             case Input.Keys.TAB:
                 //time cheat code: +1 day
                 TimeDate.getInstance(App.getActiveGame()).advanceDateCheat(1);
@@ -257,7 +221,40 @@ public class GameController {
             case Input.Keys.G:
                 //energy cheat code +200
                 App.getActiveGame().getCurrentPlayer().increaseEnergy(200);
+                return true;
+            case Input.Keys.X:
+                if (player.getCurrentEquipment() == null) {
+                    player.equip(new Hoe("hoe",0, "base"));
+                } else {
+                    player.equip(null);
+                    player.setCurrentThing(Seeds.MIXED_SEED);
+                }
+                return true;
 
+            case Input.Keys.Y:
+                player.equip(new Scythe("scythe", 0, "base"));
+                return true;
+
+
+
+            case Input.Keys.E:
+            case Input.Keys.ESCAPE:
+                //TODO: for inventory menu
+                return true;
+
+
+            case Input.Keys.F:
+                System.out.println(agricultureController.fertilizePlant("speed gro", "up"));
+                return true;
+            case Input.Keys.T:
+                Result result = homeMenuController.eat(FoodFactory.tripleShotEspresso().getName());
+                if (result.isSuccessful()) {
+                    Food food = FoodFactory.tripleShotEspresso();
+                    showEatEffect(food.getName(), food.getBuff().getDescription(), food.getEnergy());
+                }
+                return true;
+
+            case Input.Keys.F4:
                 return true;
 
             default:

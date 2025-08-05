@@ -1,8 +1,10 @@
 package com.group16.stardewvalley.model.map;
 
+import com.badlogic.gdx.graphics.Texture;
+
 public enum PlaceType {
     Blacksmith(10, 20, new Pos(230, 110), "shop"),
-    CarpentersShop(15, 25, new Pos(124, 40), "shop"),
+    CarpentersShop(20,40, new Pos(124, 40), "shop"),
     JojaMart(15, 30, new Pos(250, 90), "shop"),
     FishShop(10, 20, new Pos(170, 170), "shop"),
     MarniesRanch(10, 20, new Pos(25, 90), "shop"),

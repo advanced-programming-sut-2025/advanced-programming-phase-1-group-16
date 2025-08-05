@@ -93,7 +93,7 @@ public class GameHUD {
 
         font.draw(batch, TimeDate.getInstance(App.getActiveGame()).getTime(), screenX + 30, screenY + 32);
         font.draw(batch, TimeDate.getInstance(App.getActiveGame()).getDayOfWeek() + ". " +
-            TimeDate.getInstance(App.getActiveGame()).getDay() + TimeDate.getInstance(App.getActiveGame()).getSeason(), screenX + 25, screenY + 59);
+            TimeDate.getInstance(App.getActiveGame()).getDay() , screenX + 25, screenY + 59);
 
         switch (TimeDate.getInstance(App.getActiveGame()).getSeason()) {
             case Spring:
