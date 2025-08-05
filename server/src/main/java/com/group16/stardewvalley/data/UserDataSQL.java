@@ -217,5 +217,27 @@ public class UserDataSQL {
         }
     }
 
+    public boolean updateSecurityQuestion(String username, String question, String answer) {
+        String sql = "UPDATE users SET selectedQuestion = ?, answer = ? WHERE username = ?";
+
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, question);
+            pstmt.setString(2, answer);
+            pstmt.setString(3, username);
+            pstmt.executeUpdate();
+
+            List<User> allUsers = getAllUsers();
+            UserJsonUtil.saveUsersToJson(allUsers, "data/users.json");
+            return true;
+
+        } catch (SQLException e) {
+            System.err.println("Can't update security question: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
 }

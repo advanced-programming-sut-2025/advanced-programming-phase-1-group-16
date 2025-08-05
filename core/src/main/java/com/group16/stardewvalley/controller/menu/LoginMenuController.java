@@ -1,7 +1,6 @@
 package com.group16.stardewvalley.controller.menu;
 
 
-import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.data.UserDataSQL;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
@@ -9,10 +8,7 @@ import com.group16.stardewvalley.model.menu.LoginMenuCommands;
 import com.group16.stardewvalley.model.menu.Menu;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.user.User;
-import com.group16.stardewvalley.model.user.UserDatabase;
-import com.group16.stardewvalley.model.user.UserSaveManager;
 import com.group16.stardewvalley.view.menuGraphics.LoginMenuView;
-import com.group16.stardewvalley.view.menuGraphics.StartMenuView;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -98,8 +94,7 @@ public class LoginMenuController  {
 
         //Strong password -> set as new password
         user.setPassword(password);
-        UserSaveManager.saveUsers();
-
+//TODO
         return new Result(true, "password changed successfully!");
 
     }

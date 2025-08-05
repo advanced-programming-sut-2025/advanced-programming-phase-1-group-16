@@ -1,8 +1,6 @@
 package com.group16.stardewvalley.controller.menu;
 
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.utils.Timer;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
 import com.group16.stardewvalley.model.graphics.Heros;
@@ -11,7 +9,6 @@ import com.group16.stardewvalley.model.menu.ProfileMenuCommands;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.model.user.User;
-import com.group16.stardewvalley.model.user.UserSaveManager;
 import com.group16.stardewvalley.view.menuGraphics.ProfileMenuView;
 
 public class ProfileMenuController {
@@ -45,7 +42,7 @@ public class ProfileMenuController {
         }
 
         user.setUsername(username);
-        UserSaveManager.saveUsers();
+        //TODO
         return new Result(true, "username successfully changed!");
     }
 
@@ -55,7 +52,7 @@ public class ProfileMenuController {
         }
 
         App.getLoggedInUser().setNickName(nickname);
-        UserSaveManager.saveUsers();
+        //TODO
 
         return new Result(true, "nickname successfully changed!");
     }
@@ -69,7 +66,7 @@ public class ProfileMenuController {
             return new Result(false, "enter a new email!");
         }
         user.setEmail(email);
-        UserSaveManager.saveUsers();
+        //TODO
 
         return new Result(true, "email successfully changed!");
     }
@@ -100,7 +97,7 @@ public class ProfileMenuController {
 
 
         user.setPassword(newPassword);
-        UserSaveManager.saveUsers();
+        //TODO
 
         return new Result(true, "password successfully changed!");
     }
@@ -116,7 +113,7 @@ public class ProfileMenuController {
 
 
         player.setHero(hero); // Assuming setHero(String) exists in Player
-        UserSaveManager.saveUsers();
+        //TODO
 
         return new Result(true, "Avatar successfully changed to " + hero.toString() + "!");
     }

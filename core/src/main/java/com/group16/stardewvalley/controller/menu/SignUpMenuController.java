@@ -1,6 +1,7 @@
 package com.group16.stardewvalley.controller.menu;
 
-import com.group16.stardewvalley.Main;
+import com.group16.stardewvalley.Message;
+import com.group16.stardewvalley.controllers.ClientNetworkManager;
 import com.group16.stardewvalley.data.UserDataSQL;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
@@ -8,18 +9,14 @@ import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.menu.LoginMenuCommands;
 import com.group16.stardewvalley.model.user.SecurityQuestions;
 import com.group16.stardewvalley.model.user.User;
-import com.group16.stardewvalley.model.user.UserSaveManager;
 import com.group16.stardewvalley.view.menuGraphics.SignUpMenuView;
-import com.group16.stardewvalley.view.menuGraphics.StartMenuView;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
-import static com.group16.stardewvalley.model.user.User.getUserByUsername;
-import static com.group16.stardewvalley.model.user.UserSaveManager.loadUsers;
-import static com.group16.stardewvalley.model.user.UserSaveManager.saveUsers;
 
 public class SignUpMenuController {
 
@@ -36,7 +33,7 @@ public class SignUpMenuController {
         if (LoginMenuCommands.Username.getMatcher(username) == null) {
             return new Result(false, "username format is invalid!");
         }
-        if (UserSaveManager.isUsernameTaken(username)) {
+        if (isUsernameTaken(username)) {
             return new Result(false, "username already exists! choose another one.");
         }
 
@@ -66,18 +63,35 @@ public class SignUpMenuController {
             return new Result(false, "password does not match! enter your password again.");
         }
 
-        //successful
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("username", username);
+        body.put("password", password);
+        body.put("nickName", nickName);
+        body.put("email", email);
+        body.put("gender", gender);
+
+        Message message = new Message(body, Message.Type.REGISTER);
+
+        Message response = ClientNetworkManager.sendAndWait(message);
+
+        if (response == null) return new Result(false, "No response from server!");
+
         User newUser = new User(username,password,nickName,email,gender);
-        UserDataSQL.getInstance().addUser(newUser);
+        App.setLoggedInUser(newUser);
 
-//        UserSaveManager.addUserAndSave(newUser); // Save new user to json file
+        return new Result(true, response.getFromBody("result"));
+    }
 
+    public static boolean isUsernameTaken(String username) {
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("username", username);
 
-        // Save to JSON file (replaces the file with updated user list)
-//        UserDatabase.saveUsers();
+        Message message = new Message(body, Message.Type.IS_USERNAME_TAKEN);
+        Message response = ClientNetworkManager.sendAndWait(message);
 
+        if (response == null) return false;
 
-        return new Result(true, "user registered successfully!");
+        return response.getFromBody("isTaken");
     }
 
     public String generateRandomPassword() {
@@ -113,6 +127,7 @@ public class SignUpMenuController {
 
         return sb.toString();
     }
+
     public Result setSecurityQuestion(String username, String securityQuestionNumber, String answer, String answerConfirm) {
         int number;
         try {
@@ -130,14 +145,24 @@ public class SignUpMenuController {
             return new Result(false, "Answer and confirmation do not match!");
         }
 
-        User user = getUserByUsername(username);
-        if (user == null) {
-            return new Result(false, "User not found!");
-        }
+        User user = App.getLoggedInUser();
 
         user.setUserSecurityQuestion(selectedQuestion);
         user.setSecurityAnswer(answer);
-        saveUsers();
+
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("username", user.getUsername());
+        data.put("question", selectedQuestion.name());
+        data.put("answer", answer);
+
+        Message message = new Message(data, Message.Type.UPDATE_SECURITY_QUESTION);
+        Message response = ClientNetworkManager.sendAndWait(message);
+
+        if (response == null) return new Result(false, "No response from server!");
+        boolean success = response.getFromBody("success");
+
+        if (!success) return new Result(false, "Failed to update security question on server!");
+
 
         return new Result(true, "Security question set successfully!");
     }

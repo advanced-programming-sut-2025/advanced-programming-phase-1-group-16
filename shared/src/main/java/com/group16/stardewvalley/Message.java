@@ -28,8 +28,11 @@ public class Message {
     //TODO change the enum
     public enum Type {
 		command,
-		response,
-		file_request,
-		download_request
+        response,
+        REGISTER,
+        IS_USERNAME_TAKEN,
+        REGISTER_RESULT,
+        USERNAME_TAKEN_RESULT,
+        UPDATE_SECURITY_QUESTION,
 	}
 }

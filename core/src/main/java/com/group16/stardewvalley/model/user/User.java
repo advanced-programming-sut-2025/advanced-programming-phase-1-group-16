@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.group16.stardewvalley.data.UserDataSQL;
 import com.group16.stardewvalley.model.app.Game;
 
-import static com.group16.stardewvalley.model.app.App.users;
-import static com.group16.stardewvalley.model.user.UserSaveManager.loadUsers;
 
 public class User {
     //register data
@@ -149,13 +147,4 @@ public class User {
         this.gamePlayed = gamePlayed;
     }
 
-    public static User getUserByUsername(String username) {
-        loadUsers();
-        for (User user : users) {
-            if (user.getUsername().equals(username)) {
-                return user;
-            }
-        }
-        return null; // Username not found
-    }
 }
