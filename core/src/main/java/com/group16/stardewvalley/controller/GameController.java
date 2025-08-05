@@ -42,6 +42,7 @@ public class GameController {
     private boolean isCookingMenuOpen = false;
     private CraftMenu craftMenu;
     private boolean isCraftingMenuOpen = false;
+    public static final float ENERGYSCALE = 0.0005f;
 
     public GameController() {
         this.agricultureController = new AgricultureController();
@@ -215,10 +216,6 @@ public class GameController {
                 System.out.println(agricultureController.fertilizePlant("speed gro", "up"));
                 return true;
 
-            case Input.Keys.TAB:
-                //time cheat code: +1 day
-                TimeDate.getInstance(App.getActiveGame()).advanceDateCheat(1);
-                return true;
 
             case Input.Keys.T:
                 Result result = homeMenuController.eat(FoodFactory.tripleShotEspresso().getName());
@@ -246,6 +243,17 @@ public class GameController {
                 }
                 return true;
 
+
+                //TODO: cheat codes:
+
+            case Input.Keys.TAB:
+                //time cheat code: +1 day
+                TimeDate.getInstance(App.getActiveGame()).advanceDateCheat(1);
+                return true;
+            case Input.Keys.CAPS_LOCK:
+                //next turn cheat code
+                App.getActiveGame().nextTurn();
+                return true;
             case Input.Keys.G:
                 //energy cheat code +200
                 App.getActiveGame().getCurrentPlayer().increaseEnergy(200);
@@ -263,7 +271,7 @@ public class GameController {
         Result result = mapController.walk((int) nextX, (int) nextY);
         if (result.isSuccessful()) {
             playersController.move(player, speed, up, down, left, right);
-            player.decreaseEnergy(player.getEnergy() * 0.05);
+            player.decreaseEnergy(player.getEnergy() * ENERGYSCALE);
             return true;
         }
         System.out.println(result.message());

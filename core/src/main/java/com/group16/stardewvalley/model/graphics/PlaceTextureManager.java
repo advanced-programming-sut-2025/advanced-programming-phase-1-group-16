@@ -52,7 +52,7 @@ public class PlaceTextureManager {
         places.put(PlaceType.FishShop, new TextureRegion(shopSpriteSheet, 384, 665, 128, 136));
 
         places.put(PlaceType.Abigail, new TextureRegion(npcSpriteSheet, 79, 0, 82, 112));
-        places.put(PlaceType.Leah, new TextureRegion(npcSpriteSheet, 160, 112, 80, 113));
+        places.put(PlaceType.Leah, new TextureRegion(npcSpriteSheet, 160, 112,  80, 113));
         places.put(PlaceType.Robin, new TextureRegion(npcSpriteSheet, 160, 336, 80, 112));
         places.put(PlaceType.Harvey, new TextureRegion(npcSpriteSheet, 160,560, 80, 112));
         places.put(PlaceType.Sebastian, new TextureRegion(npcSpriteSheet, 0, 691, 80, 93));
@@ -64,7 +64,7 @@ public class PlaceTextureManager {
     }
 
     public TextureRegion getShopTexture(PlaceType placeType) {
-        switch (App.getActiveGame().getSeason()) {
+        switch (TimeDate.getInstance(App.getActiveGame()).getSeason()) {
             case Summer -> {
                 return placesSummer.get(placeType);
             }

@@ -81,9 +81,6 @@ public class Game {
         return null;
     }
 
-    public Season getSeason(){
-        return timeDate.getSeason();
-    }
 
     public Blacksmith getBlacksmith() {
         for (Shop shop : shops) {

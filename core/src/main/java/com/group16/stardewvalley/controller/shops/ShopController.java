@@ -9,6 +9,7 @@ import com.group16.stardewvalley.model.shops.BuildingType;
 import com.group16.stardewvalley.model.shops.Shop;
 import com.group16.stardewvalley.model.shops.UpgradeType;
 import com.group16.stardewvalley.model.time.Season;
+import com.group16.stardewvalley.model.time.TimeDate;
 import com.group16.stardewvalley.model.tools.Gadget;
 import com.group16.stardewvalley.model.tools.ToolDataManager;
 import com.group16.stardewvalley.model.app.App;
@@ -170,7 +171,7 @@ public class ShopController {
             return new Result(false, "No products available");
         }
 
-         Season currentSeason = App.getActiveGame().getSeason();
+         Season currentSeason = TimeDate.getInstance(App.getActiveGame()).getSeason();
         StringBuilder productsInfo = new StringBuilder("Available Products:\n");
         int productCount = 0;
 
@@ -250,7 +251,7 @@ public class ShopController {
         App.getActiveGame().getCurrentPlayer().getInventory().addItem(targetItem, count);
         int price = 0;
         if (targetItem instanceof Seed) {
-            if (! ((Seed) targetItem).getAvailableSeasons().contains(App.getActiveGame().getSeason())) {
+            if (! ((Seed) targetItem).getAvailableSeasons().contains(TimeDate.getInstance(App.getActiveGame()).getSeason())) {
                 price = ((Seed) targetItem).getOutOfSeasonPrice();
             }
         }

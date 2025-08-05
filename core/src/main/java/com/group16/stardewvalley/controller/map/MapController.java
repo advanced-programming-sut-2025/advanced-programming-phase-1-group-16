@@ -132,6 +132,7 @@ public class MapController {
         Pos dest = new Pos(x, y);
         Player player = App.getActiveGame().getCurrentPlayer();
 
+
         PathInfo pathInfo = calculatePathInfo(player.getPosition(), dest);
         if (!pathInfo.isValid()) {
             return new Result(false, pathInfo.message());
@@ -344,7 +345,6 @@ public class MapController {
     }
 
     public static boolean isPlayerInFarm(Player currentPlayer) {
-        //TODO میتونی بگی لوکیشنش فارم هست یا نه چون اوکیه
         Pos start = currentPlayer.getFarm().getStartPosition();
         Pos playerPos = currentPlayer.getPosition();
         return playerPos.getX() > start.getX() &&
@@ -394,23 +394,13 @@ public class MapController {
             float x = placeType.getStartPosition().getX() * TILE_SIZE;
             float y = (App.getActiveGame().getMapHeight() - placeType.getStartPosition().getY()) * TILE_SIZE;
 
-            if (placeType.equals(PlaceType.CarpentersShop)) {
-                float yOffset = -250f;// move 20 pixels lower (you can adjust this value)
-                float xOffset = -100f;
+            if (placeType.equals(PlaceType.CarpentersShop) || placeType.equals(PlaceType.MarniesRanch)) {
                 batch.draw(
                     texture,
-                    x + xOffset,
-                    y + yOffset,
-                    texture.getRegionWidth() * 0.45f,
-                    texture.getRegionHeight() * 0.45f
-                );
-            } else if (placeType.equals(PlaceType.MarniesRanch)) {
-                batch.draw(
-                    texture,
-                    x,
-                    y,
-                    texture.getRegionWidth() * 0.45f,
-                    texture.getRegionHeight() * 0.45f
+                    x ,
+                    y ,
+                    texture.getRegionWidth() * 0.35f,
+                    texture.getRegionHeight() * 0.35f
                 );
             } else {
                 batch.draw(texture, x, y);
@@ -419,6 +409,15 @@ public class MapController {
 
     }
 
+    public static boolean isPlayerInsidePlace(Pos playerPos, PlaceType placeType) {
+        int startX = placeType.getStartPosition().getX();
+        int startY = placeType.getStartPosition().getY();
+        int endX = startX + placeType.getWidth();
+        int endY = startY + placeType.getHeight();
+
+        return playerPos.getX() >= startX && playerPos.getX() < endX
+            && playerPos.getY() >= startY && playerPos.getY() < endY;
+    }
 
 
 }
