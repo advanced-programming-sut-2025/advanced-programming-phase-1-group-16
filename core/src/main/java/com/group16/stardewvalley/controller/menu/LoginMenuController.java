@@ -1,21 +1,22 @@
 package com.group16.stardewvalley.controller.menu;
 
 
-import com.group16.stardewvalley.data.UserDataSQL;
+import com.group16.stardewvalley.Message;
+import com.group16.stardewvalley.controllers.ClientNetworkManager;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.menu.LoginMenuCommands;
 import com.group16.stardewvalley.model.menu.Menu;
 import com.group16.stardewvalley.model.Result;
+import com.group16.stardewvalley.model.user.SecurityQuestions;
 import com.group16.stardewvalley.model.user.User;
 import com.group16.stardewvalley.view.menuGraphics.LoginMenuView;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-
-import static com.group16.stardewvalley.model.user.User.getUserByUsername;
 
 
 public class LoginMenuController  {
@@ -31,8 +32,36 @@ public class LoginMenuController  {
 
     //login  methods
     public Result login(String username, String password, boolean stayLoggedIn){
-        User user = UserDataSQL.getInstance().getUserByUsername(username);
-        if(user == null) {
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("username", username);
+
+        Message message = new Message(body, Message.Type.GET_USER_INFO);
+
+        Message response = ClientNetworkManager.sendAndWait(message);
+
+        String correcrtPassword = response.getFromBody("password");
+        String nickName = response.getFromBody("nickName");
+        String email = response.getFromBody("email");
+        String gender = response.getFromBody("gender");
+        SecurityQuestions securityQuestion = null;
+        try {
+            String questionStr = message.getFromBody("securityQuestion");
+            if (questionStr != null)
+                securityQuestion = SecurityQuestions.valueOf(questionStr);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid security question: " + e.getMessage());
+        }
+        String answer = message.getFromBody("answer");
+
+        User user = new User(username, correcrtPassword,nickName,email,gender);
+        user.setSecurityAnswer(answer);
+        user.setUserSecurityQuestion(securityQuestion);
+
+        if (response == null) {
+            return new Result(false, "Login failed");
+        }
+
+        if(! (boolean) response.getFromBody("success")) {
             return new Result(false, "username doesn't exist!");
         }
         if(!(user.getPassword().equals(password))) {
@@ -50,7 +79,14 @@ public class LoginMenuController  {
     }
 
     public Result forgetPassword(String username){
-        User user = UserDataSQL.getInstance().getUserByUsername(username);
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("username", username);
+
+        Message message = new Message(body, Message.Type.GET_USER_INFO);
+
+        Message response = ClientNetworkManager.sendAndWait(message);
+
+        User user = response.getFromBody("user");
         if(user == null) {
             return new Result(false, "username doesn't exist!");
         }
@@ -58,7 +94,14 @@ public class LoginMenuController  {
     }
 
     public Result checkSecurityAnswer(String username, String answer){
-        User user = UserDataSQL.getInstance().getUserByUsername(username);
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("username", username);
+
+        Message message = new Message(body, Message.Type.GET_USER_INFO);
+
+        Message response = ClientNetworkManager.sendAndWait(message);
+
+        User user = response.getFromBody("user");
 
         if(!user.getSecurityAnswer().equals(answer)) {
             return new Result(false, "your answer is incorrect!");
@@ -94,7 +137,6 @@ public class LoginMenuController  {
 
         //Strong password -> set as new password
         user.setPassword(password);
-//TODO
         return new Result(true, "password changed successfully!");
 
     }

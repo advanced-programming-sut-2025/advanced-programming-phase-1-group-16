@@ -37,7 +37,7 @@ public class ProfileMenuController {
         if(user.getUsername().equals(username)){
             return new Result(false, "enter a new username!");
         }
-        if(!doesUsernameExists(username)){
+        if(SignUpMenuController.isUsernameTaken(username)){
             return new Result(false, "username is already taken");
         }
 
@@ -97,7 +97,6 @@ public class ProfileMenuController {
 
 
         user.setPassword(newPassword);
-        //TODO
 
         return new Result(true, "password successfully changed!");
     }
@@ -122,18 +121,8 @@ public class ProfileMenuController {
     public Result showUserInfo(){
         User user = App.getLoggedInUser();
         Player player1 = null;
-        for(Game game: App.getGames()){
-            for (Player player : game.getPlayers()) {
-                if(player.getUser().equals(user)){
-                    player1 = player;
-                }
-            }
-        }
 
         int money = 0;
-        if (player1 != null) {
-            money = player1.getCoin();
-        }
 
 
         String output =
@@ -153,15 +142,6 @@ public class ProfileMenuController {
 
     //private methods
 
-
-    private boolean doesUsernameExists(String username) {
-        for (User user : App.users){
-            if(user.getUsername().equals(username) ){
-                return false;
-            }
-        }
-        return true;
-    }
 
     public Result showCurrentMenu(){
         return new Result(true, App.getCurrentMenu().getName());

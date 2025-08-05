@@ -29,10 +29,17 @@ public class Message {
     public enum Type {
 		command,
         response,
+        error,
         REGISTER,
         IS_USERNAME_TAKEN,
         REGISTER_RESULT,
         USERNAME_TAKEN_RESULT,
+        GET_USER_INFO,
         UPDATE_SECURITY_QUESTION,
+        UPDATE_PASSWORD,
+        UPDATE_NICKNAME,
+        UPDATE_USERNAME,
+        UPDATE_EMAIL,
+        DELETE_USER,
 	}
 }

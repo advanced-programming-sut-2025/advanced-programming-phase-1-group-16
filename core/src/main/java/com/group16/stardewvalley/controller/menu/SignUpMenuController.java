@@ -2,7 +2,6 @@ package com.group16.stardewvalley.controller.menu;
 
 import com.group16.stardewvalley.Message;
 import com.group16.stardewvalley.controllers.ClientNetworkManager;
-import com.group16.stardewvalley.data.UserDataSQL;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
@@ -63,23 +62,10 @@ public class SignUpMenuController {
             return new Result(false, "password does not match! enter your password again.");
         }
 
-        HashMap<String, Object> body = new HashMap<>();
-        body.put("username", username);
-        body.put("password", password);
-        body.put("nickName", nickName);
-        body.put("email", email);
-        body.put("gender", gender);
-
-        Message message = new Message(body, Message.Type.REGISTER);
-
-        Message response = ClientNetworkManager.sendAndWait(message);
-
-        if (response == null) return new Result(false, "No response from server!");
-
         User newUser = new User(username,password,nickName,email,gender);
         App.setLoggedInUser(newUser);
 
-        return new Result(true, response.getFromBody("result"));
+        return new Result(true, "success register!");
     }
 
     public static boolean isUsernameTaken(String username) {
@@ -150,15 +136,21 @@ public class SignUpMenuController {
         user.setUserSecurityQuestion(selectedQuestion);
         user.setSecurityAnswer(answer);
 
-        HashMap<String, Object> data = new HashMap<>();
-        data.put("username", user.getUsername());
-        data.put("question", selectedQuestion.name());
-        data.put("answer", answer);
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("username", username);
+        body.put("password", user.getPassword());
+        body.put("nickName", user.getNickName());
+        body.put("email", user.getEmail());
+        body.put("gender", user.getGender());
+        body.put("securityQuestion", selectedQuestion);
+        body.put("answer", answer);
 
-        Message message = new Message(data, Message.Type.UPDATE_SECURITY_QUESTION);
+        Message message = new Message(body, Message.Type.REGISTER);
+
         Message response = ClientNetworkManager.sendAndWait(message);
 
         if (response == null) return new Result(false, "No response from server!");
+
         boolean success = response.getFromBody("success");
 
         if (!success) return new Result(false, "Failed to update security question on server!");

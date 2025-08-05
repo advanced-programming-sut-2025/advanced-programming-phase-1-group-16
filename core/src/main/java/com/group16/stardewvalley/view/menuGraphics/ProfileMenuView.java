@@ -10,16 +10,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.group16.stardewvalley.Main;
+import com.group16.stardewvalley.Message;
 import com.group16.stardewvalley.controller.menu.MainMenuController;
 import com.group16.stardewvalley.controller.menu.ProfileMenuController;
 import com.group16.stardewvalley.controller.menu.StartMenuController;
-import com.group16.stardewvalley.data.UserDataSQL;
+import com.group16.stardewvalley.controllers.ClientNetworkManager;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.graphics.AnimatedSpriteActor;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.graphics.Heros;
-import com.group16.stardewvalley.model.menu.Menu;
+
+import java.util.HashMap;
 
 public class ProfileMenuView implements Screen {
 
@@ -83,7 +85,7 @@ public class ProfileMenuView implements Screen {
                 if (newUsername.isEmpty()) {
                     messageLabel.setText("Username cannot be empty.");
                 } else {
-                    controller.changeUsername(newUsername);
+                    messageLabel.setText(controller.changeUsername(newUsername).message());
                 }
             }
         });
@@ -113,7 +115,11 @@ public class ProfileMenuView implements Screen {
                 Main.getMain().setScreen(
                     new StartMenuView(new StartMenuController(), GameAssetManager.getGameAssetManager().getSkin())
                 );
-                UserDataSQL.getInstance().deleteUser(App.getLoggedInUser().getUsername());
+                HashMap<String, Object> body = new HashMap<>();
+                body.put("username", App.getLoggedInUser().getUsername());
+
+                Message message = new Message(body, Message.Type.DELETE_USER);
+                Message response = ClientNetworkManager.sendAndWait(message);
             }
         });
 

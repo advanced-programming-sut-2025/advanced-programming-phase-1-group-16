@@ -6,6 +6,7 @@ import com.group16.stardewvalley.ServerApp;
 import com.group16.stardewvalley.app.ClientConnectionThread;
 import com.group16.stardewvalley.data.UserDataSQL;
 import com.group16.stardewvalley.data.UserJsonUtil;
+import com.group16.stardewvalley.model.user.SecurityQuestions;
 import com.group16.stardewvalley.model.user.User;
 
 import java.util.*;
@@ -17,8 +18,20 @@ public class ServerConnectionController {
         String nickName = message.getFromBody("nickName");
         String email = message.getFromBody("email");
         String gender = message.getFromBody("gender");
+        SecurityQuestions securityQuestion = null;
+        try {
+            String questionStr = message.getFromBody("securityQuestion");
+            if (questionStr != null)
+                securityQuestion = SecurityQuestions.valueOf(questionStr);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid security question: " + e.getMessage());
+        }
+        String answer = message.getFromBody("answer");
 
         User newUser = new User(username,password,nickName,email,gender);
+        newUser.setSecurityAnswer(answer);
+        newUser.setUserSecurityQuestion(securityQuestion);
+
         UserDataSQL.getInstance().addUser(newUser);
 
         HashMap<String, Object> body = new HashMap<>();
@@ -49,6 +62,83 @@ public class ServerConnectionController {
         responseBody.put("success", success);
 
         return new Message(responseBody, Message.Type.UPDATE_SECURITY_QUESTION);
+    }
+
+    public static Message updatePassword(Message message) {
+        String username = message.getFromBody("username");
+        String password = message.getFromBody("password");
+
+        UserDataSQL.getInstance().updatePassword(username, password);
+
+        HashMap<String, Object> responseBody = new HashMap<>();
+        responseBody.put("success", true);
+
+        return new Message(responseBody, Message.Type.UPDATE_PASSWORD);
+    }
+
+    public static Message updateNickname(Message message) {
+        String username = message.getFromBody("username");
+        String nickName = message.getFromBody("nickName");
+
+        boolean success = UserDataSQL.getInstance().updateNickname(username, nickName);
+
+        HashMap<String, Object> responseBody = new HashMap<>();
+        responseBody.put("success", success);
+
+        return new Message(responseBody, Message.Type.UPDATE_NICKNAME);
+    }
+
+    public static Message updateUsername(Message message) {
+        String oldUsername = message.getFromBody("oldUsername");
+        String newUsername = message.getFromBody("newUsername");
+
+       UserDataSQL.getInstance().updateUsername(oldUsername, newUsername);
+
+        HashMap<String, Object> responseBody = new HashMap<>();
+        responseBody.put("success", true);
+
+        return new Message(responseBody, Message.Type.UPDATE_USERNAME);
+    }
+
+    public static Message updateEmail(Message message) {
+        String username = message.getFromBody("username");
+        String email = message.getFromBody("email");
+
+        UserDataSQL.getInstance().updateEmail(username, email);
+
+        HashMap<String, Object> responseBody = new HashMap<>();
+        responseBody.put("success", true);
+
+        return new Message(responseBody, Message.Type.UPDATE_EMAIL);
+    }
+
+    public static Message deleteUser(Message message) {
+        String username = message.getFromBody("username");
+        UserDataSQL.getInstance().deleteUser(username);
+        HashMap<String, Object> responseBody = new HashMap<>();
+        responseBody.put("success", true);
+        return new Message(responseBody, Message.Type.DELETE_USER);
+    }
+
+
+    public static Message getUserInfo(Message message) {
+        String username = message.getFromBody("username");
+        User user = UserDataSQL.getInstance().getUserByUsername(username);
+        HashMap<String, Object> responseBody = new HashMap<>();
+        if (user == null) {
+            responseBody.put("success", false);
+            responseBody.put("user", null);
+            return new Message(responseBody, Message.Type.GET_USER_INFO);
+        }
+        responseBody.put("username", username);
+        responseBody.put("password", user.getPassword());
+        responseBody.put("nickName", user.getNickName());
+        responseBody.put("email", user.getEmail());
+        responseBody.put("gender", user.getGender());
+        responseBody.put("securityQuestion", user.getUserSecurityQuestion());
+        responseBody.put("answer", user.getSecurityAnswer());
+        responseBody.put("success", true);
+        return new Message(responseBody, Message.Type.GET_USER_INFO);
     }
 
 

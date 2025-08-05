@@ -3,8 +3,11 @@ package com.group16.stardewvalley.model.user;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.group16.stardewvalley.data.UserDataSQL;
+import com.group16.stardewvalley.Message;
+import com.group16.stardewvalley.controllers.ClientNetworkManager;
 import com.group16.stardewvalley.model.app.Game;
+
+import java.util.HashMap;
 
 
 public class User {
@@ -90,24 +93,50 @@ public class User {
     }
 
     public void setUsername(String username) {
-        UserDataSQL.getInstance().updateUsername(this.username, username);
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("oldUsername", this.username);
+        data.put("newUsername", username);
 
-        this.username = username;
+        Message message = new Message(data, Message.Type.UPDATE_USERNAME);
+        Message response = ClientNetworkManager.sendAndWait(message);
+
+        if (response == null) {
+            System.out.println("User " + username + " could not be updated!");
+            return;
+        }
+        boolean success = response.getFromBody("success");
+        if (success) this.username = username;
     }
 
     public void setPassword(String password) {
         this.password = password;
-        UserDataSQL.getInstance().updatePassword(username, this.password);
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("username", this.username);
+        data.put("password", password);
+
+        Message message = new Message(data, Message.Type.UPDATE_PASSWORD);
+        Message response = ClientNetworkManager.sendAndWait(message);
+
     }
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
-        UserDataSQL.getInstance().updateNickname(username, nickName);
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("username", this.username);
+        data.put("nickName", nickName);
+
+        Message message = new Message(data, Message.Type.UPDATE_NICKNAME);
+        Message response = ClientNetworkManager.sendAndWait(message);
     }
 
     public void setEmail(String email) {
         this.email = email;
-        UserDataSQL.getInstance().updateEmail(username, email);
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("username", this.username);
+        data.put("email", email);
+
+        Message message = new Message(data, Message.Type.UPDATE_EMAIL);
+        Message response = ClientNetworkManager.sendAndWait(message);
     }
 
     public void setUserSecurityQuestion(SecurityQuestions userSecurityQuestion) {
@@ -145,6 +174,16 @@ public class User {
 
     public void setGamePlayed(int gamePlayed) {
         this.gamePlayed = gamePlayed;
+    }
+
+    public static User getUserByUsername(String username){
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("username", username);
+
+        Message message = new Message(body, Message.Type.GET_USER_INFO);
+
+        User user = message.getFromBody("user");
+        return user;
     }
 
 }

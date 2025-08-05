@@ -40,6 +40,30 @@ public class ClientConnectionThread extends ConnectionThread {
                 sendMessage(ServerConnectionController.isUsernameTaken(message));
                 yield true;
             }
+            case GET_USER_INFO -> {
+                sendMessage(ServerConnectionController.getUserInfo(message));
+                yield true;
+            }
+            case UPDATE_EMAIL -> {
+                sendMessage(ServerConnectionController.updateEmail(message));
+                yield true;
+            }
+            case UPDATE_NICKNAME -> {
+                sendMessage(ServerConnectionController.updateNickname(message));
+                yield true;
+            }
+            case UPDATE_PASSWORD -> {
+                sendMessage(ServerConnectionController.updatePassword(message));
+                yield true;
+            }
+            case UPDATE_USERNAME -> {
+                sendMessage(ServerConnectionController.updateUsername(message));
+                yield true;
+            }
+            case DELETE_USER -> {
+                sendMessage(ServerConnectionController.deleteUser(message));
+                yield true;
+            }
             default -> false;
         };
     }

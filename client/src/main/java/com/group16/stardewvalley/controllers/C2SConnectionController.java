@@ -61,30 +61,5 @@ public class C2SConnectionController {
 		return message;
 	}
 
-	public static Message sendFileRequest(C2SConnectionThread tracker, String fileName) throws Exception {
-		HashMap<String, Object> content = new HashMap<>();
-		content.put("name", fileName);
 
-		Message fileRequest = new Message(content, Message.Type.file_request);
-
-		Message reply = tracker.sendAndWaitForResponse(fileRequest, ClientApp.TIMEOUT_MILLIS);
-		if (reply == null) {
-			throw new Exception("sendFileRequest not implemented yet");
-		}
-
-		String status = reply.getFromBody("response");
-		if ("error".equals(status)) {
-			String errType = reply.getFromBody("error");
-			switch (errType) {
-				case "not_found":
-					throw new Exception("No peer has the file!");
-				case "multiple_hash":
-					throw new Exception("Multiple hashes found!");
-				default:
-					throw new Exception("Unknown error from tracker");
-			}
-		}
-
-		return reply;
-	}
 }

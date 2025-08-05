@@ -21,7 +21,7 @@ public class UserDataSQL {
             "answer TEXT," +
             "nickname TEXT," +
             "email TEXT," +
-            "gender TEXT," +
+            "gender TEXT" +
             ");";
 
         try (Connection conn = DriverManager.getConnection(DB_URL);
@@ -51,7 +51,7 @@ public class UserDataSQL {
     }
 
     public void addUser(User user) {
-        String sql = "INSERT INTO users (username, password, selectedQuestion, answer, score, kills, timeAlive) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO users (username, password, selectedQuestion, answer, nickname, email, gender) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(DB_URL);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -183,7 +183,7 @@ public class UserDataSQL {
         }
     }
 
-    public void updateNickname(String username, String newNickname) {
+    public boolean updateNickname(String username, String newNickname) {
         String sql = "UPDATE users SET nickname = ? WHERE username = ?";
         try (Connection conn = DriverManager.getConnection(DB_URL);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -193,11 +193,13 @@ public class UserDataSQL {
 
             List<User> allUsers = getAllUsers();
             UserJsonUtil.saveUsersToJson(allUsers, "data/users.json");
+            return true;
         }
         catch (SQLException e) {
             System.err.println("Can't update nickname: " + e.getMessage());
             e.printStackTrace();
         }
+        return false;
     }
 
     public void updateEmail(String username, String newEmail) {

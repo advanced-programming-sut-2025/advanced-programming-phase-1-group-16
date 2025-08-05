@@ -75,7 +75,7 @@ abstract public class ConnectionThread extends Thread {
 					receivedMessagesQueue.put(message);
 				} catch (InterruptedException e) {}
 			} catch (Exception e) {
-				break;
+				System.out.println(e.getMessage());
 			}
 		}
 
