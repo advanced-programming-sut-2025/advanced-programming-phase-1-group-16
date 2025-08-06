@@ -41,5 +41,11 @@ public class Message {
         UPDATE_USERNAME,
         UPDATE_EMAIL,
         DELETE_USER,
+        CREATE_LOBBY,
+        JOIN_LOBBY,
+        GET_LOBBY_LIST,
+        SET_READY_STATE,
+        LOBBY_UPDATE,
+        START_GAME,
 	}
 }

@@ -115,7 +115,7 @@ public class LobbyMenuController extends Table {
         this.view = view;
     }
 
-    public void createLobby() {
+    public void createLobby(String lobbyName, boolean isPrivate, String password) {
         // سرور رو صدا بزن برای ساختن لابی جدید
         System.out.println("Creating new lobby...");
         // send to server

@@ -90,9 +90,13 @@ package com.group16.stardewvalley;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.group16.stardewvalley.controller.menu.LobbyMenuController;
 import com.group16.stardewvalley.controller.menu.StartMenuController;
+import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
+import com.group16.stardewvalley.model.user.User;
 import com.group16.stardewvalley.view.graphics.GameScreen;
+import com.group16.stardewvalley.view.menuGraphics.LobbyMenuView;
 import com.group16.stardewvalley.view.menuGraphics.StartMenuView;
 
 public class Main extends Game {
@@ -104,7 +108,8 @@ public class Main extends Game {
     public void create() {
         main = this;
         batch = new SpriteBatch();
-        getMain().setScreen(new StartMenuView(new StartMenuController(), GameAssetManager.getGameAssetManager().getSkin()));
+        App.setLoggedInUser(new User("Atena", "Atena#12345", "ati", "atena@gmail.com", "Female"));
+        getMain().setScreen(new LobbyMenuView(new LobbyMenuController(GameAssetManager.getGameAssetManager().getSkin(), App.getLoggedInUser().getNickName()), GameAssetManager.getGameAssetManager().getSkin()));
     }
 
     @Override
