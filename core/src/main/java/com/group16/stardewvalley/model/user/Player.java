@@ -45,7 +45,7 @@ public class Player {
     private Gadget currentEquipment;
     private Item currentThing;
     private Set<Food> knownRecipes = new HashSet<>();
-    private int coin;
+    private int coin = 500;
     private final int[] levelRanks = {450, 350, 250, 150};
     private int farmingAbilityLevel;
     private int farmingAbilityScore;

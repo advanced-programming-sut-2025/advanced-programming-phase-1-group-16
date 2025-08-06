@@ -11,6 +11,7 @@ import com.group16.stardewvalley.model.map.PlaceType;
 import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.user.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.prefs.BackingStoreException;
@@ -19,6 +20,7 @@ import static com.group16.stardewvalley.controller.map.MapController.isPlayerInF
 
 public class CarpentersShop extends Shop{
     private static CarpentersShop instance;
+    private ArrayList<Item> products= new ArrayList<>();
     public static CarpentersShop getInstance() {
         if (instance == null) {
             instance = new CarpentersShop(); // ایجاد نمونه جدید

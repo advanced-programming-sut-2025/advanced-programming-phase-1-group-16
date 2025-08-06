@@ -58,7 +58,11 @@ public class GameAssetManager {
 
     private Texture cropTexture = new Texture(crop);
     private Texture treeTexture = new Texture(tree);
+
     private Texture itemTexture = new Texture(item);
+    public Texture getBasicItemTexture() {
+        return itemTexture;
+    }
     private Texture burnTexture = new Texture(burn);
     private Texture waterTexture = new Texture(water);
     private Texture fertalizeTexture = new Texture(fertalize);
