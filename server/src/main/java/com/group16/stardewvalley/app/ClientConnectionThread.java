@@ -64,6 +64,18 @@ public class ClientConnectionThread extends ConnectionThread {
                 sendMessage(ServerConnectionController.deleteUser(message));
                 yield true;
             }
+            case CREATE_LOBBY -> {
+                sendMessage(ServerConnectionController.addLobby(message));
+                yield true;
+            }
+            case GET_LOBBY_LIST -> {
+                sendMessage(ServerConnectionController.getLobbies(message));
+                yield true;
+            }
+            case JOIN_LOBBY -> {
+                sendMessage(ServerConnectionController.joinLobby(message));
+                yield true;
+            }
             default -> false;
         };
     }

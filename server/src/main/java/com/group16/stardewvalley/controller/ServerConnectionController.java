@@ -6,6 +6,8 @@ import com.group16.stardewvalley.ServerApp;
 import com.group16.stardewvalley.app.ClientConnectionThread;
 import com.group16.stardewvalley.data.UserDataSQL;
 import com.group16.stardewvalley.data.UserJsonUtil;
+import com.group16.stardewvalley.model.Lobby;
+import com.group16.stardewvalley.model.LobbyInfo;
 import com.group16.stardewvalley.model.user.SecurityQuestions;
 import com.group16.stardewvalley.model.user.User;
 
@@ -120,7 +122,6 @@ public class ServerConnectionController {
         return new Message(responseBody, Message.Type.DELETE_USER);
     }
 
-
     public static Message getUserInfo(Message message) {
         String username = message.getFromBody("username");
         User user = UserDataSQL.getInstance().getUserByUsername(username);
@@ -141,48 +142,71 @@ public class ServerConnectionController {
         return new Message(responseBody, Message.Type.GET_USER_INFO);
     }
 
+    public static Message addLobby(Message message) {
+        String username = message.getFromBody("username");
+        User creator = UserDataSQL.getInstance().getUserByUsername(username);
+        if (creator == null) {
+            HashMap<String, Object> responseBody = new HashMap<>();
+            responseBody.put("success", false);
+            return new Message(responseBody, Message.Type.CREATE_LOBBY);
+        }
+        String lobbyName = message.getFromBody("lobbyName");
+        boolean privateLobby = message.getFromBody("private");
+        String password = "";
+        if (privateLobby) {
+            password = message.getFromBody("password");
+        }
+        LobbyManager.createLobby(lobbyName, creator, password, privateLobby);
+
+        HashMap<String, Object> responseBody = new HashMap<>();
+        responseBody.put("success", true);
+        return new Message(responseBody, Message.Type.CREATE_LOBBY);
+    }
+
+    public static Message getLobbies(Message message) {
+        HashMap<String, Object> responseBody = new HashMap<>();
+
+        List<LobbyInfo> lobbyInfoList = LobbyManager.getAllLobbies().stream()
+            .map(lobby -> new LobbyInfo(
+                lobby.getName(),
+                lobby.getPlayers().stream()
+                    .map(User::getUsername)
+                    .toList(),
+                lobby.getPassword(),
+                lobby.isPrivate(),
+                lobby.getLobbyId()
+            ))
+            .toList();
+
+        responseBody.put("success", true);
+        responseBody.put("lobbies", lobbyInfoList);
+
+        return new Message(responseBody, Message.Type.GET_LOBBY_LIST);
+    }
+
+    public static Message joinLobby(Message message) {
+        String username = message.getFromBody("username");
+        User user = UserDataSQL.getInstance().getUserByUsername(username);
+        if (user == null) {
+            return buildErrorResponse("user not found", Message.Type.JOIN_LOBBY);
+        }
+        String lobbyName = message.getFromBody("lobbyName");
+        Lobby lobby = LobbyManager.getLobby(lobbyName);
+        if (lobby == null) {
+            return buildErrorResponse("lobby not found", Message.Type.JOIN_LOBBY);
+        }
+        lobby.addPlayer(user);
+        HashMap<String, Object> responseBody = new HashMap<>();
+        responseBody.put("success", true);
+        return new Message(responseBody, Message.Type.JOIN_LOBBY);
+    }
 
 
 
-	private static Message buildErrorResponse(String errorType) {
-		HashMap<String, Object> errorBody = new HashMap<>();
-		errorBody.put("response", "error");
-		errorBody.put("error", errorType);
-		return new Message(errorBody, Message.Type.response);
-	}
-
-
-	public static Map<String, List<String>> getSends(ClientConnectionThread connection) {
-		// Build the command message to request "get_sends"
-		HashMap<String, Object> body = new HashMap<>();
-		body.put("command", "get_sends");
-		Message command = new Message( body, Message.Type.command);
-
-		// Send the command and wait for a response
-		Message response = connection.sendAndWaitForResponse(command, ServerApp.TIMEOUT_MILLIS);
-
-		// If there's no response or no expected data, return an empty map
-		if (response == null) {
-			return new HashMap<>();
-		}
-
-		Map<String, List<String>> sentFiles = response.getFromBody("sent_files");
-		return sentFiles != null ? sentFiles : new HashMap<>();
-	}
-
-
-	public static Map<String, List<String>> getReceives(ClientConnectionThread connection) {
-		HashMap<String, Object> body = new HashMap<>();
-		body.put("command", "get_receives");
-		Message command = new Message(body, Message.Type.command);
-
-		Message response = connection.sendAndWaitForResponse(command, ServerApp.TIMEOUT_MILLIS);
-
-		if (response == null) {
-			return new HashMap<>();
-		}
-
-		Map<String, List<String>> receivedFiles = response.getFromBody("received_files");
-		return receivedFiles != null ? receivedFiles : new HashMap<>();
-	}
+    private static Message buildErrorResponse(String errorType, Message.Type type) {
+        HashMap<String, Object> errorBody = new HashMap<>();
+        errorBody.put("success", false);
+        errorBody.put("error", errorType);
+        return new Message(errorBody, type);
+    }
 }
