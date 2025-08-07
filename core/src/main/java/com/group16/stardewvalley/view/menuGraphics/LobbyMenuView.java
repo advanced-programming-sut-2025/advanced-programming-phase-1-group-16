@@ -15,6 +15,8 @@ import com.group16.stardewvalley.controller.menu.MainMenuController;
 import com.group16.stardewvalley.model.LobbyInfo;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -293,8 +295,8 @@ public class LobbyMenuView implements Screen {
 
     public void showPasswordEnterDialog(PasswordCallback callback) {
         Dialog dialog = new Dialog("Enter password", skin) {
-            public float getPrefWidth() { return 500; }
-            public float getPrefHeight() { return 200; }
+            public float getPrefWidth() { return 800; }
+            public float getPrefHeight() { return 600; }
         };
 
         dialog.setModal(true);
@@ -359,7 +361,7 @@ public class LobbyMenuView implements Screen {
                 String name = lobby.getName();
                 int count = lobby.getPlayerUsernames().size();
                 String playersString = String.join(", ", lobby.getPlayerUsernames());
-                String display = String.format("%s \n(%d members): %s", name, count, playersString);
+                String display = String.format("%s (%d members): %s", name, count, playersString);
                 displayStrings.add(display);
             }
 

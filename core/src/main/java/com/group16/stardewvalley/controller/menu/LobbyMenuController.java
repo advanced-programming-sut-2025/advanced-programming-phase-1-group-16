@@ -8,6 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.group16.stardewvalley.Message;
 import com.group16.stardewvalley.controllers.ClientNetworkManager;
 import com.group16.stardewvalley.model.LobbyInfo;
@@ -19,6 +21,7 @@ import com.group16.stardewvalley.view.menuGraphics.LobbyMenuView;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 
 import javax.print.attribute.standard.Media;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -167,7 +170,9 @@ public class LobbyMenuController extends Table {
         Message response = ClientNetworkManager.sendAndWait(message);
 
         if (response != null && (boolean) response.getFromBody("success")) {
-            List<LobbyInfo> lobbies = response.getFromBody("lobbies");
+            Type listType = new TypeToken<List<LobbyInfo>>() {}.getType();
+            Object rawLobbies = response.getFromBody("lobbies");
+            List<LobbyInfo> lobbies = new Gson().fromJson(new Gson().toJson(rawLobbies), listType);
             view.updateLobbyList(lobbies);
         } else {
             view.setMessage("Failed to fetch lobby list.");
