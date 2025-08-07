@@ -108,8 +108,7 @@ public class Main extends Game {
     public void create() {
         main = this;
         batch = new SpriteBatch();
-        App.setLoggedInUser(new User("Atena", "Atena#12345", "ati", "atena@gmail.com", "Female"));
-        getMain().setScreen(new LobbyMenuView(new LobbyMenuController(GameAssetManager.getGameAssetManager().getSkin(), App.getLoggedInUser().getNickName()), GameAssetManager.getGameAssetManager().getSkin()));
+        getMain().setScreen(new StartMenuView(new StartMenuController(), GameAssetManager.getGameAssetManager().getSkin()));
     }
 
     @Override

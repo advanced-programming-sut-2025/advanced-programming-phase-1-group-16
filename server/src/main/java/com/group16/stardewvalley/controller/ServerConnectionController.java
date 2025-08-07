@@ -188,12 +188,15 @@ public class ServerConnectionController {
         String username = message.getFromBody("username");
         User user = UserDataSQL.getInstance().getUserByUsername(username);
         if (user == null) {
-            return buildErrorResponse("user not found", Message.Type.JOIN_LOBBY);
+            return buildErrorResponse("user not found!", Message.Type.JOIN_LOBBY);
         }
         String lobbyName = message.getFromBody("lobbyName");
         Lobby lobby = LobbyManager.getLobby(lobbyName);
         if (lobby == null) {
-            return buildErrorResponse("lobby not found", Message.Type.JOIN_LOBBY);
+            return buildErrorResponse("lobby not found!", Message.Type.JOIN_LOBBY);
+        }
+        if (lobby.isPlayerExists(user)) {
+            return buildErrorResponse("You are already is in the lobby!", Message.Type.JOIN_LOBBY);
         }
         lobby.addPlayer(user);
         HashMap<String, Object> responseBody = new HashMap<>();

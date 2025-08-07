@@ -19,6 +19,7 @@ public class Lobby {
         this.password = password;
         this.isPrivate = isPrivate;
         this.lobbyId = String.valueOf(Math.abs(UUID.randomUUID().getMostSignificantBits()));
+        players.add(creator);
     }
 
     public void addPlayer(User user) {
@@ -44,6 +45,15 @@ public class Lobby {
 
     public void setPlayers(List<User> players) {
         this.players = players;
+    }
+
+    public boolean isPlayerExists(User user) {
+        for (User joinedUser : players) {
+            if (joinedUser.getUsername().equals(user.getUsername())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public Map<String, Boolean> getReadyMap() {

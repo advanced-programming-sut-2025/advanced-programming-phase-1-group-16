@@ -15,8 +15,6 @@ import com.group16.stardewvalley.controller.menu.MainMenuController;
 import com.group16.stardewvalley.model.LobbyInfo;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -84,7 +82,7 @@ public class LobbyMenuView implements Screen {
         Table left = new Table();
         left.top();
         left.add(new Label("Available Lobbies", skin)).padBottom(10).row();
-        left.add(lobbyScrollPane).width(300).height(400).padBottom(10).row();
+        left.add(lobbyScrollPane).width(600).height(500).padBottom(10).row();
 
 
         left.row().padTop(10);
@@ -146,7 +144,13 @@ public class LobbyMenuView implements Screen {
                 GameAssetManager.getGameAssetManager().getBrightClickSound().play();
                 String selectedLobby = lobbyDisplayList.getSelected();
                 if (selectedLobby != null && !selectedLobby.equals("Loading...")) {
-                    LobbyInfo lobby = getLobbyByName(selectedLobby);
+                    String lobbyName = selectedLobby.split(" \\(")[0];
+                    LobbyInfo lobby = getLobbyByName(lobbyName);
+                    if (lobby == null) {
+                        setMessage("no lobby selected");
+                        return;
+                    }
+
                     if (lobby.isPrivate()) {
                         showPasswordEnterDialog(password -> {
                             if (password == null || password.isEmpty()) {
@@ -159,11 +163,11 @@ public class LobbyMenuView implements Screen {
                                 return;
                             }
 
-                            Result result = controller.joinLobby(selectedLobby);
+                            Result result = controller.joinLobby(lobbyName);
                             setMessage(result.toString());
                         });
                     } else {
-                        Result result = controller.joinLobby(selectedLobby);
+                        Result result = controller.joinLobby(lobbyName);
                         setMessage(result.toString());
                     }
                 } else {
@@ -370,8 +374,7 @@ public class LobbyMenuView implements Screen {
         }
     }
 
-    public LobbyInfo getLobbyByName(String lobbyDetail) {
-        String lobbyName = lobbyDetail.split(" \n")[0];
+    public LobbyInfo getLobbyByName(String lobbyName) {
         for (LobbyInfo lobby : lobbies) {
             if (lobby.getName().equals(lobbyName)) {
                 return lobby;

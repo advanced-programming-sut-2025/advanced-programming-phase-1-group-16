@@ -156,7 +156,7 @@ public class LobbyMenuController extends Table {
         Message message = new Message(bodyMessage, Message.Type.JOIN_LOBBY);
         Message response = ClientNetworkManager.sendAndWait(message);
         if (response != null && ! (boolean) response.getFromBody("success")) {
-            return new Result(false, "Failed to join lobby");
+            return new Result(false, response.getFromBody("error"));
         }
         return new Result(true, "Successfully joined lobby");
 
