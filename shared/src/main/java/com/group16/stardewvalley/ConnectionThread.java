@@ -3,8 +3,10 @@ package com.group16.stardewvalley;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -74,10 +76,18 @@ abstract public class ConnectionThread extends Thread {
 				if (!handled) try {
 					receivedMessagesQueue.put(message);
 				} catch (InterruptedException e) {}
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-			}
-		}
+			}  catch (EOFException e) {
+                System.out.println("Client disconnected (EOF).");
+                break;
+            } catch (SocketException e) {
+                System.out.println("Client forcibly closed the connection.");
+                break;
+            } catch (Exception e) {
+                System.out.println("Unexpected error: " + e);
+                break;
+            }
+
+    }
 
 		end();
 	}
