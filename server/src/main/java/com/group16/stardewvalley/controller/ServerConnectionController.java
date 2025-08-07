@@ -174,7 +174,9 @@ public class ServerConnectionController {
                     .toList(),
                 lobby.getPassword(),
                 lobby.isPrivate(),
-                lobby.getLobbyId()
+                lobby.getLobbyId(),
+                lobby.getCreator().getUsername(),
+                lobby.isVisible()
             ))
             .toList();
 
@@ -196,12 +198,67 @@ public class ServerConnectionController {
             return buildErrorResponse("lobby not found!", Message.Type.JOIN_LOBBY);
         }
         if (lobby.isPlayerExists(user)) {
-            return buildErrorResponse("You are already is in the lobby!", Message.Type.JOIN_LOBBY);
+            return buildErrorResponse("You are already in the lobby!", Message.Type.JOIN_LOBBY);
         }
         lobby.addPlayer(user);
         HashMap<String, Object> responseBody = new HashMap<>();
         responseBody.put("success", true);
         return new Message(responseBody, Message.Type.JOIN_LOBBY);
+    }
+
+    public static Message leaveLobby(Message message) {
+        String username = message.getFromBody("username");
+        User user = UserDataSQL.getInstance().getUserByUsername(username);
+        if (user == null) {
+            return buildErrorResponse("user not found!", Message.Type.JOIN_LOBBY);
+        }
+        String lobbyName = message.getFromBody("lobbyName");
+        Lobby lobby = LobbyManager.getLobby(lobbyName);
+        if (lobby == null) {
+            return buildErrorResponse("lobby not found!", Message.Type.JOIN_LOBBY);
+        }
+        if (!lobby.isPlayerExists(user)) {
+            return buildErrorResponse("You are not in the lobby!", Message.Type.JOIN_LOBBY);
+        }
+        if (lobby.getPlayers().size() < 2) {
+            LobbyManager.removeLobby(lobbyName);
+        }
+        if (lobby.getCreator().getUsername().equals(username)) {
+            lobby.nextAdmin();
+        }
+        lobby.removePlayer(user);
+        HashMap<String, Object> responseBody = new HashMap<>();
+        responseBody.put("success", true);
+        return new Message(responseBody, Message.Type.JOIN_LOBBY);
+    }
+
+    public static Message startGame(Message message) {
+        return buildErrorResponse("Nemishe", Message.Type.START_GAME);
+    }
+
+    public static Message setLobbyVisibility(Message message) {
+        String lobbyName = message.getFromBody("lobbyName");
+        Lobby lobby = LobbyManager.getLobby(lobbyName);
+        if (lobby == null) {
+            return buildErrorResponse("lobby not found!", Message.Type.JOIN_LOBBY);
+        }
+        boolean visible = message.getFromBody("visible");
+        lobby.setVisible(visible);
+        HashMap<String, Object> responseBody = new HashMap<>();
+        responseBody.put("success", true);
+        return new Message(responseBody, Message.Type.SET_LOBBY_VISIBILITY);
+    }
+
+    public static Message searchLobby(Message message) {
+        String lobbyId = message.getFromBody("id");
+        Lobby lobby = LobbyManager.getLobbyById(lobbyId);
+        if (lobby == null) {
+            return buildErrorResponse("lobby not found!", Message.Type.SEARCH_LOBBY);
+        }
+        HashMap<String, Object> responseBody = new HashMap<>();
+        responseBody.put("success", true);
+        responseBody.put("lobbyName", lobby.getName());
+        return new Message(responseBody, Message.Type.SEARCH_LOBBY);
     }
 
 

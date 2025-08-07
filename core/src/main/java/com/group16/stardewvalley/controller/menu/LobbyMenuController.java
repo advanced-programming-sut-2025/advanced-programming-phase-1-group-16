@@ -145,11 +145,8 @@ public class LobbyMenuController extends Table {
 
     public Result joinLobby(String lobbyName) {
         if (lobbyName == null || lobbyName.isEmpty()) {
-            System.out.println("No lobby selected");
             return new Result(false, "No lobby selected");
         }
-        System.out.println("Joining lobby: " + lobbyName);
-        // send to server
         HashMap<String, Object> bodyMessage = new HashMap<>();
         bodyMessage.put("username", App.getLoggedInUser().getUsername());
         bodyMessage.put("lobbyName", lobbyName);
@@ -178,5 +175,54 @@ public class LobbyMenuController extends Table {
             view.setMessage("Failed to fetch lobby list.");
         }
     }
+
+    public Result leaveLobby(LobbyInfo lobby) {
+        if (lobby == null) {
+            return new Result(false, "No lobby selected");
+        }
+        HashMap<String, Object> bodyMessage = new HashMap<>();
+        bodyMessage.put("username", App.getLoggedInUser().getUsername());
+        bodyMessage.put("lobbyName", lobby.getName());
+        Message message = new Message(bodyMessage, Message.Type.LEAVE_LOBBY);
+        Message response = ClientNetworkManager.sendAndWait(message);
+        if (response != null && ! (boolean) response.getFromBody("success")) {
+            return new Result(false, response.getFromBody("error"));
+        }
+        return new Result(true, "You left the lobby");
+    }
+
+    public Result setLobbyVisibility(String lobbyName, boolean visible) {
+        HashMap<String, Object> bodyMessage = new HashMap<>();
+        bodyMessage.put("lobbyName", lobbyName);
+        bodyMessage.put("visible", visible);
+        Message message = new Message(bodyMessage, Message.Type.SET_LOBBY_VISIBILITY);
+        Message response = ClientNetworkManager.sendAndWait(message);
+        if (response != null && (boolean) response.getFromBody("success")) {
+            return new Result(false, response.getFromBody("error"));
+        }
+        if (response == null) {
+            return new Result(false, "response is null");
+        }
+        return new Result(true, "Visibility changed");
+    }
+
+    public void searchLobbyById(String ID) {
+        HashMap<String, Object> bodyMessage = new HashMap<>();
+        bodyMessage.put("id", ID);
+        Message message = new Message(bodyMessage, Message.Type.SEARCH_LOBBY);
+        Message response = ClientNetworkManager.sendAndWait(message);
+
+        if (response != null && (boolean) response.getFromBody("success")) {
+            String lobbyName = response.getFromBody("lobbyName");
+            LobbyInfo lobby = view.getLobbyByName(lobbyName);
+            if (lobby != null) {
+                setLobbyVisibility(lobbyName, true);
+            }
+        } else {
+            view.setMessage("Lobby not found with ID: " + ID);
+        }
+    }
+
+
 }
 

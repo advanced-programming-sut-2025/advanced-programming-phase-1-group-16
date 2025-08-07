@@ -4,27 +4,64 @@ import com.group16.stardewvalley.model.user.User;
 
 import java.util.*;
 
+import static com.group16.stardewvalley.controller.LobbyManager.lobbyIdAlreadyExists;
+
 public class Lobby {
     private String name;
     private User creator;
     private String lobbyId;
     private String password;
     private boolean isPrivate;
+    private boolean isVisible;
     private List<User> players = new ArrayList<>();
     private Map<String, Boolean> readyMap = new HashMap<>();
+    private long lastEmptyTime =  System.currentTimeMillis();
+
 
     public Lobby(String name, User creator, String password, boolean isPrivate) {
         this.name = name;
         this.creator = creator;
         this.password = password;
         this.isPrivate = isPrivate;
-        this.lobbyId = String.valueOf(Math.abs(UUID.randomUUID().getMostSignificantBits()));
+        this.isVisible = true;
+        Random random = new Random();
+        do {
+            int randomId = random.nextInt(900000) + 100000;
+            this.lobbyId = String.valueOf(randomId);
+
+        } while (lobbyIdAlreadyExists(lobbyId));
+
         players.add(creator);
     }
+
 
     public void addPlayer(User user) {
         players.add(user);
         readyMap.put(user.getUsername(), false);
+        lastEmptyTime = -1;
+    }
+
+    public void removePlayer(User user) {
+        players.remove(user);
+        players.removeIf(u -> u.getUsername().equals(user.getUsername()));
+        if (players.size() < 2) {
+            lastEmptyTime = System.currentTimeMillis();
+        }
+    }
+
+    public long getLastEmptyTime() {
+        return lastEmptyTime;
+    }
+
+    public void setLastEmptyTime(long lastEmptyTime) {
+        this.lastEmptyTime = lastEmptyTime;
+    }
+
+    public void nextAdmin() {
+        if (players.size() > 1) {
+            User admin = players.get(1);
+            creator = admin;
+        }
     }
 
     public void setReady(String username, boolean ready) {
@@ -102,5 +139,13 @@ public class Lobby {
 
     public void setPrivate(boolean aPrivate) {
         isPrivate = aPrivate;
+    }
+
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    public void setVisible(boolean visible) {
+        isVisible = visible;
     }
 }

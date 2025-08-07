@@ -3,9 +3,11 @@ package com.group16.stardewvalley.view.menuGraphics;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -14,8 +16,10 @@ import com.group16.stardewvalley.controller.menu.LobbyMenuController;
 import com.group16.stardewvalley.controller.menu.MainMenuController;
 import com.group16.stardewvalley.model.LobbyInfo;
 import com.group16.stardewvalley.model.Result;
+import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
 
+import javax.swing.event.ChangeEvent;
 import java.util.ArrayList;
 
 public class LobbyMenuView implements Screen {
@@ -118,7 +122,7 @@ public class LobbyMenuView implements Screen {
                     setMessage("Please enter a Lobby ID to search.");
                     return;
                 }
-                //controller.searchLobbyById(inputId);
+                controller.searchLobbyById(inputId);
             }
         });
 
@@ -137,6 +141,27 @@ public class LobbyMenuView implements Screen {
                 showCreateLobbyDialog();
             }
         });
+
+        lobbyDisplayList.addListener(new ClickListener() {
+            private long lastClickTime = 0;
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                long clickTime = System.currentTimeMillis();
+                if (clickTime - lastClickTime < 400) { // double click
+                    String selectedLobby = lobbyDisplayList.getSelected();
+                    if (selectedLobby != null) {
+                        String lobbyName = selectedLobby.split(" \\(")[0];
+                        LobbyInfo lobby = getLobbyByName(lobbyName);
+                        if (lobby != null && lobby.isPlayerInLobby(App.getLoggedInUser().getUsername())) {
+                            showLobbyDetailsDialog(lobby);
+                        }
+                    }
+                }
+                lastClickTime = clickTime;
+            }
+        });
+
 
         // دکمه پیوستن به لابی
         joinLobbyButton.addListener(new ClickListener() {
@@ -300,7 +325,7 @@ public class LobbyMenuView implements Screen {
     public void showPasswordEnterDialog(PasswordCallback callback) {
         Dialog dialog = new Dialog("Enter password", skin) {
             public float getPrefWidth() { return 800; }
-            public float getPrefHeight() { return 600; }
+            public float getPrefHeight() { return 700; }
         };
 
         dialog.setModal(true);
@@ -334,13 +359,115 @@ public class LobbyMenuView implements Screen {
         });
 
         Table buttonTable = new Table();
-        buttonTable.add(checkPass).padRight(20);
+        buttonTable.add(checkPass).padRight(10);
         buttonTable.add(cancelBtn);
 
         dialog.getContentTable().add(content);
         dialog.getButtonTable().add(buttonTable);
 
         dialog.show(stage);
+    }
+
+    public void showLobbyDetailsDialog(LobbyInfo lobby) {
+        Dialog dialog = new Dialog("Lobby: " + lobby.getName(), skin) {
+            public float getPrefWidth() { return 800; }
+            public float getPrefHeight() { return 900; }
+        };
+
+        dialog.setModal(true);
+        dialog.setMovable(true);
+
+        Table content = new Table(skin);
+        content.pad(10f).defaults().left().padBottom(10);
+
+        // Lobby ID
+        content.add("Lobby ID: " + lobby.getLobbyId()).row();
+
+        // Visibility label (قابل تغییر در لحظه)
+        Label visibilityLabel = new Label("Visibility: " + (lobby.isVisible() ? "Visible" : "Invisible"), skin);
+        content.add(visibilityLabel).row();
+
+        // Players list
+        content.add("Players:").row();
+        Table playersTable = new Table(skin);
+        for (String username : lobby.getPlayerUsernames()) {
+            boolean isAdmin = username.equals(lobby.getCreatorName());
+            String label = isAdmin ? username + " (Admin)" : username;
+            playersTable.add("- " + label).left().row();
+        }
+        ScrollPane scrollPane = new ScrollPane(playersTable, skin);
+        scrollPane.setFadeScrollBars(false);
+        scrollPane.setScrollingDisabled(true, false);
+        content.add(scrollPane).height(200).width(400).row();
+
+        // Buttons
+        Table buttonTable = new Table(skin);
+        buttonTable.defaults().width(700).padTop(20).padBottom(10);
+
+        TextButton leaveButton = new TextButton("Leave Lobby", skin);
+        leaveButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Result result = controller.leaveLobby(lobby);
+                setMessage(result.message());
+                dialog.hide();
+            }
+        });
+        buttonTable.add(leaveButton).row();
+
+        boolean isAdmin = lobby.getCreatorName().equals(App.getLoggedInUser().getUsername());
+
+        if (isAdmin) {
+            TextButton toggleVisibilityButton = getTextButton(lobby, visibilityLabel);
+            buttonTable.add(toggleVisibilityButton).row();
+        }
+
+        if (isAdmin && lobby.getPlayerUsernames().size() >= 2) {
+            TextButton startButton = new TextButton("Start Game", skin);
+            startButton.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    //Result res = controller.startGame(lobby.getLobbyId());
+                    setMessage("Starting game...");
+                    dialog.hide();
+                }
+            });
+            buttonTable.add(startButton).row();
+        }
+
+        TextButton closeButton = new TextButton("Close", skin);
+        closeButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                dialog.hide();
+            }
+        });
+        buttonTable.add(closeButton).row();
+
+        // Add everything to dialog
+        dialog.getContentTable().add(content).row();
+        dialog.getButtonTable().add(buttonTable);
+
+        dialog.show(stage);
+    }
+
+    private TextButton getTextButton(LobbyInfo lobby, Label visibilityLabel) {
+        TextButton toggleVisibilityButton = new TextButton("Toggle Visibility", skin);
+        toggleVisibilityButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                boolean newVisibility = !lobby.isVisible();
+                Result result = controller.setLobbyVisibility(lobby.getName(), newVisibility);
+                if (result.isSuccessful()) {
+                    lobby.setVisible(newVisibility);
+                    visibilityLabel.setText("Visibility: " + (newVisibility ? "Visible" : "Invisible"));
+                    setMessage("Lobby visibility changed.");
+                } else {
+                    setMessage(result.message());
+                }
+            }
+        });
+        return toggleVisibilityButton;
     }
 
 
@@ -362,6 +489,7 @@ public class LobbyMenuView implements Screen {
         } else {
             java.util.List<String> displayStrings = new ArrayList<>();
             for (LobbyInfo lobby : lobbies) {
+                if (!lobby.isVisible() && !lobby.isPlayerInLobby(App.getLoggedInUser().getUsername())) continue;
                 String name = lobby.getName();
                 int count = lobby.getPlayerUsernames().size();
                 String playersString = String.join(", ", lobby.getPlayerUsernames());

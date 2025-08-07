@@ -16,8 +16,26 @@ public class LobbyManager {
         lobbies.put(lobbyName, new Lobby(lobbyName, creator, password, isPrivate));
     }
 
+    public static boolean lobbyIdAlreadyExists(String lobbyId) {
+        for (Lobby lobby : lobbies.values()) {
+            if (lobby.getLobbyId().equals(lobbyId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static Lobby getLobby(String name) {
         return lobbies.get(name);
+    }
+
+    public static Lobby getLobbyById(String lobbyId) {
+        for (Lobby lobby : lobbies.values()) {
+            if (lobby.getLobbyId().equals(lobbyId)) {
+                return lobby;
+            }
+        }
+        return null;
     }
 
     public static List<String> getAllLobbyNames() {

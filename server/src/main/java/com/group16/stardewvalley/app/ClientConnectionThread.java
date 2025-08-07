@@ -76,6 +76,22 @@ public class ClientConnectionThread extends ConnectionThread {
                 sendMessage(ServerConnectionController.joinLobby(message));
                 yield true;
             }
+            case LEAVE_LOBBY -> {
+                sendMessage(ServerConnectionController.leaveLobby(message));
+                yield true;
+            }
+            case SET_LOBBY_VISIBILITY -> {
+                sendMessage(ServerConnectionController.setLobbyVisibility(message));
+                yield true;
+            }
+            case START_GAME -> {
+                sendMessage(ServerConnectionController.startGame(message));
+                yield true;
+            }
+            case SEARCH_LOBBY -> {
+                sendMessage(ServerConnectionController.searchLobby(message));
+                yield true;
+            }
             default -> false;
         };
     }
