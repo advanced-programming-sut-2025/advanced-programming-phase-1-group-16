@@ -4,6 +4,7 @@ package com.group16.stardewvalley.model;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -55,56 +56,48 @@ public class Inventory {
       table.top().left().pad(10);
       table.setFillParent(true);
       for (Gadget gadget : tools.keySet()) {
-          String assetName = gadget.getName();
-          Image icon = new Image(new Texture(Gdx.files.internal("tools/axe/base_axe.png")));
+          Image icon = new Image(new Texture(Gdx.files.internal(gadget.getAssetPath())));
           table.add(icon).pad(10);
       }
       stage.clear();
       stage.addActor(table);
     }
 
-    public void showItems(Stage stage, Skin skin) {
-        stage.clear();
-        Texture inventoryTexture = new Texture(Gdx.files.internal("Inventory/Inventory_Parts.png"));
-        TextureRegion emptySlotRegion = new TextureRegion(inventoryTexture, 0, 0, 64, 64);
-        TextureRegionDrawable emptySlotDrawable = new TextureRegionDrawable(emptySlotRegion);
-        Table inventoryTable = new Table();
-        inventoryTable.top().left().pad(10);
-        int columns = 5;
-        int i = 0;
+    public void showInventory(Stage stage, Skin skin) {
+        Table mainTable = new Table();
+        mainTable.setFillParent(true);
+        mainTable.center();
+
+        Table itemTable = new Table();
+        itemTable.top().left().pad(5);
+        itemTable.defaults().padTop(20).padLeft(150);
+
+        int columnCount = 4;
+        int index = 0;
 
         for (Item item : items.keySet()) {
-            Stack slot = new Stack();
-            Image slotBackground = new Image(emptySlotDrawable);
+            Texture texture = new Texture(Gdx.files.internal(item.getAssetPath()));
+            Image icon = new Image(texture);
+            icon.setSize(64, 64);
+            itemTable.add(icon).width(64).height(64).pad(5);
 
-            Image itemIcon;
-            if (item instanceof Gadget) {
-                Gadget gadget = (Gadget) item;
-                itemIcon = new Image(new Texture(Gdx.files.internal(gadget.getAssetPath())));
-            } else {
-                String assetPath = "items/" + item.getName() + ".png";
-                itemIcon = new Image(new Texture(Gdx.files.internal(assetPath)));
-            }
-
-            itemIcon.setScaling(Scaling.fit);
-            itemIcon.setSize(48, 48);
-            slot.add(slotBackground);
-            slot.add(itemIcon);
-            inventoryTable.add(slot).size(64, 64).pad(5);
-            i++;
-            if (i % columns == 0) {
-                inventoryTable.row();
+            index++;
+            if (index % columnCount == 0) {
+                itemTable.row();
             }
         }
 
-        ScrollPane scrollPane = new ScrollPane(inventoryTable);
-        scrollPane.setScrollingDisabled(true, false);
-        Table rootTable = new Table();
-        rootTable.setFillParent(true);
-        rootTable.add(scrollPane).expand().fill().pad(10);
-        stage.addActor(rootTable);
+        ScrollPane scrollPane = new ScrollPane(itemTable, skin);
+        scrollPane.setScrollingDisabled(true, false); // فقط اسکرول عمودی
+        scrollPane.setFadeScrollBars(false);
+        scrollPane.setForceScroll(false, true);
+        scrollPane.setOverscroll(false, false);
 
+        mainTable.add(scrollPane).width(400).height(300).top().left();
+        stage.addActor(mainTable);
     }
+
+
 
     public Map<Crop, Integer> getCrops() {
         return crops;

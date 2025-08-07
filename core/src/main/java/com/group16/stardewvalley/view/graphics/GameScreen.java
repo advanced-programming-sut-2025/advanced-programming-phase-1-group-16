@@ -110,7 +110,7 @@ public class GameScreen implements Screen, InputProcessor {
         }
 
         if (showInventory) {
-            App.getActiveGame().getCurrentPlayer().getInventory().showItems(inventoryStage, skin);
+            App.getActiveGame().getCurrentPlayer().getInventory().showInventory(inventoryStage, skin);
             inventoryStage.act(delta);
             inventoryStage.draw();
         }
