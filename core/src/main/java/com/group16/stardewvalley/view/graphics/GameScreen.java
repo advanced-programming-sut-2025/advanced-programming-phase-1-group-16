@@ -1,6 +1,7 @@
 package com.group16.stardewvalley.view.graphics;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -43,6 +44,7 @@ public class GameScreen implements Screen, InputProcessor {
     private static boolean showInventory;
     private Stage toolStage;
     private Stage inventoryStage;
+    private boolean inventoryBuilt = false;
 
     public GameScreen() {
         this.controller = new GameController();
@@ -67,7 +69,13 @@ public class GameScreen implements Screen, InputProcessor {
         batch = Main.getBatch();
         textureManager = new TileTextureManager();
         tileRenderer = new TileRenderer();
-        Gdx.input.setInputProcessor(this);
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(inventoryStage);  // اولویت اول
+        multiplexer.addProcessor(toolStage);       // ابزار
+        multiplexer.addProcessor(this);            // این کلاس (GameScreen)
+
+        Gdx.input.setInputProcessor(multiplexer);
+
     }
 
     public void toggleShowTools() {
@@ -79,8 +87,9 @@ public class GameScreen implements Screen, InputProcessor {
 
     public void toggleShowInventory() {
         showInventory = !showInventory;
-        if (showInventory) {
-
+        if (!showInventory) {
+            inventoryStage.clear();
+            inventoryBuilt = false;
         }
     }
 
@@ -110,10 +119,14 @@ public class GameScreen implements Screen, InputProcessor {
         }
 
         if (showInventory) {
-            App.getActiveGame().getCurrentPlayer().getInventory().showInventory(inventoryStage, skin);
+            if (!inventoryBuilt) {
+                App.getActiveGame().getCurrentPlayer().getInventory().showInventory(inventoryStage, skin);
+                inventoryBuilt = true;
+            }
             inventoryStage.act(delta);
             inventoryStage.draw();
         }
+
     }
 
     private void setCameraForMiniMap() {

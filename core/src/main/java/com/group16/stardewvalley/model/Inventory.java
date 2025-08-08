@@ -5,13 +5,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
+import com.group16.stardewvalley.model.items.Flower;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.agriculture.*;
-import com.group16.stardewvalley.model.agriculture.Seed;
 import com.group16.stardewvalley.model.items.Wood;
 import com.group16.stardewvalley.model.tools.Axe;
 import com.group16.stardewvalley.model.tools.Gadget;
@@ -36,6 +39,7 @@ public class Inventory {
     private ArrayList<CraftingRecipes> craftingRecipes;
     private Map<Crop, Integer> crops;
     private BackPackType backPackType;
+    private DragAndDrop dragAndDrop = new DragAndDrop();
 
     public Inventory() {
         this.tools = new HashMap<>();
@@ -48,6 +52,8 @@ public class Inventory {
         Axe newAse = new Axe("axe", 0, "base");
         tools.put(newAse, 1);
         items.put(newAse, 1);
+        Flower flower = new Flower("flower", 0);
+        items.put(flower, 1);
 
     }
 
@@ -64,40 +70,97 @@ public class Inventory {
     }
 
     public void showInventory(Stage stage, Skin skin) {
+        // پاک کردن Stage از Actorهای قبلی (اما DragAndDrop حفظ می‌شود)
+        stage.clear();
+
+        // مقداردهی اولیه DragAndDrop اگر null باشد
+        if (dragAndDrop == null) {
+            dragAndDrop = new DragAndDrop();
+        } else {
+            dragAndDrop.clear(); // پاک کردن Sourceها و Targetهای قبلی
+        }
+
+        // ساختار اصلی جداول
         Table mainTable = new Table();
         mainTable.setFillParent(true);
         mainTable.center();
 
+        Table containerTable = new Table();
+        containerTable.top().left();
+        containerTable.setSize(320, 250);
+
         Table itemTable = new Table();
         itemTable.top().left().pad(5);
-        itemTable.defaults().padTop(20).padLeft(150);
+        itemTable.defaults().padTop(20).padLeft(10);
 
         int columnCount = 4;
         int index = 0;
 
-        for (Item item : items.keySet()) {
+        // ساخت آیتم‌های موجود در Inventory
+        for (Item item : new ArrayList<>(items.keySet())) {
             Texture texture = new Texture(Gdx.files.internal(item.getAssetPath()));
             Image icon = new Image(texture);
             icon.setSize(64, 64);
+            icon.setTouchable(Touchable.enabled);
+
+            // افزودن آیتم به جدول
             itemTable.add(icon).width(64).height(64).pad(5);
+
+            // تنظیم Source برای درگ کردن
+            dragAndDrop.addSource(new DragAndDrop.Source(icon) {
+                @Override
+                public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
+                    DragAndDrop.Payload payload = new DragAndDrop.Payload();
+                    payload.setObject(item); // ذخیره آیتم برای استفاده در drop
+                    payload.setDragActor(new Image(texture)); // نمایش تصویر هنگام درگ
+                    return payload;
+                }
+            });
 
             index++;
             if (index % columnCount == 0) {
-                itemTable.row();
+                itemTable.row(); // رفتن به سطر جدید پس از هر 4 آیتم
             }
         }
 
+        // اسکرول پن برای آیتم‌ها
         ScrollPane scrollPane = new ScrollPane(itemTable, skin);
-        scrollPane.setScrollingDisabled(true, false); // فقط اسکرول عمودی
+        scrollPane.setScrollingDisabled(true, false);
         scrollPane.setFadeScrollBars(false);
         scrollPane.setForceScroll(false, true);
         scrollPane.setOverscroll(false, false);
 
-        mainTable.add(scrollPane).width(400).height(300).top().left();
+        containerTable.add(scrollPane).width(320).height(200).top().left();
+        containerTable.row();
+
+        // ساخت آیکون سطل زباله (Trash)
+        Texture trashTexture = new Texture(Gdx.files.internal("assets/Inventory/Trash.png"));
+        Image trashIcon = new Image(trashTexture);
+        trashIcon.setSize(48, 48);
+
+        // افزودن سطل زباله به انتهای صفحه
+        containerTable.add().expandX();
+        containerTable.add(trashIcon).right().pad(10).bottom();
+
+        // تنظیم Target برای سطل زباله (حذف آیتم)
+        dragAndDrop.addTarget(new DragAndDrop.Target(trashIcon) {
+            @Override
+            public boolean drag(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
+                return true; // همیشه اجازه دراپ بده
+            }
+
+            @Override
+            public void drop(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
+                Item droppedItem = (Item) payload.getObject();
+                items.remove(droppedItem); // حذف آیتم از لیست
+                showInventory(stage, skin); // رفرش اینونتوری
+            }
+        });
+
+        // اضافه کردن جداول به Stage
+        mainTable.add(containerTable);
         stage.addActor(mainTable);
     }
-
-
 
     public Map<Crop, Integer> getCrops() {
         return crops;
