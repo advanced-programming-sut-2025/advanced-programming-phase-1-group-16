@@ -58,7 +58,7 @@ public class GameMenuController {
         return new Result(true, "new game created! now choose your farm in turn.");
     }
 
-//بازیکن ها بصورت نوبتی و همه از یک سیستم مزرعه ی خود را انتخاب میکنند
+//بازیکن ها به‌صورت نوبتی و همه از یک سیستم مزرعه ی خود را انتخاب میکنند
     public Result chooseFarm(Player player, String farmNumber){
         Game game = App.getActiveGame();
 

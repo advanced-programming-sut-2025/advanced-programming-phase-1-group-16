@@ -78,6 +78,18 @@ public class ServerApp {
         }
     }
 
+    public static void addGame(Game game) {
+        synchronized (games) {
+            games.add(game);
+        }
+    }
+
+    public static void removeGame(Game game) {
+        synchronized (games) {
+            games.remove(game);
+        }
+    }
+
     public static ArrayList<Game> getGroups() {
         return games;
     }

@@ -427,8 +427,8 @@ public class LobbyMenuView implements Screen {
             startButton.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-                    //Result res = controller.startGame(lobby.getLobbyId());
-                    setMessage("Starting game...");
+                    Result startGameResult = controller.startGame(lobby);
+                    setMessage(startGameResult.message());
                     dialog.hide();
                 }
             });

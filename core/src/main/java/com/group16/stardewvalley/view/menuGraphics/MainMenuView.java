@@ -92,7 +92,7 @@ public class MainMenuView implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 GameAssetManager.getGameAssetManager().getBrightClickSound().play();
                 Main.getMain().getScreen().dispose();
-                Main.getMain().setScreen(new LobbyMenuView(new LobbyMenuController(GameAssetManager.getGameAssetManager().getSkin(), App.getLoggedInUser().getNickName()), GameAssetManager.getGameAssetManager().getSkin()));
+                Main.getMain().setScreen(new LobbyMenuView(new LobbyMenuController(), GameAssetManager.getGameAssetManager().getSkin()));
             }
         });
 

@@ -3,11 +3,12 @@ package com.group16.stardewvalley.controller;
 
 import com.group16.stardewvalley.Message;
 import com.group16.stardewvalley.ServerApp;
-import com.group16.stardewvalley.app.ClientConnectionThread;
 import com.group16.stardewvalley.data.UserDataSQL;
-import com.group16.stardewvalley.data.UserJsonUtil;
 import com.group16.stardewvalley.model.Lobby;
 import com.group16.stardewvalley.model.LobbyInfo;
+import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.app.Game;
+import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.model.user.SecurityQuestions;
 import com.group16.stardewvalley.model.user.User;
 
@@ -169,7 +170,7 @@ public class ServerConnectionController {
         List<LobbyInfo> lobbyInfoList = LobbyManager.getAllLobbies().stream()
             .map(lobby -> new LobbyInfo(
                 lobby.getName(),
-                lobby.getPlayers().stream()
+                lobby.getUsers().stream()
                     .map(User::getUsername)
                     .toList(),
                 lobby.getPassword(),
@@ -220,7 +221,7 @@ public class ServerConnectionController {
         if (!lobby.isPlayerExists(user)) {
             return buildErrorResponse("You are not in the lobby!", Message.Type.JOIN_LOBBY);
         }
-        if (lobby.getPlayers().size() < 2) {
+        if (lobby.getUsers().size() < 2) {
             LobbyManager.removeLobby(lobbyName);
         }
         if (lobby.getCreator().getUsername().equals(username)) {
@@ -233,8 +234,41 @@ public class ServerConnectionController {
     }
 
     public static Message startGame(Message message) {
-        return buildErrorResponse("Nemishe", Message.Type.START_GAME);
+        String lobbyId = message.getFromBody("lobbyId");
+        Lobby lobby = LobbyManager.getLobbyById(lobbyId);
+
+        if (lobby == null) {
+            return buildErrorResponse("Lobby not found!", Message.Type.START_GAME);
+        }
+
+        if (lobby.getUsers().isEmpty()) {
+            return buildErrorResponse("No players in lobby!", Message.Type.START_GAME);
+        }
+
+        ArrayList<Player> gamePlayers = new ArrayList<>();
+        gamePlayers.add(new Player(App.getLoggedInUser()));
+        for (User user : lobby.getUsers()) {
+            if (user.getHasActiveGame()) {
+                return buildErrorResponse("Player " + user.getUsername() + " is already in a game!", Message.Type.START_GAME);
+            }
+            gamePlayers.add(new Player(user));
+        }
+
+
+        Game newGame = new Game(new Player(lobby.getCreator()), gamePlayers);
+
+        ServerApp.addGame(newGame);
+        for (User user : lobby.getUsers()) {
+            user.setHasActiveGame(true);
+        }
+
+        //removeLobby(lobby.getName());
+
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("success", true);
+        return new Message(body, Message.Type.START_GAME);
     }
+
 
     public static Message setLobbyVisibility(Message message) {
         String lobbyName = message.getFromBody("lobbyName");

@@ -5,7 +5,6 @@ import com.group16.stardewvalley.controller.LobbyManager;
 import com.group16.stardewvalley.model.Lobby;
 
 import java.io.*;
-import java.net.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -27,7 +26,7 @@ public class ServerMain {
         scheduler.scheduleAtFixedRate(() -> {
             long now = System.currentTimeMillis();
             for (Lobby lobby : LobbyManager.getAllLobbies()) {
-                if (lobby.getPlayers().size() < 2) {
+                if (lobby.getUsers().size() < 2) {
                     long emptySince = lobby.getLastEmptyTime();
                     if (emptySince != -1 && now - emptySince >= 5 * 60 * 1000) {
                         System.out.println("Removing idle lobby: " + lobby.getName());

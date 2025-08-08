@@ -13,7 +13,7 @@ public class Lobby {
     private String password;
     private boolean isPrivate;
     private boolean isVisible;
-    private List<User> players = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
     private Map<String, Boolean> readyMap = new HashMap<>();
     private long lastEmptyTime =  System.currentTimeMillis();
 
@@ -31,20 +31,20 @@ public class Lobby {
 
         } while (lobbyIdAlreadyExists(lobbyId));
 
-        players.add(creator);
+        users.add(creator);
     }
 
 
     public void addPlayer(User user) {
-        players.add(user);
+        users.add(user);
         readyMap.put(user.getUsername(), false);
         lastEmptyTime = -1;
     }
 
     public void removePlayer(User user) {
-        players.remove(user);
-        players.removeIf(u -> u.getUsername().equals(user.getUsername()));
-        if (players.size() < 2) {
+        users.remove(user);
+        users.removeIf(u -> u.getUsername().equals(user.getUsername()));
+        if (users.size() < 2) {
             lastEmptyTime = System.currentTimeMillis();
         }
     }
@@ -58,8 +58,8 @@ public class Lobby {
     }
 
     public void nextAdmin() {
-        if (players.size() > 1) {
-            User admin = players.get(1);
+        if (users.size() > 1) {
+            User admin = users.get(1);
             creator = admin;
         }
     }
@@ -69,23 +69,23 @@ public class Lobby {
     }
 
     public boolean allReady() {
-        if (players.size() < 2) return false;
+        if (users.size() < 2) return false;
         for (boolean ready : readyMap.values()) {
             if (!ready) return false;
         }
         return true;
     }
 
-    public List<User> getPlayers() {
-        return players;
+    public List<User> getUsers() {
+        return users;
     }
 
-    public void setPlayers(List<User> players) {
-        this.players = players;
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 
     public boolean isPlayerExists(User user) {
-        for (User joinedUser : players) {
+        for (User joinedUser : users) {
             if (joinedUser.getUsername().equals(user.getUsername())) {
                 return true;
             }
