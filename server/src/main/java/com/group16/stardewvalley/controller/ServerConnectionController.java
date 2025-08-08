@@ -26,7 +26,6 @@ public class ServerConnectionController {
         try {
             int questionNumber = ((Number) message.getFromBody("securityQuestion")).intValue();
             securityQuestion = SecurityQuestions.fromNumber(questionNumber);
-            System.out.println("questionNumber = " + questionNumber);
 
         } catch (Exception e) {
             System.out.println("Invalid security question: " + e.getMessage());
