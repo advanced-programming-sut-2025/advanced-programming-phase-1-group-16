@@ -9,7 +9,6 @@ public enum Location {
     NPCFarm,
     //no special place:
     Game,
-
     Farm,
     MiningLevel,
     FarmingLevel,
@@ -37,6 +36,20 @@ public enum Location {
             default -> null;
         };
     }
+
+    public boolean isShop() {
+        return switch (this) {
+            case PierresGeneralStore,
+                 FishShop,
+                 Blacksmith,
+                 CarpentersShop,
+                 JojaMart,
+                 MarniesRanch,
+                 TheStardropSaloon -> true;
+            default -> false;
+        };
+    }
+
 
     public static Location getLocationByName(String name) {
         if (name.equalsIgnoreCase("blacksmith")) {

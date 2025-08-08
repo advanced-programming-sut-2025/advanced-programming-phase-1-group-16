@@ -17,6 +17,7 @@ import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.controller.GameController;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.graphics.TileRenderer;
+import com.group16.stardewvalley.model.map.Location;
 import com.group16.stardewvalley.model.map.TileTextureManager;
 import com.group16.stardewvalley.model.tools.Gadget;
 import com.group16.stardewvalley.model.user.Player;
@@ -96,6 +97,10 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public void render(float delta) {
         controller.update(delta);
+        Location currentLocation = App.getActiveGame().getCurrentPlayer().getLocationLocation();
+        if (currentLocation != null && currentLocation.isShop()) {
+            graphicDisplayOfStores(currentLocation);
+        }
         handleTurn();
 
         if (showMiniMap) {
@@ -194,6 +199,39 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void hide() {
+    }
+
+    public void graphicDisplayOfStores(Location shop) {
+        Texture storeTexture = null;
+        Player currentPlayer = App.getActiveGame().getCurrentPlayer();
+        switch (shop) {
+            case JojaMart :
+                storeTexture = new Texture(Gdx.files.internal("Shops/JojaMart.png"));
+                break;
+            case Blacksmith:
+                storeTexture = new Texture(Gdx.files.internal("Shops/Blacksmith.png"));
+                break;
+            case PierresGeneralStore :
+                storeTexture = new Texture(Gdx.files.internal("Shops/PierresGeneralStore.png"));
+                break;
+            case FishShop:
+                storeTexture = new Texture(Gdx.files.internal("Shops/FishShop.png"));
+                break;
+            case MarniesRanch:
+                storeTexture = new Texture(Gdx.files.internal("Shops/MarniesRanch.png"));
+                break;
+            case CarpentersShop:
+                storeTexture = new Texture(Gdx.files.internal("Shops/CarpentersShop.png"));
+                break;
+            default:
+                return;
+        }
+
+        float storeDrawX = currentPlayer.getX() * TILE_SIZE;
+        float storeDrawY = (currentPlayer.getY() + 1) * TILE_SIZE;
+        batch.draw(storeTexture, storeDrawX, storeDrawY, TILE_SIZE * 4, TILE_SIZE * 4);
+
+
     }
 
     @Override
