@@ -53,7 +53,7 @@ public class ClientConnectionThread extends ConnectionThread {
                 yield true;
             }
             case GET_USER_INFO -> {
-                sendMessage(ServerConnectionController.getUserInfo(message));
+                sendMessage(ServerConnectionController.getUserInfo(this, message));
                 yield true;
             }
             case UPDATE_EMAIL -> {

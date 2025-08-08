@@ -128,7 +128,7 @@ public class ServerConnectionController {
         return new Message(responseBody, Message.Type.DELETE_USER);
     }
 
-    public static Message getUserInfo(Message message) {
+    public static Message getUserInfo(ClientConnectionThread connectionThread, Message message) {
         String username = message.getFromBody("username");
         User user = UserDataSQL.getInstance().getUserByUsername(username);
         HashMap<String, Object> responseBody = new HashMap<>();
@@ -137,6 +137,7 @@ public class ServerConnectionController {
             responseBody.put("user", null);
             return new Message(responseBody, Message.Type.GET_USER_INFO);
         }
+        connectionThread.setConnectedUser(user);
         responseBody.put("username", username);
         responseBody.put("password", user.getPassword());
         responseBody.put("nickName", user.getNickName());
@@ -283,13 +284,20 @@ public class ServerConnectionController {
     }
 
     private static void sendMessageToUser(User user, Message message) {
+        boolean sent = false;
         for (ClientConnectionThread connection : ServerApp.getConnections()) {
             if (connection.getConnectedUser() != null &&
-                connection.getConnectedUser().equals(user)) {
+                connection.getConnectedUser().getUsername().equals(user.getUsername())) {
                 connection.sendMessage(message);
+                System.out.println("Sent " + message.getType() + " to " + user.getUsername());
+                sent = true;
             }
         }
+        if (!sent) {
+            System.out.println("No connection found for user: " + user.getUsername());
+        }
     }
+
 
 
 

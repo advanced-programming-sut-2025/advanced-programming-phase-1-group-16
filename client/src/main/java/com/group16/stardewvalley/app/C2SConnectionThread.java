@@ -35,6 +35,7 @@ public class C2SConnectionThread extends ConnectionThread {
 
 	@Override
 	protected boolean handleMessage(Message message) {
+        System.out.println("Received message type: " + message.getType());
         return switch (message.getType()) {
             case SHOW_FARM_SELECTION -> {
                 C2SConnectionController.showFarmSelection(message);

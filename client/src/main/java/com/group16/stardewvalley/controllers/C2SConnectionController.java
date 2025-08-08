@@ -1,6 +1,7 @@
 package com.group16.stardewvalley.controllers;
 
 
+import com.badlogic.gdx.Gdx;
 import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.Message;
 import com.group16.stardewvalley.app.C2SConnectionThread;
@@ -13,10 +14,14 @@ import java.util.HashMap;
 
 public class C2SConnectionController {
     public static void showFarmSelection(Message message) {
-        Main.getMain().setScreen(new FarmSelectionScreen(GameAssetManager.getGameAssetManager().getSkin()));
+        Gdx.app.postRunnable(() -> {
+            Main.getMain().getScreen().dispose();
+            Main.getMain().setScreen(new FarmSelectionScreen(GameAssetManager.getGameAssetManager().getSkin()));
+        });
     }
 
-	public static Message status() {
+
+    public static Message status() {
 		HashMap<String, Object> body = new HashMap<>();
 		body.put("command", "status");
 		body.put("response", "ok");
