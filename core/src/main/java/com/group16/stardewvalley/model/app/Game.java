@@ -6,13 +6,14 @@ import com.group16.stardewvalley.model.map.Direction;
 import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.shops.*;
 import com.group16.stardewvalley.model.time.Season;
+import com.group16.stardewvalley.model.user.User;
 import com.group16.stardewvalley.model.weather.WeatherCondition;
 import com.group16.stardewvalley.model.animal.Animal;
 import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.model.time.TimeDate;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.*;
 
 public class Game {
     private ArrayList<Player> players = new ArrayList<>();
@@ -63,6 +64,42 @@ public class Game {
         NPCs.add(new NPC(NPCType.Leah));
         NPCs.add(new NPC(NPCType.Robin));
     }
+
+    //pregame:
+    private final Map<User, String> farmSelections = new HashMap<>();
+    private final Set<User> readyUsers = new HashSet<>();
+
+    public synchronized void setFarmSelection(User user, String farm) {
+        farmSelections.put(user, farm);
+    }
+
+    public synchronized void setReady(User user) {
+        readyUsers.add(user);
+    }
+
+    public synchronized boolean allReady() {
+        List<User> gameUsers = players.stream()
+            .map(Player::getUser)
+            .toList();
+
+        return readyUsers.containsAll(gameUsers) &&
+            farmSelections.keySet().containsAll(gameUsers);
+    }
+
+    public synchronized Map<User, String> getSelections() {
+        return new HashMap<>(farmSelections);
+    }
+
+    public Player getPlayerByUser(User user) {
+        for (Player player : players) {
+            if (player.getUser().getUsername().equals(user.getUsername())) {
+                return player;
+            }
+        }
+        return null;
+    }
+
+
 
     public List<NPC> getNPCs() {
         return NPCs;

@@ -27,6 +27,17 @@ public class ServerApp {
         return null;
     }
 
+    public static Game getActiveGameByUser(User user) {
+        for (Game game : games) {
+            for (User user1 : users) {
+                if (user.getUsername().equals(user1.getUsername())) {
+                    return game;
+                }
+            }
+        }
+        return null;
+    }
+
     public static boolean isEnded() {
         return exitFlag;
     }

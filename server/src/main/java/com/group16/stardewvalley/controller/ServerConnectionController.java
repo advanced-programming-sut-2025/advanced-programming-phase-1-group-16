@@ -4,9 +4,12 @@ package com.group16.stardewvalley.controller;
 import com.group16.stardewvalley.Message;
 import com.group16.stardewvalley.ServerApp;
 import com.group16.stardewvalley.app.ClientConnectionThread;
+import com.group16.stardewvalley.controller.map.MapController;
+import com.group16.stardewvalley.controller.menu.GameMenuController;
 import com.group16.stardewvalley.data.UserDataSQL;
 import com.group16.stardewvalley.model.Lobby;
 import com.group16.stardewvalley.model.LobbyInfo;
+import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
 import com.group16.stardewvalley.model.user.Player;
@@ -239,6 +242,31 @@ public class ServerConnectionController {
         return new Message(responseBody, Message.Type.JOIN_LOBBY);
     }
 
+    public static Message setLobbyVisibility(Message message) {
+        String lobbyName = message.getFromBody("lobbyName");
+        Lobby lobby = LobbyManager.getLobby(lobbyName);
+        if (lobby == null) {
+            return buildErrorResponse("lobby not found!", Message.Type.JOIN_LOBBY);
+        }
+        boolean visible = message.getFromBody("visible");
+        lobby.setVisible(visible);
+        HashMap<String, Object> responseBody = new HashMap<>();
+        responseBody.put("success", true);
+        return new Message(responseBody, Message.Type.SET_LOBBY_VISIBILITY);
+    }
+
+    public static Message searchLobby(Message message) {
+        String lobbyId = message.getFromBody("id");
+        Lobby lobby = LobbyManager.getLobbyById(lobbyId);
+        if (lobby == null) {
+            return buildErrorResponse("lobby not found!", Message.Type.SEARCH_LOBBY);
+        }
+        HashMap<String, Object> responseBody = new HashMap<>();
+        responseBody.put("success", true);
+        responseBody.put("lobbyName", lobby.getName());
+        return new Message(responseBody, Message.Type.SEARCH_LOBBY);
+    }
+
     public static Message startGame(Message message) {
         String lobbyId = message.getFromBody("lobbyId");
         Lobby lobby = LobbyManager.getLobbyById(lobbyId);
@@ -299,32 +327,56 @@ public class ServerConnectionController {
     }
 
 
+    public static Message handleFarmSelectionReady(Message message) {
+        String farmType = message.getFromBody("choice");
+        String username = message.getFromBody("username");
 
-
-    public static Message setLobbyVisibility(Message message) {
-        String lobbyName = message.getFromBody("lobbyName");
-        Lobby lobby = LobbyManager.getLobby(lobbyName);
-        if (lobby == null) {
-            return buildErrorResponse("lobby not found!", Message.Type.JOIN_LOBBY);
+        User user = UserDataSQL.getInstance().getUserByUsername(username);
+        if (user == null) {
+            return buildErrorResponse("User not found", Message.Type.FARM_SELECTION_READY);
         }
-        boolean visible = message.getFromBody("visible");
-        lobby.setVisible(visible);
-        HashMap<String, Object> responseBody = new HashMap<>();
-        responseBody.put("success", true);
-        return new Message(responseBody, Message.Type.SET_LOBBY_VISIBILITY);
+
+        Game game = ServerApp.getActiveGameByUser(user);
+        if (game == null) {
+            return buildErrorResponse("Active game not found for user", Message.Type.FARM_SELECTION_READY);
+        }
+
+        Player player = game.getPlayerByUser(user);
+        if (player == null) {
+            return buildErrorResponse("Player not found in game", Message.Type.FARM_SELECTION_READY);
+        }
+
+        GameMenuController gameMenuController = new GameMenuController();
+        MapController mapController = new MapController();
+
+        Result result = gameMenuController.chooseFarm(player, farmType);
+        if (!result.isSuccessful()) {
+            return buildErrorResponse(result.message(), Message.Type.FARM_SELECTION_READY);
+        }
+
+        String[] characterPaths = {
+            "Character/maidnpc.png",
+            "Character/gardenernpc.png",
+            "Character/woman_016_npc.png",
+            "Character/man_002_npc.png"
+        };
+
+        if (game.allReady()) {
+            mapController.createMap();
+            int index = 0;
+            for (Player player1 : game.getPlayers()) {
+                player1.setPlayerGraphics(characterPaths[index], 48, 64);
+                index++;
+                //sendMessageToUser(player1.getUser(), new Message(Map.of("mapInfo", "..."), Message.Type.GAME_STARTED));
+            }
+        }
+
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("success", true);
+
+        return new Message(body, Message.Type.FARM_SELECTION_READY);
     }
 
-    public static Message searchLobby(Message message) {
-        String lobbyId = message.getFromBody("id");
-        Lobby lobby = LobbyManager.getLobbyById(lobbyId);
-        if (lobby == null) {
-            return buildErrorResponse("lobby not found!", Message.Type.SEARCH_LOBBY);
-        }
-        HashMap<String, Object> responseBody = new HashMap<>();
-        responseBody.put("success", true);
-        responseBody.put("lobbyName", lobby.getName());
-        return new Message(responseBody, Message.Type.SEARCH_LOBBY);
-    }
 
 
 

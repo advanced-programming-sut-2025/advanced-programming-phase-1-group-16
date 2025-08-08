@@ -14,7 +14,6 @@ public class Lobby {
     private boolean isPrivate;
     private boolean isVisible;
     private List<User> users = new ArrayList<>();
-    private Map<String, Boolean> readyMap = new HashMap<>();
     private long lastEmptyTime =  System.currentTimeMillis();
 
 
@@ -37,7 +36,6 @@ public class Lobby {
 
     public void addPlayer(User user) {
         users.add(user);
-        readyMap.put(user.getUsername(), false);
         lastEmptyTime = -1;
     }
 
@@ -64,18 +62,6 @@ public class Lobby {
         }
     }
 
-    public void setReady(String username, boolean ready) {
-        readyMap.put(username, ready);
-    }
-
-    public boolean allReady() {
-        if (users.size() < 2) return false;
-        for (boolean ready : readyMap.values()) {
-            if (!ready) return false;
-        }
-        return true;
-    }
-
     public List<User> getUsers() {
         return users;
     }
@@ -91,14 +77,6 @@ public class Lobby {
             }
         }
         return false;
-    }
-
-    public Map<String, Boolean> getReadyMap() {
-        return readyMap;
-    }
-
-    public void setReadyMap(Map<String, Boolean> readyMap) {
-        this.readyMap = readyMap;
     }
 
     public String getName() {

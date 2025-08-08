@@ -7,6 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.group16.stardewvalley.model.app.App;
+
+import java.util.HashMap;
 
 public class FarmSelectionScreen implements Screen {
 
@@ -50,9 +53,13 @@ public class FarmSelectionScreen implements Screen {
         readyButton = new TextButton("I'm ready!", skin);
         readyButton.addListener(event -> {
             if (readyButton.isPressed()) {
-                String choice = smallFarmCheckBox.isChecked() ? "small" : "big";
+                String choice = smallFarmCheckBox.isChecked() ? "1" : "2";
                 System.out.println("Selected farm: " + choice);
-                // اینجا می‌تونی پیام رو به سرور بفرستی
+
+                HashMap<String, Object> messageBody = new HashMap<>();
+                messageBody.put("choice", choice);
+                messageBody.put("username", App.getLoggedInUser().getUsername());
+                messageBody.put("farmType", smallFarmCheckBox.isChecked());
             }
             return false;
         });

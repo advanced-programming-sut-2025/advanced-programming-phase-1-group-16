@@ -51,5 +51,7 @@ public class Message {
         LOBBY_UPDATE,
         START_GAME,
         SHOW_FARM_SELECTION,
+        FARM_SELECTION_READY,
+        GAME_STARTED,
 	}
 }

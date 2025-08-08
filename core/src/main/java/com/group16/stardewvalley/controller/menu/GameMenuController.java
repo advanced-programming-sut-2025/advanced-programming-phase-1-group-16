@@ -60,7 +60,6 @@ public class GameMenuController {
 
 //بازیکن ها به‌صورت نوبتی و همه از یک سیستم مزرعه ی خود را انتخاب میکنند
     public Result chooseFarm(Player player, String farmNumber){
-        Game game = App.getActiveGame();
 
         if (farmNumber.matches("\\d+")) {
             int farmNum = Integer.parseInt(farmNumber);
