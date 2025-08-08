@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.group16.stardewvalley.Message;
-import com.group16.stardewvalley.controllers.ClientNetworkManager;
+import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
 
 import java.util.HashMap;
@@ -98,7 +98,7 @@ public class User {
         data.put("newUsername", username);
 
         Message message = new Message(data, Message.Type.UPDATE_USERNAME);
-        Message response = ClientNetworkManager.sendAndWait(message);
+        Message response = App.sendAndWait(message);
 
         if (response == null) {
             System.out.println("User " + username + " could not be updated!");
@@ -115,7 +115,7 @@ public class User {
         data.put("password", password);
 
         Message message = new Message(data, Message.Type.UPDATE_PASSWORD);
-        Message response = ClientNetworkManager.sendAndWait(message);
+        Message response = App.sendAndWait(message);
 
     }
 
@@ -126,7 +126,7 @@ public class User {
         data.put("nickName", nickName);
 
         Message message = new Message(data, Message.Type.UPDATE_NICKNAME);
-        Message response = ClientNetworkManager.sendAndWait(message);
+        Message response = App.sendAndWait(message);
     }
 
     public void setEmail(String email) {
@@ -136,7 +136,7 @@ public class User {
         data.put("email", email);
 
         Message message = new Message(data, Message.Type.UPDATE_EMAIL);
-        Message response = ClientNetworkManager.sendAndWait(message);
+        Message response = App.sendAndWait(message);
     }
 
     public void setUserSecurityQuestion(SecurityQuestions userSecurityQuestion) {

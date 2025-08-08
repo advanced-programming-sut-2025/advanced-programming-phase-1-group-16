@@ -57,7 +57,7 @@ public class UserDataSQL {
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, user.getUsername());
             pstmt.setString(2, user.getPassword());
-            pstmt.setString(3, user.getUserSecurityQuestion().name());
+            pstmt.setInt(3, user.getUserSecurityQuestion().getNumber());
             pstmt.setString(4, user.getSecurityAnswer());
             pstmt.setString(5, user.getNickName());
             pstmt.setString(6, user.getEmail());
@@ -70,7 +70,7 @@ public class UserDataSQL {
         }
 
         List<User> allUsers = getAllUsers();
-        UserJsonUtil.saveUsersToJson(allUsers, "data/users.json");
+        //UserJsonUtil.saveUsersToJson(allUsers, "data/users.json");
     }
 
     public List<User> getAllUsers() {
@@ -88,7 +88,7 @@ public class UserDataSQL {
                     rs.getString("email"),
                     rs.getString("gender")
                 );
-                user.setUserSecurityQuestion(SecurityQuestions.valueOf(rs.getString("selectedQuestion")));
+                user.setUserSecurityQuestion(SecurityQuestions.fromNumber(rs.getInt("selectedQuestion")));
                 user.setSecurityAnswer(rs.getString("answer"));
                 users.add(user);
             }
@@ -118,9 +118,9 @@ public class UserDataSQL {
 
                 User user = new User(username, password, nickname, email, gender);
 
-                String questionStr = rs.getString("selectedQuestion");
-                if (questionStr != null) {
-                    user.setUserSecurityQuestion(SecurityQuestions.valueOf(questionStr));
+                int questionNum = rs.getInt("selectedQuestion");
+                if (questionNum < 6) {
+                    user.setUserSecurityQuestion(SecurityQuestions.fromNumber(questionNum));
                 }
                 user.setSecurityAnswer(rs.getString("answer"));
 
@@ -158,7 +158,7 @@ public class UserDataSQL {
             pstmt.setString(2, oldUsername);
             pstmt.executeUpdate();
             List<User> allUsers = getAllUsers();
-            UserJsonUtil.saveUsersToJson(allUsers, "data/users.json");
+            //UserJsonUtil.saveUsersToJson(allUsers, "data/users.json");
         }
         catch (SQLException e) {
             System.err.println("Can't update username: " + e.getMessage());
@@ -175,7 +175,7 @@ public class UserDataSQL {
             pstmt.setString(2, username);
             pstmt.executeUpdate();
             List<User> allUsers = getAllUsers();
-            UserJsonUtil.saveUsersToJson(allUsers, "data/users.json");
+            //UserJsonUtil.saveUsersToJson(allUsers, "data/users.json");
         }
         catch (SQLException e) {
             System.err.println("Can't update password: " + e.getMessage());
@@ -192,7 +192,7 @@ public class UserDataSQL {
             pstmt.executeUpdate();
 
             List<User> allUsers = getAllUsers();
-            UserJsonUtil.saveUsersToJson(allUsers, "data/users.json");
+            //UserJsonUtil.saveUsersToJson(allUsers, "data/users.json");
             return true;
         }
         catch (SQLException e) {
@@ -211,7 +211,7 @@ public class UserDataSQL {
             pstmt.executeUpdate();
 
             List<User> allUsers = getAllUsers();
-            UserJsonUtil.saveUsersToJson(allUsers, "data/users.json");
+            //UserJsonUtil.saveUsersToJson(allUsers, "data/users.json");
         }
         catch (SQLException e) {
             System.err.println("Can't update email: " + e.getMessage());
@@ -231,7 +231,7 @@ public class UserDataSQL {
             pstmt.executeUpdate();
 
             List<User> allUsers = getAllUsers();
-            UserJsonUtil.saveUsersToJson(allUsers, "data/users.json");
+            //UserJsonUtil.saveUsersToJson(allUsers, "data/users.json");
             return true;
 
         } catch (SQLException e) {

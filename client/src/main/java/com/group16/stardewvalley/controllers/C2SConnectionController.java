@@ -1,25 +1,20 @@
 package com.group16.stardewvalley.controllers;
 
 
+import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.Message;
 import com.group16.stardewvalley.app.C2SConnectionThread;
 import com.group16.stardewvalley.app.ClientApp;
+import com.group16.stardewvalley.model.graphics.GameAssetManager;
+import com.group16.stardewvalley.view.menuGraphics.FarmSelectionScreen;
 
 import java.io.File;
 import java.util.HashMap;
 
 public class C2SConnectionController {
-	public static Message handleCommand(Message message) {
-		String command = message.getFromBody("command");
-
-        return switch (command) {
-            case "status" -> status();
-            case "get_files_list" -> getFilesList();
-            case "get_sends" -> getSends();
-            case "get_receives" -> getReceives();
-            default -> null;
-        };
-	}
+    public static void showFarmSelection(Message message) {
+        Main.getMain().setScreen(new FarmSelectionScreen(GameAssetManager.getGameAssetManager().getSkin()));
+    }
 
 	public static Message status() {
 		HashMap<String, Object> body = new HashMap<>();

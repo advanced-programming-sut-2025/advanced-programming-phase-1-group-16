@@ -1,7 +1,6 @@
 package com.group16.stardewvalley.controller.menu;
 
 import com.group16.stardewvalley.Message;
-import com.group16.stardewvalley.controllers.ClientNetworkManager;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
@@ -73,7 +72,7 @@ public class SignUpMenuController {
         body.put("username", username);
 
         Message message = new Message(body, Message.Type.IS_USERNAME_TAKEN);
-        Message response = ClientNetworkManager.sendAndWait(message);
+        Message response = App.sendAndWait(message);
 
         if (response == null) return false;
 
@@ -142,12 +141,12 @@ public class SignUpMenuController {
         body.put("nickName", user.getNickName());
         body.put("email", user.getEmail());
         body.put("gender", user.getGender());
-        body.put("securityQuestion", selectedQuestion);
+        body.put("securityQuestion", selectedQuestion.getNumber());
         body.put("answer", answer);
 
         Message message = new Message(body, Message.Type.REGISTER);
 
-        Message response = ClientNetworkManager.sendAndWait(message);
+        Message response = App.sendAndWait(message);
 
         if (response == null) return new Result(false, "No response from server!");
 

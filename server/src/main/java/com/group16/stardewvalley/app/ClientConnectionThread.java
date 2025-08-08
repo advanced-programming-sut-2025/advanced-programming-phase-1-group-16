@@ -5,6 +5,7 @@ import com.group16.stardewvalley.JSONUtils;
 import com.group16.stardewvalley.Message;
 import com.group16.stardewvalley.ServerApp;
 import com.group16.stardewvalley.controller.ServerConnectionController;
+import com.group16.stardewvalley.model.user.User;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -14,6 +15,17 @@ import static com.group16.stardewvalley.ServerApp.TIMEOUT_MILLIS;
 
 
 public class ClientConnectionThread extends ConnectionThread {
+
+    private User connectedUser;
+
+    public User getConnectedUser() {
+        return connectedUser;
+    }
+
+    public void setConnectedUser(User user) {
+        this.connectedUser = user;
+    }
+
 
     public ClientConnectionThread(Socket socket) throws IOException {
         super(socket);
@@ -33,7 +45,7 @@ public class ClientConnectionThread extends ConnectionThread {
                 yield true;
             }
             case REGISTER -> {
-                sendMessage(ServerConnectionController.register(message));
+                sendMessage(ServerConnectionController.register(this, message));
                 yield true;
             }
             case IS_USERNAME_TAKEN -> {

@@ -14,7 +14,6 @@ import com.group16.stardewvalley.Message;
 import com.group16.stardewvalley.controller.menu.MainMenuController;
 import com.group16.stardewvalley.controller.menu.ProfileMenuController;
 import com.group16.stardewvalley.controller.menu.StartMenuController;
-import com.group16.stardewvalley.controllers.ClientNetworkManager;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.graphics.AnimatedSpriteActor;
@@ -119,7 +118,7 @@ public class ProfileMenuView implements Screen {
                 body.put("username", App.getLoggedInUser().getUsername());
 
                 Message message = new Message(body, Message.Type.DELETE_USER);
-                Message response = ClientNetworkManager.sendAndWait(message);
+                Message response = App.sendAndWait(message);
             }
         });
 

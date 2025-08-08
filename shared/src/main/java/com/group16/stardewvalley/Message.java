@@ -50,5 +50,6 @@ public class Message {
         SET_READY_STATE,
         LOBBY_UPDATE,
         START_GAME,
+        SHOW_FARM_SELECTION,
 	}
 }

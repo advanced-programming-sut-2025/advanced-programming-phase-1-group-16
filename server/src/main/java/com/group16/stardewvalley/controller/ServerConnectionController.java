@@ -3,6 +3,7 @@ package com.group16.stardewvalley.controller;
 
 import com.group16.stardewvalley.Message;
 import com.group16.stardewvalley.ServerApp;
+import com.group16.stardewvalley.app.ClientConnectionThread;
 import com.group16.stardewvalley.data.UserDataSQL;
 import com.group16.stardewvalley.model.Lobby;
 import com.group16.stardewvalley.model.LobbyInfo;
@@ -15,7 +16,7 @@ import com.group16.stardewvalley.model.user.User;
 import java.util.*;
 
 public class ServerConnectionController {
-    public static Message register(Message message) {
+    public static Message register(ClientConnectionThread connectionThread, Message message) {
         String username = message.getFromBody("username");
         String password = message.getFromBody("password");
         String nickName = message.getFromBody("nickName");
@@ -23,10 +24,11 @@ public class ServerConnectionController {
         String gender = message.getFromBody("gender");
         SecurityQuestions securityQuestion = null;
         try {
-            String questionStr = message.getFromBody("securityQuestion");
-            if (questionStr != null)
-                securityQuestion = SecurityQuestions.valueOf(questionStr);
-        } catch (IllegalArgumentException e) {
+            int questionNumber = ((Number) message.getFromBody("securityQuestion")).intValue();
+            securityQuestion = SecurityQuestions.fromNumber(questionNumber);
+            System.out.println("questionNumber = " + questionNumber);
+
+        } catch (Exception e) {
             System.out.println("Invalid security question: " + e.getMessage());
         }
         String answer = message.getFromBody("answer");
@@ -37,8 +39,12 @@ public class ServerConnectionController {
 
         UserDataSQL.getInstance().addUser(newUser);
 
+        connectionThread.setConnectedUser(newUser);
+
+
         HashMap<String, Object> body = new HashMap<>();
 
+        body.put("success", true);
         body.put("result", "user registered successfully!");
 
         return new Message(body, Message.Type.response);
@@ -262,12 +268,30 @@ public class ServerConnectionController {
             user.setHasActiveGame(true);
         }
 
+        HashMap<String, Object> chooseFarmMessage = new HashMap<>();
+        chooseFarmMessage.put("job", "show choose farm page");
+
+        for (User user : lobby.getUsers()) {
+            sendMessageToUser(user, new Message(chooseFarmMessage, Message.Type.SHOW_FARM_SELECTION));
+        }
+
+
         //removeLobby(lobby.getName());
 
         HashMap<String, Object> body = new HashMap<>();
         body.put("success", true);
         return new Message(body, Message.Type.START_GAME);
     }
+
+    private static void sendMessageToUser(User user, Message message) {
+        for (ClientConnectionThread connection : ServerApp.getConnections()) {
+            if (connection.getConnectedUser() != null &&
+                connection.getConnectedUser().equals(user)) {
+                connection.sendMessage(message);
+            }
+        }
+    }
+
 
 
     public static Message setLobbyVisibility(Message message) {

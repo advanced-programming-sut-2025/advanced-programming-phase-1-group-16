@@ -5,6 +5,7 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.app.ClientApp;
 import com.group16.stardewvalley.controllers.ClientNetworkManager;
+import com.group16.stardewvalley.model.app.App;
 
 import java.io.IOException;
 
@@ -17,7 +18,11 @@ public class Lwjgl3Launcher {
         try {
             ClientApp.init();
             ClientApp.connectTracker();
+
+            ClientNetworkManager net = new ClientNetworkManager();
             ClientNetworkManager.setConnection(ClientApp.getP2TConnection());
+            App.setNetworkManager(net);
+
         } catch (Exception e) {
             System.err.println("Error initializing peer: " + e.getMessage());
         }

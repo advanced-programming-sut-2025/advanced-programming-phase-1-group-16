@@ -5,7 +5,6 @@ import com.group16.stardewvalley.model.items.Item;
 import java.util.Map;
 
 public class Food extends Item {
-    private final String name;
     private final Map<Ingredient, Integer> ingredients;
     private final int energy;
     private final BuffType buff;
@@ -15,7 +14,6 @@ public class Food extends Item {
 
     public Food(String name,int purchasePrice,  Map<Ingredient, Integer> ingredients, int energy, BuffType buff, String source, int sellPrice) {
         super(name, purchasePrice);
-        this.name = name;
         this.ingredients = ingredients;
         this.energy = energy;
         this.buff = buff;
@@ -25,19 +23,13 @@ public class Food extends Item {
     }
 
     public Food(Food other) {
-        super(other.name, other.purchasePrice);
-        this.name = other.name;
+        super(other.getName(), other.purchasePrice);
         this.ingredients = Map.copyOf(other.ingredients); // یا یک نسخه جدید از Map
         this.energy = other.energy;
         this.buff = other.buff;
         this.source = other.source;
         this.sellPrice = other.sellPrice;
         this.purchasePrice = other.purchasePrice;
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 
     public Map<Ingredient, Integer> getIngredients() {

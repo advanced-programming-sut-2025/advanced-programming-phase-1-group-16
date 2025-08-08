@@ -4,7 +4,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.group16.stardewvalley.Message;
-import com.group16.stardewvalley.controllers.ClientNetworkManager;
 import com.group16.stardewvalley.model.LobbyInfo;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
@@ -31,7 +30,7 @@ public class LobbyMenuController extends Table {
         bodyMessage.put("lobbyId", lobby.getLobbyId());
 
         Message message = new Message(bodyMessage, Message.Type.START_GAME);
-        Message response = ClientNetworkManager.sendAndWait(message);
+        Message response = App.sendAndWait(message);
 
         if (response != null && (boolean) response.getFromBody("success")) {
             return new Result(true, "Game started!");
@@ -54,7 +53,7 @@ public class LobbyMenuController extends Table {
         bodyMessage.put("password", password);
 
         Message message = new Message(bodyMessage, Message.Type.CREATE_LOBBY);
-        Message response = ClientNetworkManager.sendAndWait(message);
+        Message response = App.sendAndWait(message);
         if (response == null) {
             return new Result(false, "response is null");
         }
@@ -72,7 +71,7 @@ public class LobbyMenuController extends Table {
         bodyMessage.put("username", App.getLoggedInUser().getUsername());
         bodyMessage.put("lobbyName", lobbyName);
         Message message = new Message(bodyMessage, Message.Type.JOIN_LOBBY);
-        Message response = ClientNetworkManager.sendAndWait(message);
+        Message response = App.sendAndWait(message);
         if (response != null && ! (boolean) response.getFromBody("success")) {
             return new Result(false, response.getFromBody("error"));
         }
@@ -85,7 +84,7 @@ public class LobbyMenuController extends Table {
         HashMap<String, Object> bodyMessage = new HashMap<>();
         bodyMessage.put("hello server", ":))");
         Message message = new Message(bodyMessage, Message.Type.GET_LOBBY_LIST);
-        Message response = ClientNetworkManager.sendAndWait(message);
+        Message response = App.sendAndWait(message);
 
         if (response != null && (boolean) response.getFromBody("success")) {
             Type listType = new TypeToken<List<LobbyInfo>>() {}.getType();
@@ -105,7 +104,7 @@ public class LobbyMenuController extends Table {
         bodyMessage.put("username", App.getLoggedInUser().getUsername());
         bodyMessage.put("lobbyName", lobby.getName());
         Message message = new Message(bodyMessage, Message.Type.LEAVE_LOBBY);
-        Message response = ClientNetworkManager.sendAndWait(message);
+        Message response = App.sendAndWait(message);
         if (response != null && ! (boolean) response.getFromBody("success")) {
             return new Result(false, response.getFromBody("error"));
         }
@@ -117,7 +116,7 @@ public class LobbyMenuController extends Table {
         bodyMessage.put("lobbyName", lobbyName);
         bodyMessage.put("visible", visible);
         Message message = new Message(bodyMessage, Message.Type.SET_LOBBY_VISIBILITY);
-        Message response = ClientNetworkManager.sendAndWait(message);
+        Message response = App.sendAndWait(message);
         if (response != null && (boolean) response.getFromBody("success")) {
             return new Result(false, response.getFromBody("error"));
         }
@@ -131,7 +130,7 @@ public class LobbyMenuController extends Table {
         HashMap<String, Object> bodyMessage = new HashMap<>();
         bodyMessage.put("id", ID);
         Message message = new Message(bodyMessage, Message.Type.SEARCH_LOBBY);
-        Message response = ClientNetworkManager.sendAndWait(message);
+        Message response = App.sendAndWait(message);
 
         if (response != null && (boolean) response.getFromBody("success")) {
             String lobbyName = response.getFromBody("lobbyName");

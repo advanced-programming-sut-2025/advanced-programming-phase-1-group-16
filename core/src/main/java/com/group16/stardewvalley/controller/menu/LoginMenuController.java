@@ -2,7 +2,6 @@ package com.group16.stardewvalley.controller.menu;
 
 
 import com.group16.stardewvalley.Message;
-import com.group16.stardewvalley.controllers.ClientNetworkManager;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.menu.LoginMenuCommands;
@@ -37,7 +36,7 @@ public class LoginMenuController  {
 
         Message message = new Message(body, Message.Type.GET_USER_INFO);
 
-        Message response = ClientNetworkManager.sendAndWait(message);
+        Message response = App.sendAndWait(message);
 
         String correcrtPassword = response.getFromBody("password");
         String nickName = response.getFromBody("nickName");
@@ -84,7 +83,7 @@ public class LoginMenuController  {
 
         Message message = new Message(body, Message.Type.GET_USER_INFO);
 
-        Message response = ClientNetworkManager.sendAndWait(message);
+        Message response = App.sendAndWait(message);
 
         User user = response.getFromBody("user");
         if(user == null) {
@@ -99,7 +98,7 @@ public class LoginMenuController  {
 
         Message message = new Message(body, Message.Type.GET_USER_INFO);
 
-        Message response = ClientNetworkManager.sendAndWait(message);
+        Message response = App.sendAndWait(message);
 
         User user = response.getFromBody("user");
 

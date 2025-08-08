@@ -1,9 +1,11 @@
 package com.group16.stardewvalley.model.app;
 
+import com.group16.stardewvalley.Message;
 import com.group16.stardewvalley.model.menu.Menu;
 import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.model.user.User;
 import com.group16.stardewvalley.model.menu.Menu;
+import com.group16.stardewvalley.network.NetworkManager;
 
 import java.util.ArrayList;
 
@@ -12,6 +14,16 @@ public class App {
     private static Player currentPlayer;
     private static Game activeGame = null;
     private static Menu currentMenu = Menu.LoginMenu;
+
+    private static NetworkManager networkManager;
+
+    public static void setNetworkManager(NetworkManager manager) {
+        networkManager = manager;
+    }
+
+    public static Message sendAndWait(Message msg) {
+        return networkManager.sendAndWait(msg);
+    }
 
     public static Player getCurrentPlayer() {
         return currentPlayer;

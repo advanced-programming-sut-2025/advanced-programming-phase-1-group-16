@@ -35,11 +35,13 @@ public class C2SConnectionThread extends ConnectionThread {
 
 	@Override
 	protected boolean handleMessage(Message message) {
-		if (message.getType() == Message.Type.command) {
-			sendMessage(C2SConnectionController.handleCommand(message));
-			return true;
-		}
-		return false;
+        return switch (message.getType()) {
+            case SHOW_FARM_SELECTION -> {
+                C2SConnectionController.showFarmSelection(message);
+                yield true;
+            }
+            default -> false;
+        };
 	}
 
 	@Override
