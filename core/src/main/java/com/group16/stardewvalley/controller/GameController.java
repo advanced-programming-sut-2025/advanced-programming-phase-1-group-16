@@ -6,6 +6,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
@@ -16,20 +18,23 @@ import com.group16.stardewvalley.controller.menu.HomeMenuController;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.agriculture.Seed;
 import com.group16.stardewvalley.model.agriculture.Seeds;
+import com.group16.stardewvalley.model.agriculture.Tree;
 import com.group16.stardewvalley.model.app.App;
-import com.group16.stardewvalley.model.food.BuffType;
-import com.group16.stardewvalley.model.food.Food;
-import com.group16.stardewvalley.model.food.FoodFactory;
+import com.group16.stardewvalley.model.food.*;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.map.Direction;
+import com.group16.stardewvalley.model.map.HomeMap;
 import com.group16.stardewvalley.model.map.Tile;
+import com.group16.stardewvalley.model.map.TileType;
 import com.group16.stardewvalley.model.tools.Hoe;
 import com.group16.stardewvalley.model.tools.Scythe;
 import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.view.graphics.CookingMenu;
+import com.group16.stardewvalley.view.graphics.FridgeMenu;
 
-import static com.group16.stardewvalley.view.graphics.GameScreen.showMiniMap;
+import static com.group16.stardewvalley.controller.menu.HomeMenuController.findIngredient;
+import static com.group16.stardewvalley.view.graphics.GameScreen.*;
 
 public class GameController {
     private final PlayersController playersController;
@@ -38,6 +43,9 @@ public class GameController {
     private final HomeMenuController homeMenuController;
     private CookingMenu cookingMenu;
     private boolean isCookingMenuOpen = false;
+
+    private FridgeMenu fridgeMenu;
+    private boolean isFridgeMenuOpen = false;
 
     public GameController() {
         this.agricultureController = new AgricultureController();
@@ -234,5 +242,59 @@ public class GameController {
 
         Main.getMain().getGameScreen().getStage().addActor(label);
     }
+
+    public void handleRightClick(int screenX, int screenY) {
+        Vector3 worldCoordinates = camera.unproject(new Vector3(screenX, screenY, 0));
+        int tileX = (int) worldCoordinates.x / TILE_SIZE;
+        int tileY = (int) worldCoordinates.y / TILE_SIZE;
+
+        Player player = App.getActiveGame().getCurrentPlayer();
+        boolean isAdjacent = (Math.abs(player.getX() - tileX) + Math.abs(player.getY() - tileY) ) == 1;
+        Tree tree = App.getActiveGame().getMap()[tileY][tileX].getTree();
+        if (isAdjacent && tree != null) {
+            if (tree.HasFruit()) {
+                tree.handpickFruit();
+                String fruitName = tree.getTreeType().getFruitName().toUpperCase().replace(" ", "_");
+                Ingredient ingredient = findIngredient(fruitName);
+                if (ingredient != null) {
+                    Result result = player.getInventory().addItem(new FoodIngredient(fruitName, tree.getFruitSellPrice(), ingredient), 4);
+                }
+            }
+        }
+        else if (App.getActiveGame().getMap()[tileY][tileX].getType().equals(TileType.Cottage) &&
+                !player.isAtHome()) {
+            player.setHomeMap(new HomeMap(player));
+            player.setAtHome(true);
+        } else if (player.isAtHome()) {
+            player.setAtHome(false);
+        }
+    }
+
+    public void handleLeftClick(int screenX, int screenY) {
+        Player player = App.getActiveGame().getCurrentPlayer();
+
+        // فقط وقتی بازیکن داخل خونه است
+        if (player.isAtHome()) {
+            // مختصات کلیک رو به مختصات پیکسل صفحه تبدیل می‌کنیم
+            Vector2 clickPos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
+
+            // چک کنیم آیا روی یخچال بوده؟
+            if (player.getHomeMap().isOnFridge(clickPos)) {
+                if (!isFridgeMenuOpen) {
+                    fridgeMenu = new FridgeMenu(
+                            GameAssetManager.getGameAssetManager().getSkin(),
+                            player.getFarm().getRefrigerator()
+                    );
+                    Main.getMain().getGameScreen().getStage().addActor(fridgeMenu);
+                    isFridgeMenuOpen = true;
+                } else {
+                    fridgeMenu.remove();
+                    fridgeMenu = null;
+                    isFridgeMenuOpen = false;
+                }
+            }
+        }
+    }
+
 
 }

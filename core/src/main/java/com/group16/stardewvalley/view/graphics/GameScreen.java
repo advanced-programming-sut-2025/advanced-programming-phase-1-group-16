@@ -193,67 +193,15 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (button == Input.Buttons.RIGHT) {
-            handleRightClick(screenX, screenY);
+            controller.handleRightClick(screenX, screenY);
             return true;
         } else if (button == Input.Buttons.LEFT) {
-            handleLeftClick(screenX, screenY);
+            controller.handleLeftClick(screenX, screenY);
             return true;
         }
         return false;
     }
 
-    private void handleRightClick(int screenX, int screenY) {
-        Vector3 worldCoordinates = camera.unproject(new Vector3(screenX, screenY, 0));
-        int tileX = (int) worldCoordinates.x / TILE_SIZE;
-        int tileY = (int) worldCoordinates.y / TILE_SIZE;
-
-        Player player = App.getActiveGame().getCurrentPlayer();
-        boolean isAdjacent = (Math.abs(player.getX() - tileX) + Math.abs(player.getY() - tileY) ) == 1;
-        Tree tree = App.getActiveGame().getMap()[tileY][tileX].getTree();
-        if (isAdjacent && tree != null) {
-            if (tree.HasFruit()) {
-                tree.handpickFruit();
-                String fruitName = tree.getTreeType().getFruitName().toUpperCase().replace(" ", "_");
-                Ingredient ingredient = findIngredient(fruitName);
-                if (ingredient != null) {
-                    Result result = player.getInventory().addItem(new FoodIngredient(fruitName, tree.getFruitSellPrice(), ingredient), 4);
-                }
-            }
-        }
-        else if (App.getActiveGame().getMap()[tileY][tileX].getType().equals(TileType.Cottage) &&
-                    !player.isAtHome()) {
-            player.setHomeMap(new HomeMap(player));
-            player.setAtHome(true);
-        } else if (player.isAtHome()) {
-            player.setAtHome(false);
-        }
-    }
-
-    private void handleLeftClick(int screenX, int screenY) {
-        Player player = App.getActiveGame().getCurrentPlayer();
-
-        // فقط وقتی بازیکن داخل خونه است
-        if (player.isAtHome()) {
-            // مختصات کلیک رو به مختصات پیکسل صفحه تبدیل می‌کنیم
-            Vector2 clickPos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
-
-            // چک کنیم آیا روی یخچال بوده؟
-            if (player.getHomeMap().isOnFridge(clickPos)) {
-                if (!isFridgeMenuOpen) {
-                    fridgeMenu = new FridgeMenu(
-                            GameAssetManager.getGameAssetManager().getSkin(),
-                            player.getFarm().getRefrigerator()
-                    );
-                    getStage().addActor(fridgeMenu);
-                    isFridgeMenuOpen = true;
-                } else {
-                    fridgeMenu.remove();
-                    fridgeMenu = null;
-                    isFridgeMenuOpen = false;
-                }
-            }
-        }
-    }
 
 
     @Override
