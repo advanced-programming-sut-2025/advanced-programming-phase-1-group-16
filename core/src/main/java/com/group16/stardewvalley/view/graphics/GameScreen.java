@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FillViewport;
@@ -194,6 +195,9 @@ public class GameScreen implements Screen, InputProcessor {
         if (button == Input.Buttons.RIGHT) {
             handleRightClick(screenX, screenY);
             return true;
+        } else if (button == Input.Buttons.LEFT) {
+            handleLeftClick(screenX, screenY);
+            return true;
         }
         return false;
     }
@@ -224,6 +228,33 @@ public class GameScreen implements Screen, InputProcessor {
             player.setAtHome(false);
         }
     }
+
+    private void handleLeftClick(int screenX, int screenY) {
+        Player player = App.getActiveGame().getCurrentPlayer();
+
+        // فقط وقتی بازیکن داخل خونه است
+        if (player.isAtHome()) {
+            // مختصات کلیک رو به مختصات پیکسل صفحه تبدیل می‌کنیم
+            Vector2 clickPos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
+
+            // چک کنیم آیا روی یخچال بوده؟
+            if (player.getHomeMap().isOnFridge(clickPos)) {
+                if (!isFridgeMenuOpen) {
+                    fridgeMenu = new FridgeMenu(
+                            GameAssetManager.getGameAssetManager().getSkin(),
+                            player.getFarm().getRefrigerator()
+                    );
+                    getStage().addActor(fridgeMenu);
+                    isFridgeMenuOpen = true;
+                } else {
+                    fridgeMenu.remove();
+                    fridgeMenu = null;
+                    isFridgeMenuOpen = false;
+                }
+            }
+        }
+    }
+
 
     @Override
     public boolean touchUp(int i, int i1, int i2, int i3) {
