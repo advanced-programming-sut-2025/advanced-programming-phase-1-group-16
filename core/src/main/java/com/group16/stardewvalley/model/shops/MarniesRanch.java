@@ -4,10 +4,13 @@ import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.animal.Animal;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
+import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.map.PlaceType;
+import com.group16.stardewvalley.model.user.Player;
 
 import java.util.Objects;
 
+import static com.group16.stardewvalley.model.shops.MarniesRanchAnimals.PIG;
 import static com.group16.stardewvalley.model.shops.MarniesRanchAnimals.sellAnimalFromName;
 import static com.group16.stardewvalley.model.animal.AnimalType.animalTypeFromName;
 
@@ -25,10 +28,12 @@ public class MarniesRanch extends Shop {
         return instance;
     }
 
+
     private MarniesRanchAnimals animals;
 
     public Result buyAnimal(String animal, String name) {
         Game game = App.getActiveGame();
+        Player player= App.getActiveGame().getCurrentPlayer();
 
         if(animalTypeFromName(animal) == null){
             return new Result(false, "no animal with that name");
@@ -38,24 +43,38 @@ public class MarniesRanch extends Shop {
         Animal newAnimal = new Animal( sellAnimalFromName(animal), animalTypeFromName(animal), name, game.getCurrentPlayer()    );
 
 
-        for (Building building : game.getBuildings()){
-            for(BuildingType requiredBuilding : newAnimal.getFromShopType().getBuildingRequired()){
-                if(building.getBuildingType().equals(requiredBuilding)){ //check if a suitable building for that animal exist.
+        //TODO: cheat building
+        Item newBuilding = new Building(newAnimal.getFromShopType().getBuildingRequired().get(0).getName(),
+            newAnimal.getFromShopType().getBuildingRequired().get(0).getCost(),  newAnimal.getFromShopType().getBuildingRequired().get(0), player.getPosition());
+        player.getInventory().addItem(newBuilding, 1);
 
-                    if(building.getCapacity() < requiredBuilding.getAnimalLimit()){ //چک کن قفس جا داره یا نه
-                        //decrease money
-                        game.getCurrentPlayer().decreaseCoin(newAnimal.getAnimalType().getPrice());
-                        //add animal to game animal
-                        game.getGameAnimals().add(newAnimal);
-                        //add to list of this building
-                        building.addAnimal(newAnimal);
-                        //increase building capacity
-                        building.increaseCapacity();
-                        //set animal position as building start position
-                        newAnimal.setAnimalPos(building.getStartPosition());
+
+        for (Item item : player.getInventory().getItems().keySet()){
+            if (item instanceof Building) {
+                Building building = (Building) item;
+
+                for (BuildingType requiredBuilding : newAnimal.getFromShopType().getBuildingRequired()) {
+                    if (building.getBuildingType().equals(requiredBuilding)) { //check if a suitable building for that animal exist.
+
+                        if (building.getCapacity() < requiredBuilding.getAnimalLimit()) { //چک کن قفس جا داره یا نه
+                            //decrease money
+                            player.decreaseCoin(newAnimal.getAnimalType().getPrice());
+
+                            //add animal to game animal
+                            game.getGameAnimals().add(newAnimal);
+
+                            //add to list of this building
+                            building.addAnimal(newAnimal);
+
+                            //increase building capacity
+                            building.increaseCapacity();
+
+                            //set animal position as building start position
+                            newAnimal.setAnimalPos(building.getStartPosition());
+
+                        }
 
                     }
-
                 }
             }
         }

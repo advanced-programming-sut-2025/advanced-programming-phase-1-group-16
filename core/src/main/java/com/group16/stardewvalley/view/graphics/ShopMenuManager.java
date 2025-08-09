@@ -28,7 +28,6 @@ public class ShopMenuManager {
 //            stage.addActor(currentMenu);
             currentShopType = shopType;
             Main.getMain().getGameScreen().getStage().addActor(currentMenu);
-//            Main.getMain().getGameScreen().getStage().addActor(CarpenterMenu.getTooltip());
         }
     }
 
@@ -53,7 +52,7 @@ public class ShopMenuManager {
             case CarpentersShop:
                 return new CarpenterMenu(skin);
             case MarniesRanch:
-                return new MarniesRanch(skin);
+                return new MarniesRanchMenu(skin);
 
             // Add other shops here
             default:

@@ -317,66 +317,41 @@ public class GameScreen implements Screen, InputProcessor {
         int dy = Math.abs(playerY - tileY);
         boolean isAdjacent = (dx <= 1 && dy <= 1) && (dx + dy > 0);
 
-        if (shopMenuManager.isMenuOpenFor(PlaceType.CarpentersShop)) {
-            System.out.println("Menu is already open. Closing it.");
-            shopMenuManager.closeMenu();
-        } else {
-            System.out.println("Menu is closed. Opening it.");
-            shopMenuManager.openMenu(PlaceType.CarpentersShop);
+
+
+        Tree tree = App.getActiveGame().getMap()[tileY][tileX].getTree();
+        if (isAdjacent && tree != null) {
+            if (tree.HasFruit()) {
+                tree.handpickFruit();
+                String fruitName = tree.getTreeType().getFruitName().toUpperCase().replace(" ", "_");
+                Ingredient ingredient = findIngredient(fruitName);
+                if (ingredient != null) {
+                    Result result = player.getInventory().addItem(new FoodIngredient(fruitName, tree.getFruitSellPrice(), ingredient), 4);
+                }
+            }
+        } else if (App.getActiveGame().getMap()[tileY][tileX].getType().equals(TileType.Cottage) &&
+            !player.isAtHome()) {
+            player.setHomeMap(new HomeMap(player));
+            player.setAtHome(true);
+        } else if (player.isAtHome()) {
+            player.setAtHome(false);
         }
 
-//        System.out.println("Clicked tile: (" + tileX + ", " + tileY + ")");
-//        System.out.println("Player tile:  (" + playerX + ", " + playerY + ")");
-//
-//        Tree tree = App.getActiveGame().getMap()[tileY][tileX].getTree();
-//        if (isAdjacent && tree != null) {
-//            if (tree.HasFruit()) {
-//                tree.handpickFruit();
-//                String fruitName = tree.getTreeType().getFruitName().toUpperCase().replace(" ", "_");
-//                Ingredient ingredient = findIngredient(fruitName);
-//                if (ingredient != null) {
-//                    Result result = player.getInventory().addItem(new FoodIngredient(fruitName, tree.getFruitSellPrice(), ingredient), 4);
-//                }
-//            }
-//        } else if (App.getActiveGame().getMap()[tileY][tileX].getType().equals(TileType.Cottage) &&
-//            !player.isAtHome()) {
-//            player.setHomeMap(new HomeMap(player));
-//            player.setAtHome(true);
-//        } else if (player.isAtHome()) {
-//            player.setAtHome(false);
-//        }
-//
-//        // DEBUG: Check if tile is inside Carpenter's Shop area
-//        boolean inCarpenterShop = isPlayerInsidePlace(player, PlaceType.CarpentersShop);
-//        System.out.println("Clicked inside Carpenter's Shop: " + inCarpenterShop);
-//        PlaceType carpenterShop = PlaceType.CarpentersShop;
-//        Pos start = carpenterShop.getStartPosition();
-//        int width = carpenterShop.getWidth();
-//        int height = carpenterShop.getHeight();
-//        int mapHeight = App.getActiveGame().getMapHeight();
-//
-//        int x1 = start.getX();
-//        int x2 = x1 + width - 1;
-//
-//        int y2 = mapHeight - start.getY();
-//        int y1 = y2 - height + 1;
-//
-//        System.out.println("Carpenter's Shop bounds:");
-//        System.out.println("Covers tiles from (" + x1 + ", " + y1 + ") to (" + x2 + ", " + y2 + ")");
-//
-//
-//        // Open Carpenter's Shop
-//        if (inCarpenterShop ) {
-//            System.out.println("Trying to open Carpenter's Shop menu...");
-//
-//            if (shopMenuManager.isMenuOpenFor(PlaceType.CarpentersShop)) {
-//                System.out.println("Menu is already open. Closing it.");
-//                shopMenuManager.closeMenu();
-//            } else {
-//                System.out.println("Menu is closed. Opening it.");
-//                shopMenuManager.openMenu(PlaceType.CarpentersShop);
-//            }
-//        }
+
+        if (isPlayerInsidePlace(player, PlaceType.CarpentersShop)) {
+            if (shopMenuManager.isMenuOpenFor(PlaceType.CarpentersShop)) {
+                shopMenuManager.closeMenu();
+            } else {
+                shopMenuManager.openMenu(PlaceType.CarpentersShop);
+            }
+        }
+        if (isPlayerInsidePlace(player, PlaceType.MarniesRanch)) {
+            if (shopMenuManager.isMenuOpenFor(PlaceType.MarniesRanch)) {
+                shopMenuManager.closeMenu();
+            } else {
+                shopMenuManager.openMenu(PlaceType.MarniesRanch);
+            }
+        }
     }
 
 

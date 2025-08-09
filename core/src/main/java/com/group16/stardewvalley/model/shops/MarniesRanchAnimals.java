@@ -9,14 +9,14 @@ import java.util.List;
 
 
 public enum MarniesRanchAnimals {
-    CHICKEN("chicken", AnimalType.HEN,800, List.of(BuildingType.Coop, BuildingType.Big_Coop, BuildingType.Deluxe_Coop),2),
-    COW("cow", AnimalType.COW,1500,List.of(BuildingType.Barn, BuildingType.Big_Barn, BuildingType.Deluxe_Barn),2),
-    GOAT("goat", AnimalType.GOAT,4000, List.of(BuildingType.Big_Barn, BuildingType.Deluxe_Barn) ,2),
-    DUCK("duck", AnimalType.DUCK,1200,List.of(BuildingType.Big_Coop, BuildingType.Deluxe_Coop),2),
-    SHEEP("sheep", AnimalType.SHEEP,8000, List.of(BuildingType.Deluxe_Barn),2),
-    RABBIT("rabbit", AnimalType.RABBIT,8000, List.of(BuildingType.Deluxe_Coop),2),
-    DINOSAUR("dinosaur", AnimalType.DINOSAUR,14000, List.of(BuildingType.Big_Coop, BuildingType.Deluxe_Coop),2),
-    PIG("pig", AnimalType.PIG,16000, List.of(BuildingType.Deluxe_Barn),2);
+    CHICKEN("Chicken", AnimalType.HEN,800, List.of(BuildingType.Coop, BuildingType.Big_Coop, BuildingType.Deluxe_Coop),2),
+    COW("Cow", AnimalType.COW,1500,List.of(BuildingType.Barn, BuildingType.Big_Barn, BuildingType.Deluxe_Barn),2),
+    GOAT("Goat", AnimalType.GOAT,4000, List.of(BuildingType.Big_Barn, BuildingType.Deluxe_Barn) ,2),
+    DUCK("Duck", AnimalType.DUCK,1200,List.of(BuildingType.Big_Coop, BuildingType.Deluxe_Coop),2),
+    SHEEP("Sheep", AnimalType.SHEEP,8000, List.of(BuildingType.Deluxe_Barn),2),
+    RABBIT("Rabbit", AnimalType.RABBIT,8000, List.of(BuildingType.Deluxe_Coop),2),
+        DINOSAUR("Dinosaur", AnimalType.DINOSAUR,14000, List.of(BuildingType.Big_Coop, BuildingType.Deluxe_Coop),2),
+    PIG("Pig", AnimalType.PIG,16000, List.of(BuildingType.Deluxe_Barn),2);
 
     private final String name;
     private final AnimalType animalType;
