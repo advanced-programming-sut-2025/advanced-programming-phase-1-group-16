@@ -50,7 +50,6 @@ public enum Location {
         };
     }
 
-
     public static Location getLocationByName(String name) {
         if (name.equalsIgnoreCase("blacksmith")) {
             return Location.Blacksmith;
