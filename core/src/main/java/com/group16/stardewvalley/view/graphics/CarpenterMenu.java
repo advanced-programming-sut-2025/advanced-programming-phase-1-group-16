@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.group16.stardewvalley.Main;
+import com.group16.stardewvalley.controller.CheatCodeController;
 import com.group16.stardewvalley.controller.shops.ShopController;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
@@ -25,15 +26,18 @@ import java.util.List;
 
 public class CarpenterMenu extends Window {
     private final Skin skin;
-    private final Window tooltip;
+    private static  Window tooltip = new com.badlogic.gdx.scenes.scene2d.ui.Window("", GameAssetManager.getGameAssetManager().getSkin());
+    ;
     private Set<Item> availableItems;
     private Player player;
     private CarpentersShop shop = new CarpentersShop();
     private ShopController shopController = new ShopController();
+
     private final Map<String, Texture> carpenterTextures = new HashMap<>();
 
     private final Map<Item, Table> tooltipCache = new HashMap<>();
     private Label resultLabel;
+    private String productFilter = "All Products"; // default
 
 
     public CarpenterMenu(Skin skin) {
@@ -52,13 +56,60 @@ public class CarpenterMenu extends Window {
         setPosition(Gdx.graphics.getWidth() / 2f - getWidth() / 2f,
             Gdx.graphics.getHeight() / 2f - getHeight() / 2f);
 
+// Create filter select box
+        SelectBox<String> filterSelect = new SelectBox<>(skin);
+
+// Copy and tweak the style
+        SelectBox.SelectBoxStyle style = new SelectBox.SelectBoxStyle(filterSelect.getStyle());
+
+// Increase font size
+        style.font.getData().setScale(1.2f);
+
+// Adjust the selection drawable padding to give each item more height
+        if (style.listStyle.selection != null) {
+            style.listStyle.selection.setTopHeight(10);   // top padding
+            style.listStyle.selection.setBottomHeight(10); // bottom padding
+        }
+
+// Optionally adjust background padding for the list items
+        if (style.listStyle.background != null) {
+            style.listStyle.background.setTopHeight(10);
+            style.listStyle.background.setBottomHeight(10);
+        }
+
+// Apply modified style
+        filterSelect.setStyle(style);
+
+// Set items
+        filterSelect.setItems("All Products", "Available Products");
+        filterSelect.setSelected(productFilter);
+
+        filterSelect.addListener(event -> {
+            if (event.toString().equals("changed")) {
+                productFilter = filterSelect.getSelected();
+                carpenterGrid(); // rebuild grid with new filter
+            }
+            return false;
+        });
+
+// Add filter at the top
+        add(filterSelect).pad(10).left().width(300).height(50).row();
+
         carpenterGrid();
+        Main.getMain().getGameScreen().getStage().addActor(tooltip);
     }
+
+
     private void carpenterGrid() {
         Table grid = new Table();
         grid.defaults().pad(10);
 
-        Set<Item> allProducts = shop.getAllProducts();
+        Set<Item> allProducts;
+        if (productFilter.equals("Available Products")) {
+            allProducts = shop.getAvailableItems();
+        } else {
+            allProducts = shop.getAllProducts();
+        }
         int cols = 4;
         int count = 0;
         availableItems = shop.getAvailableItems();
@@ -103,15 +154,10 @@ public class CarpenterMenu extends Window {
                 public void clicked(InputEvent event, float x, float y) {
                     if (!isAvailable) return;
 
-                    Result result = shop.buildCoop_Barn(item.getName(), player.getX(), player.getY());
-                    if (result.isSuccessful()) {
-                        System.out.println("DONE -- built  " + item.getName());
-                    } else {
-                        System.out.println(result.message());
-                    }
-                    resultLabel.setText(result.message());
+                    showBuyProductWindow(item);
                 }
             });
+
 
             btn.addListener(new InputListener() {
                 @Override
@@ -121,6 +167,8 @@ public class CarpenterMenu extends Window {
                     tooltip.add(content).pad(50);
                     tooltip.pack();
                     tooltip.setVisible(true);
+                    tooltip.toFront();
+
                 }
 
                 @Override
@@ -142,7 +190,7 @@ public class CarpenterMenu extends Window {
 
         ScrollPane scroll = new ScrollPane(grid, skin);
 
-        clear();
+//        clear();
         add(scroll).expand().fill().row();
 
         resultLabel = new Label("", skin);
@@ -150,85 +198,6 @@ public class CarpenterMenu extends Window {
         resultLabel.setWrap(true);
         add(resultLabel).padBottom(15).padLeft(200).fillX().height(50);
     }
-
-//    private void carpenterGrid() {
-//        Table grid = new Table();
-//        grid.defaults().pad(10);
-//
-//        Set<Item> allProducts = shop.getAllProducts();
-//        int cols = 4;
-//        int count = 0;
-//        availableItems = shop.getAvailableItems();
-//
-//        for (Item item : allProducts) {
-//            boolean isAvailable = isAvailableProduct(item);
-//            Texture texture = getTexture(item);
-//            Image img = new Image(texture);
-//
-//            ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
-//            style.imageUp = img.getDrawable();
-//            ImageButton btn = new ImageButton(style);
-//
-//            if (!isAvailable) {
-//                btn.getImage().setColor(0.3f, 0.3f, 0.3f, 0.7f);
-//            }
-//
-//            btn.addListener(new ClickListener() {
-//                @Override
-//                public void clicked(InputEvent event, float x, float y) {
-//                    if (!isAvailable) return;
-//
-////                    for(Ingredient ingredient: craftItem.getNeededIngredients().keySet()){
-////                        CheatController.addIngredient(ingredient.getName());
-////                    }
-//                    Result result = shop.buildCoop_Barn(item.getName(), player.getX(), player.getY());
-//                    if(result.isSuccessful()){
-//                        System.out.println("DONE -- built  " + item.getName());
-//                    }else {
-//                        System.out.println(result.message());
-//                    }
-//                    resultLabel.setText(result.message());
-//                }
-//            });
-//
-//            btn.addListener(new InputListener() {
-//                @Override
-//                public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-//                    tooltip.clear();
-//
-//                    Table content = tooltipCache.computeIfAbsent(item, item -> getDescriptionTable(item));
-//
-//                    tooltip.add(content).pad(50);
-//                    tooltip.pack();
-//                    tooltip.setVisible(true);
-//                }
-//
-//
-//                @Override
-//                public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-//                    tooltip.setVisible(false);
-//                }
-//            });
-//
-//            grid.add(btn).size(96);
-//            count++;
-//            if (count % cols == 0) grid.row();
-//        }
-//
-//        ScrollPane scroll = new ScrollPane(grid, skin);
-//
-//        // Clear any previous children from the window and start clean layout
-//        clear(); // clear previous layout children (like multiple scrolls if called again)
-//
-//        add(scroll).expand().fill().row(); // put scrollpane and go to next row
-//
-//        resultLabel = new Label("", skin);
-//        resultLabel.setColor(Color.LIGHT_GRAY);
-//        resultLabel.setWrap(true); // wrap text for long messages
-//
-//        add(resultLabel).padBottom(15).padLeft(200).fillX().height(50);
-//
-//    }
 
 
     private Table getDescriptionTable(Item item) {
@@ -250,6 +219,92 @@ public class CarpenterMenu extends Window {
         return content;
     }
 
+    private void showBuyProductWindow(Item item) {
+        Window buyWindow = new Window("Buy Product", skin);
+        buyWindow.setSize(700, 500);
+        buyWindow.setPosition(
+            Gdx.graphics.getWidth() / 2f - buyWindow.getWidth() / 2f,
+            Gdx.graphics.getHeight() / 2f - buyWindow.getHeight() / 2f);
+        buyWindow.setModal(true);
+        buyWindow.setMovable(true);
+
+        Label nameLabel = new Label(item.getName(), skin);
+        Label quantityLabel = new Label("Quantity: 1", skin);
+        Label priceLabel = new Label("Price: "+item.getPrice()+"$", skin);
+        quantityLabel.setColor(Color.WHITE);
+        priceLabel.setColor(Color.WHITE);
+
+        final int[] quantity = {1};
+
+        TextButton minusBtn = new TextButton("-", skin);
+        TextButton plusBtn = new TextButton("+", skin);
+
+        minusBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (quantity[0] > 1) {
+                    quantity[0]--;
+                    quantityLabel.setText("Quantity: " + quantity[0]);
+                }
+            }
+        });
+
+        plusBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                quantity[0]++;
+                quantityLabel.setText("Quantity: " + quantity[0]);
+            }
+        });
+
+        TextButton submitBtn = new TextButton("Submit", skin);
+        submitBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Result result = null;
+                for (int i = 0; i < quantity[0]; i++) {
+                    result = shop.buildCoop_Barn(item.getName(), player.getX(), player.getY());
+
+                    if (!result.isSuccessful()) {
+                        break; // stop if any build fails
+                    }
+                }
+                if (result != null) {
+                    resultLabel.setText(result.message());
+                    System.out.println(result.message());
+                }
+                buyWindow.remove(); // close window
+            }
+        });
+
+        TextButton cancelBtn = new TextButton("Cancel", skin);
+        cancelBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                buyWindow.remove(); // just close the window without doing anything
+            }
+        });
+
+        Table buttonsTable = new Table();
+        buttonsTable.add(minusBtn).size(100);
+        buttonsTable.add(quantityLabel).padLeft(10).padRight(10);
+        buttonsTable.add(plusBtn).size(100);
+
+
+        buyWindow.add(nameLabel).colspan(3).center().padBottom(15).row();
+        buyWindow.add(priceLabel).colspan(3).center().padBottom(15).row();
+        buyWindow.row();
+        buyWindow.add(buttonsTable).colspan(3).center().padBottom(15).row();
+        buyWindow.row();
+
+        Table submitCancelTable = new Table();
+        submitCancelTable.add(submitBtn).width(300).padRight(20);
+        submitCancelTable.add(cancelBtn).width(300);
+        buyWindow.add(submitCancelTable).colspan(3).center();
+
+        Main.getMain().getGameScreen().getStage().addActor(buyWindow);
+    }
+
 
     @Override
     public void act(float delta) {
@@ -261,7 +316,7 @@ public class CarpenterMenu extends Window {
         }
     }
 
-    public Window getTooltip() {
+    public static Window getTooltip() {
         return tooltip;
     }
 
@@ -287,4 +342,7 @@ public class CarpenterMenu extends Window {
         }
         return carpenterTextures.get(name);
     }
+
+
 }
+

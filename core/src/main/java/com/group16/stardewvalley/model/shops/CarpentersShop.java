@@ -1,9 +1,13 @@
 package com.group16.stardewvalley.model.shops;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.group16.stardewvalley.controller.CheatCodeController;
 import com.group16.stardewvalley.model.Inventory;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
+import com.group16.stardewvalley.model.food.Ingredient;
+import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.items.Stone;
 import com.group16.stardewvalley.model.items.Wood;
@@ -11,6 +15,7 @@ import com.group16.stardewvalley.model.map.PlaceType;
 import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.user.Player;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +24,9 @@ import java.util.prefs.BackingStoreException;
 import static com.group16.stardewvalley.controller.map.MapController.isPlayerInFarm;
 
 public class CarpentersShop extends Shop{
+    private CheatCodeController cheatController = new CheatCodeController();
+    private final Map<String, Texture> carpenterTextures = new HashMap<>();
+
     private static CarpentersShop instance;
     private ArrayList<Item> products= new ArrayList<>();
     public static CarpentersShop getInstance() {
@@ -56,8 +64,24 @@ public class CarpentersShop extends Shop{
         Map<Item, Integer> items  = player.getInventory().getItems();
 
         //check if player is inside farm
-        if(!isPlayerInFarm(player)){
-            return new Result(false, "You are not inside farm");
+//        if(!isPlayerInFarm(player)){
+//            return new Result(false, "You are not inside farm");
+//        }
+
+        if (buildingName.equals("Wood")) {
+            // Create a new Wood instance
+            Wood woodItem = new Wood("Wood", 10);
+            player.getInventory().addItem(woodItem, 1);
+            player.decreaseCoin(10);
+            return new Result(true, "Wood added to inventory successfully");
+        }
+
+        if (buildingName.equals("Stone")) {
+            // Create a new Wood instance
+            Stone stoneItem = new Stone("Stone", 20);
+            player.getInventory().addItem(stoneItem, 1);
+            player.decreaseCoin(20);
+            return new Result(true, "Stone added to inventory successfully");
         }
 
         //create building
@@ -74,18 +98,29 @@ public class CarpentersShop extends Shop{
         }
 
         //check if ground is empty
-        for (int i = y; i < y + buildingType.getLength(); i++) {
-            for (int j = x; j < x + buildingType.getWidth(); j++) {
-                if(game.getMap()[i][j].getItem() != null){
-                    return new Result(false, "There is something on the ground at (" + j + ", " + i + ")");
-                }
-            }
-        }
+//        for (int i = y; i < y + buildingType.getLength(); i++) {
+//            for (int j = x; j < x + buildingType.getWidth(); j++) {
+//                if(game.getMap()[i][j].getItem() != null){
+//                    return new Result(false, "There is something on the ground at (" + j + ", " + i + ")");
+//                }
+//            }
+//        }
+
+
+
+
+        //TODO: cheat for wood and stone
+        player.increaseCoin(buildingType.getCost());
+        cheatController.addWood(buildingType.getWoodCost());
+        cheatController.addStone(buildingType.getStoneCost());
+
 
         //check if it has enough money
         if (player.getCoin() < buildingType.getCost()){
             return new Result(false, "you dont have enough coin");
         }
+
+        //check if it has enough wood and stone
 
         Item woodItem = null;
         for (Item item : items.keySet()) {
@@ -115,8 +150,8 @@ public class CarpentersShop extends Shop{
 
         //remove wood/stone from inventory
 
-        items.compute(woodItem, (k, currentAmount) -> currentAmount - 350);
-        items.compute(stoneItem, (k, currentAmount) -> currentAmount - 150);
+//        items.compute(woodItem, (k, currentAmount) -> currentAmount - 350);
+//        items.compute(stoneItem, (k, currentAmount) -> currentAmount - 150);
 
         //place building
         for (int i = y; i < y + buildingType.getLength(); i++) {
@@ -125,10 +160,23 @@ public class CarpentersShop extends Shop{
             }
         }
 
+        player.getInventory().addItem(newBuilding, 1);
         return new Result(true, newBuilding.getName() + "build successfully");
 
     }
 
+    public Texture getTexture(Item item) {
+        String name = item.getName().replace(" ", "_");
+        if (!carpenterTextures.containsKey(name)) {
+            try {
+                Texture texture = new Texture("Shops/Carpenter/" + name + ".png");
+                carpenterTextures.put(name, texture);
+            } catch (Exception e) {
+                carpenterTextures.put(name, GameAssetManager.getGameAssetManager().getBasicItemTexture());
+            }
+        }
+        return carpenterTextures.get(name);
+    }
 
 
 }

@@ -3,7 +3,9 @@ package com.group16.stardewvalley.view.graphics;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.model.map.PlaceType;
+import com.group16.stardewvalley.model.shops.MarniesRanch;
 
 public class ShopMenuManager {
     private final Stage stage;
@@ -23,8 +25,10 @@ public class ShopMenuManager {
 
         currentMenu = createMenuFor(shopType);
         if (currentMenu != null) {
-            stage.addActor(currentMenu);
+//            stage.addActor(currentMenu);
             currentShopType = shopType;
+            Main.getMain().getGameScreen().getStage().addActor(currentMenu);
+//            Main.getMain().getGameScreen().getStage().addActor(CarpenterMenu.getTooltip());
         }
     }
 
@@ -48,6 +52,8 @@ public class ShopMenuManager {
         switch (shopType) {
             case CarpentersShop:
                 return new CarpenterMenu(skin);
+            case MarniesRanch:
+                return new MarniesRanch(skin);
 
             // Add other shops here
             default:

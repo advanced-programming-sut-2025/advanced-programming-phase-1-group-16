@@ -302,44 +302,6 @@ public class GameScreen implements Screen, InputProcessor {
         return false;
     }
 
-//    private void handleRightClick(int screenX, int screenY) {
-//        Vector3 worldCoordinates = camera.unproject(new Vector3(screenX, screenY, 0));
-//        int tileX = (int) worldCoordinates.x / TILE_SIZE;
-//        int tileY = (int) worldCoordinates.y / TILE_SIZE;
-//
-//        Player player = App.getActiveGame().getCurrentPlayer();
-//        boolean isAdjacent = (Math.abs(player.getX() - tileX) + Math.abs(player.getY() - tileY) ) == 1;
-//
-//        Tree tree = App.getActiveGame().getMap()[tileY][tileX].getTree();
-//        if (isAdjacent && tree != null) {
-//            if (tree.HasFruit()) {
-//                tree.handpickFruit();
-//                String fruitName = tree.getTreeType().getFruitName().toUpperCase().replace(" ", "_");
-//                Ingredient ingredient = findIngredient(fruitName);
-//                if (ingredient != null) {
-//                    Result result = player.getInventory().addItem(new FoodIngredient(fruitName, tree.getFruitSellPrice(), ingredient), 4);
-//                }
-//            }
-//        }
-//        else if (App.getActiveGame().getMap()[tileY][tileX].getType().equals(TileType.Cottage) &&
-//                    !player.isAtHome()) {
-//            player.setHomeMap(new HomeMap(player));
-//            player.setAtHome(true);
-//        } else if (player.isAtHome()) {
-//            player.setAtHome(false);
-//        }
-//
-//
-//        //Open shops
-//        else if (isPlayerInsidePlace(new Pos(tileX, tileY), PlaceType.CarpentersShop) ) {
-//            if (shopMenuManager.isMenuOpenFor(PlaceType.CarpentersShop)) {
-//                shopMenuManager.closeMenu();
-//            } else {
-//                shopMenuManager.openMenu(PlaceType.CarpentersShop);
-//            }
-//        }
-//
-//    }
 
     private void handleRightClick(int screenX, int screenY) {
         Vector3 worldCoordinates = camera.unproject(new Vector3(screenX, screenY, 0));

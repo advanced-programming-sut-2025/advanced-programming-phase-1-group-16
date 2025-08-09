@@ -9,6 +9,8 @@ import com.group16.stardewvalley.model.food.Food;
 import com.group16.stardewvalley.model.food.FoodFactory;
 import com.group16.stardewvalley.model.food.FoodIngredient;
 import com.group16.stardewvalley.model.food.Ingredient;
+import com.group16.stardewvalley.model.items.Stone;
+import com.group16.stardewvalley.model.items.Wood;
 import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.tools.*;
 
@@ -76,6 +78,18 @@ public class CheatCodeController {
         return new Result(true, "added ingredient");
     }
 
+    public Result addWood(int quantity) {
+        Wood wood = new Wood("Wood", 10);
+        App.getActiveGame().getCurrentPlayer().getInventory().addItem(wood,quantity);
+        return new Result(true, "wood added.");
+    }
+
+    public Result addStone(int quantity) {
+        Stone stone = new Stone("Stone", 20);
+        App.getActiveGame().getCurrentPlayer().getInventory().addItem(stone,quantity);
+        return new Result(true, "stone added.");
+
+    }
     public Result learnRecipe(String foodName) {
         Food food = getFoodByName(foodName);
         if (food == null) {
