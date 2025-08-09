@@ -18,7 +18,7 @@ public abstract class Item {
     }
 
     public String getAssetPath() {
-        return "assets/items/" + name + ".png";
+        return "items/" + name + ".png";
     }
 
 }

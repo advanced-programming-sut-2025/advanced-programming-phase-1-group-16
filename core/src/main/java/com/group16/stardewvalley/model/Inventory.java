@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
+import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.items.Flower;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.agriculture.*;
@@ -83,11 +84,11 @@ public class Inventory {
         topIcons.top().left();
 
         String[] topIconsStr = {
-            "assets/Inventory/Friendship.png",
-            "assets/Inventory/journal.png",
-            "assets/Inventory/Map.png",
-            "assets/Inventory/Skills.png",
-            "assets/Inventory/Social.png"
+            "Inventory/Friendship.png",
+            "Inventory/journal.png",
+            "Inventory/Map.png",
+            "Inventory/Skills.png",
+            "Inventory/Social.png"
         };
 
         for (String iconPath : topIconsStr) {
@@ -135,7 +136,7 @@ public class Inventory {
 
         // ساخت آیتم‌های موجود در Inventory
         for (Item item : new ArrayList<>(items.keySet())) {
-            Texture texture = new Texture(Gdx.files.internal(item.getAssetPath()));
+            Texture texture = GameAssetManager.getGameAssetManager().getItemTexture(item);
             Image icon = new Image(texture);
             icon.setSize(64, 64);
             icon.setTouchable(Touchable.enabled);
@@ -168,7 +169,7 @@ public class Inventory {
         containerTable.add(scrollPane).width(320).height(200).top().left().row();
 
         // آیکون سطل زباله
-        Texture trashTexture = new Texture(Gdx.files.internal("assets/Inventory/Trash.png"));
+        Texture trashTexture = new Texture(Gdx.files.internal("Inventory/Trash.png"));
         Image trashIcon = new Image(trashTexture);
         trashIcon.setSize(48, 48);
 
