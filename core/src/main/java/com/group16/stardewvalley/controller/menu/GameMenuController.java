@@ -110,7 +110,7 @@ public class GameMenuController {
             }
         }
 
-        for (int k = 0; k < itemCount / 2; k++) {
+        for (int k = 0; k < itemCount / 4; k++) {
             int i = random.nextInt(farm.getType().getWidth());
             int j = random.nextInt(farm.getType().getHeight());
 
@@ -120,7 +120,7 @@ public class GameMenuController {
             }
 
             if (farm.getType().getTiles()[j][i] == TileType.Ground) {
-                farm.getType().getTiles()[j][i] = TileType.Forage;
+                farm.getType().getTiles()[j][i] = TileType.Rock;
             } else if (farm.getType().getTiles()[j][i].equals(TileType.Quarry)) {
                 farm.getType().getTiles()[j][i] = TileType.MineralForage;
             }

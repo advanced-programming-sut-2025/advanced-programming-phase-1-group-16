@@ -40,19 +40,32 @@ public class TileRenderer {
             batch.draw(house, offsetX, offsetY, realWidth, realHeight);
         }
 
+        if (tile.isPlowed()) {
+            Texture plowedTile = TileTextureManager.getTileTextureManager().getTexture(TileType.Plowed);
+            batch.draw(plowedTile, drawX, drawY, TILE_SIZE, TILE_SIZE);
+        }
+
         if (tile.getCrop() != null) {
-            TextureRegion cropTexture = textureManager.getCropRegion(tile.getCrop());
-            drawPlant(batch, TILE_SIZE, drawX, drawY, cropTexture);
+            if (tile.getCrop().isColossal()) {
+                if (tile.getCrop().isMature()) {
+                    Texture cropTexture = textureManager.getGiantCropTexture(tile.getCrop());
+                    batch.draw(cropTexture, drawX, drawY, TILE_SIZE * 2 , TILE_SIZE * 2);
+                } else {
+                    TextureRegion cropTexture = textureManager.getCropRegion(tile.getCrop());
+                    drawPlant(batch, TILE_SIZE * 2, drawX, drawY, cropTexture);
+                }
+            } else if (!tile.getCrop().isPartOfColossal()) {
+                TextureRegion cropTexture = textureManager.getCropRegion(tile.getCrop());
+                drawPlant(batch, TILE_SIZE, drawX, drawY, cropTexture);
+            }
         }
 
         if (tile.getItem() != null) {
             Texture itemTexture = textureManager.getItemTexture(tile.getItem());
-            int realWidth = itemTexture.getWidth();
-            int realHeight = itemTexture.getHeight();
+            int realWidth = Math.min(TILE_SIZE, itemTexture.getWidth());
+            int realHeight = Math.min(TILE_SIZE, itemTexture.getHeight());
 
-            int offsetX = drawX + (TILE_SIZE - realWidth) / 2;
-            int offsetY = drawY;
-            batch.draw(itemTexture, drawX, drawY, offsetX, offsetY, realWidth, realHeight);
+            batch.draw(itemTexture, drawX, drawY, realWidth, realHeight);
         }
 
         if (tile.getTree() != null) {
@@ -70,15 +83,7 @@ public class TileRenderer {
             batch.draw(fireOverlay, offsetX, offsetY, realWidth, realHeight);
         }
 
-        if (tile.isFertilized()) {
-            Texture fertOverlay = textureManager.getFertalizeTexture();
-            int realWidth = fertOverlay.getWidth();
-            int realHeight = fertOverlay.getHeight();
 
-            int offsetX = drawX + (TILE_SIZE - realWidth) / 2;
-            int offsetY = drawY;
-            batch.draw(fertOverlay, offsetX, offsetY, realWidth, realHeight);
-        }
     }
 
     private void drawPlant(SpriteBatch batch, int TILE_SIZE, int drawX, int drawY, TextureRegion cropTexture) {

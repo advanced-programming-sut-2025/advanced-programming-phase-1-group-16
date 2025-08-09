@@ -1,5 +1,6 @@
 package com.group16.stardewvalley.controller.map;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -8,6 +9,7 @@ import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.agriculture.Mineral;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
+import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.graphics.PlaceTextureManager;
 import com.group16.stardewvalley.model.graphics.TileRenderer;
 import com.group16.stardewvalley.model.items.Stone;
@@ -364,7 +366,15 @@ public class MapController {
                 Tile tile = map[y][x];
                 Texture texture;
                 texture = TileTextureManager.getTileTextureManager().getTexture(tile.getType());
-                batch.draw(texture, x * TILE_SIZE, y * TILE_SIZE);
+                if (tile.isHasWater()) { //TODO یه عکس واسش درست کن چون زشته
+                    batch.setColor(0f, 0f, 1f, 0.2f);
+                }
+                if (tile.isFertilized()) {
+                    texture = GameAssetManager.getGameAssetManager().getFertalizeTexture();
+                }
+                batch.draw(texture, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                batch.setColor(Color.WHITE);
+
             }
         }
 

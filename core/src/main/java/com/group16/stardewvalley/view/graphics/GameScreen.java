@@ -1,6 +1,7 @@
 package com.group16.stardewvalley.view.graphics;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
@@ -15,7 +16,12 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.controller.GameController;
+import com.group16.stardewvalley.controller.map.MapController;
+import com.group16.stardewvalley.model.Result;
+import com.group16.stardewvalley.model.agriculture.Tree;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.food.FoodIngredient;
+import com.group16.stardewvalley.model.food.Ingredient;
 import com.group16.stardewvalley.model.graphics.TileRenderer;
 import com.group16.stardewvalley.model.map.Location;
 import com.group16.stardewvalley.model.map.TileTextureManager;
@@ -25,6 +31,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
+
+import static com.group16.stardewvalley.controller.menu.HomeMenuController.findIngredient;
 
 public class GameScreen implements Screen, InputProcessor {
     private GameController controller;
@@ -102,6 +110,7 @@ public class GameScreen implements Screen, InputProcessor {
             graphicDisplayOfStores(currentLocation);
         }
         handleTurn();
+
 
         if (showMiniMap) {
             setCameraForMiniMap();
@@ -250,8 +259,32 @@ public class GameScreen implements Screen, InputProcessor {
     }
 
     @Override
-    public boolean touchDown(int i, int i1, int i2, int i3) {
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        if (button == Input.Buttons.RIGHT) {
+            handleRightClick(screenX, screenY);
+            return true;
+        }
         return false;
+    }
+
+    private void handleRightClick(int screenX, int screenY) {
+        Vector3 worldCoordinates = camera.unproject(new Vector3(screenX, screenY, 0));
+        int tileX = (int) worldCoordinates.x / TILE_SIZE;
+        int tileY = (int) worldCoordinates.y / TILE_SIZE;
+
+        Player player = App.getActiveGame().getCurrentPlayer();
+        boolean isAdjacent = (Math.abs(player.getX() - tileX) + Math.abs(player.getY() - tileY) ) == 1;
+        Tree tree = App.getActiveGame().getMap()[tileY][tileX].getTree();
+        if (isAdjacent && tree != null) {
+            if (tree.HasFruit()) {
+                tree.handpickFruit();
+                String fruitName = tree.getTreeType().getFruitName().toUpperCase().replace(" ", "_");
+                Ingredient ingredient = findIngredient(fruitName);
+                if (ingredient != null) {
+                    Result result = player.getInventory().addItem(new FoodIngredient(fruitName, tree.getFruitSellPrice(), ingredient), 4);
+                }
+            }
+        }
     }
 
     @Override
