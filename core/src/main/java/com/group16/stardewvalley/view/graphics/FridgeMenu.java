@@ -9,9 +9,13 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.group16.stardewvalley.Main;
+import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.food.Food;
 import com.group16.stardewvalley.model.food.FoodIngredient;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
+import com.group16.stardewvalley.model.items.Item;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,8 +26,11 @@ public class FridgeMenu extends Window {
 
     private final Window tooltip;
 
-    public FridgeMenu(Skin skin, HashMap<FoodIngredient, Integer> refrigerator) {
+    private final DragAndDrop dragAndDrop;
+
+    public FridgeMenu(Skin skin, HashMap<FoodIngredient, Integer> refrigerator, DragAndDrop dragAndDrop) {
         super("Fridge", skin);
+        this.dragAndDrop = dragAndDrop;
         this.skin = skin;
         this.refrigerator = refrigerator;
 
@@ -81,6 +88,37 @@ public class FridgeMenu extends Window {
                     tooltip.setVisible(false);
                 }
             });
+
+            dragAndDrop.addTarget(new DragAndDrop.Target(btn) {
+                @Override
+                public boolean drag(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
+                    Item item = (Item) payload.getObject();
+                    return item instanceof FoodIngredient;
+                }
+
+                @Override
+                public void drop(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
+                    Item item = (Item) payload.getObject();
+                    if (item instanceof FoodIngredient ingredient) {
+                        refrigerator.put(ingredient, refrigerator.getOrDefault(ingredient, 0) + 1);
+                        App.getActiveGame().getCurrentPlayer().getInventory().removeItem(item, 1);
+                        createIngredientGrid();
+                    }
+                }
+            });
+
+            dragAndDrop.addSource(new DragAndDrop.Source(btn) {
+                @Override
+                public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
+                    DragAndDrop.Payload payload = new DragAndDrop.Payload();
+                    payload.setObject(ingredient); // همین FoodIngredient
+                    payload.setDragActor(new Image(texture));
+                    return payload;
+                }
+            });
+
+
+
 
             grid.add(btn).size(64);
             count++;

@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.utils.Align;
 import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.controller.agriculture.AgricultureController;
@@ -47,6 +48,9 @@ public class GameController {
 
     private FridgeMenu fridgeMenu;
     private boolean isFridgeMenuOpen = false;
+
+    private final DragAndDrop dragAndDrop = new DragAndDrop();
+
 
     public GameController() {
         this.agricultureController = new AgricultureController();
@@ -109,7 +113,7 @@ public class GameController {
             case Input.Keys.NUM_7:
             case Input.Keys.NUM_8:
             case Input.Keys.NUM_9:
-                App.getGameScreen().toggleShowInventory();
+                Main.getMain().getGameScreen().toggleShowInventory();
                 return true;
             case Input.Keys.UP:
                 player.setCurrentDirection(Direction.UP);
@@ -208,7 +212,7 @@ public class GameController {
                 }
                 return true;
             case Input.Keys.T:
-                App.getGameScreen().toggleShowTools();
+                Main.getMain().getGameScreen().toggleShowTools();
                 return true;
             case Input.Keys.F4:
                 return true;
@@ -301,7 +305,8 @@ public class GameController {
                 if (!isFridgeMenuOpen) {
                     fridgeMenu = new FridgeMenu(
                             GameAssetManager.getGameAssetManager().getSkin(),
-                            player.getFarm().getRefrigerator()
+                            player.getFarm().getRefrigerator(),
+                            dragAndDrop
                     );
                     Main.getMain().getGameScreen().getStage().addActor(fridgeMenu);
                     isFridgeMenuOpen = true;
@@ -314,5 +319,7 @@ public class GameController {
         }
     }
 
-
+    public DragAndDrop getDragAndDrop() {
+        return dragAndDrop;
+    }
 }

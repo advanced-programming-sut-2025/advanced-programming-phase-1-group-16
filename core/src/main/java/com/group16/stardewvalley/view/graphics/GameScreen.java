@@ -87,7 +87,6 @@ public class GameScreen implements Screen, InputProcessor {
         tileRenderer = new TileRenderer();
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(stage);
-        multiplexer.addProcessor(inventoryStage);  // اولویت اول
         multiplexer.addProcessor(toolStage);
         multiplexer.addProcessor(this);
         Gdx.input.setInputProcessor(multiplexer);
@@ -106,7 +105,7 @@ public class GameScreen implements Screen, InputProcessor {
     public void toggleShowInventory() {
         showInventory = !showInventory;
         if (!showInventory) {
-            inventoryStage.clear();
+            App.getActiveGame().getCurrentPlayer().getInventory().removeInventory();
             inventoryBuilt = false;
         }
     }
@@ -140,18 +139,14 @@ public class GameScreen implements Screen, InputProcessor {
         batch.end();
 
         if (showTools) {
-            App.getActiveGame().getCurrentPlayer().getInventory().showTools(toolStage, skin);
-            toolStage.act(delta);
-            toolStage.draw();
+            App.getActiveGame().getCurrentPlayer().getInventory().showTools(stage, skin);
         }
 
         if (showInventory) {
             if (!inventoryBuilt) {
-                App.getActiveGame().getCurrentPlayer().getInventory().showInventory(inventoryStage, skin);
+                App.getActiveGame().getCurrentPlayer().getInventory().showInventory(stage, skin, controller.getDragAndDrop());
                 inventoryBuilt = true;
             }
-            inventoryStage.act(delta);
-            inventoryStage.draw();
         }
 
         stage.act(delta);

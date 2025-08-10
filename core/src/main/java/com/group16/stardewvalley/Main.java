@@ -67,7 +67,6 @@ public class Main extends Game {
         gameScreen = new GameScreen();
 
         setScreen(gameScreen);
-        App.setGameScreen(screen);
     }
 
     public GameScreen getGameScreen() {

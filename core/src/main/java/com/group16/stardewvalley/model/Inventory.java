@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
+import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.items.Flower;
 import com.group16.stardewvalley.model.items.Item;
@@ -41,7 +42,9 @@ public class Inventory {
     private ArrayList<CraftingRecipes> craftingRecipes;
     private Map<Crop, Integer> crops;
     private BackPackType backPackType;
-    private DragAndDrop dragAndDrop = new DragAndDrop();
+    private DragAndDrop dragAndDrop;
+    Table mainTable = new Table();
+    Stage stage;
 
     public Inventory() {
         this.tools = new HashMap<>();
@@ -56,7 +59,7 @@ public class Inventory {
         items.put(newAse, 1);
         Flower flower = new Flower("flower", 0);
         items.put(flower, 1);
-
+        items.put(new FoodIngredient(Ingredient.BLUEBERRY.getName(), 50, Ingredient.BLUEBERRY), 1);
     }
 
     public void showTools(Stage stage, Skin skin) {
@@ -71,11 +74,13 @@ public class Inventory {
       stage.addActor(table);
     }
 
-    public void showInventory(Stage stage, Skin skin) {
-        stage.clear();
+    public void showInventory(Stage stage, Skin skin, DragAndDrop dragAndDrop) {
+        this.stage = stage;
+        this.dragAndDrop = dragAndDrop;
+
+        mainTable.clear();
 
         // جدول اصلی تمام‌صفحه
-        Table mainTable = new Table();
         mainTable.setFillParent(true);
         mainTable.top();
 
@@ -104,11 +109,12 @@ public class Inventory {
             topIcons.add(tabIcon).width(32).height(32).pad(10);
 
             tabIcon.setTouchable(Touchable.enabled);
+            DragAndDrop finalDragAndDrop1 = dragAndDrop;
             tabIcon.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     System.out.println("Tab clicked: " + iconPath);
-                    showInventory(stage, skin);
+                    showInventory(stage, skin, finalDragAndDrop1);
                 }
             });
         }
@@ -176,25 +182,68 @@ public class Inventory {
         containerTable.add().expandX();
         containerTable.add(trashIcon).right().pad(10).bottom();
 
-        dragAndDrop.addTarget(new DragAndDrop.Target(trashIcon) {
+        DragAndDrop finalDragAndDrop = dragAndDrop;
+        // Target برای گرفتن آیتم از یخچال
+        dragAndDrop.addTarget(new DragAndDrop.Target(containerTable) {
             @Override
             public boolean drag(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
-                return true;
+                return payload.getObject() instanceof Item;
             }
 
             @Override
             public void drop(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
-                Item droppedItem = (Item) payload.getObject();
-                items.remove(droppedItem);
-                showInventory(stage, skin);
+                Item item = (Item) payload.getObject();
+
+                // اضافه به Inventory
+                App.getActiveGame().getCurrentPlayer().getInventory().addItem(item, 1);
+
+                // حذف از یخچال
+                if (item instanceof FoodIngredient ingredient) {
+                    Map<FoodIngredient, Integer> fridge = App.getActiveGame().getCurrentPlayer().getFarm().getRefrigerator();
+                    fridge.put(ingredient, fridge.getOrDefault(ingredient, 1) - 1);
+                    if (fridge.get(ingredient) <= 0) {
+                        fridge.remove(ingredient);
+                    }
+                }
+
+                showInventory(stage, skin, finalDragAndDrop);
             }
         });
+
+        for (Item item : new ArrayList<>(items.keySet())) {
+            Texture texture = GameAssetManager.getGameAssetManager().getItemTexture(item);
+            Image icon = new Image(texture);
+
+            // اینجا تعریف Source
+            dragAndDrop.addSource(new DragAndDrop.Source(icon) {
+                @Override
+                public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
+                    DragAndDrop.Payload payload = new DragAndDrop.Payload();
+                    payload.setObject(item); // این آیتم قراره منتقل بشه
+                    payload.setDragActor(new Image(texture));
+                    return payload;
+                }
+            });
+
+            itemTable.add(icon).size(48).pad(5);
+        }
+
+
 
         // افزودن محتویات به mainTable
         mainTable.add(containerTable).padTop(10).center().row();
 
         // افزودن mainTable به Stage
         stage.addActor(mainTable);
+    }
+
+    public void removeInventory() {
+        if (mainTable.hasParent()) {  // اگه واقعا توی Stage هست
+            mainTable.remove();       // حذف از Stage
+        }
+        if (dragAndDrop != null) {
+            dragAndDrop.clear();      // پاک کردن تمام Target و Source
+        }
     }
 
 

@@ -1,5 +1,7 @@
 package com.group16.stardewvalley.model.user;
 
+import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
+import com.group16.stardewvalley.controller.GameController;
 import com.group16.stardewvalley.model.Inventory;
 import com.group16.stardewvalley.model.NPC.NPCInteraction;
 import com.group16.stardewvalley.model.Request;

@@ -11,7 +11,6 @@ public class App {
     private static User loggedInUser;
     public static ArrayList<Game> games = new ArrayList<>();
     private static Game activeGame = null;
-    private static GameScreen gameScreen;
     public static ArrayList<User> users = new ArrayList<User>();
     private static Menu currentMenu = Menu.LoginMenu;
 
@@ -62,14 +61,6 @@ public class App {
 
     public static void setActiveGame(Game activeGame) {
         App.activeGame = activeGame;
-    }
-
-    public static GameScreen getGameScreen() {
-        return gameScreen;
-    }
-
-    public static void setGameScreen(GameScreen screen) {
-        gameScreen = screen;
     }
 
 }
