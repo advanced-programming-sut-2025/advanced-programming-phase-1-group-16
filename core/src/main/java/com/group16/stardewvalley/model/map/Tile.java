@@ -175,9 +175,7 @@ public class Tile {
                 SeedType.MAPLE_SEEDS,
                 SeedType.PINE_CONES,
                 SeedType.MAHOGANY_SEEDS,
-                SeedType.APPLE_SAPLING,
-                SeedType.MANGO_SAPLING
-                //SeedType.MUSHROOM_TREE_SEEDS
+                SeedType.MUSHROOM_TREE_SEEDS
         };
         SeedType seed = seeds[random.nextInt(seeds.length)];
         return findTreeTypeBySeed(seed);
