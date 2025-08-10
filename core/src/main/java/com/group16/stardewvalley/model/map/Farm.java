@@ -21,6 +21,9 @@ public class Farm {
     public Farm(FarmType type) {
         this.type = type;
         this.refrigerator = new HashMap<>();
+        refrigerator.put(new FoodIngredient(Ingredient.SUGAR.getName(), 0, Ingredient.SUGAR), 1);
+        refrigerator.put(new FoodIngredient(Ingredient.EGG.getName(), 1, Ingredient.EGG), 2);
+        refrigerator.put(new FoodIngredient(Ingredient.SALMON.getName(), 2, Ingredient.SALMON), 3);
         this.plantedCrops = new ArrayList<>();
         this.plantedTrees = new ArrayList<>();
     }

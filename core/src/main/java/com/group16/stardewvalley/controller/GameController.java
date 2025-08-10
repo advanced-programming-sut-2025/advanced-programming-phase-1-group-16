@@ -275,11 +275,13 @@ public class GameController {
 
         // فقط وقتی بازیکن داخل خونه است
         if (player.isAtHome()) {
-            // مختصات کلیک رو به مختصات پیکسل صفحه تبدیل می‌کنیم
-            Vector2 clickPos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
 
-            // چک کنیم آیا روی یخچال بوده؟
+            Vector3 worldCoordinates = camera.unproject(new Vector3(screenX, screenY, 0));
+            Vector2 clickPos = new Vector2(worldCoordinates.x, worldCoordinates.y);
+
+
             if (player.getHomeMap().isOnFridge(clickPos)) {
+                System.out.println("you clicked on the fridge");
                 if (!isFridgeMenuOpen) {
                     fridgeMenu = new FridgeMenu(
                             GameAssetManager.getGameAssetManager().getSkin(),

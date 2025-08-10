@@ -73,10 +73,10 @@ public class HomeMap {
         backgroundSprite.setSize(newWidth, newHeight);
         backgroundSprite.setPosition(x, y);
 
-        float fridgeX = 154 + x;
-        float fridgeY = 76 + y;
-        float fridgeWidth = 25;
-        float fridgeHeight = 61;
+        float fridgeX = 270;
+        float fridgeY = 380 + y;
+        float fridgeWidth = 50;
+        float fridgeHeight = 100;
 
         fridgeBounds = new Rectangle(fridgeX, fridgeY, fridgeWidth, fridgeHeight);
 
