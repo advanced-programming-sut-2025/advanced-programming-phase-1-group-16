@@ -484,7 +484,7 @@ public class Player {
         if (energy == 0.0) faint();
     }
 
-    public Tile getLocation() {
+    public Tile getCurrentTile() {
         // طبیعتا باید  x, y این یارو هم معتبر باشه
         if (this.getX() < App.getActiveGame().getMapHeight() && this.getY() < App.getActiveGame().getMapWidth()) {
             return App.getActiveGame().getMap()[this.getX()][this.getY()];

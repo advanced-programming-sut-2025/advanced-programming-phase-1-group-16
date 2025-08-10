@@ -1,10 +1,24 @@
 package com.group16.stardewvalley.model;
 
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Scaling;
+import com.group16.stardewvalley.model.graphics.GameAssetManager;
+import com.group16.stardewvalley.model.items.Flower;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.agriculture.*;
-import com.group16.stardewvalley.model.agriculture.Seed;
 import com.group16.stardewvalley.model.items.Wood;
+import com.group16.stardewvalley.model.tools.Axe;
 import com.group16.stardewvalley.model.tools.Gadget;
 import com.group16.stardewvalley.model.crafting.CraftingRecipes;
 import com.group16.stardewvalley.model.tools.FishingPole;
@@ -27,6 +41,7 @@ public class Inventory {
     private ArrayList<CraftingRecipes> craftingRecipes;
     private Map<Crop, Integer> crops;
     private BackPackType backPackType;
+    private DragAndDrop dragAndDrop = new DragAndDrop();
 
     public Inventory() {
         this.tools = new HashMap<>();
@@ -36,7 +51,152 @@ public class Inventory {
         this.craftingRecipes = new ArrayList<>(
                 List.of(CraftingRecipes.CherryBomb, CraftingRecipes.Sprinkler, CraftingRecipes.CharcoalKlin, CraftingRecipes.Furnace,
                         CraftingRecipes.Scarecrow, CraftingRecipes.BeeHouse, CraftingRecipes.MayonnaiseMachine));
+        Axe newAse = new Axe("axe", 0, "base");
+        tools.put(newAse, 1);
+        items.put(newAse, 1);
+        Flower flower = new Flower("flower", 0);
+        items.put(flower, 1);
+
     }
+
+    public void showTools(Stage stage, Skin skin) {
+      Table table = new Table();
+      table.top().left().pad(10);
+      table.setFillParent(true);
+      for (Gadget gadget : tools.keySet()) {
+          Image icon = new Image(new Texture(Gdx.files.internal(gadget.getAssetPath())));
+          table.add(icon).pad(10);
+      }
+      stage.clear();
+      stage.addActor(table);
+    }
+
+    public void showInventory(Stage stage, Skin skin) {
+        stage.clear();
+
+        // جدول اصلی تمام‌صفحه
+        Table mainTable = new Table();
+        mainTable.setFillParent(true);
+        mainTable.top();
+
+        // نوار آیکون‌های بالای صفحه
+        Table topIcons = new Table();
+        topIcons.top().left();
+
+        String[] topIconsStr = {
+            "Inventory/Friendship.png",
+            "Inventory/journal.png",
+            "Inventory/Map.png",
+            "Inventory/Skills.png",
+            "Inventory/Social.png"
+        };
+
+        for (String iconPath : topIconsStr) {
+            Texture iconTexture = new Texture(Gdx.files.internal(iconPath));
+            Image tabIcon = new Image(iconTexture);
+
+            if (iconPath.contains("Friendship.png") || iconPath.contains("journal.png")) {
+                tabIcon.setSize(16, 16);
+            } else {
+                tabIcon.setSize(32, 32);
+            }
+
+            topIcons.add(tabIcon).width(32).height(32).pad(10);
+
+            tabIcon.setTouchable(Touchable.enabled);
+            tabIcon.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    System.out.println("Tab clicked: " + iconPath);
+                    showInventory(stage, skin);
+                }
+            });
+        }
+
+        // افزودن نوار آیکون به بالای صفحه
+        mainTable.add(topIcons).expandX().fillX().pad(1).padLeft(580).row();
+
+        // مقداردهی اولیه DragAndDrop
+        if (dragAndDrop == null) {
+            dragAndDrop = new DragAndDrop();
+        } else {
+            dragAndDrop.clear();
+        }
+
+        // جدول container برای محتویات inventory
+        Table containerTable = new Table();
+        containerTable.top().left();
+
+        Table itemTable = new Table();
+        itemTable.top().left().pad(5);
+        itemTable.defaults().padTop(20).padLeft(10);
+
+        int columnCount = 4;
+        int index = 0;
+
+        // ساخت آیتم‌های موجود در Inventory
+        for (Item item : new ArrayList<>(items.keySet())) {
+            Texture texture = GameAssetManager.getGameAssetManager().getItemTexture(item);
+            Image icon = new Image(texture);
+            icon.setSize(64, 64);
+            icon.setTouchable(Touchable.enabled);
+
+            itemTable.add(icon).width(64).height(64).pad(5);
+
+            dragAndDrop.addSource(new DragAndDrop.Source(icon) {
+                @Override
+                public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
+                    DragAndDrop.Payload payload = new DragAndDrop.Payload();
+                    payload.setObject(item);
+                    payload.setDragActor(new Image(texture));
+                    return payload;
+                }
+            });
+
+            index++;
+            if (index % columnCount == 0) {
+                itemTable.row();
+            }
+        }
+
+        // ScrollPane برای نمایش آیتم‌ها
+        ScrollPane scrollPane = new ScrollPane(itemTable, skin);
+        scrollPane.setScrollingDisabled(true, false);
+        scrollPane.setFadeScrollBars(false);
+        scrollPane.setForceScroll(false, true);
+        scrollPane.setOverscroll(false, false);
+
+        containerTable.add(scrollPane).width(320).height(200).top().left().row();
+
+        // آیکون سطل زباله
+        Texture trashTexture = new Texture(Gdx.files.internal("Inventory/Trash.png"));
+        Image trashIcon = new Image(trashTexture);
+        trashIcon.setSize(48, 48);
+
+        containerTable.add().expandX();
+        containerTable.add(trashIcon).right().pad(10).bottom();
+
+        dragAndDrop.addTarget(new DragAndDrop.Target(trashIcon) {
+            @Override
+            public boolean drag(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
+                return true;
+            }
+
+            @Override
+            public void drop(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
+                Item droppedItem = (Item) payload.getObject();
+                items.remove(droppedItem);
+                showInventory(stage, skin);
+            }
+        });
+
+        // افزودن محتویات به mainTable
+        mainTable.add(containerTable).padTop(10).center().row();
+
+        // افزودن mainTable به Stage
+        stage.addActor(mainTable);
+    }
+
 
     public Map<Crop, Integer> getCrops() {
         return crops;

@@ -9,7 +9,6 @@ public enum Location {
     NPCFarm,
     //no special place:
     Game,
-
     Farm,
     MiningLevel,
     FarmingLevel,
@@ -35,6 +34,19 @@ public enum Location {
             case MarniesRanch -> game.getMarniesRanch();
             case TheStardropSaloon -> game.getTheStardropSaloon();
             default -> null;
+        };
+    }
+
+    public boolean isShop() {
+        return switch (this) {
+            case PierresGeneralStore,
+                 FishShop,
+                 Blacksmith,
+                 CarpentersShop,
+                 JojaMart,
+                 MarniesRanch,
+                 TheStardropSaloon -> true;
+            default -> false;
         };
     }
 

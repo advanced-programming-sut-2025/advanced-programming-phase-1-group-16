@@ -13,6 +13,7 @@ import com.group16.stardewvalley.model.agriculture.Tree;
 import com.group16.stardewvalley.model.agriculture.TreeType;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.food.Food;
+import com.group16.stardewvalley.model.food.FoodIngredient;
 import com.group16.stardewvalley.model.food.Ingredient;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.items.Stone;
@@ -200,6 +201,9 @@ public class GameAssetManager {
                 }
             }
             return stoneTextures.get(name);
+        }
+        else if (item instanceof FoodIngredient foodIngredient) {
+            return getIngredientTexture(foodIngredient.getType());
         }
         return itemTexture;
     }

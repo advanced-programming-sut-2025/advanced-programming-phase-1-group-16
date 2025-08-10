@@ -15,6 +15,7 @@ import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.controller.agriculture.AgricultureController;
 import com.group16.stardewvalley.controller.map.MapController;
 import com.group16.stardewvalley.controller.menu.HomeMenuController;
+import com.group16.stardewvalley.model.Inventory;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.agriculture.Seed;
 import com.group16.stardewvalley.model.agriculture.Seeds;
@@ -98,6 +99,18 @@ public class GameController {
         float speed = player.getSpeed();
 
         switch (keycode) {
+            case Input.Keys.NUM_0:
+            case Input.Keys.NUM_1:
+            case Input.Keys.NUM_2:
+            case Input.Keys.NUM_3:
+            case Input.Keys.NUM_4:
+            case Input.Keys.NUM_5:
+            case Input.Keys.NUM_6:
+            case Input.Keys.NUM_7:
+            case Input.Keys.NUM_8:
+            case Input.Keys.NUM_9:
+                App.getGameScreen().toggleShowInventory();
+                return true;
             case Input.Keys.UP:
                 player.setCurrentDirection(Direction.UP);
                 nextY += speed;
@@ -187,12 +200,15 @@ public class GameController {
             case Input.Keys.TAB:
                 App.getActiveGame().getTimeDate().advanceDateCheat(1);
                 return true;
-            case Input.Keys.T:
+            case Input.Keys.O:
                 Result result = homeMenuController.eat(FoodFactory.tripleShotEspresso().getName());
                 if (result.isSuccessful()) {
                     Food food = FoodFactory.tripleShotEspresso();
                     showEatEffect(food.getName(), food.getBuff().getDescription(), food.getEnergy());
                 }
+                return true;
+            case Input.Keys.T:
+                App.getGameScreen().toggleShowTools();
                 return true;
             case Input.Keys.F4:
                 return true;
