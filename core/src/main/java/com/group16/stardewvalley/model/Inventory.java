@@ -79,15 +79,16 @@ public class Inventory {
         this.dragAndDrop = dragAndDrop;
 
         mainTable.clear();
-
-        // جدول اصلی تمام‌صفحه
         mainTable.setFillParent(true);
-        mainTable.top();
+        mainTable.center();
 
-        // نوار آیکون‌های بالای صفحه
+        // Background panel for nicer look
+        Table backgroundTable = new Table(skin);
+        backgroundTable.defaults().pad(10);
+        //backgroundTable.setBackground("default-round"); // Needs to be in your skin
+
+        // Top icon bar
         Table topIcons = new Table();
-        topIcons.top().left();
-
         String[] topIconsStr = {
             "Inventory/Friendship.png",
             "Inventory/journal.png",
@@ -99,7 +100,6 @@ public class Inventory {
         for (String iconPath : topIconsStr) {
             Texture iconTexture = new Texture(Gdx.files.internal(iconPath));
             Image tabIcon = new Image(iconTexture);
-
             if (iconPath.contains("Friendship.png") || iconPath.contains("journal.png")) {
                 tabIcon.setSize(16, 16);
             } else {
@@ -114,40 +114,34 @@ public class Inventory {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     System.out.println("Tab clicked: " + iconPath);
-                    showInventory(stage, skin, finalDragAndDrop1);
+                    //showInventory(stage, skin, finalDragAndDrop1);
                 }
             });
         }
 
-        // افزودن نوار آیکون به بالای صفحه
-        mainTable.add(topIcons).expandX().fillX().pad(1).padLeft(580).row();
+        backgroundTable.add(topIcons).expandX().fillX().row();
 
-        // مقداردهی اولیه DragAndDrop
+        // Initialize DragAndDrop
         if (dragAndDrop == null) {
             dragAndDrop = new DragAndDrop();
         } else {
             dragAndDrop.clear();
         }
 
-        // جدول container برای محتویات inventory
-        Table containerTable = new Table();
-        containerTable.top().left();
-
+        // Items table
         Table itemTable = new Table();
-        itemTable.top().left().pad(5);
-        itemTable.defaults().padTop(20).padLeft(10);
-
-        int columnCount = 4;
+        itemTable.defaults().pad(10);
+        itemTable.top().left().pad(10);
+        int columnCount = 6;
         int index = 0;
 
-        // ساخت آیتم‌های موجود در Inventory
         for (Item item : new ArrayList<>(items.keySet())) {
             Texture texture = GameAssetManager.getGameAssetManager().getItemTexture(item);
             Image icon = new Image(texture);
             icon.setSize(64, 64);
             icon.setTouchable(Touchable.enabled);
 
-            itemTable.add(icon).width(64).height(64).pad(5);
+            itemTable.add(icon).width(64).height(64);
 
             dragAndDrop.addSource(new DragAndDrop.Source(icon) {
                 @Override
@@ -165,26 +159,28 @@ public class Inventory {
             }
         }
 
-        // ScrollPane برای نمایش آیتم‌ها
+        // ScrollPane for items
         ScrollPane scrollPane = new ScrollPane(itemTable, skin);
-        scrollPane.setScrollingDisabled(true, false);
+        scrollPane.setScrollingDisabled(false, false); // Allow both directions
         scrollPane.setFadeScrollBars(false);
         scrollPane.setForceScroll(false, true);
         scrollPane.setOverscroll(false, false);
 
-        containerTable.add(scrollPane).width(320).height(200).top().left().row();
+        backgroundTable.add(scrollPane)
+            .width(Gdx.graphics.getWidth() * 0.4f)
+            .height(Gdx.graphics.getHeight() * 0.6f)
+            .center()
+            .row();
 
-        // آیکون سطل زباله
+        // Trash icon
         Texture trashTexture = new Texture(Gdx.files.internal("Inventory/Trash.png"));
         Image trashIcon = new Image(trashTexture);
         trashIcon.setSize(48, 48);
+        backgroundTable.add(trashIcon).padTop(10).center();
 
-        containerTable.add().expandX();
-        containerTable.add(trashIcon).right().pad(10).bottom();
-
+        // Drop target
         DragAndDrop finalDragAndDrop = dragAndDrop;
-        // Target برای گرفتن آیتم از یخچال
-        dragAndDrop.addTarget(new DragAndDrop.Target(containerTable) {
+        dragAndDrop.addTarget(new DragAndDrop.Target(mainTable) {
             @Override
             public boolean drag(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
                 return payload.getObject() instanceof Item;
@@ -193,11 +189,8 @@ public class Inventory {
             @Override
             public void drop(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
                 Item item = (Item) payload.getObject();
-
-                // اضافه به Inventory
                 App.getActiveGame().getCurrentPlayer().getInventory().addItem(item, 1);
 
-                // حذف از یخچال
                 if (item instanceof FoodIngredient ingredient) {
                     Map<FoodIngredient, Integer> fridge = App.getActiveGame().getCurrentPlayer().getFarm().getRefrigerator();
                     fridge.put(ingredient, fridge.getOrDefault(ingredient, 1) - 1);
@@ -210,30 +203,7 @@ public class Inventory {
             }
         });
 
-        for (Item item : new ArrayList<>(items.keySet())) {
-            Texture texture = GameAssetManager.getGameAssetManager().getItemTexture(item);
-            Image icon = new Image(texture);
-
-            // اینجا تعریف Source
-            dragAndDrop.addSource(new DragAndDrop.Source(icon) {
-                @Override
-                public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
-                    DragAndDrop.Payload payload = new DragAndDrop.Payload();
-                    payload.setObject(item); // این آیتم قراره منتقل بشه
-                    payload.setDragActor(new Image(texture));
-                    return payload;
-                }
-            });
-
-            itemTable.add(icon).size(48).pad(5);
-        }
-
-
-
-        // افزودن محتویات به mainTable
-        mainTable.add(containerTable).padTop(10).center().row();
-
-        // افزودن mainTable به Stage
+        mainTable.add(backgroundTable).center();
         stage.addActor(mainTable);
     }
 
