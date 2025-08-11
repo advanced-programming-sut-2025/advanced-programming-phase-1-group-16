@@ -15,8 +15,10 @@ import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.food.Food;
 import com.group16.stardewvalley.model.food.FoodIngredient;
 import com.group16.stardewvalley.model.food.Ingredient;
+import com.group16.stardewvalley.model.items.Flower;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.items.Stone;
+import com.group16.stardewvalley.model.tools.Gadget;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -204,6 +206,9 @@ public class GameAssetManager {
         }
         else if (item instanceof FoodIngredient foodIngredient) {
             return getIngredientTexture(foodIngredient.getType());
+        }
+        else if (item instanceof Flower flower) {
+            return new Texture("Crops/Sunflower.png");
         }
         return itemTexture;
     }

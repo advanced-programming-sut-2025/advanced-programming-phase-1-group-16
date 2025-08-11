@@ -107,6 +107,8 @@ public class FridgeMenu extends Window {
                         refrigerator.put(ingredient, refrigerator.getOrDefault(ingredient, 0) + 1);
                         App.getActiveGame().getCurrentPlayer().getInventory().removeItem(item, 1);
                         createIngredientGrid();
+                    } else {
+                        Main.getMain().getGameScreen().getController().showErrorPopup("You can only put food ingredients into the fridge!");
                     }
                 }
             });
@@ -130,10 +132,10 @@ public class FridgeMenu extends Window {
         }
 
         // In your fridge UI code, AFTER building the grid and before adding to stage:
-        dragAndDrop.addTarget(new DragAndDrop.Target(this /* or fridge main table */) {
+        dragAndDrop.addTarget(new DragAndDrop.Target(this) {
             @Override
             public boolean drag(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
-                return payload.getObject() instanceof FoodIngredient;
+                return true;
             }
 
             @Override
@@ -144,7 +146,6 @@ public class FridgeMenu extends Window {
                     App.getActiveGame().getCurrentPlayer().getInventory().removeItem(item, 1);
                     createIngredientGrid();
                 } else {
-                    System.out.println("You can only put food ingredients into the fridge!");
                     Main.getMain().getGameScreen().getController().showErrorPopup("You can only put food ingredients into the fridge!");
                 }
             }
