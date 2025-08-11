@@ -209,6 +209,7 @@ public class GameController {
                 Result result = homeMenuController.eat(FoodFactory.tripleShotEspresso().getName());
                 if (result.isSuccessful()) {
                     Food food = FoodFactory.tripleShotEspresso();
+                    GameAssetManager.getGameAssetManager().getEatingSound().play();
                     showEatEffect(food.getName(), food.getBuff().getDescription(), food.getEnergy());
                     player.getPlayerGraphics().startEating();
                 }

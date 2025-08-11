@@ -95,8 +95,8 @@ public class Player {
         fishingAbilityScore = 0;
         isEnergyUnlimited = false;
         inventory = new Inventory();
-        energyCeiling = 2000;
-        energy = 2000;
+        energyCeiling = 1;
+        energy = 0.001;
         this.spouse = null;
         isFainted = false;
         this.dailyPlayerInteraction = new HashMap<>();
@@ -561,8 +561,8 @@ public class Player {
 
     public void faint(){
         this.isFainted = true;
+        playerGraphics.startFainting();
         this.energy = 0;
-        App.getActiveGame().nextTurn();
     }
 
     public String getUsername() {

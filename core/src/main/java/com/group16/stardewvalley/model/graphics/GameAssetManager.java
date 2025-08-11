@@ -1,6 +1,7 @@
 package com.group16.stardewvalley.model.graphics;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -52,6 +53,8 @@ public class GameAssetManager {
 
     private final Texture houseTexture = new Texture("House/House_1.png");
 
+    private Sound eatingSound = Gdx.audio.newSound(Gdx.files.internal("SFX/eating.mp3"));
+
 
 
     //private final Music backgroundMusic;
@@ -76,6 +79,10 @@ public class GameAssetManager {
 
     public Skin getSkin() {
         return skin;
+    }
+
+    public Sound getEatingSound() {
+        return eatingSound;
     }
 
     public TextureRegion getCropRegion(Crop crop) {

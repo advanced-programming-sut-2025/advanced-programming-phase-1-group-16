@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.group16.stardewvalley.controller.GameController;
+import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.map.Direction;
 import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.view.graphics.GameScreen;
@@ -23,12 +24,16 @@ public class PlayerGraphics {
 
     private boolean isEating = false;
 
+    private int playerWidth, playerHeight;
+
     public PlayerGraphics(Player player, String spritePath, int frameWidth, int frameHeight) {
         this.player = player;
         this.x = player.getPosition().getX();
         this.y = player.getPosition().getY();
         this.tileSize = GameScreen.TILE_SIZE;
         spriteSheet = new Texture(spritePath);
+        playerWidth = spriteSheet.getWidth() / 7;
+        playerHeight = spriteSheet.getHeight() / 7;
         TextureRegion[][] tmp = TextureRegion.split(spriteSheet, frameWidth, frameHeight);
 
         simpleTexture = tmp[2][1];
@@ -39,15 +44,43 @@ public class PlayerGraphics {
         walkUp = new Animation<>(0.6f, tmp[0]);
 
         String pathStr = spritePath.substring(0, spritePath.length() - 4);
-        Texture faintSpriteSheet = new Texture(pathStr + "_faint.png");
-        TextureRegion faintSprite = new TextureRegion(faintSpriteSheet, 200, 266);
 
-        faint = new Animation<>(0.5f, faintSprite);
+        Texture faintSpriteSheet = new Texture(pathStr + "_faint.png");
+
+
+        TextureRegion[][] faintTmp = TextureRegion.split(faintSpriteSheet, 200, 266);
+
+// Flatten all rows into a single array
+        TextureRegion[] faintFrames = new TextureRegion[2 * 2]; // total frames = rows * cols
+        int index = 0;
+        for (int row = 0; row < faintTmp.length; row++) {
+            for (int col = 0; col < faintTmp[row].length; col++) {
+                faintFrames[index++] = faintTmp[row][col];
+            }
+        }
+
+        faint = new Animation<>(0.4f, faintFrames); // adjust speed as needed
+
+
 
         Texture eatingSpriteSheet = new Texture(pathStr + "_eating.png");
-        TextureRegion eatingSprite = new TextureRegion(eatingSpriteSheet, 62, 63);
+        int eatingCols = 2; // adjust to match your eating sprite
+        int eatingRows = 2; // adjust to match your eating sprite
+        TextureRegion[][] eatingTmp = TextureRegion.split(
+            eatingSpriteSheet,
+            64,
+            64
+        );
 
-        eating = new Animation<>(0.5f, faintSprite);
+        TextureRegion[] eatingFrames = new TextureRegion[eatingCols * eatingRows];
+        index = 0;
+        for (int row = 0; row < eatingRows; row++) {
+            for (int col = 0; col < eatingCols; col++) {
+                eatingFrames[index++] = eatingTmp[row][col];
+            }
+        }
+        eating = new Animation<>(0.2f, eatingFrames);
+
 
         face = new Texture(pathStr + "_face.png");
     }
@@ -57,17 +90,22 @@ public class PlayerGraphics {
         stateTime = 0f;
     }
 
+    public void startFainting() {
+        stateTime = 0f;
+    }
+
     public Texture getFace() {
         return face;
     }
 
     public void update(float delta, boolean up, boolean down, boolean left, boolean right) {
-        if (player.isFainted()) return;
+        if (player.isFainted()) {
+            stateTime += delta;
+            return;
+        }
 
-        // اگر در حال خوردن انیمیشن هستیم، حرکت نکن
         if (isEating) {
             stateTime += delta;
-            // وقتی انیمیشن خوردن تمام شد، به حالت عادی برگرد
             if (eating.isAnimationFinished(stateTime)) {
                 isEating = false;
                 stateTime = 0f;
@@ -104,12 +142,26 @@ public class PlayerGraphics {
     public void render(SpriteBatch batch) {
         if (player.isFainted()) {
             stateTime += Gdx.graphics.getDeltaTime();
-            currentFrame = faint.getKeyFrame(stateTime, false);
-            batch.draw(currentFrame, x * GameScreen.TILE_SIZE, y * GameScreen.TILE_SIZE , (float) spriteSheet.getWidth() / 7, (float) spriteSheet.getHeight() / 7);
-            return;
-        }
+            if (faint.isAnimationFinished(stateTime)) {
+                currentFrame = faint.getKeyFrames()[faint.getKeyFrames().length - 1];
+                App.getActiveGame().nextTurn();
+            } else {
+                currentFrame = faint.getKeyFrame(stateTime, false);
+            }
 
-        if (isEating) {
+            playerWidth = currentFrame.getRegionWidth() / 4;
+            playerHeight = currentFrame.getRegionHeight() / 4;
+            batch.draw(currentFrame,
+                x * GameScreen.TILE_SIZE,
+                y * GameScreen.TILE_SIZE,
+                playerWidth, playerHeight);
+            return;
+        } else if (isEating) {
+            stateTime += Gdx.graphics.getDeltaTime();
+            if (eating.isAnimationFinished(stateTime)) {
+                isEating = false;
+                stateTime = 0f;
+            }
             currentFrame = eating.getKeyFrame(stateTime, true);
         } else {
             switch (player.getCurrentDirection()) {
@@ -120,8 +172,12 @@ public class PlayerGraphics {
             }
         }
 
-        batch.draw(currentFrame, x * GameScreen.TILE_SIZE, y * GameScreen.TILE_SIZE, (float) spriteSheet.getWidth() / 7, (float) spriteSheet.getHeight() / 7);
+        playerWidth = currentFrame.getRegionWidth() / 2;
+        playerHeight = currentFrame.getRegionHeight() / 2;
+
+        batch.draw(currentFrame, x * GameScreen.TILE_SIZE, y * GameScreen.TILE_SIZE, (float) playerWidth, (float) playerHeight);
     }
+
     public TextureRegion getSimpleTexture() {
         return simpleTexture;
     }
