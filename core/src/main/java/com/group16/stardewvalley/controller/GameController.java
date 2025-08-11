@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.utils.Align;
@@ -301,7 +302,6 @@ public class GameController {
 
 
             if (player.getHomeMap().isOnFridge(clickPos)) {
-                System.out.println("you clicked on the fridge");
                 if (!isFridgeMenuOpen) {
                     fridgeMenu = new FridgeMenu(
                             GameAssetManager.getGameAssetManager().getSkin(),
@@ -322,4 +322,12 @@ public class GameController {
     public DragAndDrop getDragAndDrop() {
         return dragAndDrop;
     }
+
+    public void showErrorPopup(String message) {
+        Dialog dialog = new Dialog("error", GameAssetManager.getGameAssetManager().getSkin());
+        dialog.text(message);
+        dialog.button("Ok");
+        dialog.show(Main.getMain().getGameScreen().getStage());
+    }
+
 }

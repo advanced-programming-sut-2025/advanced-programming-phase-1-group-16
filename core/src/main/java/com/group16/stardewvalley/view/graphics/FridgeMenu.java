@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.food.Food;
@@ -40,9 +41,9 @@ public class FridgeMenu extends Window {
         tooltip.setKeepWithinStage(true);
         tooltip.pad(10);
 
-        setSize(600, 500);
-        setPosition(Gdx.graphics.getWidth() / 2f - getWidth() / 2f,
-                Gdx.graphics.getHeight() / 2f - getHeight() / 2f);
+        setPosition(0, Gdx.graphics.getHeight() - getHeight() - 250);
+
+        setSize(400, 400);
 
         createIngredientGrid();
     }
@@ -50,8 +51,11 @@ public class FridgeMenu extends Window {
     private void createIngredientGrid() {
         Table grid = new Table();
         grid.defaults().pad(10);
+        grid.top().left();
 
-        int cols = 5;
+        clear();
+
+        int cols = 4;
         int count = 0;
 
         for (Map.Entry<FoodIngredient, Integer> entry : refrigerator.entrySet()) {
@@ -124,6 +128,28 @@ public class FridgeMenu extends Window {
             count++;
             if (count % cols == 0) grid.row();
         }
+
+        // In your fridge UI code, AFTER building the grid and before adding to stage:
+        dragAndDrop.addTarget(new DragAndDrop.Target(this /* or fridge main table */) {
+            @Override
+            public boolean drag(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
+                return payload.getObject() instanceof FoodIngredient;
+            }
+
+            @Override
+            public void drop(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
+                Item item = (Item) payload.getObject();
+                if (item instanceof FoodIngredient ingredient) {
+                    refrigerator.put(ingredient, refrigerator.getOrDefault(ingredient, 0) + 1);
+                    App.getActiveGame().getCurrentPlayer().getInventory().removeItem(item, 1);
+                    createIngredientGrid();
+                } else {
+                    System.out.println("You can only put food ingredients into the fridge!");
+                    Main.getMain().getGameScreen().getController().showErrorPopup("You can only put food ingredients into the fridge!");
+                }
+            }
+        });
+
 
         ScrollPane scroll = new ScrollPane(grid, skin);
         add(scroll).expand().fill();

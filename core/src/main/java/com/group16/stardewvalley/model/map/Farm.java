@@ -22,8 +22,11 @@ public class Farm {
         this.type = type;
         this.refrigerator = new HashMap<>();
         refrigerator.put(new FoodIngredient(Ingredient.SUGAR.getName(), 0, Ingredient.SUGAR), 1);
-        refrigerator.put(new FoodIngredient(Ingredient.EGG.getName(), 1, Ingredient.EGG), 2);
-        refrigerator.put(new FoodIngredient(Ingredient.SALMON.getName(), 2, Ingredient.SALMON), 3);
+        refrigerator.put(new FoodIngredient(Ingredient.EGG.getName(), 1, Ingredient.EGG), 1);
+        refrigerator.put(new FoodIngredient(Ingredient.SALMON.getName(), 2, Ingredient.SALMON), 1);
+        refrigerator.put(new FoodIngredient(Ingredient.MYSTIC_SYRUP.getName(), 3, Ingredient.MYSTIC_SYRUP), 1);
+        refrigerator.put(new FoodIngredient(Ingredient.PUMPKIN.getName(), 4, Ingredient.PUMPKIN), 1);
+        refrigerator.put(new FoodIngredient(Ingredient.LEEK.getName(), 5, Ingredient.LEEK), 1);
         this.plantedCrops = new ArrayList<>();
         this.plantedTrees = new ArrayList<>();
     }
