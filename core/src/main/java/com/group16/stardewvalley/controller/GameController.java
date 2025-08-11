@@ -210,6 +210,7 @@ public class GameController {
                 if (result.isSuccessful()) {
                     Food food = FoodFactory.tripleShotEspresso();
                     showEatEffect(food.getName(), food.getBuff().getDescription(), food.getEnergy());
+                    player.getPlayerGraphics().startEating();
                 }
                 return true;
             case Input.Keys.T:

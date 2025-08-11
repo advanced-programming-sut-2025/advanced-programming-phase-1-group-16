@@ -14,12 +14,14 @@ public class PlayerGraphics {
     private Player player;
     int tileSize;
     private Texture spriteSheet;
-    private Animation<TextureRegion> walkUp, walkDown, walkLeft, walkRight, faint;
+    private Animation<TextureRegion> walkUp, walkDown, walkLeft, walkRight, faint, eating;
     private TextureRegion currentFrame;
     private Texture face;
     private TextureRegion simpleTexture;
     private float stateTime = 0f;
     protected float x, y;
+
+    private boolean isEating = false;
 
     public PlayerGraphics(Player player, String spritePath, int frameWidth, int frameHeight) {
         this.player = player;
@@ -42,7 +44,17 @@ public class PlayerGraphics {
 
         faint = new Animation<>(0.5f, faintSprite);
 
+        Texture eatingSpriteSheet = new Texture(pathStr + "_eating.png");
+        TextureRegion eatingSprite = new TextureRegion(eatingSpriteSheet, 62, 63);
+
+        eating = new Animation<>(0.5f, faintSprite);
+
         face = new Texture(pathStr + "_face.png");
+    }
+
+    public void startEating() {
+        isEating = true;
+        stateTime = 0f;
     }
 
     public Texture getFace() {
@@ -51,6 +63,18 @@ public class PlayerGraphics {
 
     public void update(float delta, boolean up, boolean down, boolean left, boolean right) {
         if (player.isFainted()) return;
+
+        // اگر در حال خوردن انیمیشن هستیم، حرکت نکن
+        if (isEating) {
+            stateTime += delta;
+            // وقتی انیمیشن خوردن تمام شد، به حالت عادی برگرد
+            if (eating.isAnimationFinished(stateTime)) {
+                isEating = false;
+                stateTime = 0f;
+            }
+            return;
+        }
+
         player.setMoving(false);
 
         if (up) {
@@ -85,21 +109,29 @@ public class PlayerGraphics {
             return;
         }
 
-        switch (player.getCurrentDirection()) {
-            case UP: currentFrame = walkUp.getKeyFrame(stateTime, true); break;
-            case DOWN: currentFrame = walkDown.getKeyFrame(stateTime, true); break;
-            case LEFT: currentFrame = walkLeft.getKeyFrame(stateTime, true); break;
-            case RIGHT: currentFrame = walkRight.getKeyFrame(stateTime, true); break;
+        if (isEating) {
+            currentFrame = eating.getKeyFrame(stateTime, true);
+        } else {
+            switch (player.getCurrentDirection()) {
+                case UP: currentFrame = walkUp.getKeyFrame(stateTime, true); break;
+                case DOWN: currentFrame = walkDown.getKeyFrame(stateTime, true); break;
+                case LEFT: currentFrame = walkLeft.getKeyFrame(stateTime, true); break;
+                case RIGHT: currentFrame = walkRight.getKeyFrame(stateTime, true); break;
+            }
         }
+
         batch.draw(currentFrame, x * GameScreen.TILE_SIZE, y * GameScreen.TILE_SIZE, (float) spriteSheet.getWidth() / 7, (float) spriteSheet.getHeight() / 7);
     }
-
     public TextureRegion getSimpleTexture() {
         return simpleTexture;
     }
 
     public void setSimpleTexture(TextureRegion simpleTexture) {
         this.simpleTexture = simpleTexture;
+    }
+
+    public Animation<TextureRegion> getEating() {
+        return eating;
     }
 
     public void dispose() {
