@@ -68,6 +68,11 @@ public class Tile {
         }
     }
 
+    private boolean buildingOrigin;
+    public boolean isBuildingOrigin() { return buildingOrigin; }
+    public void setBuildingOrigin(boolean origin) { this.buildingOrigin = origin; }
+
+
     public boolean isBurned() {
         return isBurned;
     }

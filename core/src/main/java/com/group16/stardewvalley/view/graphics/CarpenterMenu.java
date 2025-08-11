@@ -39,6 +39,8 @@ public class CarpenterMenu extends Window {
     private Label resultLabel;
     private String productFilter = "All Products"; // default
 
+    public static String pendingBuildingName = null;  // null means no building placement in progress
+
 
     public CarpenterMenu(Skin skin) {
         super("Carpenter's Shop", skin);
@@ -91,9 +93,21 @@ public class CarpenterMenu extends Window {
             }
             return false;
         });
+        // Create Close button
+        TextButton closeButton = new TextButton("Close", skin);
+        closeButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                CarpenterMenu.this.remove();  // Remove this window from the stage (close it)
+            }
+        });
 
 // Add filter at the top
-        add(filterSelect).pad(10).left().width(300).height(50).row();
+        Table topRow = new Table();
+        topRow.add(filterSelect).left().width(300).height(50);
+        topRow.add(closeButton).right().width(250).height(50);
+
+        add(topRow).expandX().fillX().pad(10).row();
 
         carpenterGrid();
         Main.getMain().getGameScreen().getStage().addActor(tooltip);
@@ -263,11 +277,21 @@ public class CarpenterMenu extends Window {
             public void clicked(InputEvent event, float x, float y) {
                 Result result = null;
                 for (int i = 0; i < quantity[0]; i++) {
-                    result = shop.buildCoop_Barn(item.getName(), player.getX(), player.getY());
 
-                    if (!result.isSuccessful()) {
-                        break; // stop if any build fails
+                    result = shop.buildCoop_Barn(item.getName(), -1, -1);
+                    if (result.isSuccessful()) {
+                        pendingBuildingName = item.getName();  // remember the building to place
+                        System.out.println("Select location to place " + item.getName());
+                    } else {
+                        System.out.println("Cannot start building: " + result.toString());
+                        break;
                     }
+
+//                    result = shop.buildCoop_Barn(item.getName(), player.getX(), player.getY());
+
+//                    if (!result.isSuccessful()) {
+//                        break; // stop if any build fails
+//                    }
                 }
                 if (result != null) {
                     resultLabel.setText(result.message());

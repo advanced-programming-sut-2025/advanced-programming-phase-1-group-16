@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.map.TileTextureManager;
 import com.group16.stardewvalley.model.map.TileType;
+import com.group16.stardewvalley.model.shops.Building;
 import com.group16.stardewvalley.view.graphics.GameScreen;
 
 public class TileRenderer {
@@ -23,6 +24,9 @@ public class TileRenderer {
         }
         return tileRenderer;
     }
+
+
+
 
     public void renderTile(SpriteBatch batch, Tile tile, int x, int y) {
         int TILE_SIZE = GameScreen.TILE_SIZE;
@@ -60,13 +64,32 @@ public class TileRenderer {
             }
         }
 
-        if (tile.getItem() != null) {
-            Texture itemTexture = textureManager.getItemTexture(tile.getItem());
-            int realWidth = Math.min(TILE_SIZE, itemTexture.getWidth());
-            int realHeight = Math.min(TILE_SIZE, itemTexture.getHeight());
-
-            batch.draw(itemTexture, drawX, drawY, realWidth, realHeight);
+//        if (tile.getItem() instanceof Building building) {
+//            if (tile.isBuildingOrigin()) {
+//                Texture texture = textureManager.getItemTexture(building);
+//                int drawWidth = TILE_SIZE * building.getBuildingType().getLength();
+//                int drawHeight = TILE_SIZE * building.getBuildingType().getWidth();
+//                batch.draw(texture, drawX, drawY, drawWidth, drawHeight);
+//            }
+//        }
+        if (tile.getItem() instanceof Building building) {
+            if (tile.isBuildingOrigin()) {
+                Texture texture = textureManager.getItemTexture(building);
+                float scale = 0.25f;
+                int drawWidth = (int)(texture.getWidth() * scale);
+                int drawHeight = (int)(texture.getHeight() * scale);
+                batch.draw(texture, drawX, drawY, drawWidth, drawHeight);
+            }
         }
+
+        else if (tile.getItem() != null) {
+            Texture texture = textureManager.getItemTexture(tile.getItem());
+            int realWidth = Math.min(TILE_SIZE, texture.getWidth());
+            int realHeight = Math.min(TILE_SIZE, texture.getHeight());
+            batch.draw(texture, drawX, drawY, realWidth, realHeight);
+        }
+
+
 
         if (tile.getTree() != null) {
             TextureRegion treeTexture = textureManager.getTreeRegion(tile.getTree());

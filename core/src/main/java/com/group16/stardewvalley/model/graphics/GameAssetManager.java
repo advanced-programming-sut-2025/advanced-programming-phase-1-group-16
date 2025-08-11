@@ -20,8 +20,10 @@ import com.group16.stardewvalley.model.food.Food;
 import com.group16.stardewvalley.model.food.Ingredient;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.items.Stone;
+import com.group16.stardewvalley.model.shops.Building;
 import com.group16.stardewvalley.model.time.TimeDate;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,10 +32,10 @@ import static com.badlogic.gdx.math.Rectangle.tmp;
 public class GameAssetManager {
     private static GameAssetManager gameAssetManager;
     private GameAssetManager(){
-        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(defaultMusicPath));
-        backgroundMusic.setLooping(true);
-        backgroundMusic.setVolume(musicVolume);
-        backgroundMusic.play();
+//        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(defaultMusicPath));
+//        backgroundMusic.setLooping(true);
+//        backgroundMusic.setVolume(musicVolume);
+//        backgroundMusic.play();
     }
 
     public static GameAssetManager getGameAssetManager(){
@@ -71,6 +73,7 @@ public class GameAssetManager {
     private final Map<String, TextureRegion> cropRegions = new HashMap<>();
     private final Map<String, Texture> mineralTextures = new HashMap<>();
     private final Map<String, Texture> stoneTextures = new HashMap<>();
+    private final Map<String, Texture> buildingTextures = new HashMap<>();
     private final Map<String, Texture> giantCropTextures = new HashMap<>();
     private final Map<String, Texture> foodTextures = new HashMap<>();
     private final Map<String, Texture> ingredientTextures = new HashMap<>();
@@ -188,6 +191,20 @@ public class GameAssetManager {
             }
             return mineralTextures.get(name);
         }
+        if (item instanceof Building building) {
+            String name = building.getName().replace(" ", "_");
+            if (!buildingTextures.containsKey(name)) {
+                try {
+                    System.out.println("Trying to load building texture: Shops/Carpenter/" + name + ".png");
+                    Texture texture = new Texture("Building/" + name + ".png");
+                    buildingTextures.put(name, texture);
+                } catch (Exception e) {
+                    buildingTextures.put(name, itemTexture);
+                }
+            }
+            return buildingTextures.get(name);
+        }
+
         else if (item instanceof Stone stone) {
             String name = stone.getName();
             if (name.equals("Farm_Boulder.png")) {

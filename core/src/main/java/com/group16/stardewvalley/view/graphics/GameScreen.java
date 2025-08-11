@@ -31,6 +31,7 @@ import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.graphics.TileRenderer;
 import com.group16.stardewvalley.model.map.*;
 import com.group16.stardewvalley.model.map.TileTextureManager;
+import com.group16.stardewvalley.model.shops.CarpentersShop;
 import com.group16.stardewvalley.model.time.TimeDate;
 import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.view.menuGraphics.PreGameMenuView;
@@ -39,6 +40,7 @@ import javax.swing.text.Position;
 
 import static com.group16.stardewvalley.controller.map.MapController.isPlayerInsidePlace;
 import static com.group16.stardewvalley.controller.menu.HomeMenuController.findIngredient;
+import static com.group16.stardewvalley.view.graphics.CarpenterMenu.pendingBuildingName;
 
 public class GameScreen implements Screen, InputProcessor {
     private GameController controller;
@@ -47,26 +49,21 @@ public class GameScreen implements Screen, InputProcessor {
     public static OrthographicCamera camera;
     private Viewport viewport;
     TileRenderer tileRenderer;
-
     public static float totalGameTime = 0f;
     private static int tenMinuteCounter = 0;
     private static float oneHourGameTime = 30f;
-
     public static boolean showMiniMap = false;
     private OrthographicCamera miniMapCamera;
     private Viewport miniMapViewport;
-
     private ShopMenuManager shopMenuManager;
-
-
     private Stage stage;
 
     private Skin skin = GameAssetManager.getGameAssetManager().getSkin();
     private Table pauseMenu;
     private boolean isPaused = false;
-
     private GameHUD gameHUD;
 
+    private CarpentersShop carpentersShop = new CarpentersShop();
 
     public static final int TILE_SIZE = 17;
 
@@ -202,17 +199,7 @@ public class GameScreen implements Screen, InputProcessor {
         batch.setProjectionMatrix(miniMapCamera.combined);
     }
 
-//    private static void handleTurn() {
-//        totalGameTime += Gdx.graphics.getDeltaTime();
-//
-//        if (totalGameTime >= oneHourGameTime) {
-//            TimeDate.getInstance(App.getActiveGame()).advanceOneHour(); // advance game time
-//            System.out.println(TimeDate.getInstance(App.getActiveGame()).getDateTime() + " " + TimeDate.getInstance(App.getActiveGame()).getSeason());
-//
-//            totalGameTime = 0f;
-//            App.getActiveGame().nextTurn(); // if needed for other game state updates
-//        }
-//    }
+
 
 
     private static void handleTurn() {
@@ -335,6 +322,18 @@ public class GameScreen implements Screen, InputProcessor {
             player.setAtHome(true);
         } else if (player.isAtHome()) {
             player.setAtHome(false);
+        }
+
+        if (pendingBuildingName != null) {
+            // Attempt to place building here
+            Result buildResult = carpentersShop.buildCoop_Barn(pendingBuildingName, tileX, tileY);
+            if (buildResult.isSuccessful()) {
+                System.out.println(buildResult.toString());
+                pendingBuildingName = null;  // Clear pending building after success
+            } else {
+                System.out.println("Cannot place building here: " + buildResult.toString());
+            }
+            return; // Skip other right-click logic during building mode
         }
 
 

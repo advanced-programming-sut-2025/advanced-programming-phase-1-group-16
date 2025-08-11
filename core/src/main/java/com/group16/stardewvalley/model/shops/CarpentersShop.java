@@ -1,5 +1,6 @@
 package com.group16.stardewvalley.model.shops;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.group16.stardewvalley.controller.CheatCodeController;
 import com.group16.stardewvalley.model.Inventory;
@@ -13,6 +14,7 @@ import com.group16.stardewvalley.model.items.Stone;
 import com.group16.stardewvalley.model.items.Wood;
 import com.group16.stardewvalley.model.map.PlaceType;
 import com.group16.stardewvalley.model.map.Pos;
+import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.user.Player;
 
 import java.time.Instant;
@@ -97,21 +99,12 @@ public class CarpentersShop extends Shop{
             return new Result(false, "no building found with the name " + buildingName);
         }
 
-        //check if ground is empty
-//        for (int i = y; i < y + buildingType.getLength(); i++) {
-//            for (int j = x; j < x + buildingType.getWidth(); j++) {
-//                if(game.getMap()[i][j].getItem() != null){
-//                    return new Result(false, "There is something on the ground at (" + j + ", " + i + ")");
-//                }
-//            }
-//        }
-
 
 
 
         //TODO: cheat for wood and stone
         player.increaseCoin(buildingType.getCost());
-        cheatController.addWood(buildingType.getWoodCost());
+        cheatController.addWood(2 * buildingType.getWoodCost());
         cheatController.addStone(buildingType.getStoneCost());
 
 
@@ -127,6 +120,7 @@ public class CarpentersShop extends Shop{
             if (item instanceof Wood) {
                 woodItem = item;
                 int woodAmount = items.get(item);
+//                System.out.println(woodAmount);
                 if (woodAmount < buildingType.getWoodCost()) {
                     return new Result(false, "You don't have enough wood");
                 }
@@ -152,30 +146,43 @@ public class CarpentersShop extends Shop{
 
 //        items.compute(woodItem, (k, currentAmount) -> currentAmount - 350);
 //        items.compute(stoneItem, (k, currentAmount) -> currentAmount - 150);
+        player.decreaseCoin(buildingType.getCost());
 
-        //place building
+        if (x == -1 && y == -1) {
+            // Do all resource checks, but skip actual placement
+            return new Result(true, "Building ready to place. Click to select location.");
+        }
+
+
+        //check if ground is empty
         for (int i = y; i < y + buildingType.getLength(); i++) {
             for (int j = x; j < x + buildingType.getWidth(); j++) {
-                game.getMap()[i][j].setItem(newBuilding);
+                if(game.getMap()[i][j].isTileEmpty()){
+                    return new Result(false, "There is something on the ground at (" + j + ", " + i + ")");
+                }
             }
         }
+
+
+        // place building with origin flag
+        for (int row = 0; row < buildingType.getWidth(); row++) {
+            for (int col = 0; col < buildingType.getLength(); col++) {
+                Tile tile = game.getMap()[y + row][x + col];
+                if (row == 0 && col == 0) {
+                    tile.setItem(newBuilding);
+                    tile.setBuildingOrigin(true); // only top-left tile is origin
+                } else {
+                    tile.setItem(null); // no item stored on other tiles
+                    tile.setBuildingOrigin(false);
+                }
+            }
+        }
+
 
         player.getInventory().addItem(newBuilding, 1);
-        return new Result(true, newBuilding.getName() + "build successfully");
 
-    }
+        return new Result(true, newBuilding.getName() + " built successfully");
 
-    public Texture getTexture(Item item) {
-        String name = item.getName().replace(" ", "_");
-        if (!carpenterTextures.containsKey(name)) {
-            try {
-                Texture texture = new Texture("Shops/Carpenter/" + name + ".png");
-                carpenterTextures.put(name, texture);
-            } catch (Exception e) {
-                carpenterTextures.put(name, GameAssetManager.getGameAssetManager().getBasicItemTexture());
-            }
-        }
-        return carpenterTextures.get(name);
     }
 
 
