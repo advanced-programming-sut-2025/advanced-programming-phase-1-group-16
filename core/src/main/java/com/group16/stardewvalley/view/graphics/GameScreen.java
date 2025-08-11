@@ -181,6 +181,7 @@ public class GameScreen implements Screen, InputProcessor {
         totalGameTime += Gdx.graphics.getDeltaTime();
         if (totalGameTime > 100f) {
             App.getActiveGame().nextTurn();
+            Main.getMain().getGameScreen().getStage().clear();
             totalGameTime = 0f;
         }
     }
