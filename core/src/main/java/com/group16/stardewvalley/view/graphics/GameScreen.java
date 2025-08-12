@@ -304,53 +304,57 @@ public class GameScreen implements Screen, InputProcessor {
         int dy = Math.abs(playerY - tileY);
         boolean isAdjacent = (dx <= 1 && dy <= 1) && (dx + dy > 0);
 
-
-
-        Tree tree = App.getActiveGame().getMap()[tileY][tileX].getTree();
-        if (isAdjacent && tree != null) {
-            if (tree.HasFruit()) {
-                tree.handpickFruit();
-                String fruitName = tree.getTreeType().getFruitName().toUpperCase().replace(" ", "_");
-                Ingredient ingredient = findIngredient(fruitName);
-                if (ingredient != null) {
-                    Result result = player.getInventory().addItem(new FoodIngredient(fruitName, tree.getFruitSellPrice(), ingredient), 4);
-                }
-            }
-        } else if (App.getActiveGame().getMap()[tileY][tileX].getType().equals(TileType.Cottage) &&
-            !player.isAtHome()) {
-            player.setHomeMap(new HomeMap(player));
-            player.setAtHome(true);
-        } else if (player.isAtHome()) {
-            player.setAtHome(false);
+        if (shopMenuManager.isMenuOpenFor(PlaceType.MarniesRanch)) {
+            shopMenuManager.closeMenu();
+        } else {
+            shopMenuManager.openMenu(PlaceType.MarniesRanch);
         }
-
-        if (pendingBuildingName != null) {
-            // Attempt to place building here
-            Result buildResult = carpentersShop.buildCoop_Barn(pendingBuildingName, tileX, tileY);
-            if (buildResult.isSuccessful()) {
-                System.out.println(buildResult.toString());
-                pendingBuildingName = null;  // Clear pending building after success
-            } else {
-                System.out.println("Cannot place building here: " + buildResult.toString());
-            }
-            return; // Skip other right-click logic during building mode
-        }
-
-
-        if (isPlayerInsidePlace(player, PlaceType.CarpentersShop)) {
-            if (shopMenuManager.isMenuOpenFor(PlaceType.CarpentersShop)) {
-                shopMenuManager.closeMenu();
-            } else {
-                shopMenuManager.openMenu(PlaceType.CarpentersShop);
-            }
-        }
-        if (isPlayerInsidePlace(player, PlaceType.MarniesRanch)) {
-            if (shopMenuManager.isMenuOpenFor(PlaceType.MarniesRanch)) {
-                shopMenuManager.closeMenu();
-            } else {
-                shopMenuManager.openMenu(PlaceType.MarniesRanch);
-            }
-        }
+//
+//        Tree tree = App.getActiveGame().getMap()[tileY][tileX].getTree();
+//        if (isAdjacent && tree != null) {
+//            if (tree.HasFruit()) {
+//                tree.handpickFruit();
+//                String fruitName = tree.getTreeType().getFruitName().toUpperCase().replace(" ", "_");
+//                Ingredient ingredient = findIngredient(fruitName);
+//                if (ingredient != null) {
+//                    Result result = player.getInventory().addItem(new FoodIngredient(fruitName, tree.getFruitSellPrice(), ingredient), 4);
+//                }
+//            }
+//        } else if (App.getActiveGame().getMap()[tileY][tileX].getType().equals(TileType.Cottage) &&
+//            !player.isAtHome()) {
+//            player.setHomeMap(new HomeMap(player));
+//            player.setAtHome(true);
+//        } else if (player.isAtHome()) {
+//            player.setAtHome(false);
+//        }
+//
+//        if (pendingBuildingName != null) {
+//            // Attempt to place building here
+//            Result buildResult = carpentersShop.buildCoop_Barn(pendingBuildingName, tileX, tileY);
+//            if (buildResult.isSuccessful()) {
+//                System.out.println(buildResult.toString());
+//                pendingBuildingName = null;  // Clear pending building after success
+//            } else {
+//                System.out.println("Cannot place building here: " + buildResult.toString());
+//            }
+//            return; // Skip other right-click logic during building mode
+//        }
+//
+//
+//        if (isPlayerInsidePlace(player, PlaceType.CarpentersShop)) {
+//            if (shopMenuManager.isMenuOpenFor(PlaceType.CarpentersShop)) {
+//                shopMenuManager.closeMenu();
+//            } else {
+//                shopMenuManager.openMenu(PlaceType.CarpentersShop);
+//            }
+//        }
+//        if (isPlayerInsidePlace(player, PlaceType.MarniesRanch)) {
+//            if (shopMenuManager.isMenuOpenFor(PlaceType.MarniesRanch)) {
+//                shopMenuManager.closeMenu();
+//            } else {
+//                shopMenuManager.openMenu(PlaceType.MarniesRanch);
+//            }
+//        }
     }
 
 

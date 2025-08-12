@@ -3,11 +3,14 @@ package com.group16.stardewvalley.model.graphics;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.group16.stardewvalley.model.animal.Animal;
 import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.map.TileTextureManager;
 import com.group16.stardewvalley.model.map.TileType;
 import com.group16.stardewvalley.model.shops.Building;
 import com.group16.stardewvalley.view.graphics.GameScreen;
+
+import java.util.ArrayList;
 
 public class TileRenderer {
     private final GameAssetManager textureManager;
@@ -67,18 +70,44 @@ public class TileRenderer {
 //        if (tile.getItem() instanceof Building building) {
 //            if (tile.isBuildingOrigin()) {
 //                Texture texture = textureManager.getItemTexture(building);
-//                int drawWidth = TILE_SIZE * building.getBuildingType().getLength();
-//                int drawHeight = TILE_SIZE * building.getBuildingType().getWidth();
+//                float scale = 0.25f;
+//                int drawWidth = (int)(texture.getWidth() * scale);
+//                int drawHeight = (int)(texture.getHeight() * scale);
 //                batch.draw(texture, drawX, drawY, drawWidth, drawHeight);
 //            }
 //        }
         if (tile.getItem() instanceof Building building) {
             if (tile.isBuildingOrigin()) {
-                Texture texture = textureManager.getItemTexture(building);
+                // Draw building texture
+                Texture buildingTexture = textureManager.getItemTexture(building);
                 float scale = 0.25f;
-                int drawWidth = (int)(texture.getWidth() * scale);
-                int drawHeight = (int)(texture.getHeight() * scale);
-                batch.draw(texture, drawX, drawY, drawWidth, drawHeight);
+                int drawWidth = (int) (buildingTexture.getWidth() * scale);
+                int drawHeight = (int) (buildingTexture.getHeight() * scale);
+                batch.draw(buildingTexture, drawX, drawY, drawWidth, drawHeight);
+
+                // Draw animals inside this building
+                ArrayList<Animal> animals = building.getBuildingAnimals();
+                if (!animals.isEmpty()) {
+                    int buildingPixelWidth = building.getBuildingType().getLength() * TILE_SIZE;
+                    int buildingPixelHeight = building.getBuildingType().getWidth() * TILE_SIZE;
+
+                    int animalsPerRow = Math.max(1, building.getBuildingType().getLength() - 1);
+                    int animalSize = TILE_SIZE / 2; // make animals smaller than tiles
+
+                    for (int i = 0; i < animals.size(); i++) {
+                        Animal animal = animals.get(i);
+                        Texture animalTexture = textureManager.getAnimalTexture(animal);
+
+                        // Simple fixed positioning (grid inside the building)
+                        int row = i / animalsPerRow;
+                        int col = i % animalsPerRow;
+
+                        int animalX = drawX + col * animalSize + TILE_SIZE / 4;
+                        int animalY = drawY + row * animalSize + TILE_SIZE / 4;
+
+                        batch.draw(animalTexture, animalX, animalY, animalSize, animalSize);
+                    }
+                }
             }
         }
 

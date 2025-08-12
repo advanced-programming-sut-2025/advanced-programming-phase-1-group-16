@@ -44,9 +44,9 @@ public class MarniesRanch extends Shop {
 
 
         //TODO: cheat building
-        Item newBuilding = new Building(newAnimal.getFromShopType().getBuildingRequired().get(0).getName(),
-            newAnimal.getFromShopType().getBuildingRequired().get(0).getCost(),  newAnimal.getFromShopType().getBuildingRequired().get(0), player.getPosition());
-        player.getInventory().addItem(newBuilding, 1);
+//        Item newBuilding = new Building(newAnimal.getFromShopType().getBuildingRequired().get(0).getName(),
+//            newAnimal.getFromShopType().getBuildingRequired().get(0).getCost(),  newAnimal.getFromShopType().getBuildingRequired().get(0), player.getPosition());
+//        player.getInventory().addItem(newBuilding, 1);
 
 
         for (Item item : player.getInventory().getItems().keySet()){

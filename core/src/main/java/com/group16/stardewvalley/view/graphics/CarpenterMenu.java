@@ -18,6 +18,7 @@ import com.group16.stardewvalley.model.crafting.CraftingRecipes;
 import com.group16.stardewvalley.model.food.Ingredient;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.items.Item;
+import com.group16.stardewvalley.model.shops.BuildingType;
 import com.group16.stardewvalley.model.shops.CarpentersShop;
 import com.group16.stardewvalley.model.user.Player;
 
@@ -226,12 +227,30 @@ public class CarpenterMenu extends Window {
         buyingLabel.setColor(Color.SALMON);
         content.add(buyingLabel).row();
 
-        content.add(new Label("------------------------", skin)).row();
+        content.add(new Label("----------------------------", skin)).row();
 
-        //TODO
+        // Try to get the building type for this item
+        BuildingType buildingType = BuildingType.buildingFromName(item.getName());
+        if (buildingType != null) {
+            // Example description using enum fields
+            String description = String.format(
+                    "Cost: %d gold, %d wood, %d stone\nSize: %dx%d\nDaily Sale Limit: %d\nAnimal Limit: %d",
+                    buildingType.getCost(),
+                    buildingType.getWoodCost(),
+                    buildingType.getStoneCost(),
+                    buildingType.getLength(),
+                    buildingType.getWidth(),
+                    buildingType.getDailySaleLimit(),
+                    buildingType.getAnimalLimit()
+            );
+            content.add(new Label(description, skin)).row();
+        } else {
+            content.add(new Label("No building information available.", skin)).row();
+        }
 
         return content;
     }
+
 
     private void showBuyProductWindow(Item item) {
         Window buyWindow = new Window("Buy Product", skin);

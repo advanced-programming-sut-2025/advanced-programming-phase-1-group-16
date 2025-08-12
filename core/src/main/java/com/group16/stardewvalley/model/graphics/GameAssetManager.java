@@ -14,6 +14,7 @@ import com.group16.stardewvalley.model.agriculture.Crop;
 import com.group16.stardewvalley.model.agriculture.Mineral;
 import com.group16.stardewvalley.model.agriculture.Tree;
 import com.group16.stardewvalley.model.agriculture.TreeType;
+import com.group16.stardewvalley.model.animal.Animal;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.crafting.CraftingRecipes;
 import com.group16.stardewvalley.model.food.Food;
@@ -68,6 +69,7 @@ public class GameAssetManager {
     private Texture burnTexture = new Texture(burn);
     private Texture waterTexture = new Texture(water);
     private Texture fertalizeTexture = new Texture(fertalize);
+    private Texture animalTextur = new Texture("Animals/Dog.png");
 
     private final Map<String, TextureRegion> treeRegions = new HashMap<>();
     private final Map<String, TextureRegion> cropRegions = new HashMap<>();
@@ -79,6 +81,7 @@ public class GameAssetManager {
     private final Map<String, Texture> ingredientTextures = new HashMap<>();
     private final Map<String, Texture> craftingTextures = new HashMap<>();
     private final Map<String, Texture> craftingIngredientTextures = new HashMap<>();
+    private final Map<String, Texture> animalTextures = new HashMap<>();
 
     private final Texture houseTexture = new Texture("House/House_1.png");
 
@@ -295,7 +298,18 @@ public class GameAssetManager {
         return craftingIngredientTextures.get(name);
     }
 
-
+    public Texture getAnimalTexture(Animal animal) {
+        String name = animal.getName().replace(" ", "_");
+        if (!animalTextures.containsKey(name)) {
+            try {
+                Texture texture = new Texture("Animals/" + name + ".png");
+                animalTextures.put(name, texture);
+            } catch (Exception e) {
+                animalTextures.put(name, animalTextur);
+            }
+        }
+        return animalTextures.get(name);
+    }
     public Texture getTexture(String path) {
         return new Texture(path);
     }

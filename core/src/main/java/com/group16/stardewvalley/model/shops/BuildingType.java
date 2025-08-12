@@ -62,4 +62,14 @@ public enum BuildingType {
     public int getAnimalLimit() {
         return animalLimit;
     }
+
+    public static BuildingType buildingFromName(String name) {
+        for (BuildingType type : BuildingType.values()) {
+            if (type.getName().equalsIgnoreCase(name)) {
+                return type;
+            }
+        }
+        return null; // or throw an IllegalArgumentException if you prefer
+    }
+
 }

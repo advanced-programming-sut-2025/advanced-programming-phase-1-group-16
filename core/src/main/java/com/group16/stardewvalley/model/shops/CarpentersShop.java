@@ -178,7 +178,7 @@ public class CarpentersShop extends Shop{
             }
         }
 
-
+        game.getBuildings().add((Building) newBuilding);
         player.getInventory().addItem(newBuilding, 1);
 
         return new Result(true, newBuilding.getName() + " built successfully");

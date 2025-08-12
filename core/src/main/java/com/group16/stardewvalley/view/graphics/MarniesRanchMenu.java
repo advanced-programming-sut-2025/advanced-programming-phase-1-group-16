@@ -177,20 +177,47 @@ public class MarniesRanchMenu extends Window {
         Table content = new Table();
         content.defaults().left().padBottom(5);
 
+        // Title
         Label title = new Label(animal.getName(), skin, "button");
         title.setColor(Color.ORANGE);
         content.add(title).row();
+        content.add(new Label("----------------------------", skin)).row();
 
-        Label buyingLabel = new Label("Buy", skin);
-        buyingLabel.setColor(Color.SALMON);
-        content.add(buyingLabel).row();
 
-        content.add(new Label("------------------------", skin)).row();
+        // Price
+        Label priceLabel = new Label("Price: " + animal.getPrice() + "g", skin);
+        priceLabel.setColor(Color.GOLD);
+        content.add(priceLabel).row();
 
-        //TODO
+        // Animal type
+        Label typeLabel = new Label("Type: " + animal.getAnimalType().name(), skin);
+        typeLabel.setColor(Color.WHITE);
+        content.add(typeLabel).row();
+
+        // Buildings required
+        String buildingList = String.join(", ",
+            animal.getBuildingRequired().stream()
+                .map(Enum::name)
+                .toList()
+        );
+        Label buildingLabel = new Label("Required Building(s): " + buildingList, skin);
+        buildingLabel.setColor(Color.SKY);
+        content.add(buildingLabel).row();
+
+        // Daily limit
+        Label dailyLimitLabel = new Label("Daily Purchase Limit: " + animal.getDailyLimit(), skin);
+        dailyLimitLabel.setColor(Color.LIGHT_GRAY);
+        content.add(dailyLimitLabel).row();
+
+        // Daily sold
+        Label dailySoldLabel = new Label("Sold today: " + animal.getDailySold(), skin);
+        dailySoldLabel.setColor(Color.LIGHT_GRAY);
+        content.add(dailySoldLabel).row();
+
 
         return content;
     }
+
 
     private void showBuyProductWindow(MarniesRanchAnimals animal) {
         Window buyWindow = new Window("Buy Product", skin);
