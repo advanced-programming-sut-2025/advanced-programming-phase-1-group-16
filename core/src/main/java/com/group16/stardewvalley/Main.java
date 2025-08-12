@@ -54,4 +54,24 @@ public class Main extends Game {
     public static void setBatch(SpriteBatch batch) {
         Main.batch = batch;
     }
+
+    public GameScreen getGameScreen() {
+        return gameScreen;
+    }
+
+    public void setGameScreen(GameScreen gameScreen) {
+        this.gameScreen = gameScreen;
+    }
+
+    public MapController getMapController() {
+        return mapController;
+    }
+
+    public GameMenuController getController() {
+        return controller;
+    }
+
+    public void setController(GameMenuController controller) {
+        this.controller = controller;
+    }
 }

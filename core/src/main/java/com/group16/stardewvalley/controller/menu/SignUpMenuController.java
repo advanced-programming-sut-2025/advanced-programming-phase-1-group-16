@@ -7,7 +7,6 @@ import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.menu.LoginMenuCommands;
 import com.group16.stardewvalley.model.user.SecurityQuestions;
 import com.group16.stardewvalley.model.user.User;
-import com.group16.stardewvalley.model.user.UserSaveManager;
 import com.group16.stardewvalley.view.menuGraphics.SignUpMenuView;
 import com.group16.stardewvalley.view.menuGraphics.StartMenuView;
 import com.group16.stardewvalley.Message;

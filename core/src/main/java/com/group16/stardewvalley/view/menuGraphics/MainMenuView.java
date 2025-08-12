@@ -40,7 +40,7 @@ public class MainMenuView implements Screen {
 
         this.gameTitle = new Label("M a i n    M e n u", skin.get("title", Label.LabelStyle.class));
         this.profileButton = new TextButton("Profile", skin);
-        this.preGameButton = new TextButton("Game", skin);
+        this.preGameButton = new TextButton("Lobbies", skin);
         this.logoutButton = new TextButton("Logout", skin);
 
         this.usernameLabel = new Label("Name: " + App.getLoggedInUser().getNickName(), skin);

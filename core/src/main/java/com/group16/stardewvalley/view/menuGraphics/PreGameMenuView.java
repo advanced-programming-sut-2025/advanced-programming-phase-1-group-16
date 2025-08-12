@@ -128,7 +128,6 @@ public class PreGameMenuView implements Screen {
 
                 com.group16.stardewvalley.model.app.Game newGame = new com.group16.stardewvalley.model.app.Game(new Player(App.getLoggedInUser()), gamePlayers);
                 App.setActiveGame(newGame);
-                App.games.add(newGame);
 
                 String[] characterPaths = {
                     "Character/maidnpc.png",
