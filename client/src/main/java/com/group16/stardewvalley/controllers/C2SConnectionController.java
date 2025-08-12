@@ -8,11 +8,16 @@ import com.group16.stardewvalley.app.C2SConnectionThread;
 import com.group16.stardewvalley.app.ClientApp;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.view.menuGraphics.FarmSelectionScreen;
+import com.group16.stardewvalley.view.menuGraphics.OnlinePlayersView;
 
 import java.io.File;
 import java.util.HashMap;
 
 public class C2SConnectionController {
+	public static void refreshOnlinePlayers(Message message) {
+		OnlinePlayersView.fetchOnlinePlayers(message);
+	}
+
     public static void showFarmSelection(Message message) {
         Gdx.app.postRunnable(() -> {
             Main.getMain().getScreen().dispose();

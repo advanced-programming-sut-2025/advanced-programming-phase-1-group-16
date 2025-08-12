@@ -46,6 +46,7 @@ public class ClientConnectionThread extends ConnectionThread {
             }
             case REGISTER -> {
                 sendMessage(ServerConnectionController.register(this, message));
+                ServerConnectionController.refreshOnlinePlayers();
                 yield true;
             }
             case IS_USERNAME_TAKEN -> {
@@ -54,6 +55,7 @@ public class ClientConnectionThread extends ConnectionThread {
             }
             case GET_USER_INFO -> {
                 sendMessage(ServerConnectionController.getUserInfo(this, message));
+                ServerConnectionController.refreshOnlinePlayers();
                 yield true;
             }
             case UPDATE_EMAIL -> {
@@ -78,6 +80,7 @@ public class ClientConnectionThread extends ConnectionThread {
             }
             case CREATE_LOBBY -> {
                 sendMessage(ServerConnectionController.addLobby(message));
+                ServerConnectionController.refreshOnlinePlayers();
                 yield true;
             }
             case GET_LOBBY_LIST -> {
@@ -86,10 +89,12 @@ public class ClientConnectionThread extends ConnectionThread {
             }
             case JOIN_LOBBY -> {
                 sendMessage(ServerConnectionController.joinLobby(message));
+                ServerConnectionController.refreshOnlinePlayers();
                 yield true;
             }
             case LEAVE_LOBBY -> {
                 sendMessage(ServerConnectionController.leaveLobby(message));
+                ServerConnectionController.refreshOnlinePlayers();
                 yield true;
             }
             case SET_LOBBY_VISIBILITY -> {
@@ -102,6 +107,10 @@ public class ClientConnectionThread extends ConnectionThread {
             }
             case SEARCH_LOBBY -> {
                 sendMessage(ServerConnectionController.searchLobby(message));
+                yield true;
+            }
+            case REQUEST_ONLINE_PLAYERS -> {
+                sendMessage(ServerConnectionController.getOnlinePlayers());
                 yield true;
             }
             default -> false;
@@ -143,6 +152,13 @@ public class ClientConnectionThread extends ConnectionThread {
         } catch (Exception ignored) {
             return true;
         }
+    }
+
+    @Override
+    public void end() {
+        super.end();
+        ServerApp.removeOnlinePlayer(connectedUser);
+        ServerConnectionController.refreshOnlinePlayers();
     }
 
 }

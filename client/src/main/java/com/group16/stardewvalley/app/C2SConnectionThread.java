@@ -41,6 +41,10 @@ public class C2SConnectionThread extends ConnectionThread {
                 C2SConnectionController.showFarmSelection(message);
                 yield true;
             }
+			case REQUEST_ONLINE_PLAYERS -> {
+				C2SConnectionController.refreshOnlinePlayers(message);
+				yield true;
+			}
             default -> false;
         };
 	}

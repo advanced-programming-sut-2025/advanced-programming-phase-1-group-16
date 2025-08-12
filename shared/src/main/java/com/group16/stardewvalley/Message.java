@@ -53,5 +53,6 @@ public class Message {
         SHOW_FARM_SELECTION,
         FARM_SELECTION_READY,
         GAME_STARTED,
+        REQUEST_ONLINE_PLAYERS
 	}
 }

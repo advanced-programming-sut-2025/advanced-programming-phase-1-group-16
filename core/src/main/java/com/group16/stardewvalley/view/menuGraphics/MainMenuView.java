@@ -25,6 +25,7 @@ public class MainMenuView implements Screen {
 
     private final TextButton profileButton;
     private final TextButton preGameButton;
+    private final TextButton onlinePlayersButton;
     private final TextButton logoutButton;
 
     private final Label usernameLabel;
@@ -42,6 +43,7 @@ public class MainMenuView implements Screen {
         this.profileButton = new TextButton("Profile", skin);
         this.preGameButton = new TextButton("Lobbies", skin);
         this.logoutButton = new TextButton("Logout", skin);
+        this.onlinePlayersButton = new TextButton("Online Players", skin);
 
         this.usernameLabel = new Label("Name: " + App.getLoggedInUser().getNickName(), skin);
 
@@ -113,6 +115,15 @@ public class MainMenuView implements Screen {
             }
         });
 
+        onlinePlayersButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Main.getMain().setScreen(
+                    new OnlinePlayersView(GameAssetManager.getGameAssetManager().getSkin())
+                );
+            }
+        });
+
         //*------------------------------------------*//
 
         // === Root Table ===
@@ -144,9 +155,10 @@ public class MainMenuView implements Screen {
         Table rightColumn = new Table();
         rightColumn.top();
 
-        rightColumn.add(preGameButton).width(280).padBottom(15).row();
-        rightColumn.add(profileButton).width(280).padBottom(15).row();
-        rightColumn.add(logoutButton).width(280);
+        rightColumn.add(preGameButton).width(500).padBottom(15).row();
+        rightColumn.add(profileButton).width(500).padBottom(15).row();
+        rightColumn.add(onlinePlayersButton).width(500).padBottom(15).row();
+        rightColumn.add(logoutButton).width(500);
 
         // === Add Columns to Root Table ===
         rootTable.add(leftColumn).top().left();

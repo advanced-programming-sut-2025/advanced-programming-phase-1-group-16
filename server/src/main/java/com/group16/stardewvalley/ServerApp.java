@@ -2,17 +2,23 @@ package com.group16.stardewvalley;
 
 import com.group16.stardewvalley.app.ClientConnectionThread;
 import com.group16.stardewvalley.app.ListenerThread;
+import com.group16.stardewvalley.app.PlayerSession;
+import com.group16.stardewvalley.controller.ServerConnectionController;
 import com.group16.stardewvalley.model.app.Game;
 import com.group16.stardewvalley.model.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ServerApp {
     public static ArrayList<Game> games = new ArrayList<>();
     public static ArrayList<User> users = new ArrayList<>();
     public static final int TIMEOUT_MILLIS = 500;
     private static final ArrayList<ClientConnectionThread> connections = new ArrayList<>();
+    private static final Map<String, PlayerSession> onlinePlayers = new ConcurrentHashMap<>();
+
     private static boolean exitFlag = false;
     private static ListenerThread listenerThread;
 
@@ -120,4 +126,19 @@ public class ServerApp {
         ServerApp.users = users;
     }
 
+    public static Map<String, PlayerSession> getOnlinePlayers() {
+        return onlinePlayers;
+    }
+
+    public static void addOnlinePlayer(PlayerSession playerSession, User user) {
+        onlinePlayers.put(user.getUsername(), playerSession);
+    }
+
+    public static boolean isTheUserOnline(User user) {
+        return onlinePlayers.containsKey(user.getUsername());
+    }
+
+    public static void removeOnlinePlayer(User user) {
+        onlinePlayers.remove(user.getUsername());
+    }
 }

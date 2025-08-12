@@ -1,5 +1,7 @@
 package com.group16.stardewvalley.controller;
 
+import com.group16.stardewvalley.ServerApp;
+import com.group16.stardewvalley.app.PlayerSession;
 import com.group16.stardewvalley.model.Lobby;
 import com.group16.stardewvalley.model.user.User;
 
@@ -13,7 +15,10 @@ public class LobbyManager {
     private static final Map<String, Lobby> lobbies = new ConcurrentHashMap<>();
 
     public static void createLobby(String lobbyName, User creator, String password, boolean isPrivate) {
-        lobbies.put(lobbyName, new Lobby(lobbyName, creator, password, isPrivate));
+        Lobby lobby = new Lobby(lobbyName, creator, password, isPrivate);
+        lobbies.put(lobbyName, lobby);
+        PlayerSession session = ServerApp.getOnlinePlayers().get(creator.getUsername());
+        session.setCurrentLobby(lobby);
     }
 
     public static boolean lobbyIdAlreadyExists(String lobbyId) {

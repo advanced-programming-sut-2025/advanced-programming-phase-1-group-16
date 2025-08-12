@@ -4,6 +4,7 @@ package com.group16.stardewvalley.controller;
 import com.group16.stardewvalley.Message;
 import com.group16.stardewvalley.ServerApp;
 import com.group16.stardewvalley.app.ClientConnectionThread;
+import com.group16.stardewvalley.app.PlayerSession;
 import com.group16.stardewvalley.controller.map.MapController;
 import com.group16.stardewvalley.controller.menu.GameMenuController;
 import com.group16.stardewvalley.data.UserDataSQL;
@@ -13,6 +14,7 @@ import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
 import com.group16.stardewvalley.model.user.Player;
+import com.group16.stardewvalley.model.user.PlayerSessionInfo;
 import com.group16.stardewvalley.model.user.SecurityQuestions;
 import com.group16.stardewvalley.model.user.User;
 
@@ -42,6 +44,8 @@ public class ServerConnectionController {
         UserDataSQL.getInstance().addUser(newUser);
 
         connectionThread.setConnectedUser(newUser);
+        ServerApp.addOnlinePlayer(new PlayerSession(newUser, connectionThread, null), newUser);
+
 
 
         HashMap<String, Object> body = new HashMap<>();
@@ -140,6 +144,9 @@ public class ServerConnectionController {
             responseBody.put("user", null);
             return new Message(responseBody, Message.Type.GET_USER_INFO);
         }
+        if (!ServerApp.isTheUserOnline(user)) {
+            ServerApp.addOnlinePlayer(new PlayerSession(user, connectionThread, null), user);
+        }
         connectionThread.setConnectedUser(user);
         responseBody.put("username", username);
         responseBody.put("password", user.getPassword());
@@ -211,6 +218,10 @@ public class ServerConnectionController {
             return buildErrorResponse("You are already in the lobby!", Message.Type.JOIN_LOBBY);
         }
         lobby.addPlayer(user);
+
+        PlayerSession session = ServerApp.getOnlinePlayers().get(username);
+        session.setCurrentLobby(lobby);
+
         HashMap<String, Object> responseBody = new HashMap<>();
         responseBody.put("success", true);
         return new Message(responseBody, Message.Type.JOIN_LOBBY);
@@ -267,6 +278,42 @@ public class ServerConnectionController {
         return new Message(responseBody, Message.Type.SEARCH_LOBBY);
     }
 
+    public static void refreshOnlinePlayers() {
+        Message message = getOnlinePlayers();
+        for (PlayerSession playerSession : ServerApp.getOnlinePlayers().values()) {
+            User user = playerSession.getUser();
+            sendMessageToUser(user, message);
+        }
+    }
+
+    public static Message getOnlinePlayers() {
+        HashMap<String, Object> responseBody = new HashMap<>();
+
+        List<PlayerSessionInfo> playerInfoList = ServerApp.getOnlinePlayers().values().stream()
+                .map(session -> new PlayerSessionInfo(
+                        session.getUser().getUsername(),
+                        session.getCurrentLobby() != null
+                                ? new LobbyInfo(
+                                session.getCurrentLobby().getName(),
+                                session.getCurrentLobby().getUsers().stream()
+                                        .map(User::getUsername)
+                                        .toList(),
+                                session.getCurrentLobby().getPassword(),
+                                session.getCurrentLobby().isPrivate(),
+                                session.getCurrentLobby().getLobbyId(),
+                                session.getCurrentLobby().getCreator().getUsername(),
+                                session.getCurrentLobby().isVisible()
+                        )
+                                : null
+                ))
+                .toList();
+
+        responseBody.put("success", true);
+        responseBody.put("players", playerInfoList);
+
+        return new Message(responseBody, Message.Type.REQUEST_ONLINE_PLAYERS);
+    }
+
     public static Message startGame(Message message) {
         String lobbyId = message.getFromBody("lobbyId");
         Lobby lobby = LobbyManager.getLobbyById(lobbyId);
@@ -311,7 +358,7 @@ public class ServerConnectionController {
         return new Message(body, Message.Type.START_GAME);
     }
 
-    private static void sendMessageToUser(User user, Message message) {
+    public static void sendMessageToUser(User user, Message message) {
         boolean sent = false;
         for (ClientConnectionThread connection : ServerApp.getConnections()) {
             if (connection.getConnectedUser() != null &&
