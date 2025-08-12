@@ -2,8 +2,11 @@ package com.group16.stardewvalley.model;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -12,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
@@ -73,6 +77,8 @@ public class Inventory {
       stage.clear();
       stage.addActor(table);
     }
+
+    List<Container<Image>> itemContainers = new ArrayList<>();
 
     public void showInventory(Stage stage, Skin skin, DragAndDrop dragAndDrop) {
         this.stage = stage;
@@ -136,13 +142,66 @@ public class Inventory {
         int index = 0;
 
         for (Item item : new ArrayList<>(items.keySet())) {
+            if (items.get(item) < 1) {
+                continue;
+            }
+            int quantity = items.get(item);
+
             Texture texture = GameAssetManager.getGameAssetManager().getItemTexture(item);
             Image icon = new Image(texture);
             icon.setSize(64, 64);
             icon.setTouchable(Touchable.enabled);
 
-            itemTable.add(icon).width(64).height(64);
+            // Create container for icon with default background
+            Container<Image> iconContainer = new Container<>(icon);
+            iconContainer.size(64, 64);
 
+            TextureRegionDrawable defaultBg = new TextureRegionDrawable(new TextureRegion(
+                new Texture(Gdx.files.internal("Inventory/InventorySlotFrame.png"))
+            ));
+            TextureRegionDrawable selectedBg = new TextureRegionDrawable(new TextureRegion(
+                new Texture(Gdx.files.internal("Inventory/InventorySlotFrame2.png"))
+            ));
+
+            iconContainer.background(defaultBg);
+
+            itemContainers.add(iconContainer);
+
+            icon.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    for (Container<Image> c : itemContainers) {
+                        c.background(defaultBg);
+                    }
+                    iconContainer.background(selectedBg);
+
+                    App.getActiveGame().getCurrentPlayer().setCurrentThing(item);
+                    System.out.println("Selected: " + item.getName());
+                }
+            });
+
+            FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Minecraftia-Regular.ttf"));
+            FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+            parameter.size = 14;
+            BitmapFont smallFont = generator.generateFont(parameter);
+            generator.dispose();
+
+            // Label for quantity
+            Label.LabelStyle labelStyle = new Label.LabelStyle();
+
+            labelStyle.font = smallFont;
+            labelStyle.fontColor = Color.BLACK;
+            Label quantityLabel = new Label(String.valueOf(quantity), labelStyle);
+            quantityLabel.setAlignment(Align.right);
+
+            // Table to stack icon on top, quantity below
+            Table slotTable = new Table();
+            slotTable.add(iconContainer).size(64);
+            slotTable.add(quantityLabel).padLeft(-10).bottom().right();
+
+            itemTable.add(slotTable).pad(5);
+
+            // Drag setup
             dragAndDrop.addSource(new DragAndDrop.Source(icon) {
                 @Override
                 public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
@@ -158,6 +217,7 @@ public class Inventory {
                 itemTable.row();
             }
         }
+
 
         // ScrollPane for items
         ScrollPane scrollPane = new ScrollPane(itemTable, skin);
@@ -378,6 +438,17 @@ public class Inventory {
             if (item instanceof Food food) {
                 if (food.getName().equalsIgnoreCase(foodName) && items.get(item) > 0) {
                     return food;
+                }
+            }
+        }
+        return null;
+    }
+
+    public FoodIngredient getFoodIngredient(String ingredientName) {
+        for (Item item : items.keySet()) {
+            if (item instanceof FoodIngredient ingredient) {
+                if (ingredient.getName().equalsIgnoreCase(ingredientName) && items.get(item) > 0) {
+                    return ingredient;
                 }
             }
         }

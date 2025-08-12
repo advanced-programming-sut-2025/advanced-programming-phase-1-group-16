@@ -206,14 +206,17 @@ public class GameController {
                 App.getActiveGame().getTimeDate().advanceDateCheat(1);
                 return true;
             case Input.Keys.O:
-                Result result = homeMenuController.eat(FoodFactory.tripleShotEspresso().getName());
-                if (result.isSuccessful()) {
-                    Food food = FoodFactory.tripleShotEspresso();
-                    GameAssetManager.getGameAssetManager().getEatingSound().play();
-                    showEatEffect(food.getName(), food.getBuff().getDescription(), food.getEnergy());
-                    player.getPlayerGraphics().startEating();
+                if (player.getCurrentThing() != null &&
+                    player.getCurrentThing() instanceof Food food) {
+                    Result result = homeMenuController.eat(food.getName());
+                    if (result.isSuccessful()) {
+                        GameAssetManager.getGameAssetManager().getEatingSound().play();
+                        showEatEffect(food.getName(), food.getBuff().getDescription(), food.getEnergy());
+                        player.getPlayerGraphics().startEating();
+                    }
+                    return true;
                 }
-                return true;
+                return false;
             case Input.Keys.T:
                 Main.getMain().getGameScreen().toggleShowTools();
                 return true;

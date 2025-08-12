@@ -102,7 +102,10 @@ public class CheatCodeController {
         if (ingredient == null) {
             return new Result(false, "Ingredient not found");
         }
-        FoodIngredient foodIngredient = new FoodIngredient(name, 500, ingredient);
+        FoodIngredient foodIngredient = App.getActiveGame().getCurrentPlayer().getInventory().getFoodIngredient(name);
+        if (foodIngredient == null) {
+            foodIngredient = new FoodIngredient(name, 500, ingredient);
+        }
         App.getActiveGame().getCurrentPlayer().getInventory().addItem(foodIngredient, 1);
         return new Result(true, "added ingredient");
     }

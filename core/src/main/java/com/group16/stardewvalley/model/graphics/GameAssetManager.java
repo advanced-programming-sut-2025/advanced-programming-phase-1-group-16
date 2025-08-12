@@ -217,6 +217,9 @@ public class GameAssetManager {
         else if (item instanceof Flower flower) {
             return new Texture("Crops/Sunflower.png");
         }
+        else if (item instanceof Food food) {
+            return getFoodTexture(food);
+        }
         return itemTexture;
     }
 
