@@ -70,8 +70,9 @@ public class Player {
     private int hourPastForBuff;
     private int finalHourBuff;
     private Location location;
-    private boolean isAtHome = false;
     private Heros hero;
+    private boolean isAtHome = false;
+
 
     //UI
     private PlayerGraphics playerGraphics;
@@ -109,15 +110,13 @@ public class Player {
         finalHourBuff = 0;
         this.buffer = BuffType.NONE;
         this.location = null;
-        learnRecipe(FoodFactory.tripleShotEspresso());
 
-        // Assign a random hero from the enum
-        Heros[] allHeroes = Heros.values();
-        int index = (int)(Math.random() * allHeroes.length);
-        this.hero = allHeroes[index];
+       this.hero = user.getHero();
+        learnRecipe(FoodFactory.tripleShotEspresso());
     }
 
     //TODO یادت باشه ست کنی اینو وقتی بازی جدید میسازی
+
 
     public PlayerGraphics getPlayerGraphics() {
         return playerGraphics;
@@ -590,10 +589,5 @@ public class Player {
 
     public void increaseTodayIncome(int amount){
         todayIncome += amount;
-    }
-
-
-    public void setHero(Heros hero) {
-        this.hero = hero;
     }
 }

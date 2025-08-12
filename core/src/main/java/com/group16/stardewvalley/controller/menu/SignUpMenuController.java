@@ -1,13 +1,16 @@
 package com.group16.stardewvalley.controller.menu;
 
-import com.group16.stardewvalley.Message;
+import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.menu.LoginMenuCommands;
 import com.group16.stardewvalley.model.user.SecurityQuestions;
 import com.group16.stardewvalley.model.user.User;
+import com.group16.stardewvalley.model.user.UserSaveManager;
 import com.group16.stardewvalley.view.menuGraphics.SignUpMenuView;
+import com.group16.stardewvalley.view.menuGraphics.StartMenuView;
+import com.group16.stardewvalley.Message;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;

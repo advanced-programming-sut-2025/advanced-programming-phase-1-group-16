@@ -6,6 +6,7 @@ import com.group16.stardewvalley.model.NPC.NPC;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.map.PlaceType;
 import com.group16.stardewvalley.model.time.Season;
+import com.group16.stardewvalley.model.time.TimeDate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +23,7 @@ public class PlaceTextureManager {
     private Texture npcSpriteSheet;
 
     public PlaceTextureManager() {
-        shopSpriteSheet = new Texture("Shops/Pelican Town " + App.getActiveGame().getTimeDate().getSeason().getName() + ".png");
+        shopSpriteSheet = new Texture("Shops/Pelican Town " + TimeDate.getInstance(App.getActiveGame()).getSeason().getName() + ".png");
         npcSpriteSheet = new Texture("NPC/Cabins.png");
         loadShops(placesSpring, Season.Spring);
         loadShops(placesSummer, Season.Summer);

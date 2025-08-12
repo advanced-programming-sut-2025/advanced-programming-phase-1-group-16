@@ -26,7 +26,7 @@ public class ProfileMenu implements MenuInterface {
             System.out.println(controller.changeEmail(matcher.group("email")));
 
         }else if((matcher = ProfileMenuCommands.ChangePassword.getMatcher(input)) != null ) {
-            System.out.println(controller.changePassword(matcher.group("newPassword"), matcher.group("oldPassword")));
+//            System.out.println(controller.changePassword(matcher.group("newPassword"), matcher.group("oldPassword")));
 
         }else if((matcher = ProfileMenuCommands.ShowInfo.getMatcher(input)) != null ) {
             System.out.println(controller.showUserInfo());

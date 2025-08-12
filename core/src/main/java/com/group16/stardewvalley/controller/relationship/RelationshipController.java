@@ -326,7 +326,7 @@ public class RelationshipController {
         String NPCName = matcher.group("NPCName");
         Player currentPlayer = App.getActiveGame().getCurrentPlayer();
         NPC targetNPC = App.getActiveGame().getNPCByName(NPCName);
-        TimeDate currentDate = App.getActiveGame().getTimeDate();
+        TimeDate currentDate = TimeDate.getInstance(App.getActiveGame());
 
         // این NPC اصلا وجود نداشته باشد
         if (targetNPC == null) {
@@ -386,7 +386,7 @@ public class RelationshipController {
         String giftName = matcher.group("giftName");
         Player currentPlayer = App.getActiveGame().getCurrentPlayer();
         NPC targetNPC = App.getActiveGame().getNPCByName(NPCName);
-        TimeDate currentDate = App.getActiveGame().getTimeDate();
+        TimeDate currentDate = TimeDate.getInstance(App.getActiveGame());
 
         // این NPC اصلا وجود نداشته باشد
         if (targetNPC == null) {

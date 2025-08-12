@@ -1,13 +1,13 @@
 package com.group16.stardewvalley.model.time;
 
 public enum DaysOfWeek {
-    Saturday(0, "Saturday"),
-    Sunday(1, "Sunday"),
-    Monday(2, "Monday"),
-    Tuesday(3, "Tuesday"),
-    Wednesday(4, "Wednesday"),
-    Thursday(5, "Thursday"),
-    Friday(6, "Friday");
+    Saturday(0, "Sat"),
+    Sunday(1, "Sun"),
+    Monday(2, "Mon"),
+    Tuesday(3, "Tue"),
+    Wednesday(4, "Wed"),
+    Thursday(5, "Thu"),
+    Friday(6, "Fri");
 
     private int index;
     private String name;

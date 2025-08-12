@@ -77,7 +77,7 @@ public class LoginMenuView implements Screen {
         // Load and display logo image
         Texture logoTexture = new Texture(Gdx.files.internal("Background/Login-Menu.png"));
         Image logoImage = new Image(logoTexture);
-        logoImage.setScale(0.5f);
+        logoImage.setScale(1.2f);
 
         //*------------------------------------------*//
         //button functions
@@ -87,7 +87,6 @@ public class LoginMenuView implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 GameAssetManager.getGameAssetManager().getBrightClickSound().play();
 
-                System.out.println(stayLoggedInCheckbox.isChecked());
                 Result result = controller.login(
                     usernameField.getText(),
                     passwordField.getText(),
@@ -139,8 +138,8 @@ public class LoginMenuView implements Screen {
 
         table.setFillParent(true);
         table.center();
-//        table.add(logoImage).padLeft(200).padBottom(100);
-        table.add(titleLabel).colspan(2).padTop(30);
+        table.add(logoImage).padLeft(200).padBottom(100);
+//        table.add(titleLabel).colspan(2).padTop(30);
         table.row().pad(10, 0, 10, 0);
         table.add(new Label("Username"+":", controller.getSkin())).left();
         table.add(usernameField).width(300);
@@ -162,7 +161,7 @@ public class LoginMenuView implements Screen {
         table.add(messageLabel).colspan(2);
 
         table.row().pad(0, 0, 0, 600);
-        table.add(backButton).width(200);
+        table.add(backButton).width(250);
 
 
         stage.addActor(table);
@@ -238,7 +237,7 @@ public class LoginMenuView implements Screen {
 
         // Show the dialog
         dialog.show(stage);
-        dialog.setSize(600, 300);  // width, height
+        dialog.setSize(800, 400);  // width, height
 
         cancelButton.addListener(new ClickListener() {
             @Override
@@ -280,14 +279,14 @@ public class LoginMenuView implements Screen {
         content.add(newPasswordField).width(300).padRight(10).padBottom(10);
         content.add(randomButton).width(300).padBottom(10);
 
-        TextButton confirmButton = new TextButton("Confirm", getSkin());
+        TextButton confirmButton = new TextButton("Submit", getSkin());
         TextButton cancelButton = new TextButton("Cancel", getSkin());
 
-        dialog.getButtonTable().add(confirmButton).width(200).pad(5);
-        dialog.getButtonTable().add(cancelButton).width(200).pad(5);
+        dialog.getButtonTable().add(confirmButton).width(300).pad(5);
+        dialog.getButtonTable().add(cancelButton).width(300).pad(5);
 
         dialog.show(stage);
-        dialog.setSize(600, 300);  // width, height
+        dialog.setSize(800, 400);  // width, height
 
 
         randomButton.addListener(new ClickListener() {

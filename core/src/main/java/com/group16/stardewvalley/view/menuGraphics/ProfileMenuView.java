@@ -4,13 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.group16.stardewvalley.Main;
-import com.group16.stardewvalley.Message;
 import com.group16.stardewvalley.controller.menu.MainMenuController;
 import com.group16.stardewvalley.controller.menu.ProfileMenuController;
 import com.group16.stardewvalley.controller.menu.StartMenuController;
@@ -20,117 +19,127 @@ import com.group16.stardewvalley.model.graphics.AnimatedSpriteActor;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.graphics.Heros;
 
-import java.util.HashMap;
-
 public class ProfileMenuView implements Screen {
-
-    private ProfileMenuController controller;
+    private final ProfileMenuController controller;
     private Stage stage;
-    private final Label titleLabel;
-    private final TextButton changeUsernmeButton;
-    private final TextButton changePasswordButton;
-    private final TextField changingField;
-    private final TextButton deleteAccountButton;
-    private final TextButton changeAvatarButton;
-    private final Table table;
-    private  Label messageLabel;
-    private final TextButton backButton;
-    private final TextButton dragDropButton;
-
-
-
+    private final Skin skin;
 
     public ProfileMenuView(ProfileMenuController controller, Skin skin) {
         this.controller = controller;
-        this.titleLabel = new Label("P r o f i l e    M e n u", skin.get("title", Label.LabelStyle.class));
-        this.changingField = new TextField("", skin);
-        this.changeUsernmeButton = new TextButton("Change Username", skin);
-        this.changePasswordButton = new TextButton("Change Password", skin);
-        this.deleteAccountButton = new TextButton("Delete Account", skin);
-        this.changeAvatarButton = new TextButton("Choose Avatar", skin);
-        this.table = new Table();
-        this.messageLabel = new Label("", skin);
-        messageLabel.setColor(Color.MAGENTA);
-        this.backButton = new TextButton("back", skin);
-        this.dragDropButton = new TextButton("Drag & Drop", skin);
-
-
-        controller.setView(this);
+        this.skin = skin;
     }
+
+
 
     @Override
     public void show() {
-        stage = new Stage();
+        stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
+        Label resultLabel = new Label("", skin);
+        resultLabel.setColor(Color.WHITE);
+        Label.LabelStyle whiteStyle = new Label.LabelStyle(skin.get(Label.LabelStyle.class));
+        whiteStyle.fontColor = Color.WHITE;
 
-        //  Background
-        // Load background texture and set it as an Image
+        // Background
         Texture bgTexture = new Texture(Gdx.files.internal("Background/mainBack.jpeg"));
         Image background = new Image(bgTexture);
-        background.setFillParent(true); // Make it stretch to screen size
-
+        background.setFillParent(true);
         stage.addActor(background);
 
-        //*------------------------------------------*//
-        //button functions
+        // Logo
+        Texture logoTexture = new Texture(Gdx.files.internal("Background/Profile-Menu.png"));
+        Image logoImage = new Image(logoTexture);
+        logoImage.setSize(logoTexture.getWidth() * 0.3f, logoTexture.getHeight() * 0.3f);
 
+        // Avatar Buttons
+        AnimatedSpriteActor[] heroes = {
+            createHero(Heros.ABIGAIL), createHero(Heros.ALEX),
+            createHero(Heros.KENT), createHero(Heros.LEO), createHero(Heros.MARNIE)
+        };
+        for (AnimatedSpriteActor hero : heroes) {
+            hero.setSize(80, 200);
+        }
 
-        changeUsernmeButton.addListener(new ClickListener() {
+        heroes[0].addListener(new AvatarClickListener(Heros.ABIGAIL, resultLabel));
+        heroes[1].addListener(new AvatarClickListener(Heros.ALEX, resultLabel));
+        heroes[2].addListener(new AvatarClickListener(Heros.KENT, resultLabel));
+        heroes[3].addListener(new AvatarClickListener(Heros.LEO, resultLabel));
+        heroes[4].addListener(new AvatarClickListener(Heros.MARNIE, resultLabel));
+
+        Table avatarRow = new Table();
+        for (AnimatedSpriteActor hero : heroes) {
+            avatarRow.add(hero).pad(10);
+        }
+
+        // Change Buttons
+        TextButton changeUsername = new TextButton("Change Username", skin);
+        TextButton changePassword = new TextButton("Change Password", skin);
+        TextButton changeName = new TextButton("Change Name", skin);
+        TextButton changeEmail = new TextButton("Change Email", skin);
+
+        changeUsername.addListener(new FieldDialogListener("Change Username", "Enter new username", controller::changeUsername, resultLabel));
+        changeName.addListener(new FieldDialogListener("Change Name", "Enter new name", controller::changeNickName, resultLabel));
+        changeEmail.addListener(new FieldDialogListener("Change Email", "Enter new Email", controller::changeEmail, resultLabel));
+
+        changePassword.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 GameAssetManager.getGameAssetManager().getBrightClickSound().play();
+                Dialog dialog = new Dialog("Change Password", skin);
 
-                String newUsername = changingField.getText().trim();
-                if (newUsername.isEmpty()) {
-                    messageLabel.setText("Username cannot be empty.");
-                } else {
-                    messageLabel.setText(controller.changeUsername(newUsername).message());
-                }
+                TextField oldPass = new TextField("", skin);
+                oldPass.setMessageText("Enter old password");
+                oldPass.setPasswordMode(true);
+                oldPass.setPasswordCharacter('*');
+
+                TextField newPass = new TextField("", skin);
+                newPass.setMessageText("Enter new password");
+                newPass.setPasswordMode(true);
+                newPass.setPasswordCharacter('*');
+
+                Label feedback = new Label("", skin);
+                feedback.setWrap(true);
+
+                TextButton submit = new TextButton("Submit", skin);
+                TextButton cancel = new TextButton("Cancel", skin);
+
+                submit.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        GameAssetManager.getGameAssetManager().getBrightClickSound().play();
+                        Result result = controller.changePassword(oldPass.getText().trim(), newPass.getText().trim());
+                        feedback.setText(result.toString());
+
+                        if (result.isSuccessful()) {
+                            resultLabel.setText(result.toString());
+                            dialog.hide();
+                            refresh();
+                        }
+
+                    }
+                });
+
+                cancel.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        GameAssetManager.getGameAssetManager().getBrightClickSound().play();
+                        dialog.hide();
+                    }
+                });
+
+                dialog.getContentTable().add(oldPass).width(400).padBottom(10).row();
+                dialog.getContentTable().add(newPass).width(400).padBottom(10).row();
+                dialog.getContentTable().add(feedback).width(400).height(80).padBottom(20).row();
+                dialog.getButtonTable().add(submit).width(250).pad(5);
+                dialog.getButtonTable().add(cancel).width(250).pad(5);
+
+                dialog.show(stage);
+                dialog.setSize(600, 400);
             }
         });
 
-        changePasswordButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                GameAssetManager.getGameAssetManager().getBrightClickSound().play();
-
-                String newPassword = changingField.getText().trim();
-                if (newPassword.isEmpty()) {
-                    messageLabel.setText("Password cannot be empty.");
-                } else {
-                    Result result = controller.changePassword(newPassword, App.getLoggedInUser().getPassword());
-                    messageLabel.setText(result.message());
-                }
-            }
-        });
-
-        deleteAccountButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                GameAssetManager.getGameAssetManager().getBrightClickSound().play();
-
-                App.logout();
-                Main.getMain().getScreen().dispose();
-                Main.getMain().setScreen(
-                    new StartMenuView(new StartMenuController(), GameAssetManager.getGameAssetManager().getSkin())
-                );
-                HashMap<String, Object> body = new HashMap<>();
-                body.put("username", App.getLoggedInUser().getUsername());
-
-                Message message = new Message(body, Message.Type.DELETE_USER);
-                Message response = App.sendAndWait(message);
-            }
-        });
-
-        //change nickname
-        changePasswordButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                GameAssetManager.getGameAssetManager().getBrightClickSound().play();
-
-            }
-        });
-
+        // Back Button
+        TextButton backButton = new TextButton("Back", skin);
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -140,182 +149,183 @@ public class ProfileMenuView implements Screen {
             }
         });
 
+        // Change button grid
+        Table buttonGrid = new Table();
+        buttonGrid.add(changeUsername).width(530).pad(10);
+        buttonGrid.row();
+        buttonGrid.add(changePassword).width(530).pad(10);
+        buttonGrid.row();
+        buttonGrid.add(changeName).width(530).pad(10);
+        buttonGrid.row();
+        buttonGrid.add(changeEmail).width(530).pad(10);
 
-        AnimatedSpriteActor hero1 = createHeroAnimation(Heros.ABIGAIL);
-        AnimatedSpriteActor hero2 = createHeroAnimation(Heros.ALEX);
-        AnimatedSpriteActor hero3 = createHeroAnimation(Heros.KENT);
-        AnimatedSpriteActor hero4 = createHeroAnimation(Heros.LEO);
-        AnimatedSpriteActor hero5 = createHeroAnimation(Heros.MARNIE);
+        // === Root Table ===
+        Table rootTable = new Table();
+        rootTable.setFillParent(true);
+        rootTable.top().pad(30);
+        stage.addActor(rootTable);
 
-        // Scale down
-        hero1.setSize(64, 128);
-        hero2.setSize(64, 128);
-        hero3.setSize(64, 128);
-        hero4.setSize(64, 128);
-        hero5.setSize(64, 128);
+        // === Title Row ===
+        Table titleTable = new Table();
+        titleTable.center();
+        titleTable.add(logoImage).center().padBottom(20).row();
+        rootTable.add(titleTable).colspan(2).center().padBottom(40).row();
 
-        hero1.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                GameAssetManager.getGameAssetManager().getBrightClickSound().play();
-                controller.setAvatar(Heros.ABIGAIL);
+        // === LEFT COLUMN (User Info) ===
+        Table leftColumn = new Table();
+        leftColumn.top().padRight(100);
+
+        leftColumn.add(new AnimatedSpriteActor(new Texture(App.getLoggedInUser().getHero().getTexturePath()),
+                16, 32, 0, 0.3f))
+            .size(160, 400).padBottom(20).row();
+
+
+        leftColumn.add(new Label("Username: " + App.getLoggedInUser().getUsername(), skin)).left().padBottom(30).row();
+        leftColumn.add(new Label("Nickname: " + App.getLoggedInUser().getNickName(), skin)).left().padBottom(30).row();
+        leftColumn.add(new Label("Email: " + App.getLoggedInUser().getEmail(), skin)).left().padBottom(30).row();
+        leftColumn.add(new Label("Game Played: " + App.getLoggedInUser().getGamePlayed(), skin)).left().padBottom(30).row();
+        leftColumn.add(new Label("Most Money: " + "0.0", skin)).left().padBottom(30).row();
+
+
+        // === RIGHT COLUMN (Avatars & Buttons) ===
+        Table rightColumn = new Table();
+        rightColumn.top();
+        rightColumn.add(avatarRow).width(280).padBottom(15).row();
+        rightColumn.add(buttonGrid).padBottom(15).row();
+
+        // === Add Columns ===
+        rootTable.add(leftColumn).top().left();
+        rootTable.add(rightColumn).top().right();
+        rootTable.row();
+
+        // === Result Label ===
+        Table resultRow = new Table();
+        resultRow.add(resultLabel).colspan(2).center().padTop(20);
+        rootTable.add(resultRow).colspan(2).padBottom(10).row();
+
+        // === Back Button Bottom-Left ===
+        Table bottomRow = new Table();
+        bottomRow.add(backButton).left().width(250).pad(20);
+        rootTable.add(bottomRow).colspan(2).left().expandY().bottom();
+    }
+
+
+    private AnimatedSpriteActor createHero(Heros hero) {
+        Texture texture = new Texture(Gdx.files.internal(hero.getTexturePath()));
+        return new AnimatedSpriteActor(texture, hero.getFrameWidth(), hero.getFrameHeight(), hero.getUpRow(), 0.3f);
+    }
+
+    private class AvatarClickListener extends ClickListener {
+        private final Heros hero;
+        private final Label resultLabel;
+
+        public AvatarClickListener(Heros hero, Label resultLabel) {
+            this.hero = hero;
+            this.resultLabel = resultLabel;
+
+        }
+
+        @Override
+        public void clicked(InputEvent event, float x, float y) {
+            GameAssetManager.getGameAssetManager().getBrightClickSound().play();
+
+            Result result = controller.setAvatar(hero);
+            resultLabel.setText(result.toString());
+
+            if (result.isSuccessful()) {
+                refresh();
             }
-        });
-
-        hero2.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                GameAssetManager.getGameAssetManager().getBrightClickSound().play();
-                controller.setAvatar(Heros.ALEX);
-            }
-        });
-
-
-        hero3.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                GameAssetManager.getGameAssetManager().getBrightClickSound().play();
-                controller.setAvatar(Heros.KENT);
-            }
-        });
-
-
-        hero4.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                GameAssetManager.getGameAssetManager().getBrightClickSound().play();
-                controller.setAvatar(Heros.LEO);
-            }
-        });
-
-
-        hero5.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                GameAssetManager.getGameAssetManager().getBrightClickSound().play();
-                controller.setAvatar(Heros.MARNIE);
-            }
-        });
-
-
-        //*------------------------------------------*//
-
-
-        table.setFillParent(true);
-        table.add(titleLabel).colspan(5).padBottom(200);
-        table.row().pad(10, 0, 10, 0);
-
-        table.center();
-
-        table.add(hero1);
-        table.add(hero2);
-        table.add(hero3);
-        table.add(hero4);
-        table.add(hero5);
-
-        table.row().pad(10, 0, 10, 0);
-
-
-        table.add(changeUsernmeButton).left().colspan(1).width(470);
-        table.add(changePasswordButton).right().colspan(5).width(470);
-        table.row().pad(10, 0, 10, 0);
-        table.row().pad(10, 0, 10, 0);
-
-        table.add(deleteAccountButton).left().colspan(1).width(470);
-        table.add(changeAvatarButton).right().colspan(5).width(470);
-
-        table.row().pad(10, 0, 10, 0);
-        table.add(changingField).left().colspan(1).width(470);
-        table.add(dragDropButton).right().colspan(5).width(470);
-        table.row().pad(10, 0, 10, 0);
-        table.add(messageLabel).colspan(3).width(470).padLeft(250);
-
-        table.row().pad(0, 0, 0, 600);
-        table.add(backButton).width(200);
-
-
-        stage.addActor(table);
-
+        }
 
     }
 
 
+    private class FieldDialogListener extends ClickListener {
+        private final String title;
+        private final String hint;
+        private final InputHandler handler;
+        private final Label resultLabel;
 
+        public FieldDialogListener(String title, String hint, InputHandler handler, Label resultLabel) {
+            this.title = title;
+            this.hint = hint;
+            this.handler = handler;
+            this.resultLabel = resultLabel;
+
+        }
+
+        @Override
+        public void clicked(InputEvent event, float x, float y) {
+            GameAssetManager.getGameAssetManager().getBrightClickSound().play();
+
+            Dialog dialog = new Dialog(title, skin);
+            TextField input = new TextField("", skin);
+            input.setMessageText(hint);
+
+            TextButton submit = new TextButton("Submit", skin);
+            TextButton cancel = new TextButton("Cancel", skin);
+
+            Label feedback = new Label("", skin);
+            feedback.setWrap(true);
+
+            submit.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    GameAssetManager.getGameAssetManager().getBrightClickSound().play();
+                    Result result = handler.onSubmit(input.getText().trim());
+
+                    feedback.setText(result.toString());
+                    if (result.isSuccessful()) {
+                        resultLabel.setText(result.toString());
+                        dialog.hide();
+                        refresh();
+                    }
+
+
+                }
+            });
+
+            cancel.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    GameAssetManager.getGameAssetManager().getBrightClickSound().play();
+                    dialog.hide();
+                }
+            });
+
+            dialog.getContentTable().add(input).width(500).padBottom(10).row();
+            dialog.getContentTable().add(feedback).width(500).height(80).padBottom(20).padLeft(50).row();
+            dialog.getButtonTable().add(submit).width(250).pad(5);
+            dialog.getButtonTable().add(cancel).width(250).pad(5);
+
+            dialog.show(stage);
+            dialog.setSize(600, 400);
+        }
+    }
+
+
+    @FunctionalInterface
+    private interface InputHandler {
+        Result onSubmit(String input);
+    }
 
     @Override
-    public void render(float v) {
+    public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1);
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        stage.act(Math.min(delta, 1 / 30f));
         stage.draw();
     }
 
-    @Override
-    public void resize(int i, int i1) {
-
+    @Override public void resize(int width, int height) {}
+    @Override public void pause() {}
+    @Override public void resume() {}
+    @Override public void hide() {}
+    @Override public void dispose() {
+        stage.dispose();
     }
 
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
-    }
-
-
-    public void setMessage(String msg) {
-        messageLabel.setText(msg);
-    }
-
-
-    public TextButton getChangeUsernmeButton() {
-        return changeUsernmeButton;
-    }
-
-    public TextButton getChangePasswordButton() {
-        return changePasswordButton;
-    }
-
-    public TextField getChangingField() {
-        return changingField;
-    }
-
-    public TextButton getDeleteAccountButton() {
-        return deleteAccountButton;
-    }
-
-    public TextButton getChangeAvatarButton() {
-        return changeAvatarButton;
-    }
-
-    public Label getMessageLabel() {
-        return messageLabel;
-    }
-
-    public void setMessageLabel(Label messageLabel) {
-        this.messageLabel = messageLabel;
-    }
-
-    public TextButton getBackButton() {
-        return backButton;
-    }
-
-    private AnimatedSpriteActor createHeroAnimation(Heros hero) {
-        Texture texture = new Texture(Gdx.files.internal(hero.getTexturePath()));
-        return new AnimatedSpriteActor(texture, hero.getFrameWidth(), hero.getFrameHeight(), hero.getDownRow(), 0.25f);
+    private void refresh() {
+        Main.getMain().setScreen(new ProfileMenuView(controller, skin));
     }
 
 }
-

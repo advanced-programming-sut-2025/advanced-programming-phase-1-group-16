@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.group16.stardewvalley.Main;
+import com.group16.stardewvalley.controller.menu.MainMenuController;
 import com.group16.stardewvalley.controller.menu.SignUpMenuController;
 import com.group16.stardewvalley.controller.menu.StartMenuController;
 import com.group16.stardewvalley.model.Result;
@@ -85,8 +86,7 @@ public class SignUpMenuView implements Screen {
         // Load and display logo image
         Texture logoTexture = new Texture(Gdx.files.internal("Background/Sign-Up-Menu.png"));
         Image logoImage = new Image(logoTexture);
-        logoImage.setScale(0.5f);
-
+        logoImage.setSize(logoTexture.getWidth() * 0.4f, logoTexture.getHeight() * 0.4f);
 
         //*------------------------------------------*//
         //button functions
@@ -110,7 +110,9 @@ public class SignUpMenuView implements Screen {
 
                 if (result.isSuccessful()) {
                     showSecurityQuestionDialog();
+
                 }
+
 
 
             }
@@ -144,8 +146,16 @@ public class SignUpMenuView implements Screen {
 
         table.setFillParent(true);
         table.center();
-        table.add(titleLabel).colspan(2).padTop(30);
+
+//        table.add(titleLabel).colspan(2).padTop(30);
 //        table.add(logoImage).colspan(2).padTop(30);
+        // === Title Row ===
+        Table titleTable = new Table();
+        titleTable.center();
+        titleTable.add(logoImage).center().padBottom(20).row();
+        table.add(titleTable).colspan(2).center().padBottom(40).row();
+
+
         table.row().pad(10, 0, 10, 0);
         // Username row
         table.add(new Label("Username:", controller.getSkin())).left();
@@ -189,7 +199,7 @@ public class SignUpMenuView implements Screen {
         table.add(messageLabel).colspan(2).center();
 
         table.row().pad(0, 0, 0, 600);
-        table.add(backButton).width(200);
+        table.add(backButton).width(250);
 
 
         stage.addActor(table);
@@ -290,8 +300,9 @@ public class SignUpMenuView implements Screen {
                     setMessage(result.toString());
 
                     if (result.isSuccessful()) {
-                        this.hide(); // only close if success
-                        //todo: go to main menu
+                        this.hide();
+                        Main.getMain().getScreen().dispose();
+                        Main.getMain().setScreen(new MainMenuView(new MainMenuController(), GameAssetManager.getGameAssetManager().getSkin()));
                     }
 
                 } else {

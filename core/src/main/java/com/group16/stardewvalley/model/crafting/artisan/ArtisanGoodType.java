@@ -35,7 +35,7 @@ public enum ArtisanGoodType {
     RAISINS("Raisins", CraftingRecipes.Dehydrator, "It's said to be the Junimos' favorite food.", 125, 8,
             Map.of(ArtisanIngredientType.GRAPES, 5), 600),
 
-    COAL("Coal", CraftingRecipes.CharcoalKlin, "Turns 10 pieces of wood into one piece of coal.", 0, 1,
+    COAL("Coal", CraftingRecipes.CharcoalKiln, "Turns 10 pieces of wood into one piece of coal.", 0, 1,
             Map.of(ArtisanIngredientType.WOOD, 10), 50),
 
     CLOTH("Cloth", CraftingRecipes.Loom, "A bolt of fine wool cloth.", 0, 4,

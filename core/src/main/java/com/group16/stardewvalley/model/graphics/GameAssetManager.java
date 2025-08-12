@@ -14,10 +14,12 @@ import com.group16.stardewvalley.model.agriculture.Mineral;
 import com.group16.stardewvalley.model.agriculture.Tree;
 import com.group16.stardewvalley.model.agriculture.TreeType;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.crafting.CraftingRecipes;
 import com.group16.stardewvalley.model.food.Food;
 import com.group16.stardewvalley.model.food.Ingredient;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.items.Stone;
+import com.group16.stardewvalley.model.time.TimeDate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,8 +28,25 @@ import static com.badlogic.gdx.math.Rectangle.tmp;
 
 public class GameAssetManager {
     private static GameAssetManager gameAssetManager;
+    private GameAssetManager(){
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(defaultMusicPath));
+        backgroundMusic.setLooping(true);
+        backgroundMusic.setVolume(musicVolume);
+        backgroundMusic.play();
+    }
 
+    public static GameAssetManager getGameAssetManager(){
+        if (gameAssetManager == null){
+            gameAssetManager = new GameAssetManager();
+        }
+        return gameAssetManager;
+    }
     private final Skin skin = new Skin(Gdx.files.internal("assets/skin-rainbow/rainbow-ui.json"));
+
+    public Skin getSkin() {
+        return skin;
+    }
+
 
     private final String crop = "Foraging/Grape.png";
     private final String tree = "Trees/Pine_Stage_4.png";
@@ -50,34 +69,11 @@ public class GameAssetManager {
     private final Map<String, Texture> giantCropTextures = new HashMap<>();
     private final Map<String, Texture> foodTextures = new HashMap<>();
     private final Map<String, Texture> ingredientTextures = new HashMap<>();
+    private final Map<String, Texture> craftingTextures = new HashMap<>();
+    private final Map<String, Texture> craftingIngredientTextures = new HashMap<>();
 
     private final Texture houseTexture = new Texture("House/House_1.png");
 
-
-
-    //private final Music backgroundMusic;
-    //private final Animation<Texture> character1_idle_frames = new Animation<>(0.1f, character1_idle0_tex);
-
-
-    private GameAssetManager(){
-        /*
-        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("musics/alex-productions-epic-cinematic-gaming-cyberpunk-reset(chosic.com).mp3"));
-        backgroundMusic.setLooping(true);
-        backgroundMusic.setVolume(0.5f);
-        backgroundMusic.play();
-         */
-    }
-
-    public static GameAssetManager getGameAssetManager(){
-        if (gameAssetManager == null){
-            gameAssetManager = new GameAssetManager();
-        }
-        return gameAssetManager;
-    }
-
-    public Skin getSkin() {
-        return skin;
-    }
 
     public TextureRegion getCropRegion(Crop crop) {
         String name = crop.getCropType().getName().replace(" ", "_");
@@ -250,6 +246,33 @@ public class GameAssetManager {
         }
         return ingredientTextures.get(name);
     }
+
+    public Texture getCraftingTexture(CraftingRecipes craftingItem) {
+        String name = craftingItem.getName().replace(" ", "_");
+        if (!craftingTextures.containsKey(name)) {
+            try {
+                Texture texture = new Texture("Crafting/" + name + ".png");
+                craftingTextures.put(name, texture);
+            } catch (Exception e) {
+                craftingTextures.put(name, itemTexture);
+            }
+        }
+        return craftingTextures.get(name);
+    }
+
+    public Texture getCraftingIngredientTexture(Ingredient craftingItem) {
+        String name = craftingItem.getName().replace(" ", "_");
+        if (!craftingIngredientTextures.containsKey(name)) {
+            try {
+                Texture texture = new Texture("Crafting/" + name + ".png");
+                craftingIngredientTextures.put(name, texture);
+            } catch (Exception e) {
+                craftingIngredientTextures.put(name, itemTexture);
+            }
+        }
+        return craftingIngredientTextures.get(name);
+    }
+
 
     public Texture getTexture(String path) {
         return new Texture(path);

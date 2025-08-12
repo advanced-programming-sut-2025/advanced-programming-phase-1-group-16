@@ -1,23 +1,13 @@
 [ {
-  "username" : "fff",
-  "password" : "\\2vtW2A/7W}8{($",
-  "nickName" : "ff",
-  "email" : "fff@ffff.fff",
-  "gender" : "male",
+  "username" : "as",
+  "password" : "as",
+  "nickName" : "as",
+  "email" : "sal@sal.com",
+  "gender" : "female",
   "gamePlayed" : 0,
-  "logged_in_flag" : false,
-  "userSecurityQuestion" : null,
-  "securityAnswer" : null,
-  "hasActiveGame" : false
-}, {
-  "username" : "jjj",
-  "password" : ";^^40&bb6GWz%Lj",
-  "nickName" : "hh",
-  "email" : "hhh@hhh.ggg",
-  "gender" : "male",
-  "gamePlayed" : 0,
-  "logged_in_flag" : false,
-  "userSecurityQuestion" : "q1",
-  "securityAnswer" : "hhhh",
-  "hasActiveGame" : false
+  "logged_in_flag" : true,
+  "userSecurityQuestion" : "q3",
+  "securityAnswer" : "apple",
+  "hasActiveGame" : false,
+  "hero" : "ALEX"
 } ]

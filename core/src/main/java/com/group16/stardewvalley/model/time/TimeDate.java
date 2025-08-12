@@ -207,8 +207,17 @@ public class TimeDate {
         return currentSeason;
     }
 
+    public int getMinute() {
+        return minute;
+    }
 
+    public int getDay() {
+        return day;
+    }
 
+    public int getYear() {
+        return year;
+    }
 
     //cheat codes
 

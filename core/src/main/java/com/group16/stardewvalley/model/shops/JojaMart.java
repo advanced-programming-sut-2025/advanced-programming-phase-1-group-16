@@ -8,6 +8,8 @@ import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.map.PlaceType;
 import com.group16.stardewvalley.model.time.Season;
 import com.group16.stardewvalley.model.agriculture.*;
+import com.group16.stardewvalley.model.time.TimeDate;
+
 import java.util.Set;
 import java.util.HashSet;
 
@@ -47,7 +49,7 @@ public class JojaMart extends Shop {
     @Override
     public Set<Item> getAvailableItems() {
         Set<Item> availableItems = new HashSet<>();
-        Season currentSeason = App.getActiveGame().getTimeDate().getSeason();
+        Season currentSeason = TimeDate.getInstance(App.getActiveGame()).getSeason();
 
         // فقط دانه‌های فصلی + آیتم‌های دائمی
         dailyLimit.keySet().stream()

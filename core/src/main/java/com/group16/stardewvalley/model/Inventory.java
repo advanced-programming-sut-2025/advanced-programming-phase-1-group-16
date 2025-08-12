@@ -34,7 +34,7 @@ public class Inventory {
         this.crops = new HashMap<>();
         this.backPackType = BackPackType.Base_Pack;
         this.craftingRecipes = new ArrayList<>(
-                List.of(CraftingRecipes.CherryBomb, CraftingRecipes.Sprinkler, CraftingRecipes.CharcoalKlin, CraftingRecipes.Furnace,
+                List.of(CraftingRecipes.CherryBomb, CraftingRecipes.Sprinkler, CraftingRecipes.CharcoalKiln, CraftingRecipes.Furnace,
                         CraftingRecipes.Scarecrow, CraftingRecipes.BeeHouse, CraftingRecipes.MayonnaiseMachine));
     }
 

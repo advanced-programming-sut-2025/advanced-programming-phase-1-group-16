@@ -24,11 +24,13 @@ import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.map.Direction;
 import com.group16.stardewvalley.model.map.Tile;
+import com.group16.stardewvalley.model.time.TimeDate;
 import com.group16.stardewvalley.model.tools.Hoe;
 import com.group16.stardewvalley.model.tools.Scythe;
 import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.view.AppView;
 import com.group16.stardewvalley.view.graphics.CookingMenu;
+import com.group16.stardewvalley.view.graphics.CraftMenu;
 
 import static com.group16.stardewvalley.view.graphics.GameScreen.showMiniMap;
 
@@ -39,6 +41,8 @@ public class GameController {
     private final HomeMenuController homeMenuController;
     private CookingMenu cookingMenu;
     private boolean isCookingMenuOpen = false;
+    private CraftMenu craftMenu;
+    private boolean isCraftingMenuOpen = false;
 
     public GameController() {
         this.agricultureController = new AgricultureController();
@@ -111,6 +115,31 @@ public class GameController {
                 nextX -= speed;
                 left = true;
                 break;
+
+
+
+            case Input.Keys.W:
+                player.setCurrentDirection(Direction.UP);
+                nextY += speed;
+                up = true;
+                break;
+            case Input.Keys.D:
+                player.setCurrentDirection(Direction.RIGHT);
+                nextX += speed;
+                right = true;
+                break;
+            case Input.Keys.S:
+                player.setCurrentDirection(Direction.DOWN);
+                nextY -= speed;
+                down = true;
+                break;
+            case Input.Keys.A:
+                player.setCurrentDirection(Direction.LEFT);
+                nextX -= speed;
+                left = true;
+                break;
+
+
             case Input.Keys.M:
                 showMiniMap = !showMiniMap;
             case Input.Keys.V:
@@ -178,7 +207,7 @@ public class GameController {
                 System.out.println(agricultureController.fertilizePlant("speed gro", "up"));
                 return true;
             case Input.Keys.TAB:
-                App.getActiveGame().getTimeDate().advanceDateCheat(1);
+                TimeDate.getInstance(App.getActiveGame()).advanceDateCheat(1);
                 return true;
             case Input.Keys.T:
                 Result result = homeMenuController.eat(FoodFactory.tripleShotEspresso().getName());
@@ -189,6 +218,23 @@ public class GameController {
                 return true;
             case Input.Keys.F4:
                 return true;
+
+            case Input.Keys.B:
+                if (!isCraftingMenuOpen) {
+                    craftMenu = new CraftMenu(
+                        GameAssetManager.getGameAssetManager().getSkin(),
+                        App.getActiveGame().getCurrentPlayer().getInventory().getCraftingRecipes()                    );
+                    Main.getMain().getGameScreen().getStage().addActor(craftMenu);
+                    Main.getMain().getGameScreen().getStage().addActor(craftMenu.getTooltip());
+                    isCraftingMenuOpen = true;
+                } else {
+                    craftMenu.remove();
+                    craftMenu = null;
+                    isCraftingMenuOpen = false;
+                }
+                return true;
+
+
             default:
                 return false;
         }
