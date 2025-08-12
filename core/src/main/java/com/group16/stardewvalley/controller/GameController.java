@@ -43,6 +43,7 @@ public class GameController {
     private CraftMenu craftMenu;
     private boolean isCraftingMenuOpen = false;
     public static final float ENERGYSCALE = 0.0005f;
+    private boolean upPressed, downPressed, leftPressed, rightPressed;
 
     public GameController() {
         this.agricultureController = new AgricultureController();
@@ -51,10 +52,19 @@ public class GameController {
         this.homeMenuController = new HomeMenuController();
     }
 
+//    public void update(float delta) {
+//        if (isCookingMenuOpen) return; // بازی آپدیت نشه
+//        playersController.update(delta);
+//    }
+
     public void update(float delta) {
-        if (isCookingMenuOpen) return; // بازی آپدیت نشه
+        if (isCookingMenuOpen) return;
+
+        handleContinuousMovement(delta);
         playersController.update(delta);
     }
+
+
 
     public void render() {
         Player player = App.getActiveGame().getCurrentPlayer();
@@ -277,6 +287,92 @@ public class GameController {
         }
         return false;
     }
+
+    public boolean keyDown(int keycode) {
+        switch (keycode) {
+            case Input.Keys.UP:
+            case Input.Keys.W:
+                upPressed = true;
+                return true;
+            case Input.Keys.DOWN:
+            case Input.Keys.S:
+                downPressed = true;
+                return true;
+            case Input.Keys.LEFT:
+            case Input.Keys.A:
+                leftPressed = true;
+                return true;
+            case Input.Keys.RIGHT:
+            case Input.Keys.D:
+                rightPressed = true;
+                return true;
+        }
+        return handleInput(keycode); // Still handle one-time actions
+    }
+
+    public boolean keyUp(int keycode) {
+        switch (keycode) {
+            case Input.Keys.UP:
+            case Input.Keys.W:
+                upPressed = false;
+                return true;
+            case Input.Keys.DOWN:
+            case Input.Keys.S:
+                downPressed = false;
+                return true;
+            case Input.Keys.LEFT:
+            case Input.Keys.A:
+                leftPressed = false;
+                return true;
+            case Input.Keys.RIGHT:
+            case Input.Keys.D:
+                rightPressed = false;
+                return true;
+        }
+        return false;
+    }
+
+
+    private void handleContinuousMovement(float delta) {
+        Player player = App.getActiveGame().getCurrentPlayer();
+        float speed = player.getSpeed();
+
+        float nextX = player.getX();
+        float nextY = player.getY();
+
+        boolean moved = false;
+        if (upPressed) {
+            player.setCurrentDirection(Direction.UP);
+            nextY += speed;
+            moved = true;
+        }
+        if (downPressed) {
+            player.setCurrentDirection(Direction.DOWN);
+            nextY -= speed;
+            moved = true;
+        }
+        if (leftPressed) {
+            player.setCurrentDirection(Direction.LEFT);
+            nextX -= speed;
+            moved = true;
+        }
+        if (rightPressed) {
+            player.setCurrentDirection(Direction.RIGHT);
+            nextX += speed;
+            moved = true;
+        }
+
+        if (moved && !player.isAtHome()) {
+            Result result = mapController.walk((int) nextX, (int) nextY);
+            if (result.isSuccessful()) {
+                playersController.move(player, speed, upPressed, downPressed, leftPressed, rightPressed);
+                player.decreaseEnergy(player.getEnergy() * ENERGYSCALE);
+            } else if (result.message().contains("You fainted")) {
+                player.setFaintStatus(true);
+            }
+        }
+    }
+
 
     public void showEatEffect(String foodName, String buff, int energy) {
         Label.LabelStyle labelStyle = new Label.LabelStyle();

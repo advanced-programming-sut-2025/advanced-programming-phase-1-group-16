@@ -9,7 +9,7 @@ import java.util.List;
 
 
 public enum MarniesRanchAnimals {
-    CHICKEN("Chicken", AnimalType.HEN,800, List.of(BuildingType.Coop, BuildingType.Big_Coop, BuildingType.Deluxe_Coop),2),
+    CHICKEN("Chicken", AnimalType.CHICKEN,800, List.of(BuildingType.Coop, BuildingType.Big_Coop, BuildingType.Deluxe_Coop),2),
     COW("Cow", AnimalType.COW,1500,List.of(BuildingType.Barn, BuildingType.Big_Barn, BuildingType.Deluxe_Barn),2),
     GOAT("Goat", AnimalType.GOAT,4000, List.of(BuildingType.Big_Barn, BuildingType.Deluxe_Barn) ,2),
     DUCK("Duck", AnimalType.DUCK,1200,List.of(BuildingType.Big_Coop, BuildingType.Deluxe_Coop),2),

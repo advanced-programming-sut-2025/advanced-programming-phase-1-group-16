@@ -55,6 +55,7 @@ public class Building extends Item {
         this.capacity += 1;
     }
 
+
     public boolean isNearBuilding(Pos pos) {
         int length = buildingType.getLength();
         int width = buildingType.getWidth();

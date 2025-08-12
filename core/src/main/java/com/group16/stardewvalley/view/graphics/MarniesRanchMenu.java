@@ -89,9 +89,20 @@ public class MarniesRanchMenu extends Window {
             }
             return false;
         });
+        // Create Close button
+        TextButton closeButton = new TextButton("Close", skin);
+        closeButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                MarniesRanchMenu.this.remove();  // Remove this window from the stage (close it)
+            }
+        });
 
 // Add filter at the top
-        add(filterSelect).pad(10).left().width(300).height(50).row();
+        Table topRow = new Table();
+        topRow.add(filterSelect).left().width(300).height(50);
+        topRow.add(closeButton).right().width(250).height(50);
+        add(topRow).expandX().fillX().pad(10).row();
 
         marnieGrid();
         Main.getMain().getGameScreen().getStage().addActor(tooltip);

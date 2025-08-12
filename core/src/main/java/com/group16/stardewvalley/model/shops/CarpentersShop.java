@@ -155,13 +155,13 @@ public class CarpentersShop extends Shop{
 
 
         //check if ground is empty
-        for (int i = y; i < y + buildingType.getLength(); i++) {
-            for (int j = x; j < x + buildingType.getWidth(); j++) {
-                if(game.getMap()[i][j].isTileEmpty()){
-                    return new Result(false, "There is something on the ground at (" + j + ", " + i + ")");
-                }
-            }
-        }
+//        for (int i = y; i < y + buildingType.getLength(); i++) {
+//            for (int j = x; j < x + buildingType.getWidth(); j++) {
+//                if(game.getMap()[i][j].isTileEmpty()){
+//                    return new Result(false, "There is something on the ground at (" + j + ", " + i + ")");
+//                }
+//            }
+//        }
 
 
         // place building with origin flag

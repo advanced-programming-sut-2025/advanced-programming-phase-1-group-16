@@ -6,6 +6,7 @@ import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.map.PlaceType;
+import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.user.Player;
 
 import java.util.Objects;
@@ -35,7 +36,7 @@ public class MarniesRanch extends Shop {
         Game game = App.getActiveGame();
         Player player= App.getActiveGame().getCurrentPlayer();
 
-        if(animalTypeFromName(animal) == null){
+        if(sellAnimalFromName(animal) == null){
             return new Result(false, "no animal with that name");
         }
 
@@ -45,16 +46,21 @@ public class MarniesRanch extends Shop {
 
         //TODO: cheat building
 //        Item newBuilding = new Building(newAnimal.getFromShopType().getBuildingRequired().get(0).getName(),
-//            newAnimal.getFromShopType().getBuildingRequired().get(0).getCost(),  newAnimal.getFromShopType().getBuildingRequired().get(0), player.getPosition());
+//            newAnimal.getFromShopType().getBuildingRequired().get(0).getCost(),  newAnimal.getFromShopType().getBuildingRequired().get(0), new Pos(164, 64));
 //        player.getInventory().addItem(newBuilding, 1);
+//        game.getBuildings().add((Building) newBuilding);
 
 
-        for (Item item : player.getInventory().getItems().keySet()){
-            if (item instanceof Building) {
-                Building building = (Building) item;
+//        for (Item item : player.getInventory().getItems().keySet()){
+        for (Building building : game.getBuildings()) {
+
+//            if (item instanceof Building) {
+//                Building building = (Building) item;
 
                 for (BuildingType requiredBuilding : newAnimal.getFromShopType().getBuildingRequired()) {
                     if (building.getBuildingType().equals(requiredBuilding)) { //check if a suitable building for that animal exist.
+
+                        System.out.println("found one");
 
                         if (building.getCapacity() < requiredBuilding.getAnimalLimit()) { //چک کن قفس جا داره یا نه
                             //decrease money
@@ -66,7 +72,7 @@ public class MarniesRanch extends Shop {
                             //add to list of this building
                             building.addAnimal(newAnimal);
 
-                            //increase building capacity
+                            //decrease building capacity
                             building.increaseCapacity();
 
                             //set animal position as building start position
@@ -76,7 +82,7 @@ public class MarniesRanch extends Shop {
 
                     }
                 }
-            }
+//            }
         }
         return new Result(false, " no suitable building for animal found");
 
