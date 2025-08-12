@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class TileRenderer {
     private final GameAssetManager textureManager;
     private static TileRenderer tileRenderer;
-
+    float stateTime = 0;
 
     public TileRenderer() {
         this.textureManager = GameAssetManager.getGameAssetManager();
@@ -85,31 +85,37 @@ public class TileRenderer {
                 int drawHeight = (int) (buildingTexture.getHeight() * scale);
                 batch.draw(buildingTexture, drawX, drawY, drawWidth, drawHeight);
 
-                // Draw animals inside this building
+                // Draw animals in the yard (3x3 tiles below the building)
                 ArrayList<Animal> animals = building.getBuildingAnimals();
                 if (!animals.isEmpty()) {
-                    int buildingPixelWidth = building.getBuildingType().getLength() * TILE_SIZE;
-                    int buildingPixelHeight = building.getBuildingType().getWidth() * TILE_SIZE;
+                    int yardTileWidth = 3;
+                    int yardTileHeight = 3;
+                    int animalSize = TILE_SIZE; // Full tile size for animals
 
-                    int animalsPerRow = Math.max(1, building.getBuildingType().getLength() - 1);
-                    int animalSize = TILE_SIZE / 2; // make animals smaller than tiles
+                    // Yard bottom-left corner (aligned to building)
+                    int yardX = drawX;
+                    int yardY = drawY - yardTileHeight * TILE_SIZE; // Below building
+
+                    int animalsPerRow = yardTileWidth;
 
                     for (int i = 0; i < animals.size(); i++) {
                         Animal animal = animals.get(i);
                         Texture animalTexture = textureManager.getAnimalTexture(animal);
 
-                        // Simple fixed positioning (grid inside the building)
                         int row = i / animalsPerRow;
                         int col = i % animalsPerRow;
 
-                        int animalX = drawX + col * animalSize + TILE_SIZE / 4;
-                        int animalY = drawY + row * animalSize + TILE_SIZE / 4;
+                        int animalX = yardX + col * TILE_SIZE;
+                        int animalY = yardY + row * TILE_SIZE;
 
-                        batch.draw(animalTexture, animalX, animalY, animalSize, animalSize);
+//                        batch.draw(animalTexture, animalX, animalY, animalSize, animalSize);
+                        batch.draw(animalTexture, animal.getPixelX(), animal.getPixelY(), animalSize, animalSize);
+
                     }
                 }
             }
         }
+
 
         else if (tile.getItem() != null) {
             Texture texture = textureManager.getItemTexture(tile.getItem());

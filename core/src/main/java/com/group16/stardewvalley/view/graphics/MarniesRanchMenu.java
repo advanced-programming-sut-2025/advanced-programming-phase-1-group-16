@@ -276,7 +276,7 @@ public class MarniesRanchMenu extends Window {
             public void clicked(InputEvent event, float x, float y) {
                 Result result = null;
                 for (int i = 0; i < quantity[0]; i++) {
-                    result = shop.buyAnimal(animal.getName(), "hey");
+                    result = shop.buyAnimal(animal.getName(), "lovely animal");
 
                     if (!result.isSuccessful()) {
                         break; // stop if any build fails

@@ -19,6 +19,11 @@ public class Animal {
     private boolean isAnimalStayOutAllNight = false;
     private boolean haveFedWithHayToday = false;
     private Player owner;
+    // Movement fields
+    private float pixelX, pixelY; // actual position for rendering
+    private float vx, vy; // velocity
+    private float minX, minY, maxX, maxY; // movement bounds
+
 
     private boolean havePickedProducts = false;
 
@@ -28,10 +33,44 @@ public class Animal {
         this.name = name;
         this.owner = owner;
         this.friendship = 0;
+
+
     }
 
 
 
+    public void setYardBounds(float minX, float minY, float maxX, float maxY) {
+        this.minX = minX;
+        this.minY = minY;
+        this.maxX = maxX;
+        this.maxY = maxY;
+    }
+
+    public void setPixelPosition(float x, float y) {
+        this.pixelX = x;
+        this.pixelY = y;
+    }
+
+    public void update(float delta) {
+        // Move
+        pixelX += vx * delta;
+        pixelY += vy * delta;
+
+        // Stay inside yard bounds
+        if (pixelX < minX) { pixelX = minX; vx = -vx; }
+        if (pixelX > maxX) { pixelX = maxX; vx = -vx; }
+        if (pixelY < minY) { pixelY = minY; vy = -vy; }
+        if (pixelY > maxY) { pixelY = maxY; vy = -vy; }
+
+        // Occasionally change direction
+        if (Math.random() < 0.01) {
+            vx = (float)(Math.random() * 40 - 20); // speed -20..20 px/s
+            vy = (float)(Math.random() * 40 - 20);
+        }
+    }
+
+    public float getPixelX() { return pixelX; }
+    public float getPixelY() { return pixelY; }
 
 
     public Result increaseFriendship(int amount) {

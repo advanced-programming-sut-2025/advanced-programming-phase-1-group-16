@@ -358,7 +358,7 @@ public class MapController {
         return App.getActiveGame().getMap()[pos.getY()][pos.getX()].getType() == TileType.Cottage;
     }
 
-    public void drawMap(SpriteBatch batch) {
+    public void drawMap(SpriteBatch batch, float delta) {
         Tile[][] map = App.getActiveGame().getMap();
 
         for (int y = 0; y < map.length; y++) {

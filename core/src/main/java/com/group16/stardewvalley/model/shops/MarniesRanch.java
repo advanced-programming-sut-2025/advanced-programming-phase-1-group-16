@@ -8,6 +8,7 @@ import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.map.PlaceType;
 import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.user.Player;
+import com.group16.stardewvalley.view.graphics.GameScreen;
 
 import java.util.Objects;
 
@@ -40,9 +41,6 @@ public class MarniesRanch extends Shop {
             return new Result(false, "no animal with that name");
         }
 
-        //make new animal
-        Animal newAnimal = new Animal( sellAnimalFromName(animal), animalTypeFromName(animal), name, game.getCurrentPlayer()    );
-
 
         //TODO: cheat building
 //        Item newBuilding = new Building(newAnimal.getFromShopType().getBuildingRequired().get(0).getName(),
@@ -54,13 +52,15 @@ public class MarniesRanch extends Shop {
 //        for (Item item : player.getInventory().getItems().keySet()){
         for (Building building : game.getBuildings()) {
 
-//            if (item instanceof Building) {
-//                Building building = (Building) item;
-
-                for (BuildingType requiredBuilding : newAnimal.getFromShopType().getBuildingRequired()) {
+                for (BuildingType requiredBuilding : Objects.requireNonNull(sellAnimalFromName(animal)).getBuildingRequired()) {
                     if (building.getBuildingType().equals(requiredBuilding)) { //check if a suitable building for that animal exist.
 
                         System.out.println("found one");
+
+
+                        //make new animal
+                        Animal newAnimal = new Animal( sellAnimalFromName(animal), animalTypeFromName(animal), name, game.getCurrentPlayer()  );
+
 
                         if (building.getCapacity() < requiredBuilding.getAnimalLimit()) { //چک کن قفس جا داره یا نه
                             //decrease money
@@ -75,14 +75,39 @@ public class MarniesRanch extends Shop {
                             //decrease building capacity
                             building.increaseCapacity();
 
-                            //set animal position as building start position
-                            newAnimal.setAnimalPos(building.getStartPosition());
+                            // Yard bottom-left position in tile coordinates
+                            int yardStartX = building.getStartPosition().getX();
+                            int yardStartY = building.getStartPosition().getY() - 3;
 
+// Convert yard start to pixel coordinates
+                            float yardPixelX = yardStartX * GameScreen.TILE_SIZE;
+                            float yardPixelY = yardStartY * GameScreen.TILE_SIZE;
+                            float yardWidth = 3 * GameScreen.TILE_SIZE;
+                            float yardHeight = 3 * GameScreen.TILE_SIZE;
+
+// Set tile-based position (keeps your original Pos logic)
+                            newAnimal.setAnimalPos(new Pos(yardStartX, yardStartY));
+
+// NEW: Set wandering pixel position
+                            float startPixelX = yardPixelX + (float)(Math.random() * (yardWidth - GameScreen.TILE_SIZE));
+                            float startPixelY = yardPixelY + (float)(Math.random() * (yardHeight - GameScreen.TILE_SIZE));
+                            newAnimal.setPixelPosition(startPixelX, startPixelY);
+
+// NEW: Set yard movement bounds
+                            newAnimal.setYardBounds(
+                                yardPixelX,
+                                yardPixelY,
+                                yardPixelX + yardWidth - GameScreen.TILE_SIZE,
+                                yardPixelY + yardHeight - GameScreen.TILE_SIZE
+                            );
+
+
+                            return new Result(true, "animal added to building");
                         }
 
                     }
                 }
-//            }
+
         }
         return new Result(false, " no suitable building for animal found");
 

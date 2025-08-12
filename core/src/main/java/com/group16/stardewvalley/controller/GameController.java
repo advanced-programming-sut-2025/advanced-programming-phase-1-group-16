@@ -66,12 +66,12 @@ public class GameController {
 
 
 
-    public void render() {
+    public void render(float delta) {
         Player player = App.getActiveGame().getCurrentPlayer();
         if (player.isAtHome()){
             player.getHomeMap().render(Main.getBatch());
         } else {
-            mapController.drawMap(Main.getBatch());
+            mapController.drawMap(Main.getBatch(), delta);
         }
 
         playersController.render();

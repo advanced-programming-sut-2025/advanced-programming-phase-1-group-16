@@ -21,6 +21,7 @@ import com.group16.stardewvalley.model.food.Food;
 import com.group16.stardewvalley.model.food.Ingredient;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.items.Stone;
+import com.group16.stardewvalley.model.map.Direction;
 import com.group16.stardewvalley.model.shops.Building;
 import com.group16.stardewvalley.model.time.TimeDate;
 
@@ -82,6 +83,7 @@ public class GameAssetManager {
     private final Map<String, Texture> craftingTextures = new HashMap<>();
     private final Map<String, Texture> craftingIngredientTextures = new HashMap<>();
     private final Map<String, Texture> animalTextures = new HashMap<>();
+    private Map<String, Map<Direction, Animation<TextureRegion>>> animalAnimations = new HashMap<>();
 
     private final Texture houseTexture = new Texture("House/House_1.png");
 
@@ -299,7 +301,8 @@ public class GameAssetManager {
     }
 
     public Texture getAnimalTexture(Animal animal) {
-        String name = animal.getName().replace(" ", "_");
+        String name = animal.getFromShopType().getName().replace(" ", "_");
+        System.out.println("loading animal texture: " + name);
         if (!animalTextures.containsKey(name)) {
             try {
                 Texture texture = new Texture("Animals/" + name + ".png");
@@ -310,6 +313,43 @@ public class GameAssetManager {
         }
         return animalTextures.get(name);
     }
+
+    public Map<Direction, Animation<TextureRegion>> getAnimalAnimations(Animal animal) {
+        String name = animal.getName().replace(" ", "_");
+
+        if (!animalAnimations.containsKey(name)) {
+            try {
+                Texture texture = new Texture("Animals/" + name + ".png");
+
+                int frameCols = 4; // columns per row
+                int frameRows = 8; // total rows in sprite sheet (your dog sheet has 8)
+                int frameWidth  = texture.getWidth() / frameCols;
+                int frameHeight = texture.getHeight() / frameRows;
+
+                TextureRegion[][] tmp = TextureRegion.split(texture, frameWidth, frameHeight);
+
+                Map<Direction, Animation<TextureRegion>> animMap = new HashMap<>();
+                animMap.put(Direction.DOWN,  new Animation<>(0.15f, tmp[0]));
+                animMap.put(Direction.RIGHT, new Animation<>(0.15f, tmp[1]));
+                animMap.put(Direction.UP,    new Animation<>(0.15f, tmp[2]));
+                animMap.put(Direction.LEFT,  new Animation<>(0.15f, tmp[3]));
+
+                // loop all animations
+                for (Animation<TextureRegion> anim : animMap.values()) {
+                    anim.setPlayMode(Animation.PlayMode.LOOP);
+                }
+
+                animalAnimations.put(name, animMap);
+
+            } catch (Exception e) {
+                // fallback: empty map so we don't crash
+                animalAnimations.put(name, new HashMap<>());
+            }
+        }
+        return animalAnimations.get(name);
+    }
+
+
     public Texture getTexture(String path) {
         return new Texture(path);
     }

@@ -24,6 +24,7 @@ import com.group16.stardewvalley.controller.GameController;
 import com.group16.stardewvalley.controller.menu.GameMenuController;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.agriculture.Tree;
+import com.group16.stardewvalley.model.animal.Animal;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.food.FoodIngredient;
 import com.group16.stardewvalley.model.food.Ingredient;
@@ -31,6 +32,7 @@ import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.graphics.TileRenderer;
 import com.group16.stardewvalley.model.map.*;
 import com.group16.stardewvalley.model.map.TileTextureManager;
+import com.group16.stardewvalley.model.shops.Building;
 import com.group16.stardewvalley.model.shops.CarpentersShop;
 import com.group16.stardewvalley.model.time.TimeDate;
 import com.group16.stardewvalley.model.user.Player;
@@ -126,6 +128,7 @@ public class GameScreen implements Screen, InputProcessor {
     public void render(float delta) {
         if (!isPaused) {
             controller.update(delta);
+            updateAnimals(delta);
             handleTurn();
         }
 
@@ -147,7 +150,7 @@ public class GameScreen implements Screen, InputProcessor {
         // === Draw game world ===
         batch.setProjectionMatrix((showMiniMap ? miniMapCamera : camera).combined);
         batch.begin();
-        controller.render();
+        controller.render(delta);
         batch.end();
 
         // === Draw GameHUD in screen space and scaled ===
@@ -298,6 +301,14 @@ public class GameScreen implements Screen, InputProcessor {
             handleRightClick(screenX, screenY);
             return true;
         }
+        if (button == Input.Buttons.LEFT) {
+            if (shopMenuManager.isMenuOpenFor(PlaceType.CarpentersShop)) {
+                shopMenuManager.closeMenu();
+            } else {
+                shopMenuManager.openMenu(PlaceType.CarpentersShop);
+            }
+            return true;
+        }
         return false;
     }
 
@@ -306,6 +317,9 @@ public class GameScreen implements Screen, InputProcessor {
         Vector3 worldCoordinates = camera.unproject(new Vector3(screenX, screenY, 0));
         int tileX = (int) worldCoordinates.x / TILE_SIZE;
         int tileY = (int) worldCoordinates.y / TILE_SIZE;
+        float clickX = worldCoordinates.x;
+        float clickY = worldCoordinates.y;
+
         //tileX and tileY are the coordination which user clicked on it
 
         Player player = App.getActiveGame().getCurrentPlayer();
@@ -316,7 +330,22 @@ public class GameScreen implements Screen, InputProcessor {
         int dy = Math.abs(playerY - tileY);
         boolean isAdjacent = (dx <= 1 && dy <= 1) && (dx + dy > 0);
 
+        for (Building building : App.getActiveGame().getBuildings()) {
+            for (Animal animal : building.getBuildingAnimals()) {
+                float size = TILE_SIZE;
+                if (clickX >= animal.getPixelX() && clickX <= animal.getPixelX() + size &&
+                    clickY >= animal.getPixelY() && clickY <= animal.getPixelY() + size) {
 
+                    AnimalMenu menu = new AnimalMenu(skin, animal);
+                    menu.setPosition(
+                        (stage.getWidth() - menu.getWidth()) / 2,
+                        (stage.getHeight() - menu.getHeight()) / 2
+                    );
+                    stage.addActor(menu);
+                    return;
+                }
+            }
+        }
 
         Tree tree = App.getActiveGame().getMap()[tileY][tileX].getTree();
         if (isAdjacent && tree != null) {
@@ -441,4 +470,14 @@ public class GameScreen implements Screen, InputProcessor {
     public void setStage(Stage stage) {
         this.stage = stage;
     }
+
+    private void updateAnimals(float delta) {
+        for (Building building : App.getActiveGame().getBuildings()) {
+            for (Animal animal : building.getBuildingAnimals()) {
+                animal.update(delta);
+            }
+        }
+    }
+
+
 }
