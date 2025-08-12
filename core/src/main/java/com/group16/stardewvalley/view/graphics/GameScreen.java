@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.group16.stardewvalley.Main;
+import com.group16.stardewvalley.ServerApp;
 import com.group16.stardewvalley.controller.GameController;
 import com.group16.stardewvalley.controller.map.MapController;
 import com.group16.stardewvalley.model.Result;
@@ -212,10 +213,21 @@ public class GameScreen implements Screen, InputProcessor {
                 String fruitName = tree.getTreeType().getFruitName().toUpperCase().replace(" ", "_");
                 Ingredient ingredient = findIngredient(fruitName);
                 if (ingredient != null) {
-                    Result result = player.getInventory().addItem(new FoodIngredient(fruitName, tree.getFruitSellPrice(), ingredient), 4);
+                    Result result = player.getInventory().addItem(
+                        new FoodIngredient(fruitName, tree.getFruitSellPrice(), ingredient),
+                        4
+                    );
+
+                    // Record inventory change for multiplayer sync
+                    ServerApp.recordInventoryChange(
+                        App.getActiveGame(),
+                        player.getUsername(),
+                        player.getInventory()
+                    );
                 }
             }
         }
+
         else if (App.getActiveGame().getMap()[tileY][tileX].getType().equals(TileType.Cottage) &&
                     !player.isAtHome()) {
             player.setHomeMap(new HomeMap(player));

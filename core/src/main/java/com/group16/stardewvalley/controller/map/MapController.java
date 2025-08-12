@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.group16.stardewvalley.ServerApp;
 import com.group16.stardewvalley.model.NPC.NPC;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.agriculture.Mineral;
@@ -139,9 +140,12 @@ public class MapController {
         if (player.getEnergy() < pathInfo.energyCost()) {
             player.faint();
             player.setPosition(dest);
+            ServerApp.recordPlayerMove(App.getActiveGame(), player.getUsername(), dest);
             return new Result(false, "Moved to <" + dest.getX() + "," + dest.getY() + "> but You fainted");
         }
         player.setPosition(dest);
+        ServerApp.recordPlayerMove(App.getActiveGame(), player.getUsername(), dest);
+
         player.decreaseEnergy(pathInfo.energyCost());
         return new Result(true, "Moved to <" + dest.getX() + "," + dest.getY() + ">");
     }

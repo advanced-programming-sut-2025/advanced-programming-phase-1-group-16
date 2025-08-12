@@ -235,9 +235,6 @@ public class Tile {
         return item;
     }
 
-    public void setItems(Item item) {
-        this.item = item;
-    }
 
     public TileType getType() {
         return type;

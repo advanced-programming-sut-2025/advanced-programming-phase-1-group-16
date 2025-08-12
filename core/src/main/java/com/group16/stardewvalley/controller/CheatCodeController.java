@@ -1,5 +1,6 @@
 package com.group16.stardewvalley.controller;
 
+import com.group16.stardewvalley.ServerApp;
 import com.group16.stardewvalley.controller.menu.HomeMenuController;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.agriculture.Fertilizer;
@@ -73,6 +74,11 @@ public class CheatCodeController {
         }
         FoodIngredient foodIngredient = new FoodIngredient(name, 500, ingredient);
         App.getActiveGame().getCurrentPlayer().getInventory().addItem(foodIngredient, 1);
+        ServerApp.recordInventoryChange(
+            App.getActiveGame(),
+            App.getActiveGame().getCurrentPlayer().getUsername(),
+            App.getActiveGame().getCurrentPlayer().getInventory()
+        );
         return new Result(true, "added ingredient");
     }
 
@@ -91,6 +97,11 @@ public class CheatCodeController {
             return new Result(false, "Food not found");
         }
         App.getActiveGame().getCurrentPlayer().getInventory().addItem(food, 1);
+        ServerApp.recordInventoryChange(
+            App.getActiveGame(),
+            App.getActiveGame().getCurrentPlayer().getUsername(),
+            App.getActiveGame().getCurrentPlayer().getInventory()
+        );
         return new Result(true, "cooked food");
     }
 

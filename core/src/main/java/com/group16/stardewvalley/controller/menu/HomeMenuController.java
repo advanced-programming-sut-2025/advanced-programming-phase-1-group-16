@@ -1,5 +1,6 @@
 package com.group16.stardewvalley.controller.menu;
 
+import com.group16.stardewvalley.ServerApp;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.food.BuffType;
@@ -42,6 +43,7 @@ public class HomeMenuController {
             return new Result(false, "You don't have this in your refrigerator!");
         }
         App.getActiveGame().getCurrentPlayer().getInventory().getItems().put(foodIngredient, App.getActiveGame().getCurrentPlayer().getFarm().getRefrigerator().get(foodIngredient));
+
         App.getActiveGame().getCurrentPlayer().getFarm().getRefrigerator().remove(foodIngredient);
         return new Result(true, "You pick an item in refrigerator!");
     }
@@ -72,6 +74,7 @@ public class HomeMenuController {
         reduceIngredient(food);
         App.getActiveGame().getCurrentPlayer().decreaseEnergy(3);
         return App.getActiveGame().getCurrentPlayer().getInventory().addItem(new Food(food), 1);
+
     }
 
     public Result eat(String foodName) {

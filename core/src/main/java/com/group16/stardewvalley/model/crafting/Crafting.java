@@ -1,5 +1,6 @@
 package com.group16.stardewvalley.model.crafting;
 
+import com.group16.stardewvalley.ServerApp;
 import com.group16.stardewvalley.model.Inventory;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.Game;
@@ -170,6 +171,12 @@ public class Crafting {
                 int newY = playerPos.getY() + dir.getyDelta();
                 int newX = playerPos.getX() + dir.getxDelta();
                 game.getMap()[newY][newX].setItem(item);
+                ServerApp.recordTileChange(
+                    game,  // The current active game
+                    newX,              // Tile X coordinate
+                    newY,              // Tile Y coordinate
+                    game.getMap()[newY][newX]            // The tile object after modification
+                );
 
                 // Decrease count or remove from inventory
                 int count = inventory.getItems().get(item);

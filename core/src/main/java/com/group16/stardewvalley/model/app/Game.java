@@ -69,6 +69,16 @@ public class Game {
     private final Map<User, String> farmSelections = new HashMap<>();
     private final Set<User> readyUsers = new HashSet<>();
 
+    public boolean isPlayerInGame(User user) {
+        for (Player player : players) {
+            if (player.getUser().getUsername().equals(user.getUsername())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     public synchronized void setFarmSelection(User user, String farm) {
         farmSelections.put(user, farm);
     }

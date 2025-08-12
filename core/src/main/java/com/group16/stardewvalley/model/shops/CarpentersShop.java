@@ -1,5 +1,6 @@
 package com.group16.stardewvalley.model.shops;
 
+import com.group16.stardewvalley.ServerApp;
 import com.group16.stardewvalley.model.Inventory;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
@@ -9,6 +10,7 @@ import com.group16.stardewvalley.model.items.Stone;
 import com.group16.stardewvalley.model.items.Wood;
 import com.group16.stardewvalley.model.map.PlaceType;
 import com.group16.stardewvalley.model.map.Pos;
+import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.user.Player;
 
 import java.util.HashMap;
@@ -116,12 +118,17 @@ public class CarpentersShop extends Shop{
         items.compute(woodItem, (k, currentAmount) -> currentAmount - 350);
         items.compute(stoneItem, (k, currentAmount) -> currentAmount - 150);
 
-        //place building
+
+
+        // place building
         for (int i = y; i < y + buildingType.getLength(); i++) {
             for (int j = x; j < x + buildingType.getWidth(); j++) {
-                game.getMap()[i][j].setItem(newBuilding);
+                Tile tile = game.getMap()[i][j];
+                tile.setItem(newBuilding);
+                ServerApp.recordTileChange(game, j, i, tile);
             }
         }
+
 
         return new Result(true, newBuilding.getName() + "build successfully");
 

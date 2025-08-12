@@ -1,6 +1,10 @@
 package com.group16.stardewvalley.app;
 
 
+import com.group16.stardewvalley.model.app.Game;
+import com.group16.stardewvalley.model.map.Tile;
+import com.group16.stardewvalley.model.user.Player;
+
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -15,6 +19,34 @@ public class ClientApp {
     private static C2SConnectionThread serverThread;
 
     private static boolean exitFlag = false;
+    private void applyDelta(Game game, GameDelta delta) {
+        // Update players
+        for (GameDelta.PlayerUpdate pu : delta.playerUpdates) {
+            Player p = game.getPlayerByUsername(pu.username);
+            if (p != null) {
+                p.setX(pu.x);
+                p.setY(pu.y);
+                p.setHealth(pu.health);
+            }
+        }
+
+        // Update tiles
+        for (GameDelta.TileUpdate tu : delta.tileUpdates) {
+            Tile t = game.getTileAt(tu.tileX, tu.tileY);
+            if (t != null) {
+                t.setCropType(tu.cropType);
+                t.setGrowthStage(tu.growthStage);
+            }
+        }
+
+        // Update inventories
+        for (GameDelta.InventoryUpdate iu : delta.inventoryUpdates) {
+            Player p = game.getPlayerByUsername(iu.username);
+            if (p != null) {
+                p.setInventory(iu.items);
+            }
+        }
+    }
 
     public static void init() {
         try {

@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.group16.stardewvalley.Main;
+import com.group16.stardewvalley.ServerApp;
 import com.group16.stardewvalley.controller.agriculture.AgricultureController;
 import com.group16.stardewvalley.controller.map.MapController;
 import com.group16.stardewvalley.controller.menu.HomeMenuController;
@@ -138,7 +139,18 @@ public class GameController {
                             System.out.println(result);
                         }
                     }
-                    else targetTile.setItem(player.getCurrentThing());
+                    else {
+                        targetTile.setItem(player.getCurrentThing());
+
+                        // NEW: record tile change for multiplayer sync
+                        ServerApp.recordTileChange(
+                            App.getActiveGame(),  // The current active game
+                            targetX,              // Tile X coordinate
+                            targetY,              // Tile Y coordinate
+                            targetTile            // The tile object after modification
+                        );
+                    }
+
                     player.setCurrentThing(null);
                 }
                 return true;

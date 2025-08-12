@@ -1,5 +1,6 @@
 package com.group16.stardewvalley.controller.playercontroller;
 
+import com.group16.stardewvalley.ServerApp;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.app.Game;
@@ -78,6 +79,12 @@ public class PlayerController {
     public Result cheatAddFlower() {
         Player currentPlayer = App.getActiveGame().getCurrentPlayer();
         currentPlayer.getInventory().addItem(new Flower("Flower", 50), 1);
+        //for multiplayer sync
+        ServerApp.recordInventoryChange(
+            App.getActiveGame(),
+            currentPlayer.getUsername(),
+            currentPlayer.getInventory()
+        );
         return new Result(true, "added");
     }
 

@@ -4,7 +4,7 @@ import com.group16.stardewvalley.app.ListenerThread;
 import com.group16.stardewvalley.controller.LobbyManager;
 import com.group16.stardewvalley.model.Lobby;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -16,6 +16,8 @@ public class ServerMain {
             ServerApp.setListenerThread(new ListenerThread(8888));
             ServerApp.startListening();
             startLobbyCleanupTask();
+            startGameStateBroadcastTask();
+
         } catch (IOException e) {
             System.err.println("Error starting tracker: " + e.getMessage());
         }
@@ -36,4 +38,12 @@ public class ServerMain {
             }
         }, 0, 1, TimeUnit.MINUTES);
     }
+
+    private static void startGameStateBroadcastTask() {
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler.scheduleAtFixedRate(() -> {
+            ServerApp.broadcastDeltas(); // send only changes instead of full game
+        }, 0, 100, TimeUnit.MILLISECONDS); // much faster than 1 minute
+    }
+
 }
