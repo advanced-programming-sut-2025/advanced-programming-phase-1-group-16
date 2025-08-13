@@ -1,25 +1,33 @@
 package com.group16.stardewvalley.model.crafting;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.group16.stardewvalley.controller.CheatCodeController;
 import com.group16.stardewvalley.model.Inventory;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.Game;
 import com.group16.stardewvalley.model.food.Ingredient;
+import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.map.Direction;
 import com.group16.stardewvalley.model.map.Pos;
+import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.user.Player;
 
 import java.util.Iterator;
 import java.util.Map;
 
 import static com.group16.stardewvalley.controller.map.MapController.isPlayerInCottage;
+import static com.group16.stardewvalley.view.graphics.GameScreen.TILE_SIZE;
 
 
 public class Crafting {
+    private CheatCodeController cheatController = new CheatCodeController();
+    public static String pendingCraftItemName = null; // null means no placement pending
     public Result showRecipes() {
         Player player = App.getActiveGame().getCurrentPlayer();
         Inventory inventory = player.getInventory();
+
 
         if(!isPlayerInCottage(App.getActiveGame().getCurrentPlayer())){
             return new Result(false, "You are not inside your house !");
@@ -40,7 +48,7 @@ public class Crafting {
 
     }
 
-    public Result craft(String itemName) {
+    public Result craft(String itemName, int x, int y) {
         Player player = App.getActiveGame().getCurrentPlayer();
         Map<Item, Integer> inventoryItems = player.getInventory().getItems();  // Inventory content
 
@@ -58,8 +66,16 @@ public class Crafting {
             return new Result(false, "you still don't have that recipe!");
         }
 
+
+
         for (CraftingRecipes recipe : CraftingRecipes.values()) {
             if (recipe.getName().equalsIgnoreCase(itemName)) {
+
+                //TODO: cheat for needed ingredients
+                for(Ingredient ingredient: recipe.getNeededIngredients().keySet()){
+                    cheatController.addIngredient(ingredient.getName());
+                }
+
                 Map<Ingredient, Integer> neededIngredients = recipe.getNeededIngredients();
 
                 // Check if player has all required ingredients in sufficient quantity
@@ -115,93 +131,35 @@ public class Crafting {
                     }
                 }
 
+                if (x == -1 && y == -1) {
+                    return new Result(true, "Item ready to place. Click to select location.");
+                }
+
+                // Get texture dimensions
+                Texture texture = GameAssetManager.getGameAssetManager().getCraftingTexture(newCraftItem.getRecipe());
+                int textureWidthTiles = (int) Math.ceil(texture.getWidth() / (float) TILE_SIZE);
+                int textureHeightTiles = (int) Math.ceil(texture.getHeight() / (float) TILE_SIZE);
+
+                // Place crafted item with origin flag
+                for (int row = 0; row < textureHeightTiles; row++) {
+                    for (int col = 0; col < textureWidthTiles; col++) {
+                        Tile tile = App.getActiveGame().getMap()[y + row][x + col];
+                        if (row == 0 && col == 0) {
+                            tile.setItem(newCraftItem);
+                            tile.setBuildingOrigin(true); // only top-left tile is origin
+                        } else {
+                            tile.setItem(null);
+                            tile.setBuildingOrigin(false);
+                        }
+                    }
+                }
+
                 return new Result(true, "successfully crafted " + recipe.getName());
             }
         }
 
         return new Result(false, "recipe name not found");
     }
-
-//    public Result craft(String itemName) {
-//        Player player = App.getActiveGame().getCurrentPlayer();
-//        Map<Item, Integer> inventoryItems = player.getInventory().getItems();  // Inventory content
-//
-//        if (!isPlayerInCottage(App.getActiveGame().getCurrentPlayer())) {
-//            return new Result(false, "You are not inside your house!");
-//        }
-//
-//        boolean found = false;
-//        for (CraftingRecipes recipes : player.getInventory().getCraftingRecipes()){
-//            if(recipes.getName().equals(itemName)){
-//                found = true;
-//            }
-//        }
-//        if(!found){
-//            return new Result(false, "you still dont have that recipe!");
-//        }
-//        for (CraftingRecipes recipe : CraftingRecipes.values()) {
-//            if (recipe.getName().equalsIgnoreCase(itemName)) {
-//                Map<Ingredient, Integer> neededIngredients = recipe.getNeededIngredients();
-//
-//                for (Map.Entry<CraftingIngredientsTypes, Integer> entry : neededIngredients.entrySet()) {
-//                    CraftingIngredientsTypes requiredType = entry.getKey();
-//                    int requiredAmount = entry.getValue();
-//
-//                    int availableAmount = inventoryItems.entrySet().stream()
-//                            .filter(e -> e.getKey() instanceof CraftingIngredients)
-//                            .map(Map.Entry::getKey)
-//                            .map(item -> (CraftingIngredients) item)
-//                            .filter(ing -> ing.getIngredientType().equals(requiredType)) // match by type
-//                            .mapToInt(inventoryItems::get)  // get quantity
-//                            .sum();
-//
-//                    if (availableAmount < requiredAmount) {
-//                        return new Result(false, "you dont have enough ingredients");
-//                    }
-//                }
-//                //return true;  // All ingredients are available in required amounts
-//                //create new crafting item
-//                CraftItem newCraftItem = new CraftItem(recipe.getName(), 0, recipe);
-//                player.getInventory().addItem(newCraftItem, 1);
-//
-//                //consume energy
-//                if(player.getEnergy() - 2 < 0 && !player.isEnergyUnlimited()){
-//                    player.faint();
-//                }
-//                player.decreaseEnergy(2);
-//                //delete used ingredients from inventory
-//                for (Map.Entry<CraftingIngredientsTypes, Integer> entry : neededIngredients.entrySet()) {
-//                    CraftingIngredientsTypes neededType = entry.getKey();
-//                    int toRemove = entry.getValue();
-//
-//                    for (Iterator<Map.Entry<Item, Integer>> iterator = inventoryItems.entrySet().iterator(); iterator.hasNext() && toRemove > 0; ) {
-//                        Map.Entry<Item, Integer> invEntry = iterator.next();
-//                        Item item = invEntry.getKey();
-//                        int quantity = invEntry.getValue();
-//
-//                        if (item instanceof CraftingIngredients craftingItem &&
-//                                craftingItem.getIngredientType().equals(neededType)) {
-//
-//                            int removeCount = Math.min(quantity, toRemove);
-//                            toRemove -= removeCount;
-//                            int newCount = quantity - removeCount;
-//
-//                            if (newCount > 0) {
-//                                inventoryItems.put(item, newCount);
-//                            } else {
-//                                iterator.remove();
-//                            }
-//                        }
-//                    }
-//
-//                }
-//                return new Result(true, "successfully crafted " + recipe.getName());
-//            }
-//        }
-//        return new Result(false, "recipe name not found");
-//
-//    }
-
 
     public Result placeItems(String itemName, String inputDirection) {
         Direction dir = Direction.N;

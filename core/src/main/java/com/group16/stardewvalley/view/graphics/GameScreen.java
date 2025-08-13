@@ -26,6 +26,7 @@ import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.agriculture.Tree;
 import com.group16.stardewvalley.model.animal.Animal;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.crafting.Crafting;
 import com.group16.stardewvalley.model.food.FoodIngredient;
 import com.group16.stardewvalley.model.food.Ingredient;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
@@ -44,6 +45,7 @@ import java.util.Iterator;
 
 import static com.group16.stardewvalley.controller.map.MapController.isPlayerInsidePlace;
 import static com.group16.stardewvalley.controller.menu.HomeMenuController.findIngredient;
+import static com.group16.stardewvalley.model.crafting.Crafting.pendingCraftItemName;
 import static com.group16.stardewvalley.view.graphics.CarpenterMenu.pendingBuildingName;
 
 public class GameScreen implements Screen, InputProcessor {
@@ -60,6 +62,7 @@ public class GameScreen implements Screen, InputProcessor {
     private OrthographicCamera miniMapCamera;
     private Viewport miniMapViewport;
     private ShopMenuManager shopMenuManager;
+    private Crafting craftingController;
     private Stage stage;
 
     private Skin skin = GameAssetManager.getGameAssetManager().getSkin();
@@ -304,14 +307,14 @@ public class GameScreen implements Screen, InputProcessor {
             handleRightClick(screenX, screenY);
             return true;
         }
-        if (button == Input.Buttons.LEFT) {
-            if (shopMenuManager.isMenuOpenFor(PlaceType.CarpentersShop)) {
-                shopMenuManager.closeMenu();
-            } else {
-                shopMenuManager.openMenu(PlaceType.CarpentersShop);
-            }
-            return true;
-        }
+//        if (button == Input.Buttons.LEFT) {
+//            if (shopMenuManager.isMenuOpenFor(PlaceType.CarpentersShop)) {
+//                shopMenuManager.closeMenu();
+//            } else {
+//                shopMenuManager.openMenu(PlaceType.CarpentersShop);
+//            }
+//            return true;
+//        }
         return false;
     }
 
@@ -378,6 +381,17 @@ public class GameScreen implements Screen, InputProcessor {
                 System.out.println("Cannot place building here: " + buildResult.toString());
             }
             return; // Skip other right-click logic during building mode
+        }
+
+        if (pendingCraftItemName != null) {
+            Result craftResult = craftingController.craft(pendingCraftItemName, tileX, tileY);
+            if (craftResult.isSuccessful()) {
+                System.out.println(craftResult.toString());
+                pendingCraftItemName = null; // clear pending
+            } else {
+                System.out.println("Cannot place crafted item here: " + craftResult.toString());
+            }
+            return; // skip other click logic
         }
 
 

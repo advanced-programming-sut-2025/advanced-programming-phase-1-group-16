@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.group16.stardewvalley.model.crafting.Crafting.pendingCraftItemName;
+
 public class CraftMenu extends Window {
     private final Skin skin;
     private ArrayList<CraftingRecipes> knownCraftingRecipes;
@@ -75,6 +77,24 @@ public class CraftMenu extends Window {
                 btn.getImage().setColor(0.3f, 0.3f, 0.3f, 0.7f);
             }
 
+//            btn.addListener(new ClickListener() {
+//                @Override
+//                public void clicked(InputEvent event, float x, float y) {
+//                    if (!isKnown) return;
+//
+//                    for(Ingredient ingredient: craftItem.getNeededIngredients().keySet()){
+//                        CheatController.addIngredient(ingredient.getName());
+//                    }
+//                    Result result = craftingController.craft(craftItem.getName());
+//                    if(result.isSuccessful()){
+//                        System.out.println("DONE -- crafted  " + craftItem.getName());
+//                    }else {
+//                        System.out.println(result.message());
+//                    }
+//                    resultLabel.setText(result.message());
+//                }
+//            });
+
             btn.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -83,15 +103,28 @@ public class CraftMenu extends Window {
                     for(Ingredient ingredient: craftItem.getNeededIngredients().keySet()){
                         CheatController.addIngredient(ingredient.getName());
                     }
-                    Result result = craftingController.craft(craftItem.getName());
-                    if(result.isSuccessful()){
-                        System.out.println("DONE -- crafted  " + craftItem.getName());
-                    }else {
-                        System.out.println(result.message());
+
+                    Result result = craftingController.craft(craftItem.getName(), -1, -1);
+                    if (result.isSuccessful()) {
+                        pendingCraftItemName = craftItem.getName();
+                        System.out.println("Select location to place " + craftItem.getName());
                     }
                     resultLabel.setText(result.message());
+
+//                    if (craftItem.isPlaceable()) { // You'll need this check on your recipes
+//                        Result result = craftingController.craft(craftItem.getName(), -1, -1);
+//                        if (result.isSuccessful()) {
+//                            pendingCraftItemName = craftItem.getName();
+//                            System.out.println("Select location to place " + craftItem.getName());
+//                        }
+//                        resultLabel.setText(result.message());
+//                    } else {
+//                        Result result = craftingController.craft(craftItem.getName());
+//                        resultLabel.setText(result.message());
+//                    }
                 }
             });
+
 
             btn.addListener(new InputListener() {
                 @Override

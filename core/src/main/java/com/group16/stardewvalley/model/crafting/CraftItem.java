@@ -15,4 +15,8 @@ public class CraftItem extends Item {
         super(name, price);
         this.recipe = recipe;
     }
+
+    public CraftingRecipes getRecipe() {
+        return recipe;
+    }
 }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.group16.stardewvalley.model.animal.Animal;
+import com.group16.stardewvalley.model.crafting.CraftItem;
 import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.map.TileTextureManager;
 import com.group16.stardewvalley.model.map.TileType;
@@ -123,6 +124,15 @@ public class TileRenderer {
         }
 
 
+        if(tile.getItem() instanceof CraftItem craftItem){
+            // Draw crafting texture
+            Texture craftingTexture = textureManager.getCraftingTexture(craftItem.getRecipe());
+            float scale = 1f;
+            int drawWidth = (int) (craftingTexture.getWidth() * scale);
+            int drawHeight = (int) (craftingTexture.getHeight() * scale);
+            batch.draw(craftingTexture, drawX, drawY, drawWidth, drawHeight);
+
+        }
 
         else if (tile.getItem() != null) {
             Texture texture = textureManager.getItemTexture(tile.getItem());

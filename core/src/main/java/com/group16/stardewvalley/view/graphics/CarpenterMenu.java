@@ -306,11 +306,7 @@ public class CarpenterMenu extends Window {
                         break;
                     }
 
-//                    result = shop.buildCoop_Barn(item.getName(), player.getX(), player.getY());
 
-//                    if (!result.isSuccessful()) {
-//                        break; // stop if any build fails
-//                    }
                 }
                 if (result != null) {
                     resultLabel.setText(result.message());

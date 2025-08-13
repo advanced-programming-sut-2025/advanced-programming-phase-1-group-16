@@ -183,7 +183,7 @@ public class GameMenu implements MenuInterface {
 
         } else if ((matcher = GameMenuCommands.Craft.getMatcher(input)) != null) {
             System.out.println("your available recipes:\n" + craft.showRecipes());
-            System.out.println(craft.craft(matcher.group("itemName")));
+//            System.out.println(craft.craft(matcher.group("itemName")));
 
         }else if((matcher = GameMenuCommands.PlaceItem.getMatcher(input)) != null) {
             System.out.println(craft.placeItems(matcher.group("itemName"), matcher.group("direction")));
