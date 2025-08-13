@@ -175,7 +175,11 @@ public class Inventory {
                     }
                     iconContainer.background(selectedBg);
 
-                    App.getActiveGame().getCurrentPlayer().setCurrentThing(item);
+                    if (item instanceof Gadget gadget) {
+                        App.getActiveGame().getCurrentPlayer().equip(gadget);
+                    } else {
+                        App.getActiveGame().getCurrentPlayer().setCurrentThing(item);
+                    }
                     System.out.println("Selected: " + item.getName());
                 }
             });
