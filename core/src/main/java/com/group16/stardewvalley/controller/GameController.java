@@ -52,7 +52,7 @@ public class GameController {
     }
 
     public void update(float delta) {
-        if (isCookingMenuOpen) return; // بازی آپدیت نشه
+        if (isCookingMenuOpen) return;
         playersController.update(delta);
     }
 

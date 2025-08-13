@@ -1,5 +1,8 @@
 package com.group16.stardewvalley.model.app;
 
+import com.group16.stardewvalley.model.DTO.GameClientDTO;
+import com.group16.stardewvalley.model.DTO.NPCDTO;
+import com.group16.stardewvalley.model.DTO.PlayerDTO;
 import com.group16.stardewvalley.model.NPC.NPC;
 import com.group16.stardewvalley.model.NPC.NPCType;
 import com.group16.stardewvalley.model.map.Direction;
@@ -296,5 +299,42 @@ public class Game {
         int dy = Math.abs(pos1.getY() - pos2.getY());
         return (dx <= 1 && dy <= 1) && !(dx == 0 && dy == 0);
     }
+
+    public GameClientDTO toClientDTO() {
+        GameClientDTO dto = new GameClientDTO();
+
+        // بازیکنان
+        List<PlayerDTO> playerDTOs = new ArrayList<>();
+        for (Player p : players) {
+            PlayerDTO pd = new PlayerDTO();
+            pd.setUsername(p.getUser().getUsername());
+            pd.setFainted(p.isFainted());
+            pd.setX(p.getPosition().getX());
+            pd.setY(p.getPosition().getY());
+            playerDTOs.add(pd);
+        }
+        dto.setPlayers(playerDTOs);
+
+        // بقیه اطلاعات
+        dto.setCurrentPlayerIndex(currentPlayerIndex);
+        dto.setTimeDate(timeDate);
+        dto.setWeatherCondition(weatherCondition);
+        dto.setTomorrowWeatherCondition(tomorrowWeatherCondition);
+        dto.setSeason(timeDate.getSeason());
+
+        // NPCها
+        List<NPCDTO> npcDTOs = new ArrayList<>();
+        for (NPC npc : NPCs) {
+            NPCDTO nd = new NPCDTO();
+            nd.setName(npc.getName());
+            //nd.setX(npc.getPosition().getX());
+            //nd.setY(npc.getPosition().getY());
+            npcDTOs.add(nd);
+        }
+        dto.setNpcs(npcDTOs);
+
+        return dto;
+    }
+
 
 }
