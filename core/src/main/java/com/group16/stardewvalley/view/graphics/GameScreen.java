@@ -40,6 +40,8 @@ import com.group16.stardewvalley.view.menuGraphics.PreGameMenuView;
 
 import javax.swing.text.Position;
 
+import java.util.Iterator;
+
 import static com.group16.stardewvalley.controller.map.MapController.isPlayerInsidePlace;
 import static com.group16.stardewvalley.controller.menu.HomeMenuController.findIngredient;
 import static com.group16.stardewvalley.view.graphics.CarpenterMenu.pendingBuildingName;
@@ -53,7 +55,7 @@ public class GameScreen implements Screen, InputProcessor {
     TileRenderer tileRenderer;
     public static float totalGameTime = 0f;
     private static int tenMinuteCounter = 0;
-    private static float oneHourGameTime = 30f;
+    private static float oneHourGameTime = 60f;
     public static boolean showMiniMap = false;
     private OrthographicCamera miniMapCamera;
     private Viewport miniMapViewport;
@@ -131,6 +133,7 @@ public class GameScreen implements Screen, InputProcessor {
             updateAnimals(delta);
             handleTurn();
         }
+
 
         // Choose camera
         if (App.getActiveGame().getCurrentPlayer().isAtHome()) {

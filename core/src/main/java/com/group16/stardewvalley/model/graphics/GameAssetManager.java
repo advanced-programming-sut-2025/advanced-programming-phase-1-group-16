@@ -302,7 +302,6 @@ public class GameAssetManager {
 
     public Texture getAnimalTexture(Animal animal) {
         String name = animal.getFromShopType().getName().replace(" ", "_");
-        System.out.println("loading animal texture: " + name);
         if (!animalTextures.containsKey(name)) {
             try {
                 Texture texture = new Texture("Animals/" + name + ".png");

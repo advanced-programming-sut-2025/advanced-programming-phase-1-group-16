@@ -229,10 +229,9 @@ public class MarniesRanchMenu extends Window {
         return content;
     }
 
-
     private void showBuyProductWindow(MarniesRanchAnimals animal) {
         Window buyWindow = new Window("Buy Product", skin);
-        buyWindow.setSize(700, 500);
+        buyWindow.setSize(700, 550); // slightly taller to fit text field
         buyWindow.setPosition(
             Gdx.graphics.getWidth() / 2f - buyWindow.getWidth() / 2f,
             Gdx.graphics.getHeight() / 2f - buyWindow.getHeight() / 2f);
@@ -263,30 +262,39 @@ public class MarniesRanchMenu extends Window {
         plusBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (quantity[0] < 2) {  // Only increment if quantity is less than 2
+                if (quantity[0] < 2) {
                     quantity[0]++;
                     quantityLabel.setText("Quantity: " + quantity[0]);
                 }
             }
         });
 
+        // --- TextField for animal name ---
+        Label animalNameLabel = new Label("Enter Name:", skin);
+        TextField animalNameField = new TextField("", skin);
+        animalNameField.setMessageText("Animal's Name"); // placeholder text
+
         TextButton submitBtn = new TextButton("Submit", skin);
         submitBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                String enteredName = animalNameField.getText().trim();
+                if (enteredName.isEmpty()) {
+                    resultLabel.setText("Please enter a name!");
+                    return;
+                }
+
                 Result result = null;
                 for (int i = 0; i < quantity[0]; i++) {
-                    result = shop.buyAnimal(animal.getName(), "lovely animal");
-
-                    if (!result.isSuccessful()) {
-                        break; // stop if any build fails
-                    }
+                    result = shop.buyAnimal(animal.getName(), enteredName);
+                    if (!result.isSuccessful()) break;
                 }
+
                 if (result != null) {
                     resultLabel.setText(result.message());
                     System.out.println(result.message());
                 }
-                buyWindow.remove(); // close window
+                buyWindow.remove();
             }
         });
 
@@ -294,7 +302,7 @@ public class MarniesRanchMenu extends Window {
         cancelBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                buyWindow.remove(); // just close the window without doing anything
+                buyWindow.remove();
             }
         });
 
@@ -303,12 +311,15 @@ public class MarniesRanchMenu extends Window {
         buttonsTable.add(quantityLabel).padLeft(10).padRight(10);
         buttonsTable.add(plusBtn).size(100);
 
-
         buyWindow.add(nameLabel).colspan(3).center().padBottom(15).row();
         buyWindow.add(priceLabel).colspan(3).center().padBottom(15).row();
-        buyWindow.row();
         buyWindow.add(buttonsTable).colspan(3).center().padBottom(15).row();
-        buyWindow.row();
+
+        // Add text field below + / - buttons
+        Table nameInputTable = new Table();
+        nameInputTable.add(animalNameLabel).padRight(10);
+        nameInputTable.add(animalNameField).width(300);
+        buyWindow.add(nameInputTable).colspan(3).center().padBottom(15).row();
 
         Table submitCancelTable = new Table();
         submitCancelTable.add(submitBtn).width(300).padRight(20);
@@ -317,6 +328,7 @@ public class MarniesRanchMenu extends Window {
 
         Main.getMain().getGameScreen().getStage().addActor(buyWindow);
     }
+
 
 
     @Override

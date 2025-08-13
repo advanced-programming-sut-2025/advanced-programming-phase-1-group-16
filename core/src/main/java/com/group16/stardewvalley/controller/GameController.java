@@ -290,19 +290,15 @@ public class GameController {
 
     public boolean keyDown(int keycode) {
         switch (keycode) {
-            case Input.Keys.UP:
             case Input.Keys.W:
                 upPressed = true;
                 return true;
-            case Input.Keys.DOWN:
             case Input.Keys.S:
                 downPressed = true;
                 return true;
-            case Input.Keys.LEFT:
             case Input.Keys.A:
                 leftPressed = true;
                 return true;
-            case Input.Keys.RIGHT:
             case Input.Keys.D:
                 rightPressed = true;
                 return true;
@@ -312,19 +308,15 @@ public class GameController {
 
     public boolean keyUp(int keycode) {
         switch (keycode) {
-            case Input.Keys.UP:
             case Input.Keys.W:
                 upPressed = false;
                 return true;
-            case Input.Keys.DOWN:
             case Input.Keys.S:
                 downPressed = false;
                 return true;
-            case Input.Keys.LEFT:
             case Input.Keys.A:
                 leftPressed = false;
                 return true;
-            case Input.Keys.RIGHT:
             case Input.Keys.D:
                 rightPressed = false;
                 return true;

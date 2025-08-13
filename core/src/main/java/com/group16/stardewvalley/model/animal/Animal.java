@@ -24,6 +24,10 @@ public class Animal {
     private float vx, vy; // velocity
     private float minX, minY, maxX, maxY; // movement bounds
 
+    private float pettingEffectTimer = 0f;
+    private float feedingEffectTimer = 0f;
+    private float shepherdEffectTimer = 0f;
+    private float productEffectTimer = 0f;
 
     private boolean havePickedProducts = false;
 
@@ -33,10 +37,49 @@ public class Animal {
         this.name = name;
         this.owner = owner;
         this.friendship = 0;
-
-
     }
 
+    public float getFeedEffectAlpha() {
+        return feedingEffectTimer; // 1 → 0 fade-out
+    }
+    public void triggerFeedingEffect() {
+        feedingEffectTimer = 3.0f; // lasts 1 second
+    }
+    public boolean isFeedingEffectActive() {
+        return feedingEffectTimer > 0;
+    }
+
+
+    public float getPetEffectAlpha() {
+        return pettingEffectTimer; // 1 → 0 fade-out
+    }
+    public void triggerPettingEffect() {
+        pettingEffectTimer = 3.0f; // lasts 1 second
+    }
+    public boolean isPettingEffectActive() {
+        return pettingEffectTimer > 0;
+    }
+
+
+    public float getShepherdEffectAlpha() {
+        return shepherdEffectTimer;
+    }
+    public void triggerShepherdEffect() {
+        shepherdEffectTimer = 3.0f;
+    }
+    public boolean isShepherdEffectActive() {
+        return shepherdEffectTimer > 0;
+    }
+
+    public float getProductEffectAlpha() {
+        return productEffectTimer;
+    }
+    public void triggerProductEffect() {
+        productEffectTimer = 3.0f;
+    }
+    public boolean isProductEffectActive() {
+        return productEffectTimer > 0;
+    }
 
 
     public void setYardBounds(float minX, float minY, float maxX, float maxY) {
@@ -66,6 +109,21 @@ public class Animal {
         if (Math.random() < 0.01) {
             vx = (float)(Math.random() * 40 - 20); // speed -20..20 px/s
             vy = (float)(Math.random() * 40 - 20);
+        }
+
+        //pet effect
+        if (pettingEffectTimer > 0) {
+            pettingEffectTimer -= delta;
+        }
+        //feed effect
+        if (feedingEffectTimer > 0) {
+            feedingEffectTimer -= delta;
+        }
+        if (shepherdEffectTimer > 0) {
+            shepherdEffectTimer -= delta;
+        }
+        if(productEffectTimer > 0) {
+            productEffectTimer -= delta;
         }
     }
 

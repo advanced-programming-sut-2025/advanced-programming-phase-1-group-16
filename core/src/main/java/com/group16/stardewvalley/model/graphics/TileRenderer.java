@@ -11,11 +11,16 @@ import com.group16.stardewvalley.model.shops.Building;
 import com.group16.stardewvalley.view.graphics.GameScreen;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TileRenderer {
     private final GameAssetManager textureManager;
     private static TileRenderer tileRenderer;
     float stateTime = 0;
+    private Texture animalPetEffectTexture = new Texture("Heart/Secret_Heart.png");;
+    private Texture animalFeedEffectTexture = new Texture("Resource/Fiber.png");;
+    private Texture animalShepherdEffectTexture = new Texture("Animals/Qi_Gem.png");
+    private Texture animalProductEffectTexture = new Texture("Animal_product/Wool.png");
 
     public TileRenderer() {
         this.textureManager = GameAssetManager.getGameAssetManager();
@@ -67,15 +72,6 @@ public class TileRenderer {
             }
         }
 
-//        if (tile.getItem() instanceof Building building) {
-//            if (tile.isBuildingOrigin()) {
-//                Texture texture = textureManager.getItemTexture(building);
-//                float scale = 0.25f;
-//                int drawWidth = (int)(texture.getWidth() * scale);
-//                int drawHeight = (int)(texture.getHeight() * scale);
-//                batch.draw(texture, drawX, drawY, drawWidth, drawHeight);
-//            }
-//        }
         if (tile.getItem() instanceof Building building) {
             if (tile.isBuildingOrigin()) {
                 // Draw building texture
@@ -85,18 +81,27 @@ public class TileRenderer {
                 int drawHeight = (int) (buildingTexture.getHeight() * scale);
                 batch.draw(buildingTexture, drawX, drawY, drawWidth, drawHeight);
 
-                // Draw animals in the yard (3x3 tiles below the building)
+                // Yard bottom-left corner (aligned to building)
+                int yardTileWidth = 3;
+                int yardTileHeight = 3;
+                int yardX = drawX;
+                int yardY = drawY - yardTileHeight * TILE_SIZE; // below building
+
+                // --- Draw grass texture under the yard ---
+                Texture grassTexture = GameAssetManager.getGameAssetManager().getTexture("Animals/Fireflies.png");
+                for (int row = 0; row < yardTileHeight; row++) {
+                    for (int col = 0; col < yardTileWidth; col++) {
+                        int grassX = yardX + col * TILE_SIZE;
+                        int grassY = yardY + row * TILE_SIZE;
+                        batch.draw(grassTexture, grassX, grassY, TILE_SIZE, TILE_SIZE);
+                    }
+                }
+
+                // Draw animals on top
                 ArrayList<Animal> animals = building.getBuildingAnimals();
                 if (!animals.isEmpty()) {
-                    int yardTileWidth = 3;
-                    int yardTileHeight = 3;
-                    int animalSize = TILE_SIZE; // Full tile size for animals
-
-                    // Yard bottom-left corner (aligned to building)
-                    int yardX = drawX;
-                    int yardY = drawY - yardTileHeight * TILE_SIZE; // Below building
-
                     int animalsPerRow = yardTileWidth;
+                    int animalSize = TILE_SIZE;
 
                     for (int i = 0; i < animals.size(); i++) {
                         Animal animal = animals.get(i);
@@ -108,13 +113,15 @@ public class TileRenderer {
                         int animalX = yardX + col * TILE_SIZE;
                         int animalY = yardY + row * TILE_SIZE;
 
-//                        batch.draw(animalTexture, animalX, animalY, animalSize, animalSize);
                         batch.draw(animalTexture, animal.getPixelX(), animal.getPixelY(), animalSize, animalSize);
 
+                        // Draw any active effects (pet, feed, shepherd)
+                        drawAnimalEffects(batch, animal, animalSize);
                     }
                 }
             }
         }
+
 
 
         else if (tile.getItem() != null) {
@@ -152,4 +159,44 @@ public class TileRenderer {
         int offsetY = drawY;
         batch.draw(cropTexture, offsetX, offsetY, realWidth, realHeight);
     }
+
+    private void drawAnimalEffects(SpriteBatch batch, Animal animal, int animalSize) {
+        if (animal.isPettingEffectActive()) {
+            float alpha = animal.getPetEffectAlpha();
+            batch.setColor(1,1,1,alpha);
+            batch.draw(animalPetEffectTexture, animal.getPixelX()-8, animal.getPixelY()-8, animalSize+16, animalSize+16);
+            batch.setColor(1,1,1,1);
+        }
+        if (animal.isFeedingEffectActive()) {
+            float alpha = animal.getFeedEffectAlpha();
+            batch.setColor(1,1,1,alpha);
+            batch.draw(animalFeedEffectTexture, animal.getPixelX()-8, animal.getPixelY()-8, animalSize+16, animalSize+16);
+            batch.setColor(1,1,1,1);
+        }
+        if (animal.isShepherdEffectActive()) {
+            float alpha = animal.getShepherdEffectAlpha();
+            batch.setColor(1,1,1,alpha);
+            batch.draw(animalShepherdEffectTexture, animal.getPixelX()-8, animal.getPixelY()-8, animalSize+16, animalSize+16);
+            batch.setColor(1,1,1,1);
+        }
+        if (animal.isProductEffectActive()){
+
+            switch (animal.getAnimalType()){
+                case CHICKEN -> animalProductEffectTexture = new Texture("Animal_product/Egg.png");
+                case COW -> animalProductEffectTexture = new Texture("Animal_product/Milk.png");
+                case DUCK -> animalProductEffectTexture = new Texture("Animal_product/Duck_Egg.png");
+                case DINOSAUR -> animalProductEffectTexture = new Texture("Animal_product/Dinosaur_Egg.png");
+                case PIG -> animalProductEffectTexture = new Texture("Animal_product/Truffle.png");
+                case GOAT -> animalProductEffectTexture = new Texture("Animal_product/Goat_Milk.png");
+                case SHEEP -> animalProductEffectTexture = new Texture("Animal_product/Wool.png");
+                case RABBIT -> animalProductEffectTexture = new Texture("Animal_product/Rabbit_Foot.png");
+            }
+
+            float alpha = animal.getProductEffectAlpha();
+            batch.setColor(1,1,1,alpha);
+            batch.draw(animalProductEffectTexture, animal.getPixelX()-8, animal.getPixelY()-8, animalSize+16, animalSize+16);
+            batch.setColor(1,1,1,1);
+        }
+    }
+
 }
