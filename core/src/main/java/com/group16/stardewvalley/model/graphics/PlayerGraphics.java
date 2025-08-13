@@ -21,8 +21,11 @@ public class PlayerGraphics {
     private float stateTime = 0f;
     protected float x, y;
 
+    private String spritePath;
+
     public PlayerGraphics(Player player, String spritePath, int frameWidth, int frameHeight) {
         this.player = player;
+        this.spritePath = spritePath;
         this.x = player.getPosition().getX();
         this.y = player.getPosition().getY();
         this.tileSize = GameScreen.TILE_SIZE;
@@ -106,5 +109,7 @@ public class PlayerGraphics {
         spriteSheet.dispose();
     }
 
-
+    public String getSpritePath() {
+        return spritePath;
+    }
 }

@@ -25,7 +25,6 @@ public class Message {
 		return (int) ((double) ((Double) body.get(fieldName)));
 	}
 
-    //TODO change the enum
     public enum Type {
 		command,
         response,

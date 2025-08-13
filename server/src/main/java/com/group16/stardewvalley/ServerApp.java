@@ -5,9 +5,11 @@ import com.group16.stardewvalley.app.ListenerThread;
 import com.group16.stardewvalley.app.PlayerSession;
 import com.group16.stardewvalley.controller.ServerConnectionController;
 import com.group16.stardewvalley.model.app.Game;
+import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.model.user.User;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -35,8 +37,8 @@ public class ServerApp {
 
     public static Game getActiveGameByUser(User user) {
         for (Game game : games) {
-            for (User user1 : users) {
-                if (user.getUsername().equals(user1.getUsername())) {
+            for (Player player : game.getPlayers()) {
+                if (user.getUsername().equals(player.getUser().getUsername())) {
                     return game;
                 }
             }
@@ -96,7 +98,7 @@ public class ServerApp {
     }
 
     public static void addGame(Game game) {
-        synchronized (games) {
+        synchronized (Collections.unmodifiableList(games)) {
             games.add(game);
         }
     }

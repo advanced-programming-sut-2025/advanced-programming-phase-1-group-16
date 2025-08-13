@@ -24,8 +24,7 @@ import static com.group16.stardewvalley.view.graphics.GameScreen.TILE_SIZE;
 
 public class MapController {
 
-    public void createMap() {
-        Game game = App.getActiveGame();
+    public void createMap(Game game) {
         int height = game.getMapHeight();
         int width = game.getMapWidth();
         Tile[][] map = new Tile[height][width];

@@ -8,6 +8,7 @@ import com.group16.stardewvalley.app.PlayerSession;
 import com.group16.stardewvalley.controller.map.MapController;
 import com.group16.stardewvalley.controller.menu.GameMenuController;
 import com.group16.stardewvalley.data.UserDataSQL;
+import com.group16.stardewvalley.model.DTO.GameClientDTO;
 import com.group16.stardewvalley.model.Lobby;
 import com.group16.stardewvalley.model.LobbyInfo;
 import com.group16.stardewvalley.model.Result;
@@ -327,7 +328,7 @@ public class ServerConnectionController {
         }
 
         ArrayList<Player> gamePlayers = new ArrayList<>();
-        gamePlayers.add(new Player(App.getLoggedInUser()));
+        //gamePlayers.add(new Player(App.getLoggedInUser()));
         for (User user : lobby.getUsers()) {
             if (user.getHasActiveGame()) {
                 return buildErrorResponse("Player " + user.getUsername() + " is already in a game!", Message.Type.START_GAME);
@@ -358,22 +359,6 @@ public class ServerConnectionController {
         return new Message(body, Message.Type.START_GAME);
     }
 
-    public static void sendMessageToUser(User user, Message message) {
-        boolean sent = false;
-        for (ClientConnectionThread connection : ServerApp.getConnections()) {
-            if (connection.getConnectedUser() != null &&
-                connection.getConnectedUser().getUsername().equals(user.getUsername())) {
-                connection.sendMessage(message);
-                System.out.println("Sent " + message.getType() + " to " + user.getUsername());
-                sent = true;
-            }
-        }
-        if (!sent) {
-            System.out.println("No connection found for user: " + user.getUsername());
-        }
-    }
-
-
     public static Message handleFarmSelectionReady(Message message) {
         String farmType = message.getFromBody("choice");
         String username = message.getFromBody("username");
@@ -393,6 +378,8 @@ public class ServerConnectionController {
             return buildErrorResponse("Player not found in game", Message.Type.FARM_SELECTION_READY);
         }
 
+        game.setReady(user.getUsername());
+
         GameMenuController gameMenuController = new GameMenuController();
         MapController mapController = new MapController();
 
@@ -409,12 +396,18 @@ public class ServerConnectionController {
         };
 
         if (game.allReady()) {
-            mapController.createMap();
+            mapController.createMap(game);
             int index = 0;
             for (Player player1 : game.getPlayers()) {
                 player1.setPlayerGraphics(characterPaths[index], 48, 64);
                 index++;
-                //sendMessageToUser(player1.getUser(), new Message(Map.of("mapInfo", "..."), Message.Type.GAME_STARTED));
+            }
+            GameClientDTO gameClientDTO = game.toClientDTO();
+            HashMap<String, Object> body = new HashMap<>();
+            body.put("success", true);
+            body.put("gameInfo", gameClientDTO);
+            for (Player player1 : game.getPlayers()) {
+                sendMessageToUser(player1.getUser(), new Message(body, Message.Type.GAME_STARTED));
             }
         }
 
@@ -425,6 +418,20 @@ public class ServerConnectionController {
     }
 
 
+    public static void sendMessageToUser(User user, Message message) {
+        boolean sent = false;
+        for (ClientConnectionThread connection : ServerApp.getConnections()) {
+            if (connection.getConnectedUser() != null &&
+                    connection.getConnectedUser().getUsername().equals(user.getUsername())) {
+                System.out.println("Sent " + message.getType() + " to " + user.getUsername());
+                connection.sendMessage(message);
+                sent = true;
+            }
+        }
+        if (!sent) {
+            System.out.println("No connection found for user: " + user.getUsername());
+        }
+    }
 
 
     private static Message buildErrorResponse(String errorType, Message.Type type) {

@@ -139,7 +139,7 @@ public class PreGameMenuView implements Screen {
                 for (Player player : App.getActiveGame().getPlayers()) {
                     controller.chooseFarm(player, "2");
                 }
-                mapController.createMap();
+                mapController.createMap(App.getActiveGame());
                 int index = 0;
                 for (Player player : App.getActiveGame().getPlayers()) {
                     player.setPlayerGraphics(characterPaths[index], 48, 64);

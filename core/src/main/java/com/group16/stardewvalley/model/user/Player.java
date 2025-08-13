@@ -85,6 +85,7 @@ public class Player {
     // تابعی برای بالا بردن لول شخص در این موارد نوشته نشده است
     public Player(User user) {
         this.user = user;
+        this.coin = 1000; //TODO how much?
         farmingAbilityLevel = 0;
         miningAbilityLevel = 0;
         fishingAbilityLevel = 0;
@@ -110,8 +111,7 @@ public class Player {
         finalHourBuff = 0;
         this.buffer = BuffType.NONE;
         this.location = null;
-
-       this.hero = user.getHero();
+        this.isAtHome = false;
         learnRecipe(FoodFactory.tripleShotEspresso());
     }
 

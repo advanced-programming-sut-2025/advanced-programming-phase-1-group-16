@@ -113,6 +113,10 @@ public class ClientConnectionThread extends ConnectionThread {
                 sendMessage(ServerConnectionController.getOnlinePlayers());
                 yield true;
             }
+            case FARM_SELECTION_READY -> {
+                sendMessage(ServerConnectionController.handleFarmSelectionReady(message));
+                yield true;
+            }
             default -> false;
         };
     }

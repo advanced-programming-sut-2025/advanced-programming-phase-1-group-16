@@ -3,9 +3,9 @@ package com.group16.stardewvalley.model.app;
 import com.group16.stardewvalley.model.DTO.GameClientDTO;
 import com.group16.stardewvalley.model.DTO.NPCDTO;
 import com.group16.stardewvalley.model.DTO.PlayerDTO;
+import com.group16.stardewvalley.model.DTO.TileDTO;
 import com.group16.stardewvalley.model.NPC.NPC;
 import com.group16.stardewvalley.model.NPC.NPCType;
-import com.group16.stardewvalley.model.map.Direction;
 import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.shops.*;
 import com.group16.stardewvalley.model.time.Season;
@@ -24,6 +24,7 @@ public class Game {
     private final int mapHeight = 200;
     private final int mapWidth = 300;
     private int currentPlayerIndex; //hamoon turn
+    private Player currentPlayer;
     private final Player creator;
     private Player loader = null;
     private int turnsPassedInRound;   // counts up to players size
@@ -70,23 +71,24 @@ public class Game {
 
     //pregame:
     private final Map<User, String> farmSelections = new HashMap<>();
-    private final Set<User> readyUsers = new HashSet<>();
+    private final Set<String> readyUsers = new HashSet<>();
 
     public synchronized void setFarmSelection(User user, String farm) {
         farmSelections.put(user, farm);
     }
 
-    public synchronized void setReady(User user) {
+    public synchronized void setReady(String user) {
         readyUsers.add(user);
     }
 
     public synchronized boolean allReady() {
-        List<User> gameUsers = players.stream()
-            .map(Player::getUser)
-            .toList();
-
-        return readyUsers.containsAll(gameUsers) &&
-            farmSelections.keySet().containsAll(gameUsers);
+        for (Player player : players) {
+            User user = player.getUser();
+            if (!readyUsers.contains(user.getUsername())) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public synchronized Map<User, String> getSelections() {
@@ -197,8 +199,12 @@ public class Game {
     }
 
     public Player getCurrentPlayer() {
-        return players.get(currentPlayerIndex);    }
+        return currentPlayer;
+    }
 
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
 
     public void setPlayers(ArrayList<Player> players) {
         this.players = players;
@@ -305,34 +311,48 @@ public class Game {
 
         // بازیکنان
         List<PlayerDTO> playerDTOs = new ArrayList<>();
-        for (Player p : players) {
+        for (Player player : players) {
             PlayerDTO pd = new PlayerDTO();
-            pd.setUsername(p.getUser().getUsername());
-            pd.setFainted(p.isFainted());
-            pd.setX(p.getPosition().getX());
-            pd.setY(p.getPosition().getY());
+            pd.setUsername(player.getUser().getUsername());
+            pd.setX(player.getPosition().getX());
+            pd.setY(player.getPosition().getY());
+            pd.setCharacterPath(player.getPlayerGraphics().getSpritePath());
             playerDTOs.add(pd);
         }
         dto.setPlayers(playerDTOs);
 
-        // بقیه اطلاعات
-        dto.setCurrentPlayerIndex(currentPlayerIndex);
-        dto.setTimeDate(timeDate);
-        dto.setWeatherCondition(weatherCondition);
-        dto.setTomorrowWeatherCondition(tomorrowWeatherCondition);
-        dto.setSeason(timeDate.getSeason());
+        dto.setCreatorUsername(this.creator.getUsername());
 
-        // NPCها
-        List<NPCDTO> npcDTOs = new ArrayList<>();
-        for (NPC npc : NPCs) {
-            NPCDTO nd = new NPCDTO();
-            nd.setName(npc.getName());
-            //nd.setX(npc.getPosition().getX());
-            //nd.setY(npc.getPosition().getY());
-            npcDTOs.add(nd);
+
+        // مپ
+        int rows = map.length;
+        int cols = map[0].length;
+        TileDTO[][] mapDTO = new TileDTO[rows][cols];
+        for (int y = 0; y < rows; y++) {
+            for (int x = 0; x < cols; x++) {
+                mapDTO[y][x] = toTileDTO(map[y][x]);
+            }
         }
-        dto.setNpcs(npcDTOs);
+        dto.setMap(mapDTO);
 
+        return dto;
+    }
+
+    private TileDTO toTileDTO(Tile tile) {
+        TileDTO dto = new TileDTO();
+        dto.setType(tile.getType());
+        dto.setHasWater(tile.isHasWater());
+
+//        if (tile.getCrop() != null) {
+//            dto.setCropName(tile.getCrop().getCropType().getName());
+//            dto.setCropStage(tile.getCrop().getStage());
+//        }
+//        if (tile.getTree() != null) {
+//            dto.setTreeType(tile.getTree().getTreeType().name());
+//        }
+//        if (tile.getItem() != null) {
+//            dto.setItemName(tile.getItem().getName());
+//        }
         return dto;
     }
 

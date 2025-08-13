@@ -74,7 +74,7 @@ public class GameMenu implements MenuInterface {
                         else System.out.println("now you must choose a map");
                     }
                 }
-                mapController.createMap();
+                mapController.createMap(App.getActiveGame());
             }
 
         } else if( (matcher = GameMenuCommands.LoadGame.getMatcher(input)) != null){

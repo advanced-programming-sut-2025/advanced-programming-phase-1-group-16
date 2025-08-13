@@ -45,6 +45,10 @@ public class C2SConnectionThread extends ConnectionThread {
 				C2SConnectionController.refreshOnlinePlayers(message);
 				yield true;
 			}
+            case GAME_STARTED -> {
+                C2SConnectionController.startGame(message);
+                yield true;
+            }
             default -> false;
         };
 	}

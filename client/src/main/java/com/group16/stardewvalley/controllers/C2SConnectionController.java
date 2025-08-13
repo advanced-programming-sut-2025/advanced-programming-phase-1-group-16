@@ -6,7 +6,13 @@ import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.Message;
 import com.group16.stardewvalley.app.C2SConnectionThread;
 import com.group16.stardewvalley.app.ClientApp;
+import com.group16.stardewvalley.controller.GameController;
+import com.group16.stardewvalley.model.DTO.GameClientDTO;
+import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.app.Game;
+import com.group16.stardewvalley.model.app.GameFactory;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
+import com.group16.stardewvalley.view.graphics.GameScreen;
 import com.group16.stardewvalley.view.menuGraphics.FarmSelectionScreen;
 import com.group16.stardewvalley.view.menuGraphics.OnlinePlayersView;
 
@@ -14,6 +20,21 @@ import java.io.File;
 import java.util.HashMap;
 
 public class C2SConnectionController {
+	public static void startGame(Message message) {
+		GameClientDTO gameDTO = message.getFromBody("gameInfo");
+
+		// حالا تبدیل به Game (سمت Core)
+		Game game = GameFactory.fromClientDTO(gameDTO);
+
+		// ثبت توی App
+		App.setActiveGame(game);
+		Gdx.app.postRunnable(() -> {
+			Main.getMain().getScreen().dispose();
+			Main.getMain().setScreen(new GameScreen());
+		});
+	}
+
+
 	public static void refreshOnlinePlayers(Message message) {
 		OnlinePlayersView.fetchOnlinePlayers(message);
 	}

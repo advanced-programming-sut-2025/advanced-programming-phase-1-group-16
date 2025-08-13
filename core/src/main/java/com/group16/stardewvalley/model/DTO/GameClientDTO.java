@@ -9,12 +9,16 @@ import java.util.List;
 
 public class GameClientDTO {
     private List<PlayerDTO> players;
-    private int currentPlayerIndex;
-    private TimeDate timeDate;
-    private WeatherCondition weatherCondition;
-    private WeatherCondition tomorrowWeatherCondition;
-    private Season season;
-    private List<NPCDTO> npcs;
+    private String creatorUsername;
+    private TileDTO[][] map;
+
+    public TileDTO[][] getMap() {
+        return map;
+    }
+
+    public void setMap(TileDTO[][] map) {
+        this.map = map;
+    }
 
     public List<PlayerDTO> getPlayers() {
         return players;
@@ -24,51 +28,11 @@ public class GameClientDTO {
         this.players = players;
     }
 
-    public int getCurrentPlayerIndex() {
-        return currentPlayerIndex;
+    public String getCreatorUsername() {
+        return creatorUsername;
     }
 
-    public void setCurrentPlayerIndex(int currentPlayerIndex) {
-        this.currentPlayerIndex = currentPlayerIndex;
-    }
-
-    public TimeDate getTimeDate() {
-        return timeDate;
-    }
-
-    public void setTimeDate(TimeDate timeDate) {
-        this.timeDate = timeDate;
-    }
-
-    public WeatherCondition getWeatherCondition() {
-        return weatherCondition;
-    }
-
-    public void setWeatherCondition(WeatherCondition weatherCondition) {
-        this.weatherCondition = weatherCondition;
-    }
-
-    public WeatherCondition getTomorrowWeatherCondition() {
-        return tomorrowWeatherCondition;
-    }
-
-    public void setTomorrowWeatherCondition(WeatherCondition tomorrowWeatherCondition) {
-        this.tomorrowWeatherCondition = tomorrowWeatherCondition;
-    }
-
-    public Season getSeason() {
-        return season;
-    }
-
-    public void setSeason(Season season) {
-        this.season = season;
-    }
-
-    public List<NPCDTO> getNpcs() {
-        return npcs;
-    }
-
-    public void setNpcs(List<NPCDTO> npcs) {
-        this.npcs = npcs;
+    public void setCreatorUsername(String creatorUsername) {
+        this.creatorUsername = creatorUsername;
     }
 }

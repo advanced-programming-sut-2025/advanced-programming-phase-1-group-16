@@ -38,6 +38,10 @@ public class LoginMenuController  {
 
         Message response = App.sendAndWait(message);
 
+        if (response == null) {
+            return new Result(false, "Login failed");
+        }
+
         String correcrtPassword = response.getFromBody("password");
         String nickName = response.getFromBody("nickName");
         String email = response.getFromBody("email");
@@ -55,10 +59,6 @@ public class LoginMenuController  {
         User user = new User(username, correcrtPassword,nickName,email,gender);
         user.setSecurityAnswer(answer);
         user.setUserSecurityQuestion(securityQuestion);
-
-        if (response == null) {
-            return new Result(false, "Login failed");
-        }
 
         if(! (boolean) response.getFromBody("success")) {
             return new Result(false, "username doesn't exist!");

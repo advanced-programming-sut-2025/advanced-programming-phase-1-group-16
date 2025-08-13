@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.group16.stardewvalley.Message;
 import com.group16.stardewvalley.model.app.App;
 
 import java.util.HashMap;
@@ -60,6 +61,15 @@ public class FarmSelectionScreen implements Screen {
                 messageBody.put("choice", choice);
                 messageBody.put("username", App.getLoggedInUser().getUsername());
                 messageBody.put("farmType", smallFarmCheckBox.isChecked());
+
+                Message response = App.sendAndWait(new Message(messageBody, Message.Type.FARM_SELECTION_READY));
+                if (response != null &&
+                    !(boolean) response.getFromBody("success")) {
+                    System.out.println((String) response.getFromBody("error"));
+                } else if (response != null &&
+                    (boolean) response.getFromBody("success")) {
+                    System.out.println("successful");
+                }
             }
             return false;
         });
