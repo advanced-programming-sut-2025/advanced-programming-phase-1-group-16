@@ -1,17 +1,42 @@
 // PlayerDTO.java
 package com.group16.stardewvalley.model.DTO;
 
-import com.group16.stardewvalley.model.map.Location;
-
 public class PlayerDTO {
     private String username;
     private String heroName; // از user یا hero
     private int x;
     private int y;
     private String characterPath;
+    private int farmX;
+    private int farmY;
+    private String farmType;
 
 
     public PlayerDTO() {
+    }
+
+    public String getFarmType() {
+        return farmType;
+    }
+
+    public void setFarmType(String farmType) {
+        this.farmType = farmType;
+    }
+
+    public int getFarmX() {
+        return farmX;
+    }
+
+    public void setFarmX(int farmX) {
+        this.farmX = farmX;
+    }
+
+    public int getFarmY() {
+        return farmY;
+    }
+
+    public void setFarmY(int farmY) {
+        this.farmY = farmY;
     }
 
     public String getUsername() {

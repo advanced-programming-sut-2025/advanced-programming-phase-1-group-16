@@ -10,15 +10,6 @@ import java.util.List;
 public class GameClientDTO {
     private List<PlayerDTO> players;
     private String creatorUsername;
-    private TileDTO[][] map;
-
-    public TileDTO[][] getMap() {
-        return map;
-    }
-
-    public void setMap(TileDTO[][] map) {
-        this.map = map;
-    }
 
     public List<PlayerDTO> getPlayers() {
         return players;

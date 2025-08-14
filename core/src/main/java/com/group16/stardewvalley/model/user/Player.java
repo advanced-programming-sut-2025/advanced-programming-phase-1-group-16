@@ -79,7 +79,7 @@ public class Player {
     private float speed = 1;
     private boolean moving = false;
     private Direction currentDirection = Direction.DOWN;
-
+    private String graphicPath;
 
     // مقدار های ماکسیمم هر توانایی رو هم در گیم ذخیره کردم سر جمع شه
     // تابعی برای بالا بردن لول شخص در این موارد نوشته نشده است
@@ -115,15 +115,21 @@ public class Player {
         learnRecipe(FoodFactory.tripleShotEspresso());
     }
 
-    //TODO یادت باشه ست کنی اینو وقتی بازی جدید میسازی
-
-
     public PlayerGraphics getPlayerGraphics() {
         return playerGraphics;
     }
 
     public void setPlayerGraphics(String spritePath, int frameWidth, int frameHeight) {
         this.playerGraphics = new PlayerGraphics(this, spritePath, frameWidth, frameHeight);
+        this.graphicPath = spritePath;
+    }
+
+    public String getGraphicPath() {
+        return graphicPath;
+    }
+
+    public void setGraphicPath(String graphicPath) {
+        this.graphicPath = graphicPath;
     }
 
     public HomeMap getHomeMap() {

@@ -1,11 +1,13 @@
 package com.group16.stardewvalley.model.app;
 
+import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.Message;
 import com.group16.stardewvalley.model.menu.Menu;
 import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.model.user.User;
 import com.group16.stardewvalley.model.menu.Menu;
 import com.group16.stardewvalley.network.NetworkManager;
+import com.group16.stardewvalley.view.graphics.GameScreen;
 
 import java.util.ArrayList;
 

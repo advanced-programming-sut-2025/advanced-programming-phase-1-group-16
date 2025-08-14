@@ -40,6 +40,9 @@ public class Main extends Game {
     }
 
     public static Main getMain() {
+        if (main == null) {
+            main = new Main();
+        }
         return main;
     }
 

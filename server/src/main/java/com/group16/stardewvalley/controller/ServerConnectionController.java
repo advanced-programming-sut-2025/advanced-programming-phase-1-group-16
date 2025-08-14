@@ -396,13 +396,19 @@ public class ServerConnectionController {
         };
 
         if (game.allReady()) {
-            mapController.createMap(game);
+            mapController.setFarmsPosition(game);
             int index = 0;
             for (Player player1 : game.getPlayers()) {
-                player1.setPlayerGraphics(characterPaths[index], 48, 64);
+                player1.setGraphicPath(characterPaths[index]);
                 index++;
             }
-            GameClientDTO gameClientDTO = game.toClientDTO();
+            GameClientDTO gameClientDTO;
+            try {
+                gameClientDTO = game.toClientDTO();
+            } catch (Exception e) {
+                System.err.println("error: " + e.getMessage());
+                return buildErrorResponse(e.getMessage(), Message.Type.FARM_SELECTION_READY);
+            }
             HashMap<String, Object> body = new HashMap<>();
             body.put("success", true);
             body.put("gameInfo", gameClientDTO);

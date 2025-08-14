@@ -1,31 +1,25 @@
 package com.group16.stardewvalley.model.app;
 
-import com.group16.stardewvalley.Message;
 import com.group16.stardewvalley.controller.MessageFactory;
+import com.group16.stardewvalley.controller.map.MapController;
+import com.group16.stardewvalley.controller.menu.GameMenuController;
 import com.group16.stardewvalley.model.DTO.GameClientDTO;
 import com.group16.stardewvalley.model.DTO.PlayerDTO;
 import com.group16.stardewvalley.model.DTO.TileDTO;
-import com.group16.stardewvalley.model.agriculture.Crop;
-import com.group16.stardewvalley.model.agriculture.CropType;
-import com.group16.stardewvalley.model.agriculture.Tree;
-import com.group16.stardewvalley.model.agriculture.TreeType;
-import com.group16.stardewvalley.model.items.Item;
+import com.group16.stardewvalley.model.map.Farm;
+import com.group16.stardewvalley.model.map.FarmType;
 import com.group16.stardewvalley.model.map.Pos;
 import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.user.Player;
-import com.group16.stardewvalley.model.user.SecurityQuestions;
 import com.group16.stardewvalley.model.user.User;
 
-import javax.swing.text.Position;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class GameFactory {
 
     public static Game fromClientDTO(GameClientDTO dto) {
+        GameMenuController gameMenuController = new GameMenuController();
 
-        // بازیکنان
         ArrayList<Player> players = new ArrayList<>();
         Player creator = null;
         for (PlayerDTO playerData : dto.getPlayers()) {
@@ -35,19 +29,22 @@ public class GameFactory {
             Player player = new Player(user);
             player.setPosition(new Pos(playerData.getX(), playerData.getY()));
             player.setPlayerGraphics(playerData.getCharacterPath(), 48, 64);
+            if (playerData.getFarmType().equalsIgnoreCase("small")){
+                gameMenuController.chooseFarm(player, "1");
+            } else {
+                gameMenuController.chooseFarm(player, "2");
+            }
+            player.getFarm().setStartPosition(new Pos(playerData.getX(), playerData.getY()));
+            //FarmType farmType = FarmType.valueOf(playerData.getFarmType());
+            //player.setFarm(new Farm(farmType));
+            //gameMenuController.randomItems(player.getFarm());
             if (username.equals(dto.getCreatorUsername())) {
                 creator = player;
             }
         }
         Game game = new Game(creator, players);
-
-        Tile[][] map = new Tile[dto.getMap().length][dto.getMap()[0].length];
-        for (int y = 0; y < dto.getMap().length; y++) {
-            for (int x = 0; x < dto.getMap()[y].length; x++) {
-                map[y][x] = fromTileDTO(dto.getMap()[y][x]);
-            }
-        }
-        game.setMap(map);
+        MapController mapController = new MapController();
+        mapController.createMap(game);
 
         return game;
     }

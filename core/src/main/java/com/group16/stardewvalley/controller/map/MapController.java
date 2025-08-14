@@ -24,19 +24,9 @@ import static com.group16.stardewvalley.view.graphics.GameScreen.TILE_SIZE;
 
 public class MapController {
 
-    public void createMap(Game game) {
+    public void setFarmsPosition(Game game){
         int height = game.getMapHeight();
         int width = game.getMapWidth();
-        Tile[][] map = new Tile[height][width];
-
-        for (int i = 0; i < height; i++) {
-            int flippedY = height - 1 - i;
-            for (int j = 0; j < width; j++) {
-                map[flippedY][j] = new Tile(TileType.Ground);
-            }
-        }
-
-        // مشخص کردن نقطه شروع مزرعه
         Pos[] positions = {
             new Pos(5, 5),
             new Pos(width - 80, 5),
@@ -54,13 +44,26 @@ public class MapController {
                 y = r.nextInt(player.getFarm().getType().getHeight());
             } while (player.getFarm().getType().getTiles()[y][x] != TileType.Cottage);
 
-            // y رو برعکس کن چون map برعکس شده
             int flippedY = height - 1 - (player.getFarm().getStartPosition().getY() + y);
             player.setPosition(new Pos((player.getFarm().getStartPosition().getX() + x), flippedY));
             index++;
         }
+    }
+
+    public void createMap(Game game) {
+        int height = game.getMapHeight();
+        int width = game.getMapWidth();
+        Tile[][] map = new Tile[height][width];
+
+        for (int i = 0; i < height; i++) {
+            int flippedY = height - 1 - i;
+            for (int j = 0; j < width; j++) {
+                map[flippedY][j] = new Tile(TileType.Ground);
+            }
+        }
 
         for (Player player : game.getPlayers()) {
+            if (player.getFarm().getStartPosition() == null) setFarmsPosition(game);
             for (int i = 0; i < player.getFarm().getType().getHeight() - 1; i++) {
                 int flippedY = height - 1 - (i + player.getFarm().getStartPosition().getY());
                 for (int j = 0; j < player.getFarm().getType().getWidth() - 1; j++) {

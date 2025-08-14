@@ -309,51 +309,29 @@ public class Game {
     public GameClientDTO toClientDTO() {
         GameClientDTO dto = new GameClientDTO();
 
-        // بازیکنان
+        List<PlayerDTO> playerDTOs = getPlayerDTOS();
+        dto.setPlayers(playerDTOs);
+
+        dto.setCreatorUsername(this.creator.getUsername());
+
+        System.out.println("game info create successfully");
+        return dto;
+    }
+
+    private List<PlayerDTO> getPlayerDTOS() {
         List<PlayerDTO> playerDTOs = new ArrayList<>();
         for (Player player : players) {
             PlayerDTO pd = new PlayerDTO();
             pd.setUsername(player.getUser().getUsername());
             pd.setX(player.getPosition().getX());
             pd.setY(player.getPosition().getY());
-            pd.setCharacterPath(player.getPlayerGraphics().getSpritePath());
+            pd.setCharacterPath(player.getGraphicPath());
+            pd.setFarmX(player.getFarm().getStartPosition().getX());
+            pd.setFarmY(player.getFarm().getStartPosition().getY());
+            pd.setFarmType(player.getFarm().getType().name());
             playerDTOs.add(pd);
         }
-        dto.setPlayers(playerDTOs);
-
-        dto.setCreatorUsername(this.creator.getUsername());
-
-
-        // مپ
-        int rows = map.length;
-        int cols = map[0].length;
-        TileDTO[][] mapDTO = new TileDTO[rows][cols];
-        for (int y = 0; y < rows; y++) {
-            for (int x = 0; x < cols; x++) {
-                mapDTO[y][x] = toTileDTO(map[y][x]);
-            }
-        }
-        dto.setMap(mapDTO);
-
-        return dto;
-    }
-
-    private TileDTO toTileDTO(Tile tile) {
-        TileDTO dto = new TileDTO();
-        dto.setType(tile.getType());
-        dto.setHasWater(tile.isHasWater());
-
-//        if (tile.getCrop() != null) {
-//            dto.setCropName(tile.getCrop().getCropType().getName());
-//            dto.setCropStage(tile.getCrop().getStage());
-//        }
-//        if (tile.getTree() != null) {
-//            dto.setTreeType(tile.getTree().getTreeType().name());
-//        }
-//        if (tile.getItem() != null) {
-//            dto.setItemName(tile.getItem().getName());
-//        }
-        return dto;
+        return playerDTOs;
     }
 
 

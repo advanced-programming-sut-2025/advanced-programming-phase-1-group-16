@@ -2,6 +2,7 @@ package com.group16.stardewvalley.controllers;
 
 
 import com.badlogic.gdx.Gdx;
+import com.google.gson.Gson;
 import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.Message;
 import com.group16.stardewvalley.app.C2SConnectionThread;
@@ -20,22 +21,24 @@ import java.io.File;
 import java.util.HashMap;
 
 public class C2SConnectionController {
-	public static void startGame(Message message) {
-		GameClientDTO gameDTO = message.getFromBody("gameInfo");
-
-		// حالا تبدیل به Game (سمت Core)
-		Game game = GameFactory.fromClientDTO(gameDTO);
-
-		// ثبت توی App
-		App.setActiveGame(game);
-		Gdx.app.postRunnable(() -> {
-			Main.getMain().getScreen().dispose();
-			Main.getMain().setScreen(new GameScreen());
-		});
-	}
+    public static void startGame(Message message) {
+        Object gameInfoObj = message.getFromBody("gameInfo"); // بدون cast
+        String json = new Gson().toJson(gameInfoObj);
+        GameClientDTO gameDTO = new Gson().fromJson(json, GameClientDTO.class);
 
 
-	public static void refreshOnlinePlayers(Message message) {
+        // حالا ادامه‌ی کد
+        Game game = GameFactory.fromClientDTO(gameDTO);
+        App.setActiveGame(game);
+        Gdx.app.postRunnable(() -> {
+            Main.getMain().getScreen().dispose();
+            Main.getMain().setScreen(new GameScreen());
+        });
+    }
+
+
+
+    public static void refreshOnlinePlayers(Message message) {
 		OnlinePlayersView.fetchOnlinePlayers(message);
 	}
 
