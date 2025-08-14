@@ -239,12 +239,6 @@ public class GameController {
                     isCraftingMenuOpen = false;
                 }
                 return true;
-
-            //TODO: cheat codes:
-            case Input.Keys.TAB:
-                //time cheat code: +1 day
-                TimeDate.getInstance(App.getActiveGame()).advanceDateCheat(1);
-                return true;
             case Input.Keys.CAPS_LOCK:
                 //next turn cheat code
                 App.getActiveGame().nextTurn();
@@ -266,12 +260,15 @@ public class GameController {
                 return true;
             case Input.Keys.E:
             case Input.Keys.ESCAPE:
-                //TODO: for inventory menu
+                GameScreen.getGameScreen().toggleShowInventory();
                 return true;
             case Input.Keys.F:
                 System.out.println(agricultureController.fertilizePlant("speed gro", "up"));
                 return true;
-
+            case Input.Keys.TAB:
+                App.getActiveGame().getTimeDate().advanceDateCheat(1);
+                TimeDate.getInstance(App.getActiveGame()).advanceDateCheat(1);
+                return true;
             case Input.Keys.O:
                 if (player.getCurrentThing() != null &&
                     player.getCurrentThing() instanceof Food food) {

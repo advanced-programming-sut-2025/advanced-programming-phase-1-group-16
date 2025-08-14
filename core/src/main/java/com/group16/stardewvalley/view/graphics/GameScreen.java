@@ -116,7 +116,7 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public void show() {
         stage = new Stage(new ScreenViewport());
-//        Gdx.input.setInputProcessor(stage);
+        Gdx.input.setInputProcessor(stage);
         batch = Main.getBatch();
         textureManager = new TileTextureManager();
         tileRenderer = new TileRenderer();
@@ -228,12 +228,12 @@ public class GameScreen implements Screen, InputProcessor {
         batch.end();
         // === Draw stage UI ===
         if (showTools) {
-            App.getActiveGame().getCurrentPlayer().getInventory().showTools(stage, skin);
+            App.getActiveGame().getCurrentPlayer().getInventory().showTools(stage, new Skin(Gdx.files.internal("skin.json")));
         }
 
         if (showInventory) {
             if (!inventoryBuilt) {
-                App.getActiveGame().getCurrentPlayer().getInventory().showInventory(stage, skin, controller.getDragAndDrop());
+                App.getActiveGame().getCurrentPlayer().getInventory().showInventory(stage, new Skin(Gdx.files.internal("skin.json")), controller.getDragAndDrop());
                 inventoryBuilt = true;
             }
         }
@@ -270,6 +270,7 @@ public class GameScreen implements Screen, InputProcessor {
             TimeDate.getInstance(App.getActiveGame()).advanceTenMinutes();
 
             tenMinuteCounter++;
+            Main.getMain().getGameScreen().getStage().clear();
             totalGameTime = 0f;
 
             if (tenMinuteCounter >= 6) {
