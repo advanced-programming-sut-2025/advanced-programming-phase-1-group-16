@@ -161,7 +161,7 @@ public class FridgeMenu extends Window {
                         App.getActiveGame().getCurrentPlayer().getInventory().removeItem(item, 1);
                         createIngredientGrid();
                     } else {
-                        Main.getMain().getGameScreen().getController().showErrorPopup("You can only put food ingredients into the fridge!");
+                        GameScreen.getGameScreen().getController().showErrorPopup("You can only put food ingredients into the fridge!");
                     }
                 }
             });
@@ -198,7 +198,7 @@ public class FridgeMenu extends Window {
                     App.getActiveGame().getCurrentPlayer().getInventory().removeItem(item, 1);
                     createIngredientGrid();
                 } else {
-                    Main.getMain().getGameScreen().getController().showErrorPopup("You can only put food ingredients into the fridge!");
+                    GameScreen.getGameScreen().getController().showErrorPopup("You can only put food ingredients into the fridge!");
                 }
             }
         });
@@ -233,7 +233,7 @@ public class FridgeMenu extends Window {
     public void act(float delta) {
         super.act(delta);
         if (tooltip.isVisible()) {
-            Vector2 mousePos = Main.getMain().getGameScreen().getStage()
+            Vector2 mousePos = GameScreen.getGameScreen().getStage()
                     .screenToStageCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
             tooltip.setPosition(mousePos.x + 10, mousePos.y - 10);
         }

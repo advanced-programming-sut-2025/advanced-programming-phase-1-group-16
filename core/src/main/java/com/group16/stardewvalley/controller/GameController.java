@@ -125,7 +125,7 @@ public class GameController {
             case Input.Keys.NUM_7:
             case Input.Keys.NUM_8:
             case Input.Keys.NUM_9:
-                Main.getMain().getGameScreen().toggleShowInventory();
+                GameScreen.getGameScreen().toggleShowInventory();
                 return true;
             case Input.Keys.UP:
                 player.setCurrentDirection(Direction.UP);
@@ -271,9 +271,7 @@ public class GameController {
             case Input.Keys.F:
                 System.out.println(agricultureController.fertilizePlant("speed gro", "up"));
                 return true;
-            case Input.Keys.TAB:
-                App.getActiveGame().getTimeDate().advanceDateCheat(1);
-                return true;
+
             case Input.Keys.O:
                 if (player.getCurrentThing() != null &&
                     player.getCurrentThing() instanceof Food food) {
@@ -287,7 +285,7 @@ public class GameController {
                 }
                 return false;
             case Input.Keys.T:
-                Main.getMain().getGameScreen().toggleShowTools();
+                GameScreen.getGameScreen().toggleShowTools();
                 return true;
             case Input.Keys.F4:
                 return true;
@@ -416,32 +414,6 @@ public class GameController {
         GameScreen.getGameScreen().getStage().addActor(label);
     }
 
-    public void handleRightClick(int screenX, int screenY) {
-        Vector3 worldCoordinates = camera.unproject(new Vector3(screenX, screenY, 0));
-        int tileX = (int) worldCoordinates.x / TILE_SIZE;
-        int tileY = (int) worldCoordinates.y / TILE_SIZE;
-
-        Player player = App.getActiveGame().getCurrentPlayer();
-        boolean isAdjacent = (Math.abs(player.getX() - tileX) + Math.abs(player.getY() - tileY) ) == 1;
-        Tree tree = App.getActiveGame().getMap()[tileY][tileX].getTree();
-        if (isAdjacent && tree != null) {
-            if (tree.HasFruit()) {
-                tree.handpickFruit();
-                String fruitName = tree.getTreeType().getFruitName().toUpperCase().replace(" ", "_");
-                Ingredient ingredient = findIngredient(fruitName);
-                if (ingredient != null) {
-                    Result result = player.getInventory().addItem(new FoodIngredient(fruitName, tree.getFruitSellPrice(), ingredient), 4);
-                }
-            }
-        }
-        else if (App.getActiveGame().getMap()[tileY][tileX].getType().equals(TileType.Cottage) &&
-                !player.isAtHome()) {
-            player.setHomeMap(new HomeMap(player));
-            player.setAtHome(true);
-        } else if (player.isAtHome()) {
-            player.setAtHome(false);
-        }
-    }
 
     public void handleLeftClick(int screenX, int screenY) {
         Player player = App.getActiveGame().getCurrentPlayer();
@@ -460,7 +432,7 @@ public class GameController {
                             player.getFarm().getRefrigerator(),
                             dragAndDrop
                     );
-                    Main.getMain().getGameScreen().getStage().addActor(fridgeMenu);
+                    GameScreen.getGameScreen().getStage().addActor(fridgeMenu);
                     isFridgeMenuOpen = true;
                 } else {
                     fridgeMenu.remove();
@@ -479,7 +451,7 @@ public class GameController {
         Dialog dialog = new Dialog("error", GameAssetManager.getGameAssetManager().getSkin());
         dialog.text(message);
         dialog.button("Ok");
-        dialog.show(Main.getMain().getGameScreen().getStage());
+        dialog.show(GameScreen.getGameScreen().getStage());
     }
 
 }

@@ -34,7 +34,6 @@ import com.group16.stardewvalley.model.crafting.Crafting;
 import com.group16.stardewvalley.model.food.FoodIngredient;
 import com.group16.stardewvalley.model.food.Ingredient;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
-import com.group16.stardewvalley.model.graphics.GameHUD;
 import com.group16.stardewvalley.model.graphics.TileRenderer;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.map.*;
@@ -44,16 +43,9 @@ import com.group16.stardewvalley.model.shops.CarpentersShop;
 import com.group16.stardewvalley.model.time.TimeDate;
 import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.model.tools.Gadget;
-
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-
 import com.group16.stardewvalley.view.menuGraphics.PreGameMenuView;
 
-import javax.swing.text.Position;
 
-import java.util.Iterator;
 
 import static com.group16.stardewvalley.controller.map.MapController.isPlayerInsidePlace;
 import static com.group16.stardewvalley.controller.menu.HomeMenuController.findIngredient;
@@ -78,10 +70,11 @@ public class GameScreen implements Screen, InputProcessor {
     private CarpentersShop carpentersShop = new CarpentersShop();
     private Crafting craftingController = new Crafting();
     Stage uiStage = new Stage(new ScreenViewport());
+
+    private Skin skin = GameAssetManager.getGameAssetManager().getSkin();
     Table toolTable = new Table(skin);
     private Stage stage;
 
-    private Skin skin = GameAssetManager.getGameAssetManager().getSkin();
     private Table pauseMenu;
     private boolean isPaused = false;
     private GameHUD gameHUD;
@@ -94,7 +87,7 @@ public class GameScreen implements Screen, InputProcessor {
     private Stage inventoryStage;
     private boolean inventoryBuilt = false;
 
-    public GameScreen() {
+    private GameScreen() {
         this.controller = new GameController();
         camera = new OrthographicCamera();
         viewport = new FillViewport(30 * TILE_SIZE, 20 * TILE_SIZE, camera);
@@ -390,7 +383,7 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (button == Input.Buttons.RIGHT) {
-            controller.handleRightClick(screenX, screenY);
+            handleRightClick(screenX, screenY);
             return true;
         } else if (button == Input.Buttons.LEFT) {
             controller.handleLeftClick(screenX, screenY);
@@ -400,13 +393,13 @@ public class GameScreen implements Screen, InputProcessor {
     }
 
 
+
     private void handleRightClick(int screenX, int screenY) {
         Vector3 worldCoordinates = camera.unproject(new Vector3(screenX, screenY, 0));
         int tileX = (int) worldCoordinates.x / TILE_SIZE;
         int tileY = (int) worldCoordinates.y / TILE_SIZE;
         float clickX = worldCoordinates.x;
         float clickY = worldCoordinates.y;
-
         //tileX and tileY are the coordination which user clicked on it
 
         Player player = App.getActiveGame().getCurrentPlayer();
@@ -448,9 +441,6 @@ public class GameScreen implements Screen, InputProcessor {
             }
         }
 
-//        for(Item item : App.getActiveGame().getCurrentPlayer().getInventory().getItems().keySet()){
-//
-//        }
 
         Tree tree = App.getActiveGame().getMap()[tileY][tileX].getTree();
         if (isAdjacent && tree != null) {
@@ -462,7 +452,8 @@ public class GameScreen implements Screen, InputProcessor {
                     Result result = player.getInventory().addItem(new FoodIngredient(fruitName, tree.getFruitSellPrice(), ingredient), 4);
                 }
             }
-        } else if (App.getActiveGame().getMap()[tileY][tileX].getType().equals(TileType.Cottage) &&
+        }
+        else if (App.getActiveGame().getMap()[tileY][tileX].getType().equals(TileType.Cottage) &&
             !player.isAtHome()) {
             player.setHomeMap(new HomeMap(player));
             player.setAtHome(true);
@@ -595,8 +586,6 @@ public class GameScreen implements Screen, InputProcessor {
         }
     }
 
-
-}
 
     private void buildToolTable() {
         toolTable.clear();
