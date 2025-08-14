@@ -127,7 +127,7 @@ public class TileRenderer {
         if(tile.getItem() instanceof CraftItem craftItem){
             // Draw crafting texture
             Texture craftingTexture = textureManager.getCraftingTexture(craftItem.getRecipe());
-            float scale = 1f;
+            float scale = 0.3f;
             int drawWidth = (int) (craftingTexture.getWidth() * scale);
             int drawHeight = (int) (craftingTexture.getHeight() * scale);
             batch.draw(craftingTexture, drawX, drawY, drawWidth, drawHeight);

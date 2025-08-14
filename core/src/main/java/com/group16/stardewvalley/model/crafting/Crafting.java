@@ -52,7 +52,7 @@ public class Crafting {
         Player player = App.getActiveGame().getCurrentPlayer();
         Map<Item, Integer> inventoryItems = player.getInventory().getItems();  // Inventory content
 
-        if (!isPlayerInCottage(player)) {
+        if (!isPlayerInCottage(player) && x==-1 && y==-1) {
             return new Result(false, "You are not inside your house!");
         }
 
@@ -91,12 +91,13 @@ public class Crafting {
                         .mapToInt(inventoryItems::get)
                         .sum();
 
-                    if (availableAmount < requiredAmount) {
-                        return new Result(false, "you don't have enough ingredients");
-                    }
+//                    if (availableAmount < requiredAmount) {
+//                        return new Result(false, "you don't have enough ingredients");
+//                    }
                 }
 
                 // All ingredients are present, proceed to craft
+                //CRAFTTTTTT + ADD TO PLAYER'S INVENTORY
                 CraftItem newCraftItem = new CraftItem(recipe.getName(), 0, recipe);
                 player.getInventory().addItem(newCraftItem, 1);
 
@@ -132,13 +133,28 @@ public class Crafting {
                 }
 
                 if (x == -1 && y == -1) {
-                    return new Result(true, "Item ready to place. Click to select location.");
+                    return new Result(true, "Item ready to place. Right click to select location.");
                 }
 
-                // Get texture dimensions
+                float scale = 0.3f; // same as in render
                 Texture texture = GameAssetManager.getGameAssetManager().getCraftingTexture(newCraftItem.getRecipe());
-                int textureWidthTiles = (int) Math.ceil(texture.getWidth() / (float) TILE_SIZE);
-                int textureHeightTiles = (int) Math.ceil(texture.getHeight() / (float) TILE_SIZE);
+
+                // Apply scale to pixel dimensions
+                float scaledPixelWidth = texture.getWidth() * scale;
+                float scaledPixelHeight = texture.getHeight() * scale;
+
+                // Convert to tile dimensions
+                int textureWidthTiles = (int) Math.ceil(scaledPixelWidth / TILE_SIZE);
+                int textureHeightTiles = (int) Math.ceil(scaledPixelHeight / TILE_SIZE);
+
+                // check if ground is empty
+                for (int i = y; i < y + textureHeightTiles; i++) {
+                    for (int j = x; j < x + textureWidthTiles; j++) {
+                        if (!App.getActiveGame().getMap()[i][j].isTileEmpty()) { // also fixed logic to check "not empty"
+                            return new Result(false, "There is something on the ground at (" + j + ", " + i + ")");
+                        }
+                    }
+                }
 
                 // Place crafted item with origin flag
                 for (int row = 0; row < textureHeightTiles; row++) {
@@ -153,6 +169,7 @@ public class Crafting {
                         }
                     }
                 }
+
 
                 return new Result(true, "successfully crafted " + recipe.getName());
             }

@@ -26,11 +26,13 @@ import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.agriculture.Tree;
 import com.group16.stardewvalley.model.animal.Animal;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.crafting.CraftItem;
 import com.group16.stardewvalley.model.crafting.Crafting;
 import com.group16.stardewvalley.model.food.FoodIngredient;
 import com.group16.stardewvalley.model.food.Ingredient;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.graphics.TileRenderer;
+import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.map.*;
 import com.group16.stardewvalley.model.map.TileTextureManager;
 import com.group16.stardewvalley.model.shops.Building;
@@ -63,7 +65,8 @@ public class GameScreen implements Screen, InputProcessor {
     private OrthographicCamera miniMapCamera;
     private Viewport miniMapViewport;
     private ShopMenuManager shopMenuManager;
-    private Crafting craftingController;
+    private CarpentersShop carpentersShop = new CarpentersShop();
+    private Crafting craftingController = new Crafting();
     private Stage stage;
 
     private Skin skin = GameAssetManager.getGameAssetManager().getSkin();
@@ -71,7 +74,6 @@ public class GameScreen implements Screen, InputProcessor {
     private boolean isPaused = false;
     private GameHUD gameHUD;
 
-    private CarpentersShop carpentersShop = new CarpentersShop();
 
     public static final int TILE_SIZE = 17;
 
@@ -361,6 +363,24 @@ public class GameScreen implements Screen, InputProcessor {
                 }
             }
         }
+
+        //  Check CraftItems for ArtisanMenu
+        Tile clickedTile = App.getActiveGame().getMap()[tileY][tileX];
+        if (clickedTile.getItem() instanceof CraftItem craftItem && clickedTile.isBuildingOrigin()) {
+            if (isAdjacent) {
+                ArtisanMenu artisanMenu = new ArtisanMenu(skin, craftItem);
+                artisanMenu.setPosition(
+                    (stage.getWidth() - artisanMenu.getWidth()) / 2,
+                    (stage.getHeight() - artisanMenu.getHeight()) / 2
+                );
+                stage.addActor(artisanMenu);
+                return;
+            }
+        }
+
+//        for(Item item : App.getActiveGame().getCurrentPlayer().getInventory().getItems().keySet()){
+//
+//        }
 
         Tree tree = App.getActiveGame().getMap()[tileY][tileX].getTree();
         if (isAdjacent && tree != null) {
