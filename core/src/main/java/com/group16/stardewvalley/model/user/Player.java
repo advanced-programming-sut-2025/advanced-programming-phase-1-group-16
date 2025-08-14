@@ -1,5 +1,7 @@
 package com.group16.stardewvalley.model.user;
 
+import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
+import com.group16.stardewvalley.controller.GameController;
 import com.group16.stardewvalley.model.Inventory;
 import com.group16.stardewvalley.model.NPC.NPCInteraction;
 import com.group16.stardewvalley.model.Request;
@@ -491,7 +493,7 @@ public class Player {
         if (energy == 0.0) faint();
     }
 
-    public Tile getLocation() {
+    public Tile getCurrentTile() {
         // طبیعتا باید  x, y این یارو هم معتبر باشه
         if (this.getX() < App.getActiveGame().getMapHeight() && this.getY() < App.getActiveGame().getMapWidth()) {
             return App.getActiveGame().getMap()[this.getX()][this.getY()];
@@ -566,8 +568,8 @@ public class Player {
 
     public void faint(){
         this.isFainted = true;
+        playerGraphics.startFainting();
         this.energy = 0;
-        App.getActiveGame().nextTurn();
     }
 
     public String getUsername() {

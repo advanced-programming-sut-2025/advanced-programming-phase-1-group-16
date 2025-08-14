@@ -9,6 +9,7 @@ import com.group16.stardewvalley.model.food.Ingredient;
 import com.group16.stardewvalley.model.menu.Menu;
 import com.group16.stardewvalley.model.user.Player;
 
+import java.util.Objects;
 import java.util.Set;
 
 public class HomeMenuController {
@@ -71,7 +72,8 @@ public class HomeMenuController {
         }
         reduceIngredient(food);
         App.getActiveGame().getCurrentPlayer().decreaseEnergy(3);
-        return App.getActiveGame().getCurrentPlayer().getInventory().addItem(new Food(food), 1);
+        Food food2 = App.getActiveGame().getCurrentPlayer().getInventory().getFood(food.getName());
+        return App.getActiveGame().getCurrentPlayer().getInventory().addItem(Objects.requireNonNullElseGet(food2, () -> new Food(food)), 1);
     }
 
     public Result eat(String foodName) {
@@ -80,10 +82,9 @@ public class HomeMenuController {
             return new Result(false, "You don't have this food in your inventory!");
         }
         Player player = App.getActiveGame().getCurrentPlayer();
-        player.getInventory().getItems().remove(foodName);
         doBuffer(food.getBuff());
         player.increaseEnergy(food.getEnergy());
-        App.getActiveGame().getCurrentPlayer().getInventory().getItems().put(food, -1);
+        player.getInventory().getItems().put(food, -1);
         return new Result(true, "You have eaten " + foodName + "!");
     }
 

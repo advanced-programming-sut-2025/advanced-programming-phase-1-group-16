@@ -3,12 +3,15 @@ package com.group16.stardewvalley.view.graphics;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -31,6 +34,7 @@ import com.group16.stardewvalley.model.crafting.Crafting;
 import com.group16.stardewvalley.model.food.FoodIngredient;
 import com.group16.stardewvalley.model.food.Ingredient;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
+import com.group16.stardewvalley.model.graphics.GameHUD;
 import com.group16.stardewvalley.model.graphics.TileRenderer;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.map.*;
@@ -39,6 +43,12 @@ import com.group16.stardewvalley.model.shops.Building;
 import com.group16.stardewvalley.model.shops.CarpentersShop;
 import com.group16.stardewvalley.model.time.TimeDate;
 import com.group16.stardewvalley.model.user.Player;
+import com.group16.stardewvalley.model.tools.Gadget;
+
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+
 import com.group16.stardewvalley.view.menuGraphics.PreGameMenuView;
 
 import javax.swing.text.Position;
@@ -67,6 +77,8 @@ public class GameScreen implements Screen, InputProcessor {
     private ShopMenuManager shopMenuManager;
     private CarpentersShop carpentersShop = new CarpentersShop();
     private Crafting craftingController = new Crafting();
+    Stage uiStage = new Stage(new ScreenViewport());
+    Table toolTable = new Table(skin);
     private Stage stage;
 
     private Skin skin = GameAssetManager.getGameAssetManager().getSkin();
@@ -76,8 +88,13 @@ public class GameScreen implements Screen, InputProcessor {
 
 
     public static final int TILE_SIZE = 17;
+    private static boolean showTools;
+    private static boolean showInventory;
+    private Stage toolStage;
+    private Stage inventoryStage;
+    private boolean inventoryBuilt = false;
 
-    private GameScreen() {
+    public GameScreen() {
         this.controller = new GameController();
         camera = new OrthographicCamera();
         viewport = new FillViewport(30 * TILE_SIZE, 20 * TILE_SIZE, camera);
@@ -88,8 +105,11 @@ public class GameScreen implements Screen, InputProcessor {
 
         miniMapViewport = new FillViewport(mapPixelWidth, mapPixelHeight, miniMapCamera);
         miniMapViewport.apply();
-
-
+        toolTable.top().left().pad(10);
+        toolTable.setFillParent(true);
+        toolStage = new Stage(new ScreenViewport());
+        toolStage.addActor(toolTable);
+        inventoryStage = new Stage(new ScreenViewport());
     }
 
     public static GameScreen getGameScreen(){
@@ -109,8 +129,9 @@ public class GameScreen implements Screen, InputProcessor {
         tileRenderer = new TileRenderer();
 
         InputMultiplexer multiplexer = new InputMultiplexer();
-        multiplexer.addProcessor(stage);  // UI events
-        multiplexer.addProcessor(this);   // Game input
+        multiplexer.addProcessor(stage);
+        multiplexer.addProcessor(toolStage);
+        multiplexer.addProcessor(this);
         Gdx.input.setInputProcessor(multiplexer);
 
 //        Gdx.input.setInputProcessor(new InputMultiplexer(this, stage = new Stage()));
@@ -139,14 +160,34 @@ public class GameScreen implements Screen, InputProcessor {
 //        createPauseMenu();
     }
 
+    public void toggleShowTools() {
+        showTools = !showTools;
+        if (showTools) {
+            buildToolTable();
+        }
+    }
+
+    public void toggleShowInventory() {
+        showInventory = !showInventory;
+        if (!showInventory) {
+            App.getActiveGame().getCurrentPlayer().getInventory().removeInventory();
+            inventoryBuilt = false;
+        }
+    }
 
     @Override
     public void render(float delta) {
-        if (!isPaused) {
-            controller.update(delta);
-            updateAnimals(delta);
-            handleTurn();
+//        if (!isPaused) {
+//            controller.update(delta);
+//            updateAnimals(delta);
+//            handleTurn();
+//        }
+        controller.update(delta);
+        Location currentLocation = App.getActiveGame().getCurrentPlayer().getLocationLocation();
+        if (currentLocation != null && currentLocation.isShop()) {
+            graphicDisplayOfStores(currentLocation);
         }
+        handleTurn();
 
 
         // Choose camera
@@ -174,6 +215,7 @@ public class GameScreen implements Screen, InputProcessor {
         batch.setProjectionMatrix(stage.getCamera().combined); // Switch to screen-space
         batch.begin();
 
+
         // Apply a scaling transform (e.g., 2x size)
         Matrix4 originalTransform = batch.getTransformMatrix().cpy();
         Matrix4 scaled = new Matrix4().setToScaling(2f, 2f, 1f); // Scale 2x
@@ -183,23 +225,31 @@ public class GameScreen implements Screen, InputProcessor {
         float scale = 2f;
         float hudX = (Gdx.graphics.getWidth() - 170) / scale;
         float hudY = (Gdx.graphics.getHeight() - 130) / scale;
-
         float barx = (Gdx.graphics.getWidth() - 35 - 15) / scale;
         float bary = 30 / scale;
 
         gameHUD.render(batch, hudX, hudY, barx, bary);
 
-
-
         // Restore original transform
         batch.setTransformMatrix(originalTransform);
         batch.end();
-
         // === Draw stage UI ===
+        if (showTools) {
+            App.getActiveGame().getCurrentPlayer().getInventory().showTools(stage, skin);
+        }
+
+        if (showInventory) {
+            if (!inventoryBuilt) {
+                App.getActiveGame().getCurrentPlayer().getInventory().showInventory(stage, skin, controller.getDragAndDrop());
+                inventoryBuilt = true;
+            }
+        }
+
         stage.act(delta);
         stage.draw();
 
     }
+
 
     private void setCameraForHouse() {
         camera.position.set(camera.viewportWidth + 200, camera.viewportHeight + 100, 0);
@@ -220,9 +270,6 @@ public class GameScreen implements Screen, InputProcessor {
         batch.setProjectionMatrix(miniMapCamera.combined);
     }
 
-
-
-
     private static void handleTurn() {
         totalGameTime += Gdx.graphics.getDeltaTime();
 
@@ -238,7 +285,6 @@ public class GameScreen implements Screen, InputProcessor {
             }
         }
     }
-
 
     private void setCameraForMap() {
         float viewportWidth = camera.viewportWidth;
@@ -264,9 +310,7 @@ public class GameScreen implements Screen, InputProcessor {
     }
 
 
-
-    @Override
-    public void dispose() {
+    @Override public void dispose() {
         batch.dispose();
         stage.dispose();
         gameHUD.dispose();
@@ -282,30 +326,61 @@ public class GameScreen implements Screen, InputProcessor {
     public void resize(int width, int height) {
         viewport.update(width, height);
     }
-    @Override public void pause() {}
-    @Override public void resume() {}
-    @Override public void hide() {}
 
-//    @Override
-//    public boolean keyDown(int keycode) {
-//        return controller.handleInput(keycode);
-//    }
+    @Override
+    public void pause() {
+    }
+
+    @Override
+    public void resume() {
+    }
+
+    @Override
+    public void hide() {
+    }
+
+    public void graphicDisplayOfStores(Location shop) {
+        Texture storeTexture = null;
+        Player currentPlayer = App.getActiveGame().getCurrentPlayer();
+        switch (shop) {
+            case JojaMart :
+                storeTexture = new Texture(Gdx.files.internal("Shops/JojaMart.png"));
+                break;
+            case Blacksmith:
+                storeTexture = new Texture(Gdx.files.internal("Shops/Blacksmith.png"));
+                break;
+            case PierresGeneralStore :
+                storeTexture = new Texture(Gdx.files.internal("Shops/PierresGeneralStore.png"));
+                break;
+            case FishShop:
+                storeTexture = new Texture(Gdx.files.internal("Shops/FishShop.png"));
+                break;
+            case MarniesRanch:
+                storeTexture = new Texture(Gdx.files.internal("Shops/MarniesRanch.png"));
+                break;
+            case CarpentersShop:
+                storeTexture = new Texture(Gdx.files.internal("Shops/CarpentersShop.png"));
+                break;
+            default:
+                return;
+        }
+
+        float storeDrawX = currentPlayer.getX() * TILE_SIZE;
+        float storeDrawY = (currentPlayer.getY() + 1) * TILE_SIZE;
+        batch.draw(storeTexture, storeDrawX, storeDrawY, TILE_SIZE * 4, TILE_SIZE * 4);
+
+
+    }
+
     @Override
     public boolean keyDown(int keycode) {
         return controller.keyDown(keycode); // this will now handle both continuous and one-time keys
     }
 
-
-
-    //    @Override
-//    public boolean keyUp(int i) {
-//        return false;
-//    }
     @Override
     public boolean keyUp(int keycode) {
         return controller.keyUp(keycode);
     }
-
 
     @Override
     public boolean keyTyped(char c) {
@@ -315,17 +390,12 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (button == Input.Buttons.RIGHT) {
-            handleRightClick(screenX, screenY);
+            controller.handleRightClick(screenX, screenY);
+            return true;
+        } else if (button == Input.Buttons.LEFT) {
+            controller.handleLeftClick(screenX, screenY);
             return true;
         }
-//        if (button == Input.Buttons.LEFT) {
-//            if (shopMenuManager.isMenuOpenFor(PlaceType.CarpentersShop)) {
-//                shopMenuManager.closeMenu();
-//            } else {
-//                shopMenuManager.openMenu(PlaceType.CarpentersShop);
-//            }
-//            return true;
-//        }
         return false;
     }
 
@@ -527,3 +597,19 @@ public class GameScreen implements Screen, InputProcessor {
 
 
 }
+
+    private void buildToolTable() {
+        toolTable.clear();
+
+        for (Gadget tool : App.getActiveGame().getCurrentPlayer().getInventory().getTools().keySet()) {
+            Texture texture = new Texture(Gdx.files.internal(tool.getAssetPath()));
+            Image image = new Image(texture);
+            toolTable.add(image).pad(10);
+        }
+    }
+
+    public GameController getController() {
+        return controller;
+    }
+}
+

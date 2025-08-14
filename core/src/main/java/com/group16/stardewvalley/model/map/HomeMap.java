@@ -18,7 +18,7 @@ public class HomeMap {
     private final Sprite backgroundSprite;
 
     private final List<Rectangle> wallBounds;
-    private final Rectangle fridgeBounds;
+    private Rectangle fridgeBounds;
     private final Rectangle bedBounds;
 
     private final Player player;
@@ -31,7 +31,6 @@ public class HomeMap {
         wallBounds = new ArrayList<>();
         defineWallBounds();
 
-        fridgeBounds = new Rectangle(153, 74, 28, 63); // مکان و اندازه یخچال
         bedBounds = new Rectangle(564, 70, 83, 91);     // مکان و اندازه تخت
 
         this.player = player;
@@ -73,6 +72,14 @@ public class HomeMap {
 
         backgroundSprite.setSize(newWidth, newHeight);
         backgroundSprite.setPosition(x, y);
+
+        float fridgeX = 270;
+        float fridgeY = 380 + y;
+        float fridgeWidth = 50;
+        float fridgeHeight = 100;
+
+        fridgeBounds = new Rectangle(fridgeX, fridgeY, fridgeWidth, fridgeHeight);
+
 
         backgroundSprite.draw(batch);
         batch.draw(player.getPlayerGraphics().getSimpleTexture(), 450, 250);

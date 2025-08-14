@@ -6,33 +6,41 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.utils.Align;
 import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.controller.agriculture.AgricultureController;
 import com.group16.stardewvalley.controller.map.MapController;
 import com.group16.stardewvalley.controller.menu.HomeMenuController;
+import com.group16.stardewvalley.model.Inventory;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.agriculture.Seed;
 import com.group16.stardewvalley.model.agriculture.Seeds;
+import com.group16.stardewvalley.model.agriculture.Tree;
 import com.group16.stardewvalley.model.app.App;
-import com.group16.stardewvalley.model.food.BuffType;
-import com.group16.stardewvalley.model.food.Food;
-import com.group16.stardewvalley.model.food.FoodFactory;
+import com.group16.stardewvalley.model.food.*;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.map.Direction;
+import com.group16.stardewvalley.model.map.HomeMap;
 import com.group16.stardewvalley.model.map.Tile;
 import com.group16.stardewvalley.model.time.TimeDate;
+import com.group16.stardewvalley.model.map.TileType;
 import com.group16.stardewvalley.model.tools.Hoe;
 import com.group16.stardewvalley.model.tools.Scythe;
 import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.view.graphics.CookingMenu;
 import com.group16.stardewvalley.view.graphics.CraftMenu;
 import com.group16.stardewvalley.view.graphics.GameScreen;
+import com.group16.stardewvalley.view.graphics.FridgeMenu;
 
-import static com.group16.stardewvalley.view.graphics.GameScreen.showMiniMap;
+import static com.group16.stardewvalley.controller.menu.HomeMenuController.findIngredient;
+import static com.group16.stardewvalley.view.graphics.GameScreen.*;
 
 public class GameController {
     private final PlayersController playersController;
@@ -46,17 +54,18 @@ public class GameController {
     public static final float ENERGYSCALE = 0.0005f;
     private boolean upPressed, downPressed, leftPressed, rightPressed;
 
+    private FridgeMenu fridgeMenu;
+    private boolean isFridgeMenuOpen = false;
+
+    private final DragAndDrop dragAndDrop = new DragAndDrop();
+
+
     public GameController() {
         this.agricultureController = new AgricultureController();
         this.playersController = new PlayersController();
         this.mapController = new MapController();
         this.homeMenuController = new HomeMenuController();
     }
-
-//    public void update(float delta) {
-//        if (isCookingMenuOpen) return; // بازی آپدیت نشه
-//        playersController.update(delta);
-//    }
 
     public void update(float delta) {
         if (isCookingMenuOpen) return;
@@ -106,7 +115,18 @@ public class GameController {
         float speed = player.getSpeed();
 
         switch (keycode) {
-            //MOVEMENT-1
+            case Input.Keys.NUM_0:
+            case Input.Keys.NUM_1:
+            case Input.Keys.NUM_2:
+            case Input.Keys.NUM_3:
+            case Input.Keys.NUM_4:
+            case Input.Keys.NUM_5:
+            case Input.Keys.NUM_6:
+            case Input.Keys.NUM_7:
+            case Input.Keys.NUM_8:
+            case Input.Keys.NUM_9:
+                Main.getMain().getGameScreen().toggleShowInventory();
+                return true;
             case Input.Keys.UP:
                 player.setCurrentDirection(Direction.UP);
                 nextY += speed;
@@ -241,33 +261,36 @@ public class GameController {
                     player.setCurrentThing(Seeds.MIXED_SEED);
                 }
                 return true;
-
             case Input.Keys.Y:
                 player.equip(new Scythe("scythe", 0, "base"));
                 return true;
-
-
-
             case Input.Keys.E:
             case Input.Keys.ESCAPE:
                 //TODO: for inventory menu
                 return true;
-
-
             case Input.Keys.F:
                 System.out.println(agricultureController.fertilizePlant("speed gro", "up"));
                 return true;
-            case Input.Keys.T:
-                Result result = homeMenuController.eat(FoodFactory.tripleShotEspresso().getName());
-                if (result.isSuccessful()) {
-                    Food food = FoodFactory.tripleShotEspresso();
-                    showEatEffect(food.getName(), food.getBuff().getDescription(), food.getEnergy());
-                }
+            case Input.Keys.TAB:
+                App.getActiveGame().getTimeDate().advanceDateCheat(1);
                 return true;
-
+            case Input.Keys.O:
+                if (player.getCurrentThing() != null &&
+                    player.getCurrentThing() instanceof Food food) {
+                    Result result = homeMenuController.eat(food.getName());
+                    if (result.isSuccessful()) {
+                        GameAssetManager.getGameAssetManager().getEatingSound().play();
+                        showEatEffect(food.getName(), food.getBuff().getDescription(), food.getEnergy());
+                        player.getPlayerGraphics().startEating();
+                    }
+                    return true;
+                }
+                return false;
+            case Input.Keys.T:
+                Main.getMain().getGameScreen().toggleShowTools();
+                return true;
             case Input.Keys.F4:
                 return true;
-
             default:
                 return false;
         }
@@ -391,6 +414,72 @@ public class GameController {
         ));
 
         GameScreen.getGameScreen().getStage().addActor(label);
+    }
+
+    public void handleRightClick(int screenX, int screenY) {
+        Vector3 worldCoordinates = camera.unproject(new Vector3(screenX, screenY, 0));
+        int tileX = (int) worldCoordinates.x / TILE_SIZE;
+        int tileY = (int) worldCoordinates.y / TILE_SIZE;
+
+        Player player = App.getActiveGame().getCurrentPlayer();
+        boolean isAdjacent = (Math.abs(player.getX() - tileX) + Math.abs(player.getY() - tileY) ) == 1;
+        Tree tree = App.getActiveGame().getMap()[tileY][tileX].getTree();
+        if (isAdjacent && tree != null) {
+            if (tree.HasFruit()) {
+                tree.handpickFruit();
+                String fruitName = tree.getTreeType().getFruitName().toUpperCase().replace(" ", "_");
+                Ingredient ingredient = findIngredient(fruitName);
+                if (ingredient != null) {
+                    Result result = player.getInventory().addItem(new FoodIngredient(fruitName, tree.getFruitSellPrice(), ingredient), 4);
+                }
+            }
+        }
+        else if (App.getActiveGame().getMap()[tileY][tileX].getType().equals(TileType.Cottage) &&
+                !player.isAtHome()) {
+            player.setHomeMap(new HomeMap(player));
+            player.setAtHome(true);
+        } else if (player.isAtHome()) {
+            player.setAtHome(false);
+        }
+    }
+
+    public void handleLeftClick(int screenX, int screenY) {
+        Player player = App.getActiveGame().getCurrentPlayer();
+
+        // فقط وقتی بازیکن داخل خونه است
+        if (player.isAtHome()) {
+
+            Vector3 worldCoordinates = camera.unproject(new Vector3(screenX, screenY, 0));
+            Vector2 clickPos = new Vector2(worldCoordinates.x, worldCoordinates.y);
+
+
+            if (player.getHomeMap().isOnFridge(clickPos)) {
+                if (!isFridgeMenuOpen) {
+                    fridgeMenu = new FridgeMenu(
+                            GameAssetManager.getGameAssetManager().getSkin(),
+                            player.getFarm().getRefrigerator(),
+                            dragAndDrop
+                    );
+                    Main.getMain().getGameScreen().getStage().addActor(fridgeMenu);
+                    isFridgeMenuOpen = true;
+                } else {
+                    fridgeMenu.remove();
+                    fridgeMenu = null;
+                    isFridgeMenuOpen = false;
+                }
+            }
+        }
+    }
+
+    public DragAndDrop getDragAndDrop() {
+        return dragAndDrop;
+    }
+
+    public void showErrorPopup(String message) {
+        Dialog dialog = new Dialog("error", GameAssetManager.getGameAssetManager().getSkin());
+        dialog.text(message);
+        dialog.button("Ok");
+        dialog.show(Main.getMain().getGameScreen().getStage());
     }
 
 }

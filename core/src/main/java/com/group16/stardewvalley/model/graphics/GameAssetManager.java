@@ -1,8 +1,6 @@
 package com.group16.stardewvalley.model.graphics;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -18,12 +16,15 @@ import com.group16.stardewvalley.model.animal.Animal;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.crafting.CraftingRecipes;
 import com.group16.stardewvalley.model.food.Food;
+import com.group16.stardewvalley.model.food.FoodIngredient;
 import com.group16.stardewvalley.model.food.Ingredient;
+import com.group16.stardewvalley.model.items.Flower;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.items.Stone;
 import com.group16.stardewvalley.model.map.Direction;
 import com.group16.stardewvalley.model.shops.Building;
 import com.group16.stardewvalley.model.time.TimeDate;
+import com.group16.stardewvalley.model.tools.Gadget;
 
 import java.io.File;
 import java.util.HashMap;
@@ -33,25 +34,8 @@ import static com.badlogic.gdx.math.Rectangle.tmp;
 
 public class GameAssetManager {
     private static GameAssetManager gameAssetManager;
-    private GameAssetManager(){
-        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(defaultMusicPath));
-        backgroundMusic.setLooping(true);
-        backgroundMusic.setVolume(musicVolume);
-        backgroundMusic.play();
-    }
 
-    public static GameAssetManager getGameAssetManager(){
-        if (gameAssetManager == null){
-            gameAssetManager = new GameAssetManager();
-        }
-        return gameAssetManager;
-    }
     private final Skin skin = new Skin(Gdx.files.internal("assets/skin-rainbow/rainbow-ui.json"));
-
-    public Skin getSkin() {
-        return skin;
-    }
-
 
     private final String crop = "Foraging/Grape.png";
     private final String tree = "Trees/Pine_Stage_4.png";
@@ -62,7 +46,6 @@ public class GameAssetManager {
 
     private Texture cropTexture = new Texture(crop);
     private Texture treeTexture = new Texture(tree);
-
     private Texture itemTexture = new Texture(item);
     public Texture getBasicItemTexture() {
         return itemTexture;
@@ -87,6 +70,37 @@ public class GameAssetManager {
 
     private final Texture houseTexture = new Texture("House/House_1.png");
 
+    private Sound eatingSound = Gdx.audio.newSound(Gdx.files.internal("SFX/eating.mp3"));
+
+
+
+    //private final Music backgroundMusic;
+    //private final Animation<Texture> character1_idle_frames = new Animation<>(0.1f, character1_idle0_tex);
+
+
+    private GameAssetManager(){
+        /*
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("musics/alex-productions-epic-cinematic-gaming-cyberpunk-reset(chosic.com).mp3"));
+        backgroundMusic.setLooping(true);
+        backgroundMusic.setVolume(0.5f);
+        backgroundMusic.play();
+         */
+    }
+
+    public static GameAssetManager getGameAssetManager(){
+        if (gameAssetManager == null){
+            gameAssetManager = new GameAssetManager();
+        }
+        return gameAssetManager;
+    }
+
+    public Skin getSkin() {
+        return skin;
+    }
+
+    public Sound getEatingSound() {
+        return eatingSound;
+    }
 
     public TextureRegion getCropRegion(Crop crop) {
         String name = crop.getCropType().getName().replace(" ", "_");
@@ -227,6 +241,15 @@ public class GameAssetManager {
                 }
             }
             return stoneTextures.get(name);
+        }
+        else if (item instanceof FoodIngredient foodIngredient) {
+            return getIngredientTexture(foodIngredient.getType());
+        }
+        else if (item instanceof Flower flower) {
+            return new Texture("Crops/Sunflower.png");
+        }
+        else if (item instanceof Food food) {
+            return getFoodTexture(food);
         }
         return itemTexture;
     }

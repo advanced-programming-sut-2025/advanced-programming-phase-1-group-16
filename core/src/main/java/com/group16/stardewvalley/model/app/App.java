@@ -4,6 +4,7 @@ import com.group16.stardewvalley.model.menu.Menu;
 import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.model.user.User;
 import com.group16.stardewvalley.model.menu.Menu;
+import com.group16.stardewvalley.view.graphics.GameScreen;
 
 import java.util.ArrayList;
 
@@ -12,7 +13,6 @@ public class App {
     private static Player currentPlayer;
     public static ArrayList<Game> games = new ArrayList<>();
     private static Game activeGame = null;
-
     public static ArrayList<User> users = new ArrayList<User>();
     private static Menu currentMenu = Menu.LoginMenu;
 

@@ -81,9 +81,9 @@ public class CookingMenu extends Window {
                     }
                     Result result = controller.cooking(food);
                     if (result.isSuccessful()) {
-                        System.out.println("✅ Cooked: " + food.getName());
+                        Main.getMain().getGameScreen().getController().showErrorPopup("✅ Cooked: " + food.getName());
                     } else {
-                        System.out.println("❌ " + result.message());
+                        Main.getMain().getGameScreen().getController().showErrorPopup(result.message());
                     }
                 }
             });

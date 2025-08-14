@@ -170,5 +170,8 @@ public class Tree {
             hasFruit = true;
             daySincePickFruit = 0;
         }
+        if (!treeType.getSeason().equals(App.getActiveGame().getSeason())){
+            hasFruit = false;
+        }
     }
 }
