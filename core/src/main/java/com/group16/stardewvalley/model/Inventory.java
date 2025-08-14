@@ -142,6 +142,7 @@ public class Inventory {
         if (isFull()) {
             return new Result(false, "Oops! Your backpack is completely full ");
         }
+        //
         String name = gadget.getName();
         tools.put(gadget, tools.getOrDefault(gadget, 0) + count);
         return new Result(true, gadget.getName() + " added to inventory successfully");
