@@ -592,7 +592,7 @@ public class GameScreen implements Screen, InputProcessor {
         toolTable.clear();
 
         for (Gadget tool : App.getActiveGame().getCurrentPlayer().getInventory().getTools().keySet()) {
-            Texture texture = new Texture(Gdx.files.internal(tool.getAssetPath()));
+            Texture texture = GameAssetManager.getGameAssetManager().getItemTexture(tool);
             Image image = new Image(texture);
             toolTable.add(image).pad(10);
         }

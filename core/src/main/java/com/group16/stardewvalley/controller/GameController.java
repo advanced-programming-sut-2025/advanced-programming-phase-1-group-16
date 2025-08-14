@@ -177,24 +177,18 @@ public class GameController {
                 return true;
 
             case Input.Keys.V:
+                int targetY = player.getPosition().getY() + player.getCurrentDirection().getyDelta();
+                int targetX = player.getPosition().getX() + player.getCurrentDirection().getxDelta();
+                if (targetX < 0 || targetY < 0 || targetX > App.getActiveGame().getMapWidth() || targetY > App.getActiveGame().getMapHeight()) {
+                    return false;
+                }
+                Tile targetTile = App.getActiveGame().getMap()[targetY][targetX];
                 if (player.getCurrentEquipment() != null) {
-                    int targetY = player.getPosition().getY() + player.getCurrentDirection().getyDelta();
-                    int targetX = player.getPosition().getX() + player.getCurrentDirection().getxDelta();
-                    if (targetX < 0 || targetY < 0 || targetX > App.getActiveGame().getMapWidth() || targetY > App.getActiveGame().getMapHeight()) {
-                        return false;
-                    }
-                    Tile targetTile = App.getActiveGame().getMap()[targetY][targetX];
                     Result resultOfUsingGadget = player.getCurrentEquipment().use(targetTile, App.getActiveGame());
                     System.out.println(resultOfUsingGadget);
                 }
                 if (player.getCurrentThing() != null) {
                     Item item = player.getCurrentThing();
-                    int targetY = player.getPosition().getY() + player.getCurrentDirection().getyDelta();
-                    int targetX = player.getPosition().getX() + player.getCurrentDirection().getxDelta();
-                    if (targetX < 0 || targetY < 0 || targetX > App.getActiveGame().getMapWidth() || targetY > App.getActiveGame().getMapHeight()) {
-                        return false;
-                    }
-                    Tile targetTile = App.getActiveGame().getMap()[targetY][targetX];
                     if (item instanceof Seed seed) {
                         Result result = agricultureController.planting(seed, targetX, targetY);
                         if (!result.isSuccessful()) {
@@ -203,6 +197,11 @@ public class GameController {
                     }
                     else targetTile.setItem(player.getCurrentThing());
                     player.setCurrentThing(null);
+                } else {
+                    if (targetTile.getItem() != null) {
+                        player.setCurrentThing(targetTile.getItem());
+                        targetTile.setItem(null);
+                    }
                 }
                 return true;
             case Input.Keys.C:
@@ -283,6 +282,9 @@ public class GameController {
                 return false;
             case Input.Keys.T:
                 GameScreen.getGameScreen().toggleShowTools();
+                return true;
+            case Input.Keys.P:
+                player.learnRecipe(FoodFactory.pizza());
                 return true;
             case Input.Keys.F4:
                 return true;

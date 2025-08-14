@@ -176,22 +176,22 @@ public final class Seeds {
     public static final Seed POMEGRANATE_SAPLING = new Seed("Pomegranate Sapling", 50, 5,
             -1, List.of(Season.Spring), "TREE");
 
-    public static final Seed ACORNS = new Seed("Acorns", 50, 5,
+    public static final Seed ACORNS = new Seed("Acorn", 50, 5,
             -1, List.of(Season.Spring), "TREE");
 
-    public static final Seed MAPLE_SEEDS = new Seed("Maple Seeds", 50, 5,
+    public static final Seed MAPLE_SEEDS = new Seed("Maple Seed", 50, 5,
             -1, List.of(Season.Spring), "TREE");
 
     public static final Seed PINE_CONES = new Seed("Pine Cones", 50, 5,
             -1, List.of(Season.Spring), "TREE");
 
-    public static final Seed MAHOGANY_SEEDS = new Seed("Mahogany Seeds", 50, 5,
+    public static final Seed MAHOGANY_SEEDS = new Seed("Mahogany Seed", 50, 5,
             -1, List.of(Season.Spring), "TREE");
 
-    public static final Seed MUSHROOM_TREE_SEEDS = new Seed("Mushroom Tree", 50, 5,
+    public static final Seed MUSHROOM_TREE_SEEDS = new Seed("Mushroom Tree Seed", 50, 5,
             -1, List.of(Season.Spring), "TREE");
 
-    public static final Seed MYSTIC_TREE_SEEDS = new Seed("Mystic Tree", 50, 5,
+    public static final Seed MYSTIC_TREE_SEEDS = new Seed("Mystic Tree Seed", 50, 5,
             -1, List.of(Season.Spring), "TREE");
 
     public static final Seed MIXED_SEED = new Seed("Mixed seed", 50, 5,

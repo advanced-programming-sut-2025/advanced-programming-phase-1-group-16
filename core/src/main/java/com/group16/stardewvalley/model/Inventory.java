@@ -23,10 +23,8 @@ import com.group16.stardewvalley.model.items.Flower;
 import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.agriculture.*;
 import com.group16.stardewvalley.model.items.Wood;
-import com.group16.stardewvalley.model.tools.Axe;
-import com.group16.stardewvalley.model.tools.Gadget;
+import com.group16.stardewvalley.model.tools.*;
 import com.group16.stardewvalley.model.crafting.CraftingRecipes;
-import com.group16.stardewvalley.model.tools.FishingPole;
 import com.group16.stardewvalley.model.user.BackPackType;
 import com.group16.stardewvalley.model.food.Food;
 import com.group16.stardewvalley.model.food.FoodIngredient;
@@ -58,12 +56,30 @@ public class Inventory {
         this.craftingRecipes = new ArrayList<>(
                 List.of(CraftingRecipes.CherryBomb, CraftingRecipes.Sprinkler, CraftingRecipes.CharcoalKiln, CraftingRecipes.Furnace,
                         CraftingRecipes.Scarecrow, CraftingRecipes.BeeHouse, CraftingRecipes.MayonnaiseMachine));
-        Axe newAse = new Axe("axe", 0, "base");
+        Axe newAse = new Axe("base_axe", 0, "base");
+        FishingPole fishingPole = new FishingPole("Bamboo_Pole", 25, "training");
+        Hoe hoe = new Hoe("Hoe", 0, "base");
+        MilkPail milkPail = new MilkPail("Milkpail", 0);
+        Scythe scythe = new Scythe("Scythe", 0, "base");
+        Pickaxe pickaxe = new Pickaxe("Pickaxe", 0, "base");
+        Shear shear = new Shear("Shears", 1000);
+        WateringCan wateringCan = new WateringCan("Watering_Can", 0, "base");
+        items.put(wateringCan, 1);
+        tools.put(wateringCan, 1);
+        tools.put(shear, 1);
+        items.put(pickaxe, 1);
+        tools.put(shear, 1);
+        items.put(scythe, 1);
+        tools.put(scythe, 1);
+        items.put(hoe, 1);
+        tools.put(hoe, 1);
+        tools.put(milkPail, 1);
+        items.put(fishingPole, 1);
+        tools.put(fishingPole, 1);
         tools.put(newAse, 1);
         items.put(newAse, 1);
         Flower flower = new Flower("flower", 0);
-        items.put(flower, 1);
-        items.put(new FoodIngredient(Ingredient.BLUEBERRY.getName(), 50, Ingredient.BLUEBERRY), 1);
+        items.put(Seeds.APPLE_SAPLING, 1);
     }
 
     public void showTools(Stage stage, Skin skin) {
@@ -71,7 +87,7 @@ public class Inventory {
       table.top().left().pad(10);
       table.setFillParent(true);
       for (Gadget gadget : tools.keySet()) {
-          Image icon = new Image(new Texture(Gdx.files.internal(gadget.getAssetPath())));
+          Image icon = new Image(GameAssetManager.getGameAssetManager().getItemTexture(gadget));
           table.add(icon).pad(10);
       }
       stage.clear();

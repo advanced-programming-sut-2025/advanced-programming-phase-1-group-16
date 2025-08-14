@@ -9,10 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.group16.stardewvalley.controller.agriculture.AgricultureController;
-import com.group16.stardewvalley.model.agriculture.Crop;
-import com.group16.stardewvalley.model.agriculture.Mineral;
-import com.group16.stardewvalley.model.agriculture.Tree;
-import com.group16.stardewvalley.model.agriculture.TreeType;
+import com.group16.stardewvalley.model.agriculture.*;
 import com.group16.stardewvalley.model.animal.Animal;
 import com.group16.stardewvalley.model.app.App;
 import com.group16.stardewvalley.model.crafting.CraftingRecipes;
@@ -46,6 +43,7 @@ public class GameAssetManager {
     private final String fertalize = "Fertilizer/Stardew-texture_Basic-Fertilizer.png";
 
     private Texture cropTexture = new Texture(crop);
+    private Texture seedTexture = new Texture("Farming/Bok_Choy_Seeds.png");
     private Texture treeTexture = new Texture(tree);
     private Texture itemTexture = new Texture(item);
     public Texture getBasicItemTexture() {
@@ -67,6 +65,9 @@ public class GameAssetManager {
     private final Map<String, Texture> craftingTextures = new HashMap<>();
     private final Map<String, Texture> craftingIngredientTextures = new HashMap<>();
     private final Map<String, Texture> animalTextures = new HashMap<>();
+    private final Map<String, Texture> seedTextures = new HashMap<>();
+    private final Map<String, Texture> toolTextures = new HashMap<>();
+
     private Map<String, Map<Direction, Animation<TextureRegion>>> animalAnimations = new HashMap<>();
 
     private final Texture houseTexture = new Texture("House/House_1.png");
@@ -246,12 +247,37 @@ public class GameAssetManager {
         else if (item instanceof FoodIngredient foodIngredient) {
             return getIngredientTexture(foodIngredient.getType());
         }
-        else if (item instanceof Flower flower) {
+        else if (item instanceof Flower) {
             return new Texture("Crops/Sunflower.png");
         }
         else if (item instanceof Food food) {
             return getFoodTexture(food);
         }
+        else if (item instanceof Seed seed) {
+            String name = seed.getName().replace(" ", "_");
+            if (!seedTextures.containsKey(name)) {
+                try {
+                    Texture texture = new Texture("Farming/" + name + ".png");
+                    seedTextures.put(name, texture);
+                } catch (Exception e) {
+                    seedTextures.put(name, seedTexture);
+                }
+            }
+            return seedTextures.get(name);
+        }
+        else if (item instanceof Gadget gadget) {
+            String name = gadget.getName();
+            if (!toolTextures.containsKey(name)) {
+                try {
+                    Texture texture = new Texture("tools/" + name + ".png");
+                    toolTextures.put(name, texture);
+                } catch (Exception e) {
+                    toolTextures.put(name, seedTexture);
+                }
+            }
+            return toolTextures.get(name);
+        }
+
         return itemTexture;
     }
 

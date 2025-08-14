@@ -115,8 +115,6 @@ public class Player {
         this.location = null;
 
        this.hero = user.getHero();
-        learnRecipe(FoodFactory.tripleShotEspresso());
-        this.currentThing = FoodFactory.tripleShotEspresso();
     }
 
     //TODO یادت باشه ست کنی اینو وقتی بازی جدید میسازی
