@@ -75,10 +75,6 @@ public class CookingMenu extends Window {
                 public void clicked(InputEvent event, float x, float y) {
                     if (!isKnown) return;
                     HomeMenuController controller = new HomeMenuController();
-                    CheatCodeController controller2 = new CheatCodeController();
-                    for (Ingredient ingredient : food.getIngredients().keySet()) {
-                        controller2.addIngredient(ingredient.getName());
-                    }
                     Result result = controller.cooking(food);
                     if (result.isSuccessful()) {
                         GameScreen.getGameScreen().getController().showErrorPopup("✅ Cooked: " + food.getName());

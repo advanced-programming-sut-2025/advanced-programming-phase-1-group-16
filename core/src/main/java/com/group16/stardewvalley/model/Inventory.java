@@ -30,6 +30,7 @@ import com.group16.stardewvalley.model.food.Food;
 import com.group16.stardewvalley.model.food.FoodIngredient;
 import com.group16.stardewvalley.model.food.Ingredient;
 import com.group16.stardewvalley.model.agriculture.Crop;
+import com.group16.stardewvalley.view.graphics.GameScreen;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -340,6 +341,7 @@ public class Inventory {
 
     public Result addItem(Item item, int count) {
         if (isFull()) {
+            GameScreen.getGameScreen().getController().showErrorPopup("Oops! Your backpack is completely full ");
             return new Result(false, "Oops! Your backpack is completely full ");
         }
         String name = item.getName();
