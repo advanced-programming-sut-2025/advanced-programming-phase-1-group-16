@@ -34,16 +34,13 @@ public class GameFactory {
 
             Player player = new Player(user);
             player.setPosition(new Pos(playerData.getX(), playerData.getY()));
-            player.setPlayerGraphics(playerData.getCharacterPath(), 48, 64);
+            player.setGraphicPath(playerData.getCharacterPath());
             if (playerData.getFarmType().equalsIgnoreCase("small")){
                 gameMenuController.chooseFarm(player, "1");
             } else {
                 gameMenuController.chooseFarm(player, "2");
             }
             player.getFarm().setStartPosition(new Pos(playerData.getFarmX(), playerData.getFarmY()));
-            //FarmType farmType = FarmType.valueOf(playerData.getFarmType());
-            //player.setFarm(new Farm(farmType));
-            //gameMenuController.randomItems(player.getFarm());
             if (username.equals(dto.getCreatorUsername())) {
                 creator = player;
             }

@@ -111,11 +111,14 @@ public class Player {
         finalHourBuff = 0;
         this.buffer = BuffType.NONE;
         this.location = null;
-        this.isAtHome = false;
+        this.isAtHome = true;
         learnRecipe(FoodFactory.tripleShotEspresso());
     }
 
     public PlayerGraphics getPlayerGraphics() {
+        if (playerGraphics == null) {
+            setPlayerGraphics(graphicPath, 48, 64);
+        }
         return playerGraphics;
     }
 
@@ -133,6 +136,9 @@ public class Player {
     }
 
     public HomeMap getHomeMap() {
+        if (homeMap == null) {
+            homeMap = new HomeMap(this);
+        }
         return homeMap;
     }
 

@@ -63,6 +63,10 @@ public class GameScreen implements Screen, InputProcessor {
     public static final int TILE_SIZE = 17;
 
     public GameScreen() {
+    }
+
+    @Override
+    public void show() {
         this.controller = new GameController();
         camera = new OrthographicCamera();
         viewport = new FillViewport(30 * TILE_SIZE, 20 * TILE_SIZE, camera);
@@ -74,10 +78,6 @@ public class GameScreen implements Screen, InputProcessor {
         miniMapViewport = new FillViewport(mapPixelWidth, mapPixelHeight, miniMapCamera);
         miniMapViewport.apply();
 
-    }
-
-    @Override
-    public void show() {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         batch = Main.getBatch();

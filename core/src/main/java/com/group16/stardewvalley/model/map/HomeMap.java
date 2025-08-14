@@ -75,7 +75,11 @@ public class HomeMap {
         backgroundSprite.setPosition(x, y);
 
         backgroundSprite.draw(batch);
-        batch.draw(player.getPlayerGraphics().getSimpleTexture(), 450, 250);
+
+        if (batch == null) {
+            System.out.println("Batch is null");
+        }
+        //batch.draw(player.getPlayerGraphics().getSimpleTexture(), 450, 250);
     }
 
 

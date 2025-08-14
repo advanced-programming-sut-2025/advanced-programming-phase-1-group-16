@@ -51,6 +51,9 @@ public class Main extends Game {
     }
 
     public static SpriteBatch getBatch() {
+        if (batch == null) {
+            batch = new SpriteBatch();
+        }
         return batch;
     }
 

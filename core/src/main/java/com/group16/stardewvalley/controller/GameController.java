@@ -64,9 +64,9 @@ public class GameController {
             mapController.drawMap(Main.getBatch());
         }
 
-        playersController.render();
+        //playersController.render();
 
-        drawPlayerBuff();
+        //drawPlayerBuff();
 
     }
 
