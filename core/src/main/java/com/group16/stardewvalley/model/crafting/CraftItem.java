@@ -5,9 +5,6 @@ import com.group16.stardewvalley.model.items.Item;
 import java.util.Map;
 
 public class CraftItem extends Item {
-    public CraftItem(String name, int price) {
-        super(name, price);
-    }
 
     private CraftingRecipes recipe;
 

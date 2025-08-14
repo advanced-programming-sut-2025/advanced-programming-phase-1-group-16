@@ -280,7 +280,7 @@ public class GameMenu implements MenuInterface {
 
         //Artisan commands
     else if((matcher = GameMenuCommands.ArtisanUse.getMatcher(input)) != null ){
-        System.out.println(artisanController.use(matcher.group("artisanName"), matcher.group("itemsName")));
+//        System.out.println(artisanController.use(matcher.group("artisanName"), matcher.group("itemsName")));
     }
     else if((matcher = GameMenuCommands.ArtisanGet.getMatcher(input)) != null){
         System.out.println(artisanController.get(matcher.group("artisanName")));

@@ -1,6 +1,6 @@
 package com.group16.stardewvalley.model.food;
 
-public enum     Ingredient {
+public enum Ingredient {
     EGG("Egg"),
     SARDINE("Sardine"),
     SALMON("Salmon"),
@@ -92,8 +92,44 @@ public enum     Ingredient {
     ACORN("Acorn"),
     MAPLE_SEED("Maple Seed"),
     PINE_CONE("Pine Cone"),
-    MAHOGANY_SEED("Mahogany Seed");
+    MAHOGANY_SEED("Mahogany Seed"),
 
+    //ARTISAN
+//    MILK("Milk"),
+    LARGE_MILK("Large Milk"),
+
+    GOAT_MILK("Goat Milk"),
+    LARGE_GOAT_MILK("Large Goat Milk"),
+
+//    WHEAT("Wheat"),
+//    RICE("Rice"),
+//    COFFEE_BEAN("Coffee Bean"),
+
+    ANY_VEGETABLE("Any Vegetable"),
+    ANY_FRUIT("Any Fruit"),
+    HONEY("Honey"),
+//    HOPS("Hops"),
+
+    ANY_MUSHROOM("Any Mushroom"),
+    ANY_FRUIT_EXCEPT_GRAPES("Any Fruit (except Grapes)"),
+    GRAPES("Grapes"),
+
+//    WOOD("Wood"),
+    WOOL("Wool"),
+
+//    EGG("Egg"),
+    LARGE_EGG("Large Egg"),
+    DUCK_EGG("Duck Egg"),
+    DINOSAUR_EGG("Dinosaur Egg"),
+
+    TRUFFLE("Truffle"),
+//    CORN("Corn"),
+    SUNFLOWER_SEEDS("Sunflower Seeds"),
+//    SUNFLOWER("Sunflower"),
+
+    ANY_FISH("Any Fish"),
+//    COAL("Coal"),
+    ANY_ORE("Any Ore");
 
     private final String name;
 

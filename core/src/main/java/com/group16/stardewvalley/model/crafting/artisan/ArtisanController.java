@@ -116,14 +116,14 @@ public class ArtisanController {
 //    }
 
 
-    public Result use(String artisanName, String itemsName){
+    public Result use(String artisanName, String[]  inputItems){
         Player player = App.getActiveGame().getCurrentPlayer();
         Map<Item, Integer> inventoryItems = player.getInventory().getItems();
 
         // Find the artisan good type by name
         ArtisanGoodType artisanGood = null;
         for (ArtisanGoodType ag : ArtisanGoodType.values()) {
-            if (ag.getName().equalsIgnoreCase(artisanName)) {
+            if (ag.getCraftMachine().getName().equalsIgnoreCase(artisanName)) {
                 artisanGood = ag;
                 break;
             }
@@ -134,11 +134,11 @@ public class ArtisanController {
         }
 
         // Split input items string into individual ingredient names
-        String[] inputItems = itemsName.trim().split("\\s+");
+//        String[] inputItems = itemsName.trim().split("\\s+");
 
         ArtisanGood newArtisanGood = new ArtisanGood(artisanName, 0,artisanGood, App.getActiveGame().getTimeDate().getHour());
-//        player.getInventory().addItem(newArtisanGood, 1);
-        return new Result(true, artisanGood.getName() + "artisan started, come back later to pick it.");
+        player.getInventory().addItem(newArtisanGood, 1);
+        return new Result(true, artisanGood.getName() + " processing started, come back later.");
 
     }
 
@@ -147,9 +147,9 @@ public class ArtisanController {
         Game game = App.getActiveGame();
         Inventory inventory = App.getActiveGame().getCurrentPlayer().getInventory();
         // Find the artisan good type by name
-        ArtisanGoodType artisanGood = null;
+        ArtisanGoodType artisanGood = ArtisanGoodType.HONEY;
         for (ArtisanGoodType ag : ArtisanGoodType.values()) {
-            if (ag.getName().equalsIgnoreCase(artisanName)) {
+            if (ag.getCraftMachine().getName().equalsIgnoreCase(artisanName)) {
                 artisanGood = ag;
                 break;
             }

@@ -72,16 +72,19 @@ public class CarpentersShop extends Shop{
 
         if (buildingName.equals("Wood")) {
             // Create a new Wood instance
-            Wood woodItem = new Wood("Wood", 10);
-            player.getInventory().addItem(woodItem, 1);
+            cheatController.addIngredient("Wood");
+
+//            Wood woodItem = new Wood("Wood", 10);
+//            player.getInventory().addItem(woodItem, 1);
             player.decreaseCoin(10);
             return new Result(true, "Wood added to inventory successfully");
         }
 
         if (buildingName.equals("Stone")) {
             // Create a new Wood instance
-            Stone stoneItem = new Stone("Stone", 20);
-            player.getInventory().addItem(stoneItem, 1);
+//            Stone stoneItem = new Stone("Stone", 20);
+//            player.getInventory().addItem(stoneItem, 1);
+            cheatController.addIngredient("Stone");
             player.decreaseCoin(20);
             return new Result(true, "Stone added to inventory successfully");
         }
@@ -104,6 +107,8 @@ public class CarpentersShop extends Shop{
 
         //TODO: cheat for wood and stone
         player.increaseCoin(buildingType.getCost());
+        cheatController.addIngredient("Wood");
+        cheatController.addIngredient("Stone");
         cheatController.addWood(2 * buildingType.getWoodCost());
         cheatController.addStone(buildingType.getStoneCost());
 

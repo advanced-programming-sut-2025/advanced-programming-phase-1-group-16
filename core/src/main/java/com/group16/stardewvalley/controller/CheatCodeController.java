@@ -5,10 +5,12 @@ import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.agriculture.Fertilizer;
 import com.group16.stardewvalley.model.agriculture.FertilizerType;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.crafting.CraftItem;
 import com.group16.stardewvalley.model.food.Food;
 import com.group16.stardewvalley.model.food.FoodFactory;
 import com.group16.stardewvalley.model.food.FoodIngredient;
 import com.group16.stardewvalley.model.food.Ingredient;
+import com.group16.stardewvalley.model.items.Item;
 import com.group16.stardewvalley.model.items.Stone;
 import com.group16.stardewvalley.model.items.Wood;
 import com.group16.stardewvalley.model.map.Pos;
@@ -111,6 +113,18 @@ public class CheatCodeController {
         App.getActiveGame().getCurrentPlayer().getInventory().addItem(foodIngredient, 1);
         return new Result(true, "added ingredient");
     }
+
+//    public Result addCraftIngredient(String name, int quantity) {
+//        Ingredient ingredient = findIngredient(name);
+//        if (ingredient == null) {
+//            return new Result(false, "Ingredient not found");
+//        }
+//        Ingredient craftIngredient = findIngredient(name);
+//
+//        Item item = new
+//        App.getActiveGame().getCurrentPlayer().getInventory().addItem()
+//    }
+
 
     public Result addWood(int quantity) {
         Wood wood = new Wood("Wood", 10);

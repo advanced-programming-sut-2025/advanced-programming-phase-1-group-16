@@ -324,6 +324,8 @@ public class GameAssetManager {
         return craftingIngredientTextures.get(name);
     }
 
+
+
     public Texture getAnimalTexture(Animal animal) {
         String name = animal.getFromShopType().getName().replace(" ", "_");
         if (!animalTextures.containsKey(name)) {
