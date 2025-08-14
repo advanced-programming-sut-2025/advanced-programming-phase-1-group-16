@@ -176,7 +176,7 @@ public class ArtisanMenu extends Window {
             }
         });
 
-        TextButton getButton = new TextButton("Get Product", skin);
+        TextButton getButton = new TextButton("Get", skin);
         getButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

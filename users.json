@@ -1,13 +1,25 @@
 [ {
   "username" : "as",
-  "password" : "as",
-  "nickName" : "as",
-  "email" : "sal@sal.com",
+  "password" : "{u(/DMg[F80H",
+  "nickName" : "asas",
+  "email" : "ssa@dd.com",
+  "gender" : "male",
+  "gamePlayed" : 0,
+  "logged_in_flag" : false,
+  "userSecurityQuestion" : null,
+  "securityAnswer" : null,
+  "hasActiveGame" : false,
+  "hero" : "LEO"
+}, {
+  "username" : "salam",
+  "password" : "Atena1234!",
+  "nickName" : "hi",
+  "email" : "ssa@dd.com",
   "gender" : "female",
   "gamePlayed" : 0,
   "logged_in_flag" : true,
   "userSecurityQuestion" : "q3",
   "securityAnswer" : "apple",
   "hasActiveGame" : false,
-  "hero" : "ALEX"
+  "hero" : "LEO"
 } ]

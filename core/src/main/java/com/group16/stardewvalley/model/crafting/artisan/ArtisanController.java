@@ -155,15 +155,17 @@ public class ArtisanController {
             }
         }
 
-
-
-
-        if(!isReady(artisanGood)){
-            return new Result(false, "Artisan '" + artisanName + "' not found.");
-        }
-
-
+        ArtisanGood artisanGood1 = new ArtisanGood(artisanName, artisanGood.getSellPrice(), artisanGood, App.getActiveGame().getTimeDate().getHour());
+        App.getActiveGame().getCurrentPlayer().getInventory().addItem(artisanGood1, 1);
         return new Result(true, artisanGood.getName() + " added to inventory successfully");
+
+
+
+//        if(!isReady(artisanGood)){
+//            return new Result(false, "Artisan '" + artisanName + "' not found.");
+//        }
+
+
 
 
     }
