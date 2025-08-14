@@ -105,7 +105,7 @@ public class MarniesRanchMenu extends Window {
         add(topRow).expandX().fillX().pad(10).row();
 
         marnieGrid();
-        Main.getMain().getGameScreen().getStage().addActor(tooltip);
+        GameScreen.getGameScreen().getStage().addActor(tooltip);
     }
 
 
@@ -326,7 +326,7 @@ public class MarniesRanchMenu extends Window {
         submitCancelTable.add(cancelBtn).width(300);
         buyWindow.add(submitCancelTable).colspan(3).center();
 
-        Main.getMain().getGameScreen().getStage().addActor(buyWindow);
+        GameScreen.getGameScreen().getStage().addActor(buyWindow);
     }
 
 
@@ -336,7 +336,7 @@ public class MarniesRanchMenu extends Window {
         super.act(delta);
 
         if (tooltip.isVisible()) {
-            Vector2 mousePos = Main.getMain().getGameScreen().getStage().screenToStageCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
+            Vector2 mousePos = GameScreen.getGameScreen().getStage().screenToStageCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
             tooltip.setPosition(mousePos.x + 10, mousePos.y - 10);
         }
     }

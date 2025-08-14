@@ -49,6 +49,7 @@ import static com.group16.stardewvalley.model.crafting.Crafting.pendingCraftItem
 import static com.group16.stardewvalley.view.graphics.CarpenterMenu.pendingBuildingName;
 
 public class GameScreen implements Screen, InputProcessor {
+    public static GameScreen gameScreen;
     private GameController controller;
     private SpriteBatch batch;
     private TileTextureManager textureManager;
@@ -74,7 +75,7 @@ public class GameScreen implements Screen, InputProcessor {
 
     public static final int TILE_SIZE = 17;
 
-    public GameScreen() {
+    private GameScreen() {
         this.controller = new GameController();
         camera = new OrthographicCamera();
         viewport = new FillViewport(30 * TILE_SIZE, 20 * TILE_SIZE, camera);
@@ -88,6 +89,14 @@ public class GameScreen implements Screen, InputProcessor {
 
 
     }
+
+    public static GameScreen getGameScreen(){
+        if (gameScreen == null){
+            gameScreen = new GameScreen();
+        }
+        return gameScreen;
+    }
+
 
     @Override
     public void show() {
@@ -107,7 +116,7 @@ public class GameScreen implements Screen, InputProcessor {
         gameHUD = new GameHUD();
 
 
-        shopMenuManager = new ShopMenuManager(Main.getMain().getGameScreen().getStage(), GameAssetManager.getGameAssetManager().getSkin());
+        shopMenuManager = new ShopMenuManager(GameScreen.getGameScreen().getStage(), GameAssetManager.getGameAssetManager().getSkin());
 
 
 

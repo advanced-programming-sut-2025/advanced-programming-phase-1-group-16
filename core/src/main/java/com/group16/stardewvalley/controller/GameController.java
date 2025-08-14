@@ -30,6 +30,7 @@ import com.group16.stardewvalley.model.tools.Scythe;
 import com.group16.stardewvalley.model.user.Player;
 import com.group16.stardewvalley.view.graphics.CookingMenu;
 import com.group16.stardewvalley.view.graphics.CraftMenu;
+import com.group16.stardewvalley.view.graphics.GameScreen;
 
 import static com.group16.stardewvalley.view.graphics.GameScreen.showMiniMap;
 
@@ -192,8 +193,8 @@ public class GameController {
                                 GameAssetManager.getGameAssetManager().getSkin(),
                                 App.getActiveGame().getCurrentPlayer().getKnownRecipes()
                         );
-                        Main.getMain().getGameScreen().getStage().addActor(cookingMenu);
-                        Main.getMain().getGameScreen().getStage().addActor(cookingMenu.getTooltip());
+                        GameScreen.getGameScreen().getStage().addActor(cookingMenu);
+                        GameScreen.getGameScreen().getStage().addActor(cookingMenu.getTooltip());
                         isCookingMenuOpen = true;
                     } else {
                         cookingMenu.remove();
@@ -209,8 +210,8 @@ public class GameController {
                     craftMenu = new CraftMenu(
                         GameAssetManager.getGameAssetManager().getSkin(),
                         App.getActiveGame().getCurrentPlayer().getInventory().getCraftingRecipes());
-                    Main.getMain().getGameScreen().getStage().addActor(craftMenu);
-                    Main.getMain().getGameScreen().getStage().addActor(craftMenu.getTooltip());
+                    GameScreen.getGameScreen().getStage().addActor(craftMenu);
+                    GameScreen.getGameScreen().getStage().addActor(craftMenu.getTooltip());
                     isCraftingMenuOpen = true;
                 } else {
                     craftMenu.remove();
@@ -389,7 +390,7 @@ public class GameController {
             Actions.removeActor()
         ));
 
-        Main.getMain().getGameScreen().getStage().addActor(label);
+        GameScreen.getGameScreen().getStage().addActor(label);
     }
 
 }

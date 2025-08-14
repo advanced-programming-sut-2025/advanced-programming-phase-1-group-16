@@ -198,7 +198,7 @@ public class CraftMenu extends Window {
         super.act(delta);
 
         if (tooltip.isVisible()) {
-            Vector2 mousePos = Main.getMain().getGameScreen().getStage().screenToStageCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
+            Vector2 mousePos = GameScreen.getGameScreen().getStage().screenToStageCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
             tooltip.setPosition(mousePos.x + 10, mousePos.y - 10);
         }
     }

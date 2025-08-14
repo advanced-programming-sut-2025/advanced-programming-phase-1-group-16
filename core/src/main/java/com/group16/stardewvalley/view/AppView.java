@@ -30,7 +30,7 @@ public class AppView implements Screen {
         App.getCurrentMenu().checkCommand(scanner); // اگر هنوز Scanner استفاده می‌کنی، باید UI بشه
         if (App.getActiveGame() != null) {
 
-            game.setScreen(new GameScreen());
+            game.setScreen(GameScreen.getGameScreen());
 
         }
 

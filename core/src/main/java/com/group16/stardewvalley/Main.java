@@ -104,7 +104,7 @@ public class Main extends Game {
             player.setPlayerGraphics(characterPaths[index], 48, 64);
             index++;
         }
-        gameScreen = new GameScreen();
+        gameScreen = GameScreen.getGameScreen();
 
         setScreen(gameScreen);
     }

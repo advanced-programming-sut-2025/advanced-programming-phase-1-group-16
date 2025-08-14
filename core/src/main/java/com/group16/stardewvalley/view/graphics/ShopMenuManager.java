@@ -27,7 +27,7 @@ public class ShopMenuManager {
         if (currentMenu != null) {
 //            stage.addActor(currentMenu);
             currentShopType = shopType;
-            Main.getMain().getGameScreen().getStage().addActor(currentMenu);
+            GameScreen.getGameScreen().getStage().addActor(currentMenu);
         }
     }
 

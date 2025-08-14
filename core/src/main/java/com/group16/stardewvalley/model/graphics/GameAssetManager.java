@@ -34,10 +34,10 @@ import static com.badlogic.gdx.math.Rectangle.tmp;
 public class GameAssetManager {
     private static GameAssetManager gameAssetManager;
     private GameAssetManager(){
-//        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(defaultMusicPath));
-//        backgroundMusic.setLooping(true);
-//        backgroundMusic.setVolume(musicVolume);
-//        backgroundMusic.play();
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(defaultMusicPath));
+        backgroundMusic.setLooping(true);
+        backgroundMusic.setVolume(musicVolume);
+        backgroundMusic.play();
     }
 
     public static GameAssetManager getGameAssetManager(){

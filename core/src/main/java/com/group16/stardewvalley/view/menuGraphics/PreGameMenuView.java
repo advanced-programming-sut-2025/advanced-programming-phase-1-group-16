@@ -147,7 +147,7 @@ public class PreGameMenuView implements Screen {
                     index++;
                 }
                 Main.getMain().getScreen().dispose();
-                Main.getMain().setScreen(new GameScreen());
+                Main.getMain().setScreen(GameScreen.getGameScreen());
             }
         });
 
