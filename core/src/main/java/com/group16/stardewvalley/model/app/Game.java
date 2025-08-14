@@ -321,6 +321,7 @@ public class Game {
     private List<PlayerDTO> getPlayerDTOS() {
         List<PlayerDTO> playerDTOs = new ArrayList<>();
         for (Player player : players) {
+            System.out.println("player " + player.getUsername() + "added");
             PlayerDTO pd = new PlayerDTO();
             pd.setUsername(player.getUser().getUsername());
             pd.setX(player.getPosition().getX());

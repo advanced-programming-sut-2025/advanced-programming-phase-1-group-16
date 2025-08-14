@@ -92,25 +92,6 @@ public class GameScreen implements Screen, InputProcessor {
 
         clockHUD = new ClockHUD();
 
-
-
-
-
-        // === Pause Button ===
-//        TextButton pauseButton = new TextButton("Pause", GameAssetManager.getGameAssetManager().getSkin());
-//        pauseButton.addListener(new ChangeListener() {
-//            @Override
-//            public void changed(ChangeEvent event, Actor actor) {
-//                togglePause();
-//            }
-//        });
-//
-//        Table topLeft = new Table();
-//        topLeft.top().left().setFillParent(true);
-//        topLeft.add(pauseButton).pad(10).padLeft(50).padTop(50);
-//        stage.addActor(topLeft);
-//
-//        createPauseMenu();
     }
 
 

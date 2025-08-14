@@ -24,28 +24,47 @@ import static com.group16.stardewvalley.view.graphics.GameScreen.TILE_SIZE;
 
 public class MapController {
 
-    public void setFarmsPosition(Game game){
+    public void setFarmsPosition(Game game) {
         int height = game.getMapHeight();
         int width = game.getMapWidth();
-        Pos[] positions = {
-            new Pos(5, 5),
-            new Pos(width - 80, 5),
-            new Pos(5, height - 70),
-            new Pos(width - 80, height - 70)
+
+        int[][] basePositions = {
+            {5, 5},
+            {width - 80, 5},
+            {5, height - 80},
+            {width - 80, height - 80}
         };
 
         int index = 0;
         for (Player player : game.getPlayers()) {
-            player.getFarm().setStartPosition(positions[index]);
+            int farmH = player.getFarm().getType().getHeight();
+            int farmW = player.getFarm().getType().getWidth();
+
+            // مختصات اولیه پیشنهادی
+            int startX = basePositions[index][0];
+            int startY = basePositions[index][1];
+
+            // جلوگیری از خارج شدن از نقشه
+            if (startX + farmW > width) {
+                startX = width - farmW;
+            }
+            if (startY + farmH > height) {
+                startY = height - farmH;
+            }
+
+            player.getFarm().setStartPosition(new Pos(startX, startY));
+
+            // پیدا کردن موقعیت Cottage
             int x, y;
             Random r = new Random();
             do {
-                x = r.nextInt(player.getFarm().getType().getWidth());
-                y = r.nextInt(player.getFarm().getType().getHeight());
+                x = r.nextInt(farmW);
+                y = r.nextInt(farmH);
             } while (player.getFarm().getType().getTiles()[y][x] != TileType.Cottage);
 
-            int flippedY = height - 1 - (player.getFarm().getStartPosition().getY() + y);
-            player.setPosition(new Pos((player.getFarm().getStartPosition().getX() + x), flippedY));
+            int flippedY = height - 1 - (startY + y);
+            player.setPosition(new Pos(startX + x, flippedY));
+
             index++;
         }
     }
@@ -61,6 +80,22 @@ public class MapController {
                 map[flippedY][j] = new Tile(TileType.Ground);
             }
         }
+
+        for (Player player : game.getPlayers()) {
+            Pos start = player.getFarm().getStartPosition();
+            System.out.println("Player: " + player.getUser().getUsername() +
+                " farmType=" + player.getFarm().getType().name() +
+                " startX=" + start.getX() +
+                " startY=" + start.getY() +
+                " mapWidth=" + width +
+                " mapHeight=" + height);
+
+            if (start.getX() < 0 || start.getY() < 0 ||
+                start.getX() >= width || start.getY() >= height) {
+                throw new RuntimeException("Invalid farm start position for " + player.getUser().getUsername());
+            }
+        }
+
 
         for (Player player : game.getPlayers()) {
             if (player.getFarm().getStartPosition() == null) setFarmsPosition(game);

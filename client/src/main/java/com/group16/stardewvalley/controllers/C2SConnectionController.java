@@ -22,15 +22,15 @@ import java.util.HashMap;
 
 public class C2SConnectionController {
     public static void startGame(Message message) {
-        Object gameInfoObj = message.getFromBody("gameInfo"); // بدون cast
+        Object gameInfoObj = message.getFromBody("gameInfo");
         String json = new Gson().toJson(gameInfoObj);
         GameClientDTO gameDTO = new Gson().fromJson(json, GameClientDTO.class);
+        System.out.println(gameDTO.getPlayers().size() + " players connected");
 
 
-        // حالا ادامه‌ی کد
-        Game game = GameFactory.fromClientDTO(gameDTO);
-        App.setActiveGame(game);
         Gdx.app.postRunnable(() -> {
+            Game game = GameFactory.fromClientDTO(gameDTO);
+            App.setActiveGame(game);
             Main.getMain().getScreen().dispose();
             Main.getMain().setScreen(new GameScreen());
         });

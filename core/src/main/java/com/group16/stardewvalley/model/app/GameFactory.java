@@ -19,13 +19,19 @@ public class GameFactory {
 
     public static Game fromClientDTO(GameClientDTO dto) {
         GameMenuController gameMenuController = new GameMenuController();
+        System.out.println(dto.getPlayers().size() + " players connected in factory");
 
         ArrayList<Player> players = new ArrayList<>();
         Player creator = null;
         for (PlayerDTO playerData : dto.getPlayers()) {
+            System.out.println("player " + playerData.getUsername() + "is here");
             String username = playerData.getUsername();
             User user = MessageFactory.getUser(username);
-            if (user == null) continue;
+            if (user == null) {
+                System.out.println("user " + username + " not found");
+                continue;
+            }
+
             Player player = new Player(user);
             player.setPosition(new Pos(playerData.getX(), playerData.getY()));
             player.setPlayerGraphics(playerData.getCharacterPath(), 48, 64);
@@ -34,15 +40,21 @@ public class GameFactory {
             } else {
                 gameMenuController.chooseFarm(player, "2");
             }
-            player.getFarm().setStartPosition(new Pos(playerData.getX(), playerData.getY()));
+            player.getFarm().setStartPosition(new Pos(playerData.getFarmX(), playerData.getFarmY()));
             //FarmType farmType = FarmType.valueOf(playerData.getFarmType());
             //player.setFarm(new Farm(farmType));
             //gameMenuController.randomItems(player.getFarm());
             if (username.equals(dto.getCreatorUsername())) {
                 creator = player;
             }
+            players.add(player);
         }
         Game game = new Game(creator, players);
+        for (Player player : game.getPlayers()) {
+            if (player.getUser().getUsername().equals(App.getLoggedInUser().getUsername())) {
+                game.setCurrentPlayer(player);
+            }
+        }
         MapController mapController = new MapController();
         mapController.createMap(game);
 

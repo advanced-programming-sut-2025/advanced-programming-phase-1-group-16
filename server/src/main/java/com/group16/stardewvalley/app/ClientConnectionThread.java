@@ -54,8 +54,14 @@ public class ClientConnectionThread extends ConnectionThread {
                 yield true;
             }
             case GET_USER_INFO -> {
+                boolean changed = false;
+                if (connectedUser == null) {
+                    changed = true;
+                }
                 sendMessage(ServerConnectionController.getUserInfo(this, message));
-                ServerConnectionController.refreshOnlinePlayers();
+                if (changed) {
+                    ServerConnectionController.refreshOnlinePlayers();
+                }
                 yield true;
             }
             case UPDATE_EMAIL -> {
