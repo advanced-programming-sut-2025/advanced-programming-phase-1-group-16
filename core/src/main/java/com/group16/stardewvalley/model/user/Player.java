@@ -487,7 +487,7 @@ public class Player {
 
     public void decreaseEnergy(double amount) {
         energy = Math.max(0, energy - amount);
-        if (energy < 0.0001) energy = 0;
+        if (energy < 1) energy = 0;
         if (energy == 0.0) faint();
     }
 
