@@ -13,8 +13,10 @@ import com.group16.stardewvalley.Main;
 import com.group16.stardewvalley.controller.CheatCodeController;
 import com.group16.stardewvalley.model.Result;
 import com.group16.stardewvalley.model.app.App;
+import com.group16.stardewvalley.model.crafting.CraftItem;
 import com.group16.stardewvalley.model.crafting.Crafting;
 import com.group16.stardewvalley.model.crafting.CraftingRecipes;
+import com.group16.stardewvalley.model.crafting.CraftingSource;
 import com.group16.stardewvalley.model.food.Food;
 import com.group16.stardewvalley.model.food.Ingredient;
 import com.group16.stardewvalley.model.graphics.GameAssetManager;
@@ -77,23 +79,6 @@ public class CraftMenu extends Window {
                 btn.getImage().setColor(0.3f, 0.3f, 0.3f, 0.7f);
             }
 
-//            btn.addListener(new ClickListener() {
-//                @Override
-//                public void clicked(InputEvent event, float x, float y) {
-//                    if (!isKnown) return;
-//
-//                    for(Ingredient ingredient: craftItem.getNeededIngredients().keySet()){
-//                        CheatController.addIngredient(ingredient.getName());
-//                    }
-//                    Result result = craftingController.craft(craftItem.getName());
-//                    if(result.isSuccessful()){
-//                        System.out.println("DONE -- crafted  " + craftItem.getName());
-//                    }else {
-//                        System.out.println(result.message());
-//                    }
-//                    resultLabel.setText(result.message());
-//                }
-//            });
 
             btn.addListener(new ClickListener() {
                 @Override
@@ -111,17 +96,6 @@ public class CraftMenu extends Window {
                     }
                     resultLabel.setText(result.message());
 
-//                    if (craftItem.isPlaceable()) { // You'll need this check on your recipes
-//                        Result result = craftingController.craft(craftItem.getName(), -1, -1);
-//                        if (result.isSuccessful()) {
-//                            pendingCraftItemName = craftItem.getName();
-//                            System.out.println("Select location to place " + craftItem.getName());
-//                        }
-//                        resultLabel.setText(result.message());
-//                    } else {
-//                        Result result = craftingController.craft(craftItem.getName());
-//                        resultLabel.setText(result.message());
-//                    }
                 }
             });
 
@@ -164,34 +138,53 @@ public class CraftMenu extends Window {
         add(resultLabel).padBottom(15).padLeft(200).fillX().height(50);
 
     }
-
     private Table getDescriptionTable(CraftingRecipes craftingItem) {
         Table content = new Table();
         content.defaults().left().padBottom(5);
 
+        // Title
         Label title = new Label(craftingItem.getName(), skin, "button");
         title.setColor(Color.ORANGE);
         content.add(title).row();
 
+        // Section label
         Label craftingLabel = new Label("Crafting", skin);
         craftingLabel.setColor(Color.SALMON);
         content.add(craftingLabel).row();
 
+        // Separator
         content.add(new Label("------------------------", skin)).row();
 
-        content.add(new Label("Ingredients:", skin)).row();
+        // === Extra Recipe Info ===
+        if (!craftingItem.getSource().isEmpty()) {
+            for (Map.Entry<CraftingSource, Integer> entry : craftingItem.getSource().entrySet()) {
+                String srcText = String.format("Requires: %s level %d",
+                    entry.getKey().name(), entry.getValue());
+                content.add(new Label(srcText, skin)).row();
+            }
+        } else {
+            content.add(new Label("No special requirement", skin)).row();
+        }
 
+
+
+        // Another separator before ingredients
+        content.add(new Label("------------------------", skin)).row();
+
+        // Ingredients list
+        content.add(new Label("Ingredients:", skin)).row();
         for (Ingredient ing : craftingItem.getNeededIngredients().keySet()) {
             Table ingRow = new Table();
             Texture tex = GameAssetManager.getGameAssetManager().getCraftingIngredientTexture(ing);
             ingRow.add(new Image(tex)).size(25);
             ingRow.add(new Label(" ", skin));
-            ingRow.add(new Label(ing.getName(), skin));
+            ingRow.add(new Label(ing.getName() + " x" + craftingItem.getNeededIngredients().get(ing), skin));
             content.add(ingRow).left().row();
         }
 
         return content;
     }
+
 
     @Override
     public void act(float delta) {

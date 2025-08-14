@@ -362,6 +362,16 @@ public class Inventory {
         return null;
     }
 
+    public Item findItemByName(String name) {
+        for (Map.Entry<Item, Integer> entry : items.entrySet()) {
+            Item item = entry.getKey();
+            if (item.getName().equalsIgnoreCase(name)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
     public int getNumberOfItem(Item item) {
         for (Map.Entry<Item, Integer> entry : items.entrySet()) {
             if (entry.getKey().equals(item)) {

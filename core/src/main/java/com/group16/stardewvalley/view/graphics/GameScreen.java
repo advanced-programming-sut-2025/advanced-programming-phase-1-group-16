@@ -431,7 +431,7 @@ public class GameScreen implements Screen, InputProcessor {
         Tile clickedTile = App.getActiveGame().getMap()[tileY][tileX];
         if (clickedTile.getItem() instanceof CraftItem craftItem && clickedTile.isBuildingOrigin()) {
             if (isAdjacent) {
-                ArtisanMenu artisanMenu = new ArtisanMenu(skin, craftItem);
+                ArtisanMenu artisanMenu = new ArtisanMenu(skin, craftItem, controller.getDragAndDrop(), stage);
                 artisanMenu.setPosition(
                     (stage.getWidth() - artisanMenu.getWidth()) / 2,
                     (stage.getHeight() - artisanMenu.getHeight()) / 2
